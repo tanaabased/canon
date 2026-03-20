@@ -1,0 +1,7 @@
+{
+  "name": "@tanaab/canon",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared canon and skills for Tanaab agent systems."
+}
