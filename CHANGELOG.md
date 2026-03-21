@@ -4,4 +4,5 @@
 
 - Initialized the `canon` repository scaffold.
 - Added root repo guidance and migration framing.
-- Reserved `old-skills/` as the quarantine area for legacy skill import and audit.
+- Imported legacy skills into `old-skills/` as a frozen migration source.
+- Added the first stack audit and retired `tanaab-coding` from the future live skill surface.

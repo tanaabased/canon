@@ -86,6 +86,8 @@ Why:
 
 Migration target:
 
+- preserve the quarantined source folder under `old-skills/` as migration evidence
+- keep only the primary-owner and real-surface rules by moving them into repo `AGENTS.md`
 - keep the current routing matrix only as temporary migration documentation if needed
 
 ### `tanaab-coding-core`

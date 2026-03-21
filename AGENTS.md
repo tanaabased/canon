@@ -27,6 +27,9 @@
 - Deterministic orchestrators are acceptable only when they call fixed sub-steps and do not act as dynamic routers.
 - Prefer `merge`, `move`, `extract`, or `delete` before `add`.
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
+- Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
+- Treat user-facing artifacts such as generated `dist/` outputs, hosted scripts, and executable example suites as real ownership surfaces during skill design.
+- If ownership needs a routing matrix to stay understandable, the skills are still too broad.
 
 ## Canon Design
 
@@ -40,6 +43,7 @@
 - Do not widen a migration task into a rewrite unless the evidence shows the current shape is blocking the stated goal.
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
+- Keep `old-skills/` frozen as migration evidence. Retire legacy skills from the future live surface without rewriting their quarantined source folders.
 
 ## Validation
 
