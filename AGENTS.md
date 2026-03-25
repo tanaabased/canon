@@ -2,8 +2,8 @@
 
 ## Purpose
 
-- This repo is the shared Tanaab canon surface for Codex, OpenClaw, and future agents.
-- It may contain both executable skills and broader canon such as docs, templates, profiles, scripts, and standards.
+- This repo is the shared Tanaab canon surface for Tanaab employees, Codex, OpenClaw, and future agents.
+- It may contain both executable skills and broader canon such as guidance, ideas, references, prompts, templates, scripts, and standards.
 - Treat `skills/` as the live skill surface and `old-skills/` as migration-only input unless a task explicitly says otherwise.
 
 ## Core Model
@@ -15,8 +15,9 @@
 
 ## Runtime Boundaries
 
-- Skills must be self-contained at runtime.
-- Repo-wide canon may assist authoring, extraction, or standardization, but shipped skills should bundle the references they need.
+- Skills may point to shared canon in this repo when that canon has human-accessible value beyond one skill.
+- Do not duplicate shared references into individual skills just to force artificial runtime isolation.
+- Bundle skill-local scripts, assets, templates, and other helpers only when they are specific to that skill and do not gain meaningful human-facing value by being hoisted into canon root.
 - Do not rely on `AGENTS.md` files inside skill storage paths to affect runtime behavior.
 - Assume Codex requires a restart after skill install or update unless proven otherwise in the target environment.
 
@@ -33,20 +34,25 @@
 
 ## Canon Design
 
-- Put standards, guidance, and durable explanation in repo docs or canon files instead of overloading skills with philosophy.
+- Keep `guidance/`, `ideas/`, `references/`, `prompts/`, `scripts/`, and `templates/` flat by default.
+- Use hyphenated filenames with scoped prefixes when needed, such as `skill-standard.md`.
+- Add nested folders inside the flat canon buckets only after repeated pressure shows flat naming is no longer the simpler model.
+- Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
+- Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
+- Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
+- Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
+- Put reusable prompts and prompt fragments in `prompts/` when they have value beyond one skill.
 - Put reusable scaffolds and fragments in `templates/` only after reuse is proven.
+- Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 
 ## Change Discipline
 
-- Keep diffs small and local to the real problem.
-- Do not widen a migration task into a rewrite unless the evidence shows the current shape is blocking the stated goal.
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
 - Keep `old-skills/` frozen as migration evidence. Retire legacy skills from the future live surface without rewriting their quarantined source folders.
 
 ## Validation
 
-- Validate the narrowest reliable surface first.
 - For skill work, check discovery shape, section structure, and bundled-resource paths.
 - If live install sync or agent restart is intentionally skipped, say so explicitly.

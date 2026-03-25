@@ -17,7 +17,7 @@ The legacy stack is internally consistent, but it is the wrong shape for a share
 The right migration path is:
 
 1. move ambient doctrine into repo-level canon and `AGENTS.md`
-2. move reusable artifacts into repo-level `templates/`, `docs/`, `profiles/`, and `scripts/`
+2. move reusable artifacts into repo-level `templates/`, `guidance/`, `references/`, and `scripts/`
 3. retire the router and core skills
 4. replace broad domain skills with smaller single-surface skills
 
@@ -97,13 +97,13 @@ Decision: move to core, then delete the skill.
 Why:
 
 - its description is ambient doctrine, not a conditional workflow
-- its content belongs in repo `AGENTS.md`, repo docs, and repo support files
+- its content belongs in repo `AGENTS.md`, repo guidance, repo references, and repo support files
 
 Migration target:
 
 - move doctrine into root `AGENTS.md`
-- move CLI rules into repo docs or profiles
-- move `scripts/bun-cli-support.js` into repo-level support scripts if it still earns a place
+- move CLI rules into repo references or profiles
+- keep only the smallest repo-level helper scripts that still earn a place after the new type-plus-owner initializer model
 
 ### `tanaab-templates`
 
@@ -117,7 +117,7 @@ Why:
 Migration target:
 
 - move concrete file starters into repo `/templates`
-- move template policy into docs
+- move template policy into guidance
 - only create a future template meta-skill if template extraction or standardization truly needs executable workflow
 
 ### `tanaab-javascript`
@@ -229,9 +229,9 @@ Recommended successors:
 ## Ordered Implementation Plan
 
 1. Keep `old-skills/` frozen and do not normalize it in place.
-2. Promote ambient doctrine from `tanaab-coding-core` into repo `AGENTS.md` and canon docs.
+2. Promote ambient doctrine from `tanaab-coding-core` into repo `AGENTS.md`, canon guidance, and canon references.
 3. Move real reusable assets out of `old-skills/tanaab-templates/templates/` into repo `/templates`.
-4. Move supporting references out of legacy skills into repo `/docs`, `/profiles`, or `/scripts` where they are truly canon.
+4. Move supporting references out of legacy skills into repo `/references`, `/profiles`, or `/scripts` where they are truly canon.
 5. Retire `tanaab-coding`, `tanaab-coding-core`, and `tanaab-templates` instead of recreating them as live skills.
 6. Rebuild each remaining broad domain skill as a set of narrower successor skills with one primary owned surface each.
 7. Rewrite every new `SKILL.md` so the description alone is strong enough to avoid rebuilding a router.

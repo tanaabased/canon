@@ -1,12 +1,12 @@
 # Tanaab Canon
 
-Shared canon and skills for Tanaab agent systems.
+Shared canon and skills for Tanaab employees and agent systems.
 
 ## Purpose
 
-- Ship reusable skills for Codex, OpenClaw, and future agents.
-- Hold broader canon such as standards, templates, profiles, docs, scripts, and branding guidance.
-- Keep runtime skills portable instead of depending on repo-local context that may not be installed.
+- Ship reusable skills and canon for Tanaab employees, Codex, OpenClaw, and future agents.
+- Hold broader canon such as standards, guidance, ideas, references, prompts, templates, scripts, and branding material.
+- Let skills share canon references when that canon is useful beyond a single skill, while keeping skill-local helpers bundled only when they are truly skill-specific.
 
 ## Core Model
 
@@ -21,20 +21,28 @@ Shared canon and skills for Tanaab agent systems.
 canon/
   AGENTS.md
   skills/
-  docs/
+  guidance/
+  ideas/
+  references/
+  prompts/
   templates/
-  profiles/
   scripts/
   dist/codex/
   old-skills/
 ```
 
 - `skills/` is the future live skill surface.
+- `guidance/` holds decision-shaping canon such as audits, retirements, standards, and migration notes.
+- `ideas/` holds exploratory proposals that may later mature into guidance, references, or shipped tooling.
+- `references/` holds stable lookup canon such as contracts, naming rules, and other reference material.
+- `prompts/` holds reusable prompts and prompt fragments with value beyond one skill.
 - `old-skills/` is a frozen migration input, not a live runtime target.
 - `dist/codex/` is reserved for generated Codex install output.
+- Canon buckets stay flat by default.
 
 ## Runtime Notes
 
 - Codex should prefer per-skill install or generated export and generally needs a restart after skill updates.
 - OpenClaw should point `skills.load.extraDirs` at the repo `skills/` directory.
-- Skills must be self-contained at runtime even if authoring uses repo-wide canon during development.
+- Skills may refer to shared canon in this repo when that material has value beyond one skill.
+- Skill-local scripts, assets, and templates should stay bundled only when they are specific to one skill and do not belong at canon root.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Skill Creator"
+  short_description: "Tanaab-based skill creation"
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-skill-creator to create or standardize a typed skill in the canon repo."
