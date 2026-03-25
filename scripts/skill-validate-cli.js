@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 
-import { formatValidationReport, validateSkillDir } from './skill-validation.js';
+import { formatValidationReport, validateSkillDir } from './skill-validation-lib.js';
 
 function usage(code = 0) {
   const lines = [
-    'Usage: validate-skill.js --skill-dir <path> [options]',
+    'Usage: skill-validate-cli.js --skill-dir <path> [options]',
     '',
     'Validate a canon skill directory against references/skill-standard.md.',
     '',

@@ -1,6 +1,0 @@
-interface:
-  display_name: 'Skill Sensei'
-  short_description: 'Audit and optimize legacy skill stacks'
-  icon_small: './assets/skill-sensei.png'
-  icon_large: './assets/skill-sensei.png'
-  default_prompt: 'Use $skill-sensei to audit a legacy skill stack, surface overlap or ambiguity, and propose keep, merge, move, or delete outcomes.'

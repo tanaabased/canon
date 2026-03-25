@@ -1,12 +1,15 @@
 ---
 name: tanaab-skill-validator
-description: Tanaab-based validation of canon skills against the shared skill standard. Use when a user wants to check a skill directory, confirm a new or standardized skill passes objective structure rules, or review warnings and manual checks for canon skill quality.
-type: meta
-owner: tanaab
-tags:
-  - tanaab
-  - meta
-  - validation
+description: Tanaab-based validation of canon skills against the shared skill standard. Use when a user wants to validate a skill directory or review canon-skill errors, warnings, and manual checks.
+license: MIT
+metadata:
+  type: meta
+  owner: tanaab
+  tags:
+    - tanaab
+    - meta
+    - skills
+    - validation
 ---
 
 # Skill Validator
@@ -20,10 +23,9 @@ Use this skill when the task is validating a canon skill rather than creating or
 - Validate category tags against [`../../references/skill-tags.md`](../../references/skill-tags.md).
 - Validate that Tanaab description fields use the `Tanaab-based` prefix where required.
 - Validate that `agents/openai.yaml` icon fields exist and resolve to local assets.
-- Use [`../../scripts/validate-skill.js`](../../scripts/validate-skill.js) for the objective checks.
+- Use [`../../scripts/skill-validate-cli.js`](../../scripts/skill-validate-cli.js) for the objective checks.
 - Treat `[error]` results as blocking.
-- Treat `[warn]` results as design feedback.
-- Treat `[manual]` results as review prompts for a human or the active agent.
+- Treat `[warn]` and `[manual]` results as design review input, not silent success.
 
 ## When to Use
 
@@ -40,55 +42,50 @@ Use this skill when the task is validating a canon skill rather than creating or
 ## Evaluation Criteria
 
 - Check that the selected type is valid and the section order matches it exactly.
-- Check that metadata and tags are internally consistent.
-- Check that validation errors are objective contract failures, not style preferences dressed up as blockers.
+- Check that metadata and `metadata.tags` are internally consistent.
+- Keep blocking failures tied to the shared contract, not to personal style preferences.
 
 ## Anti-Patterns
 
 - Do not treat warnings as hard failures without evidence.
 - Do not validate against stale local conventions when the shared canon changed.
-- Do not ignore typed section order drift just because the headings are semantically similar.
+- Do not ignore typed section order drift just because the headings are close.
 
 ## Iteration Loop
 
 - Run the validator first for objective failures.
-- Fix every `[error]`, then review `[warn]` and `[manual]` items.
-- Re-run validation after each structural change instead of batching blind edits.
+- Fix every `[error]`, then review `[warn]` and `[manual]`.
+- Re-run validation after each structural change.
 
 ## Workflow
 
-1. Determine the validation target.
+1. Identify the target skill.
 
-- Get the skill directory path.
-- Get the expected `type` when you need to assert a specific type. Otherwise let the validator read it from frontmatter.
+2. Load shared contract material only if the result needs interpretation.
 
-2. Load the shared validation surface.
-
-- Read [`../../references/skill-standard.md`](../../references/skill-standard.md) for the current contract.
-- Read [`../../references/skill-types.md`](../../references/skill-types.md) for the selected type order and valid type ids.
-- Read [`../../references/skill-tags.md`](../../references/skill-tags.md) when tag selection or category validity is part of the review.
-- Use [`../../scripts/validate-skill.js`](../../scripts/validate-skill.js) for the objective checks.
+- Read [`../../references/skill-standard.md`](../../references/skill-standard.md) for the contract.
+- Read [`../../references/skill-types.md`](../../references/skill-types.md) or [`../../references/skill-tags.md`](../../references/skill-tags.md) only when the failure depends on type or tag rules.
 
 3. Run validation.
 
-- Pass `--skill-dir`.
-- Pass `--type` only when you want to assert the expected type explicitly.
+- Use [`../../scripts/skill-validate-cli.js`](../../scripts/skill-validate-cli.js) with `--skill-dir`.
+- Pass `--type` only when the expected type should be asserted explicitly.
 
 4. Interpret the result.
 
 - Fix every `[error]`.
 - Review `[warn]` items and either fix them or explain why they are acceptable.
-- Surface `[manual]` items explicitly instead of pretending they were automatically resolved.
+- Surface `[manual]` items explicitly instead of pretending they were resolved.
 
 ## Bundled Resources
 
 - [../../references/skill-standard.md](../../references/skill-standard.md): shared source of truth for canon skill validation
 - [../../references/skill-types.md](../../references/skill-types.md): exact section orders for each supported type
 - [../../references/skill-tags.md](../../references/skill-tags.md): canonical category-tag list
-- [../../scripts/validate-skill.js](../../scripts/validate-skill.js): validation entrypoint for skill directories
+- [../../scripts/skill-validate-cli.js](../../scripts/skill-validate-cli.js): validation entrypoint for skill directories
 
 ## Validation
 
-- Run `validate-skill.js` against the target skill.
+- Run `skill-validate-cli.js` against the target skill.
 - Confirm the result has no `[error]` items.
 - Report warnings and manual checks clearly in the final output.

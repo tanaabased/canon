@@ -1,10 +1,12 @@
 ---
 name: {{skill_id}}
 description: {{description}}
-type: {{type}}
-owner: {{owner}}
-tags:
-{{tags_yaml}}
+license: {{license}}
+metadata:
+  type: {{type}}
+  owner: {{owner}}
+  tags:
+{{metadata_tags_yaml}}
 ---
 
 # {{display_name}}

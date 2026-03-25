@@ -1,0 +1,96 @@
+{
+  "types": {
+    "generic": {
+      "id": "generic",
+      "description": "Fallback skill type for cases where no narrower typed overlay clearly fits. Keep this as an escape hatch, not the default choice when a specific type matches.",
+      "default_category_tag": "workflow",
+      "section_order": [
+        "# ",
+        "## Overview",
+        "## When to Use",
+        "## When Not to Use",
+        "## Workflow",
+        "## Bundled Resources",
+        "## Validation"
+      ],
+      "pre_workflow_section_path": null,
+      "post_workflow_section_path": null
+    },
+    "coding": {
+      "id": "coding",
+      "description": "For skills that modify, generate, refactor, debug, or explain code. Bias toward minimal diffs, preserving style, and explicit validation.",
+      "default_category_tag": "coding",
+      "section_order": [
+        "# ",
+        "## Overview",
+        "## When to Use",
+        "## When Not to Use",
+        "## Constraints",
+        "## Change Strategy",
+        "## Workflow",
+        "## Bundled Resources",
+        "## Validation"
+      ],
+      "pre_workflow_section_path": "templates/skill-type-coding-sections.md",
+      "post_workflow_section_path": null
+    },
+    "integration": {
+      "id": "integration",
+      "description": "For skills that operate against external tools, APIs, SaaS systems, MCP servers, CLIs, or service workflows. Bias toward prerequisites, interfaces, and failure handling.",
+      "default_category_tag": "integration",
+      "section_order": [
+        "# ",
+        "## Overview",
+        "## When to Use",
+        "## When Not to Use",
+        "## Prerequisites",
+        "## Inputs",
+        "## Outputs",
+        "## Failure Handling",
+        "## Workflow",
+        "## Bundled Resources",
+        "## Validation"
+      ],
+      "pre_workflow_section_path": "templates/skill-type-integration-sections.md",
+      "post_workflow_section_path": null
+    },
+    "workflow": {
+      "id": "workflow",
+      "description": "For repeatable operational processes that may span tools but are not primarily coding or integration implementation. Bias toward sequence, checkpoints, and completion criteria.",
+      "default_category_tag": "workflow",
+      "section_order": [
+        "# ",
+        "## Overview",
+        "## When to Use",
+        "## When Not to Use",
+        "## Preconditions",
+        "## Workflow",
+        "## Checkpoints",
+        "## Completion Criteria",
+        "## Bundled Resources",
+        "## Validation"
+      ],
+      "pre_workflow_section_path": "templates/skill-type-workflow-sections.md",
+      "post_workflow_section_path": "templates/skill-type-workflow-post-sections.md"
+    },
+    "meta": {
+      "id": "meta",
+      "description": "For skills that create, refine, validate, package, or audit other skills, prompts, templates, or conventions. Bias toward structure, consistency, and evaluation.",
+      "default_category_tag": "meta",
+      "section_order": [
+        "# ",
+        "## Overview",
+        "## When to Use",
+        "## When Not to Use",
+        "## Evaluation Criteria",
+        "## Anti-Patterns",
+        "## Iteration Loop",
+        "## Workflow",
+        "## Bundled Resources",
+        "## Validation"
+      ],
+      "pre_workflow_section_path": "templates/skill-type-meta-sections.md",
+      "post_workflow_section_path": null
+    }
+  }
+}

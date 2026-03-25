@@ -1,0 +1,9 @@
+{
+  "owner": "tanaab",
+  "prefix": "tanaab",
+  "license": "MIT",
+  "description_prefix": "Tanaab-based ",
+  "brand_color": "#00c88a",
+  "icon_small_template": "templates/tanaab-skill-icon-small.svg",
+  "icon_large_template": "templates/tanaab-skill-icon-large.png"
+}

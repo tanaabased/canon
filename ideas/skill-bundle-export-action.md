@@ -30,6 +30,7 @@ Export model:
 - the action copies the skill folder
 - the action vendors declared shared canon into a fixed bundle layout
 - the action rewrites markdown references to the vendored paths
+- the action treats `bun build` import graphs as the authoritative source for bundled script runtime dependencies
 - the action emits a bundle directory and archive
 
 ## Proposed Action Inputs
@@ -220,15 +221,17 @@ The normal case should be automatic rewrite generation based on vendored depende
 1. Resolve the target skill or set of skills.
 2. Find and parse each `canonfile`.
 3. Validate schema version and allowed source roots.
-4. Copy the skill folder into a staging bundle.
-5. Vendor declared shared canon into `vendor/canon/...`.
-6. Copy extra files from `[[include]]`.
-7. Compute a markdown rewrite map from original shared paths to vendored bundle paths.
-8. Apply automatic rewrites, then merge any explicit `[[rewrite]]` overrides.
-9. Write `VERSION` if enabled.
-10. Write `bundle-manifest.json` with the bundle id, source commit, declared deps, and exported files.
-11. Validate that rewritten links resolve within the bundle.
-12. Emit the bundle directory and optional archive.
+4. Run `bun build` for any bundleable script entrypoints and treat the import graph as the source of code/runtime dependencies.
+5. Copy the skill folder into a staging bundle.
+6. Vendor declared shared canon into `vendor/canon/...`.
+7. Copy extra files from `[[include]]`.
+8. Compute a markdown rewrite map from original shared paths to vendored bundle paths.
+9. Apply automatic rewrites, then merge any explicit `[[rewrite]]` overrides.
+10. Copy or emit the assets/templates brought in by bundled script imports instead of relying on repo-relative runtime access.
+11. Write `VERSION` if enabled.
+12. Write `bundle-manifest.json` with the bundle id, source commit, declared deps, and exported files.
+13. Validate that rewritten links resolve within the bundle.
+14. Emit the bundle directory and optional archive.
 
 ## Validation Goals
 
@@ -237,8 +240,15 @@ The exporter should fail in strict mode when:
 - a declared vendored path does not exist
 - a vendored path escapes the allowed shared roots
 - an included required file is missing
+- a bundled script build has unresolved repo-owned imports
 - a rewritten markdown link does not resolve
 - undeclared shared canon references remain in a standalone bundle
+
+## Bundling Direction
+
+- `canonfile` remains responsible for vendored shared canon, extra includes, markdown rewrites, and bundle metadata.
+- `bun build` import graphs are the authoritative source for script/runtime dependencies of bundled scripts.
+- Exporters should bundle or copy the assets, templates, and machine-readable canon pulled in by script imports instead of assuming repo-relative access survives export.
 
 ## Design Options
 

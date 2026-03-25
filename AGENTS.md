@@ -44,7 +44,10 @@
 - Put reusable prompts and prompt fragments in `prompts/` when they have value beyond one skill.
 - Put reusable scaffolds and fragments in `templates/` only after reuse is proven.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
+- Keep `scripts/` code-only. Put static machine-readable canon in `references/*.json`, not as object literals in JS modules.
+- Keep `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked Bun CLIs, `-task.js` for repo automation entrypoints, and `-lib.js` for import-only helpers.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
+- If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.
 
 ## Change Discipline
 

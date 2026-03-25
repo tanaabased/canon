@@ -11,9 +11,9 @@ Use this file as the source of truth for canon skill validation.
 ## Identity and Naming
 
 - `[error]` Creation and standardization use one variable identity input: `type`.
-- `[error]` Frontmatter `owner` must exist and must equal `tanaab`.
-- `[error]` Frontmatter `type` must be one of the ids listed in [`./skill-types.md`](./skill-types.md).
-- `[error]` Frontmatter `type` must equal the selected type id.
+- `[error]` Frontmatter `metadata.owner` must exist and must equal `tanaab`.
+- `[error]` Frontmatter `metadata.type` must be one of the ids listed in [`./skill-types.md`](./skill-types.md).
+- `[error]` Frontmatter `metadata.type` must equal the selected type id.
 - `[error]` The generated machine id must use lowercase letters, digits, and hyphens only.
 - `[error]` The skill folder name must equal the generated machine id.
 - `[error]` Frontmatter `name` must equal the skill folder name exactly.
@@ -41,16 +41,19 @@ skill-id/
 ## Required SKILL.md Shape
 
 - `[error]` `SKILL.md` must start with YAML frontmatter.
-- `[error]` Frontmatter must contain `name`, `description`, `type`, `owner`, and `tags`.
+- `[error]` Frontmatter must contain `name`, `description`, `license`, and `metadata`.
+- `[error]` Frontmatter `license` must equal `MIT`.
+- `[error]` Frontmatter `metadata` must contain `type`, `owner`, and `tags`.
+- `[error]` Do not use top-level `type`, `owner`, or `tags`; Codex warns on unsupported top-level skill attributes.
 - `[error]` Frontmatter `description` must start with `Tanaab-based`.
-- `[error]` `tags` must be a list of strings.
-- `[error]` `tags` must include the selected `owner` and `type`.
-- `[error]` `tags` must include at least one category tag from [`./skill-tags.md`](./skill-tags.md).
+- `[error]` `metadata.tags` must be a list of strings.
+- `[error]` `metadata.tags` must include the selected `owner` and `type`.
+- `[error]` `metadata.tags` must include at least one category tag from [`./skill-tags.md`](./skill-tags.md).
 - `[error]` Section order must match the selected type's order from [`./skill-types.md`](./skill-types.md).
 - `[error]` Relative links in `SKILL.md` must resolve.
 - `[manual]` `description` should say both what the skill does and when to use it.
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
-- `[warn]` Keep tags short. Prefer one category tag by default instead of a long keyword list.
+- `[warn]` Keep `metadata.tags` short. Prefer one category tag by default instead of a long keyword list.
 
 ## Required OpenAI Metadata
 
@@ -66,9 +69,13 @@ skill-id/
 ## Resource Placement Rules
 
 - `[error]` Start every skill from [`../templates/skill-generic-skill.md`](../templates/skill-generic-skill.md).
-- `[error]` For non-`generic` skills, inject the matching type section partial defined by [`./skill-types.md`](./skill-types.md) and `scripts/skill-types.js`.
+- `[error]` For non-`generic` skills, inject the matching type section partial defined by [`./skill-types.md`](./skill-types.md), [`./skill-types.json`](./skill-types.json), and `scripts/skill-types-lib.js`.
 - `[error]` Use the shared Tanaab owner contract from this standard and the validator. Do not load owner behavior from a separate owner-data folder.
 - `[error]` Use kebab-case for repo-authored helper filenames in `scripts/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
+- `[error]` `scripts/` is code-only. Do not store static registry data there as JS object literals.
+- `[error]` Repo-level script filenames must end in `-cli.js`, `-task.js`, or `-lib.js`.
+- `[error]` Machine-readable canon consumed by repo scripts must live in `references/*.json`.
+- `[error]` Bundleable repo scripts must import shared templates, assets, and machine-readable canon explicitly so `bun build` can follow the dependency graph.
 - `[warn]` Keep the default scaffold minimal.
 - `[warn]` Move shared canon into repo-root `references/`, `guidance/`, `prompts/`, `templates/`, or `scripts/` instead of duplicating it inside one skill.
 - `[warn]` Keep skill-bundled helpers in the skill's own `scripts/` directory. Do not treat them as repo-level package `bin/` entrypoints.

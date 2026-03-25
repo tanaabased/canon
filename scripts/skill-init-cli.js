@@ -1,25 +1,46 @@
 #!/usr/bin/env bun
 
-import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import baseTemplateContent from '../templates/skill-generic-skill.md' with { type: 'text' };
+import codingSectionsContent from '../templates/skill-type-coding-sections.md' with { type: 'text' };
+import integrationSectionsContent from '../templates/skill-type-integration-sections.md' with { type: 'text' };
+import metaSectionsContent from '../templates/skill-type-meta-sections.md' with { type: 'text' };
+import workflowSectionsContent from '../templates/skill-type-workflow-sections.md' with { type: 'text' };
+import workflowPostSectionsContent from '../templates/skill-type-workflow-post-sections.md' with { type: 'text' };
+import bundledLargeIconPath from '../templates/tanaab-skill-icon-large.png';
+import bundledSmallIconPath from '../templates/tanaab-skill-icon-small.svg';
 import {
   CANON_DESCRIPTION_PREFIX,
   CANON_ICON_LARGE_TEMPLATE,
   CANON_ICON_SMALL_TEMPLATE,
   CANON_SKILL_BRAND_COLOR,
+  CANON_SKILL_LICENSE,
   CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX_WITH_HYPHEN,
-} from './skill-owner.js';
-import { inferCategoryTag, isKnownCategoryTag } from './skill-tags.js';
-import { formatSkillTypeIds, getSkillType } from './skill-types.js';
-import { formatValidationReport, validateSkillDir } from './skill-validation.js';
+} from './skill-contract-lib.js';
+import { inferCategoryTag, isKnownCategoryTag } from './skill-tags-lib.js';
+import { formatSkillTypeIds, getSkillType } from './skill-types-lib.js';
+import { formatValidationReport, validateSkillDir } from './skill-validation-lib.js';
 
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const MODULE_DIR = path.dirname(fileURLToPath(import.meta.url));
+const BUNDLED_TEXT_IMPORTS = {
+  'templates/skill-generic-skill.md': baseTemplateContent,
+  'templates/skill-type-coding-sections.md': codingSectionsContent,
+  'templates/skill-type-integration-sections.md': integrationSectionsContent,
+  'templates/skill-type-meta-sections.md': metaSectionsContent,
+  'templates/skill-type-workflow-sections.md': workflowSectionsContent,
+  'templates/skill-type-workflow-post-sections.md': workflowPostSectionsContent,
+};
+const BUNDLED_ASSET_IMPORTS = {
+  'templates/tanaab-skill-icon-small.svg': bundledSmallIconPath,
+  'templates/tanaab-skill-icon-large.png': bundledLargeIconPath,
+};
 
 function usage(code = 0) {
   const lines = [
-    'Usage: init-skill.js --type <type> --slug <slug> --display-name <name> --description <text> [options]',
+    'Usage: skill-init-cli.js --type <type> --slug <slug> --display-name <name> --description <text> [options]',
     '',
     'Initialize a Tanaab skill from the shared base template and typed section partials.',
     '',
@@ -129,31 +150,8 @@ function renderTemplate(template, replacements) {
   return template.replaceAll(/\{\{([a-z_]+)\}\}/g, (match, key) => replacements[key] ?? match);
 }
 
-function renderTagsYaml(tags) {
-  return tags.map((tag) => `  - ${tag}`).join('\n');
-}
-
-async function readBaseTemplate() {
-  const templatePath = path.join(REPO_ROOT, 'templates', 'skill-generic-skill.md');
-  return {
-    content: await readFile(templatePath, 'utf8'),
-    path: templatePath,
-  };
-}
-
-async function readOptionalFile(relativePath) {
-  if (!relativePath) {
-    return {
-      content: '',
-      path: null,
-    };
-  }
-
-  const absolutePath = path.join(REPO_ROOT, relativePath);
-  return {
-    content: await readFile(absolutePath, 'utf8'),
-    path: absolutePath,
-  };
+function renderMetadataTagsYaml(tags) {
+  return tags.map((tag) => `    - ${tag}`).join('\n');
 }
 
 async function exists(targetPath) {
@@ -163,6 +161,36 @@ async function exists(targetPath) {
   } catch {
     return false;
   }
+}
+
+function resolveImportedAssetPath(importedAssetPath) {
+  if (path.isAbsolute(importedAssetPath)) {
+    return importedAssetPath;
+  }
+
+  return path.resolve(MODULE_DIR, importedAssetPath);
+}
+
+function getBundledText(relativePath) {
+  if (!relativePath) {
+    return '';
+  }
+
+  const content = BUNDLED_TEXT_IMPORTS[relativePath];
+  if (typeof content !== 'string') {
+    throw new Error(`Missing bundled text import for ${relativePath}`);
+  }
+
+  return content;
+}
+
+function getBundledAssetPath(relativePath) {
+  const importedAssetPath = BUNDLED_ASSET_IMPORTS[relativePath];
+  if (!importedAssetPath) {
+    throw new Error(`Missing bundled asset import for ${relativePath}`);
+  }
+
+  return resolveImportedAssetPath(importedAssetPath);
 }
 
 function makeOpenAiYaml({ displayName, shortDescription, defaultPrompt }) {
@@ -197,7 +225,6 @@ async function main() {
   }
 
   const normalizedDescription = normalizeTanaabBasedDescription(description);
-
   const typeDefinition = getSkillType(type);
   if (!typeDefinition) {
     throw new Error(`Unknown type: ${type}. Allowed types: ${formatSkillTypeIds()}`);
@@ -207,11 +234,9 @@ async function main() {
     throw new Error(`Unknown category tag: ${categoryTagOverride}`);
   }
 
-  const [template, preWorkflowSections, postWorkflowSections] = await Promise.all([
-    readBaseTemplate(),
-    readOptionalFile(typeDefinition.preWorkflowSectionPath),
-    readOptionalFile(typeDefinition.postWorkflowSectionPath),
-  ]);
+  const templateContent = getBundledText('templates/skill-generic-skill.md');
+  const preWorkflowSectionsContent = getBundledText(typeDefinition.preWorkflowSectionPath);
+  const postWorkflowSectionsContent = getBundledText(typeDefinition.postWorkflowSectionPath);
 
   const slug = stripDuplicateOwnerPrefix(rawSlug);
   const skillId = `${CANON_SKILL_PREFIX_WITH_HYPHEN}${slug}`;
@@ -235,15 +260,16 @@ async function main() {
   await mkdir(agentsDir, { recursive: true });
   await mkdir(assetsDir, { recursive: true });
 
-  const skillMarkdown = renderTemplate(template.content, {
+  const skillMarkdown = renderTemplate(templateContent, {
     description: normalizedDescription,
     display_name: displayName,
+    license: CANON_SKILL_LICENSE,
+    metadata_tags_yaml: renderMetadataTagsYaml(tags),
     owner: CANON_SKILL_OWNER,
-    post_workflow_sections: postWorkflowSections.content ? `${postWorkflowSections.content}\n` : '',
+    post_workflow_sections: postWorkflowSectionsContent ? `${postWorkflowSectionsContent}\n` : '',
     skill_id: skillId,
-    tags_yaml: renderTagsYaml(tags),
     type,
-    type_sections: preWorkflowSections.content ? `${preWorkflowSections.content}\n` : '',
+    type_sections: preWorkflowSectionsContent ? `${preWorkflowSectionsContent}\n` : '',
   });
   const shortDescription = makeShortDescription(normalizedDescription);
   const defaultPrompt = String(options.prompt ?? '').trim() || makeDefaultPrompt(skillId, normalizedDescription);
@@ -254,8 +280,8 @@ async function main() {
     makeOpenAiYaml({ defaultPrompt, displayName, shortDescription }),
     'utf8',
   );
-  await copyFile(path.join(REPO_ROOT, CANON_ICON_SMALL_TEMPLATE), path.join(assetsDir, 'icon-small.svg'));
-  await copyFile(path.join(REPO_ROOT, CANON_ICON_LARGE_TEMPLATE), path.join(assetsDir, 'icon-large.png'));
+  await copyFile(getBundledAssetPath(CANON_ICON_SMALL_TEMPLATE), path.join(assetsDir, 'icon-small.svg'));
+  await copyFile(getBundledAssetPath(CANON_ICON_LARGE_TEMPLATE), path.join(assetsDir, 'icon-large.png'));
 
   const validation = await validateSkillDir(skillDir, {
     expectedType: type,
@@ -268,9 +294,9 @@ async function main() {
       `- ${path.join(agentsDir, 'openai.yaml')}`,
       `- ${path.join(assetsDir, 'icon-small.svg')}`,
       `- ${path.join(assetsDir, 'icon-large.png')}`,
-      `- base-template: ${template.path}`,
-      `- pre-workflow-sections: ${preWorkflowSections.path ?? '(none)'}`,
-      `- post-workflow-sections: ${postWorkflowSections.path ?? '(none)'}`,
+      '- base-template: templates/skill-generic-skill.md',
+      `- pre-workflow-sections: ${typeDefinition.preWorkflowSectionPath ?? '(none)'}`,
+      `- post-workflow-sections: ${typeDefinition.postWorkflowSectionPath ?? '(none)'}`,
       `- owner: ${CANON_SKILL_OWNER}`,
       `- category-tag: ${categoryTag}`,
       formatValidationReport(validation),

@@ -112,8 +112,10 @@ Section order:
 ## Template Model
 
 - Start every skill from [`../templates/skill-generic-skill.md`](../templates/skill-generic-skill.md).
-- For non-`generic` types, inject the matching type section partial from `templates/skill-type-<type>-sections.md`.
+- For non-`generic` types, inject the matching type section partial set defined in [`./skill-types.json`](./skill-types.json). Some types may use both pre- and post-workflow partials.
 - Keep `owner` separate from `type`.
+- Human-readable type guidance lives here; the machine-readable companion is [`./skill-types.json`](./skill-types.json).
+- Repo helpers should load type data through `scripts/skill-types-lib.js`, not through ad hoc in-script object registries.
 
 ## Future Types
 
@@ -121,7 +123,7 @@ Future candidates such as `testing` or `document` should be added only after rep
 
 When adding a new type:
 
-1. add it to the machine-readable registry in `scripts/skill-types.js`
+1. add it to the machine-readable registry in [`./skill-types.json`](./skill-types.json)
 2. document it here
-3. add a type section partial if needed
-4. update validation and smoke checks
+3. add the needed type section partial or partials
+4. update `scripts/skill-types-lib.js`, validation, and smoke checks if helper behavior needs to change

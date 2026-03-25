@@ -1,0 +1,72 @@
+{
+  "category_tags": [
+    "automation",
+    "coding",
+    "design",
+    "docs",
+    "frontend",
+    "integration",
+    "meta",
+    "release",
+    "research",
+    "shell",
+    "skills",
+    "testing",
+    "validation",
+    "workflow"
+  ],
+  "inference_rules": [
+    {
+      "tag": "meta",
+      "pattern": "\\b(meta|canon|convention|prompt|template|packag|refin|standard)\\w*"
+    },
+    {
+      "tag": "validation",
+      "pattern": "\\b(validat|verify|lint|check)\\w*"
+    },
+    {
+      "tag": "testing",
+      "pattern": "\\b(test|coverage|assert|spec)\\w*"
+    },
+    {
+      "tag": "skills",
+      "pattern": "\\b(skill|template|scaffold|creator|initializer|standardiz)\\w*"
+    },
+    {
+      "tag": "frontend",
+      "pattern": "\\b(frontend|vue|react|component|css|scss|tailwind|vitepress)\\w*"
+    },
+    {
+      "tag": "design",
+      "pattern": "\\b(design|brand|visual|ui|ux)\\w*"
+    },
+    {
+      "tag": "docs",
+      "pattern": "\\b(doc|docs|documentation|readme|markdown|mdx|copy)\\w*"
+    },
+    {
+      "tag": "release",
+      "pattern": "\\b(release|version|changelog|publish)\\w*"
+    },
+    {
+      "tag": "shell",
+      "pattern": "\\b(shell|bash|zsh|cli|terminal|command[- ]line)\\w*"
+    },
+    {
+      "tag": "integration",
+      "pattern": "\\b(github|gitlab|openai|api|mcp|webhook|integration)\\w*"
+    },
+    {
+      "tag": "coding",
+      "pattern": "\\b(code|coding|typescript|javascript|bun|node|function|library)\\w*"
+    },
+    {
+      "tag": "research",
+      "pattern": "\\b(research|investigat|audit|analysis)\\w*"
+    },
+    {
+      "tag": "automation",
+      "pattern": "\\b(automate|automation|cron|scheduled|job|workflow)\\w*"
+    }
+  ]
+}

@@ -3,11 +3,12 @@ import path from 'node:path';
 import {
   CANON_DESCRIPTION_PREFIX,
   CANON_SKILL_BRAND_COLOR,
+  CANON_SKILL_LICENSE,
   CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX_WITH_HYPHEN,
-} from './skill-owner.js';
-import { isKnownCategoryTag } from './skill-tags.js';
-import { formatSkillTypeIds, getSkillType, isKnownSkillType } from './skill-types.js';
+} from './skill-contract-lib.js';
+import { isKnownCategoryTag } from './skill-tags-lib.js';
+import { formatSkillTypeIds, getSkillType, isKnownSkillType } from './skill-types-lib.js';
 
 const AUXILIARY_DOCS = [
   'README.md',
@@ -35,50 +36,104 @@ export function parseFrontmatter(content) {
     return null;
   }
 
-  const entries = {};
   const lines = match[1].split('\n');
+  const indentOf = (line) => line.match(/^ */)?.[0].length ?? 0;
+  const listPattern = (indent) => new RegExp(`^\\s{${indent}}-\\s+(.+)$`);
+  const keyPattern = (indent) => new RegExp(`^\\s{${indent}}([a-z][a-z0-9_-]*):(.*)$`);
 
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index];
-    const frontmatterMatch = line.match(/^([a-z_]+):(.*)$/);
-    if (!frontmatterMatch) {
-      continue;
-    }
+  function parseList(startIndex, indent) {
+    const items = [];
+    let index = startIndex;
 
-    const [, key, rawValue] = frontmatterMatch;
-    const value = rawValue.trim();
-
-    if (!value) {
-      const listItems = [];
-      while (index + 1 < lines.length) {
-        const nextLine = lines[index + 1];
-        const listMatch = nextLine.match(/^\s*-\s+(.+)$/);
-        if (!listMatch) {
-          break;
-        }
-
-        listItems.push(unquoteYaml(listMatch[1]));
+    while (index < lines.length) {
+      const line = lines[index];
+      if (!line.trim()) {
         index += 1;
+        continue;
       }
 
-      entries[key] = listItems;
-      continue;
+      if (indentOf(line) < indent) {
+        break;
+      }
+
+      const matchList = line.match(listPattern(indent));
+      if (!matchList) {
+        break;
+      }
+
+      items.push(unquoteYaml(matchList[1]));
+      index += 1;
     }
 
-    if (value.startsWith('[') && value.endsWith(']')) {
-      const items = value
-        .slice(1, -1)
-        .split(',')
-        .map((item) => unquoteYaml(item))
-        .filter(Boolean);
-      entries[key] = items;
-      continue;
-    }
-
-    entries[key] = unquoteYaml(value);
+    return { value: items, nextIndex: index };
   }
 
-  return entries;
+  function parseMap(startIndex, indent) {
+    const entries = {};
+    let index = startIndex;
+
+    while (index < lines.length) {
+      const line = lines[index];
+      if (!line.trim()) {
+        index += 1;
+        continue;
+      }
+
+      if (indentOf(line) < indent) {
+        break;
+      }
+
+      const matchEntry = line.match(keyPattern(indent));
+      if (!matchEntry) {
+        break;
+      }
+
+      const [, key, rawValue] = matchEntry;
+      const value = rawValue.trim();
+
+      if (value) {
+        if (value.startsWith('[') && value.endsWith(']')) {
+          entries[key] = value
+            .slice(1, -1)
+            .split(',')
+            .map((item) => unquoteYaml(item))
+            .filter(Boolean);
+        } else {
+          entries[key] = unquoteYaml(value);
+        }
+        index += 1;
+        continue;
+      }
+
+      const nextLine = lines[index + 1];
+      if (!nextLine || !nextLine.trim() || indentOf(nextLine) <= indent) {
+        entries[key] = '';
+        index += 1;
+        continue;
+      }
+
+      if (nextLine.match(listPattern(indent + 2))) {
+        const parsedList = parseList(index + 1, indent + 2);
+        entries[key] = parsedList.value;
+        index = parsedList.nextIndex;
+        continue;
+      }
+
+      if (nextLine.match(keyPattern(indent + 2))) {
+        const parsedMap = parseMap(index + 1, indent + 2);
+        entries[key] = parsedMap.value;
+        index = parsedMap.nextIndex;
+        continue;
+      }
+
+      entries[key] = '';
+      index += 1;
+    }
+
+    return { value: entries, nextIndex: index };
+  }
+
+  return parseMap(0, 0).value;
 }
 
 function parseInterfaceYaml(content) {
@@ -179,6 +234,19 @@ function hasTanaabBasedPrefix(value) {
   return /^tanaab[- ]based\s+/i.test(String(value ?? '').trim());
 }
 
+function getSkillMetadata(frontmatter) {
+  if (!frontmatter || typeof frontmatter !== 'object') {
+    return null;
+  }
+
+  const metadata = frontmatter.metadata;
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
+    return null;
+  }
+
+  return metadata;
+}
+
 function buildManualChecks({ expectedType }) {
   const checks = [
     'Check that the description clearly says what the skill does and when to use it.',
@@ -248,47 +316,74 @@ export async function validateSkillDir(skillDir, options = {}) {
     if (!frontmatter) {
       errors.push('SKILL.md frontmatter is missing or malformed.');
     } else {
+      const metadata = getSkillMetadata(frontmatter);
+      const declaredType = metadata?.type;
+      const declaredOwner = metadata?.owner;
+      const declaredTags = metadata?.tags;
+
       if (!frontmatter.name) {
         errors.push("SKILL.md frontmatter must contain 'name'.");
       }
       if (!frontmatter.description) {
         errors.push("SKILL.md frontmatter must contain 'description'.");
       }
-      if (!frontmatter.type) {
-        errors.push("SKILL.md frontmatter must contain 'type'.");
+      if (!frontmatter.license) {
+        errors.push("SKILL.md frontmatter must contain 'license'.");
       }
-      if (!frontmatter.owner) {
-        errors.push("SKILL.md frontmatter must contain 'owner'.");
+      if (!frontmatter.metadata) {
+        errors.push("SKILL.md frontmatter must contain 'metadata'.");
       }
-      if (!frontmatter.tags) {
-        errors.push("SKILL.md frontmatter must contain 'tags'.");
+      if (!metadata) {
+        errors.push("SKILL.md frontmatter 'metadata' must be a mapping.");
       }
-
-      if (frontmatter.type && typeof frontmatter.type !== 'string') {
-        errors.push("SKILL.md frontmatter 'type' must be a string.");
+      if (Object.hasOwn(frontmatter, 'type')) {
+        errors.push("Use SKILL.md frontmatter `metadata.type`, not top-level `type`.");
       }
-      if (frontmatter.owner && typeof frontmatter.owner !== 'string') {
-        errors.push("SKILL.md frontmatter 'owner' must be a string.");
+      if (Object.hasOwn(frontmatter, 'owner')) {
+        errors.push("Use SKILL.md frontmatter `metadata.owner`, not top-level `owner`.");
       }
-
-      if (typeof frontmatter.type === 'string') {
-        actualType = frontmatter.type.trim().toLowerCase() || actualType;
-      }
-      if (typeof frontmatter.owner === 'string') {
-        actualOwner = frontmatter.owner.trim().toLowerCase() || actualOwner;
+      if (Object.hasOwn(frontmatter, 'tags')) {
+        errors.push("Use SKILL.md frontmatter `metadata.tags`, not top-level `tags`.");
       }
 
-      if (requestedType && frontmatter.type && frontmatter.type !== requestedType) {
-        errors.push(`Frontmatter type must match the requested type: expected \`${requestedType}\`.`);
+      if (!declaredType) {
+        errors.push("SKILL.md frontmatter metadata must contain 'type'.");
       }
-      if (frontmatter.owner && frontmatter.owner !== CANON_SKILL_OWNER) {
-        errors.push(`Frontmatter owner must be \`${CANON_SKILL_OWNER}\`.`);
+      if (!declaredOwner) {
+        errors.push("SKILL.md frontmatter metadata must contain 'owner'.");
       }
-      if (frontmatter.type && !isKnownSkillType(frontmatter.type)) {
-        errors.push(`Frontmatter type must be one of: ${formatSkillTypeIds()}`);
+      if (!declaredTags) {
+        errors.push("SKILL.md frontmatter metadata must contain 'tags'.");
+      }
+
+      if (declaredType && typeof declaredType !== 'string') {
+        errors.push("SKILL.md frontmatter metadata.type must be a string.");
+      }
+      if (declaredOwner && typeof declaredOwner !== 'string') {
+        errors.push("SKILL.md frontmatter metadata.owner must be a string.");
+      }
+
+      if (typeof declaredType === 'string') {
+        actualType = declaredType.trim().toLowerCase() || actualType;
+      }
+      if (typeof declaredOwner === 'string') {
+        actualOwner = declaredOwner.trim().toLowerCase() || actualOwner;
+      }
+
+      if (requestedType && declaredType && declaredType !== requestedType) {
+        errors.push(`SKILL.md metadata.type must match the requested type: expected \`${requestedType}\`.`);
+      }
+      if (declaredOwner && declaredOwner !== CANON_SKILL_OWNER) {
+        errors.push(`SKILL.md metadata.owner must be \`${CANON_SKILL_OWNER}\`.`);
+      }
+      if (declaredType && !isKnownSkillType(declaredType)) {
+        errors.push(`SKILL.md metadata.type must be one of: ${formatSkillTypeIds()}`);
       }
       if (frontmatter.description && !hasTanaabBasedPrefix(frontmatter.description)) {
         errors.push(`Frontmatter description must start with \`${CANON_DESCRIPTION_PREFIX.trim()}\`.`);
+      }
+      if (frontmatter.license && frontmatter.license !== CANON_SKILL_LICENSE) {
+        errors.push(`Frontmatter license must equal \`${CANON_SKILL_LICENSE}\`.`);
       }
 
       if (frontmatter.name && frontmatter.name !== folderName) {
@@ -298,17 +393,17 @@ export async function validateSkillDir(skillDir, options = {}) {
         errors.push('Frontmatter name must use lowercase letters, digits, and single hyphens only.');
       }
 
-      if (frontmatter.tags && !Array.isArray(frontmatter.tags)) {
-        errors.push("SKILL.md frontmatter 'tags' must be a list of strings.");
+      if (declaredTags && !Array.isArray(declaredTags)) {
+        errors.push("SKILL.md frontmatter metadata.tags must be a list of strings.");
       }
 
-      if (Array.isArray(frontmatter.tags)) {
-        const normalizedTags = frontmatter.tags.map((tag) => String(tag).trim().toLowerCase()).filter(Boolean);
+      if (Array.isArray(declaredTags)) {
+        const normalizedTags = declaredTags.map((tag) => String(tag).trim().toLowerCase()).filter(Boolean);
         if (normalizedTags.length === 0) {
-          errors.push("SKILL.md frontmatter 'tags' must not be empty.");
+          errors.push("SKILL.md frontmatter metadata.tags must not be empty.");
         }
         if (new Set(normalizedTags).size !== normalizedTags.length) {
-          errors.push("SKILL.md frontmatter 'tags' must not contain duplicates.");
+          errors.push("SKILL.md frontmatter metadata.tags must not contain duplicates.");
         }
         for (const tag of normalizedTags) {
           if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag)) {
