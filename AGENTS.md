@@ -15,9 +15,11 @@
 
 ## Runtime Boundaries
 
-- Skills may point to shared canon in this repo when that canon has human-accessible value beyond one skill.
-- Do not duplicate shared references into individual skills just to force artificial runtime isolation.
-- Bundle skill-local scripts, assets, templates, and other helpers only when they are specific to that skill and do not gain meaningful human-facing value by being hoisted into canon root.
+- Keep support material local to the owning skill by default.
+- Hoist support material to repo root only when it is used by 2+ live skills or 2+ live repo entrypoints, is a true repo-wide contract or shared tooling surface, or is a cold-path human doc with standalone value.
+- A hoisted file must reduce total complexity instead of merely moving it.
+- Hoisted files with only one meaningful live consumer should be reviewed for demotion.
+- `guidance/` and `ideas/` are cold-path canon and may remain hoisted with one live consumer, but should not be pulled into live skill hot paths by default.
 - Do not rely on `AGENTS.md` files inside skill storage paths to affect runtime behavior.
 - Assume Codex requires a restart after skill install or update unless proven otherwise in the target environment.
 
@@ -44,7 +46,7 @@
 - Put reusable prompts and prompt fragments in `prompts/` when they have value beyond one skill.
 - Put reusable scaffolds and fragments in `templates/` only after reuse is proven.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
-- Keep `scripts/` code-only. Put static machine-readable canon in `references/*.json`, not as object literals in JS modules.
+- Keep `scripts/` code-only. Machine-readable data should live with the smallest justified owner instead of being hoisted by default.
 - Keep `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked Bun CLIs, `-task.js` for repo automation entrypoints, and `-lib.js` for import-only helpers.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 - If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.

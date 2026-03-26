@@ -10,10 +10,10 @@ Use this file as the source of truth for canon skill validation.
 
 ## Identity and Naming
 
-- `[error]` Creation and standardization use one variable identity input: `type`.
+- `[error]` Canonical type-specific authoring and validation behavior comes from the full templates owned by `tanaab-skill-author`.
 - `[error]` Frontmatter `metadata.owner` must exist and must equal `tanaab`.
-- `[error]` Frontmatter `metadata.type` must be one of the ids listed in [`./skill-types.md`](./skill-types.md).
-- `[error]` Frontmatter `metadata.type` must equal the selected type id.
+- `[error]` Frontmatter `metadata.type` must be one of the type ids defined by those canonical templates.
+- `[error]` Frontmatter `metadata.type` must equal the selected or asserted type id when one is provided.
 - `[error]` The generated machine id must use lowercase letters, digits, and hyphens only.
 - `[error]` The skill folder name must equal the generated machine id.
 - `[error]` Frontmatter `name` must equal the skill folder name exactly.
@@ -48,8 +48,8 @@ skill-id/
 - `[error]` Frontmatter `description` must start with `Tanaab-based`.
 - `[error]` `metadata.tags` must be a list of strings.
 - `[error]` `metadata.tags` must include the selected `owner` and `type`.
-- `[error]` `metadata.tags` must include at least one category tag from [`./skill-tags.md`](./skill-tags.md).
-- `[error]` Section order must match the selected type's order from [`./skill-types.md`](./skill-types.md).
+- `[error]` `metadata.tags` must include at least one additional kebab-case category tag beyond `owner` and `type`.
+- `[error]` Section order must match the selected type's canonical template order.
 - `[error]` Relative links in `SKILL.md` must resolve.
 - `[manual]` `description` should say both what the skill does and when to use it.
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
@@ -68,19 +68,21 @@ skill-id/
 
 ## Resource Placement Rules
 
-- `[error]` Start every skill from [`../templates/skill-generic-skill.md`](../templates/skill-generic-skill.md).
-- `[error]` For non-`generic` skills, inject the matching type section partial defined by [`./skill-types.md`](./skill-types.md), [`./skill-types.json`](./skill-types.json), and `scripts/skill-types-lib.js`.
+- `[error]` Start every skill from the canonical full type template owned by `tanaab-skill-author`.
+- `[error]` Type-specific authoring and validation behavior must come from those canonical templates rather than ad hoc parallel registries.
 - `[error]` Use the shared Tanaab owner contract from this standard and the validator. Do not load owner behavior from a separate owner-data folder.
 - `[error]` Use kebab-case for repo-authored helper filenames in `scripts/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
 - `[error]` `scripts/` is code-only. Do not store static registry data there as JS object literals.
 - `[error]` Repo-level script filenames must end in `-cli.js`, `-task.js`, or `-lib.js`.
-- `[error]` Machine-readable canon consumed by repo scripts must live in `references/*.json`.
+- `[warn]` Keep support material local to the owning skill by default.
+- `[warn]` Hoist support material to repo root only on proven reuse across live surfaces, repo-wide contract or tooling status, or standalone human value.
+- `[warn]` Machine-readable data should live with the smallest justified owner. Hoist it into repo-root `references/` only when multiple live consumers or independent human value justify it.
 - `[error]` Bundleable repo scripts must import shared templates, assets, and machine-readable canon explicitly so `bun build` can follow the dependency graph.
 - `[warn]` Keep the default scaffold minimal.
-- `[warn]` Move shared canon into repo-root `references/`, `guidance/`, `prompts/`, `templates/`, or `scripts/` instead of duplicating it inside one skill.
 - `[warn]` Keep skill-bundled helpers in the skill's own `scripts/` directory. Do not treat them as repo-level package `bin/` entrypoints.
 - `[warn]` `generic` is the fallback type. Prefer a narrower type when one clearly fits.
-- `[warn]` Additional skill types should extend the shared base template and the shared type registry instead of inventing an unrelated structure without a strong reason.
+- `[warn]` Additional skill types should add a new canonical full template under `tanaab-skill-author` instead of inventing an unrelated structure without a strong reason.
+- `[manual]` Check whether each new or retained hoisted file still passes the hoist test instead of merely reflecting historical placement.
 
 ## Scope and Size Rules
 
@@ -91,13 +93,5 @@ skill-id/
 - `[warn]` Prefer references for detailed facts, schemas, and long examples instead of stuffing them into `SKILL.md`.
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.
 - `[warn]` Keep bundled references one hop from `SKILL.md`; link to them directly instead of hiding them behind deeper navigation.
+- `[manual]` Hoisting decisions should be reviewed as placement choices, not assumed to be improvements.
 - `[manual]` Bulk standardization should preserve the skill's core purpose and workflow unless the task explicitly asks for a behavioral rewrite.
-
-## Prompting Rules
-
-Ask only when the missing value changes identity or behavior:
-
-- type
-- new vs standardize mode
-- skill purpose
-- source skill path when standardizing

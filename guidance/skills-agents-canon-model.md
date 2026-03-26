@@ -118,6 +118,25 @@ Use for:
 
 - shared maintenance, validation, export, packaging, and install helpers
 
+## Hoisting Discipline
+
+The authoring default is local-first.
+
+Keep support material local to the owning skill unless it clearly earns repo-root placement.
+
+Hoist a file only when one of these is true:
+
+- it is used by 2+ live skills or 2+ live repo entrypoints
+- it is a true repo-wide contract or shared tooling surface
+- it is a cold-path human doc with standalone value even if it has one current live consumer
+
+Additional rules:
+
+- a hoisted file should reduce total complexity rather than merely move it
+- a hoisted file with one meaningful live consumer should enter demotion review
+- `guidance/` and `ideas/` are cold-path buckets and may remain hoisted with one live consumer
+- cold-path docs should not be pulled into live skill hot paths by default
+
 ## Context Loading Model
 
 The default rule is:
@@ -158,7 +177,7 @@ In this mode, skills may safely reference sibling canon such as:
 - `../templates/...`
 - `../scripts/...`
 
-This should be the default authoring model.
+This should be the default authoring model, but it does not make hoisting the default. Shared-layout availability only means sibling canon can be referenced safely when it has already earned repo-root status.
 
 ### Flat per-skill export
 

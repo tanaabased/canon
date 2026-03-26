@@ -1,12 +1,12 @@
 #!/usr/bin/env bun
 
-import { formatValidationReport, validateSkillDir } from './skill-validation-lib.js';
+import { formatValidationReport, validateSkillDir } from './skill-author-lib.js';
 
 function usage(code = 0) {
   const lines = [
-    'Usage: skill-validate-cli.js --skill-dir <path> [options]',
+    'Usage: validate-skill.js --skill-dir <path> [options]',
     '',
-    'Validate a canon skill directory against references/skill-standard.md.',
+    'Validate a canon skill directory against references/skill-standard.md and the canonical local full templates owned by tanaab-skill-author.',
     '',
     'Options:',
     '  --skill-dir <path>      skill directory to validate',

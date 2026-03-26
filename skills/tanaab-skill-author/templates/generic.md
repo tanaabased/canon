@@ -1,4 +1,8 @@
 ---
+template_type: generic
+default_category_tag: workflow
+---
+---
 name: {{skill_id}}
 description: {{description}}
 license: {{license}}
@@ -26,8 +30,6 @@ metadata:
 - Add adjacent tasks that belong to a different skill or to general repo work.
 - Reject requests that would broaden this skill into multiple surfaces.
 
-{{type_sections}}
-
 ## Workflow
 
 1. Confirm the request matches this skill's single owned surface.
@@ -35,12 +37,10 @@ metadata:
 3. Do the work using the narrowest reliable approach for this surface.
 4. Validate the result before finishing.
 
-{{post_workflow_sections}}
-
 ## Bundled Resources
 
 - List only the canon files, prompts, scripts, templates, or assets this skill actually needs.
-- Keep shared material at repo root; keep local resources only when they are unique to this skill.
+- Keep local resources local unless they clearly pass the hoist test.
 
 ## Validation
 

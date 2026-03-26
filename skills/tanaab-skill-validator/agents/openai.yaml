@@ -1,7 +1,0 @@
-interface:
-  display_name: "Skill Validator"
-  short_description: "Tanaab-based skill validation"
-  icon_small: "./assets/icon-small.svg"
-  icon_large: "./assets/icon-large.png"
-  brand_color: "#00c88a"
-  default_prompt: "Use $tanaab-skill-validator to validate a canon skill directory against the shared skill standard."
