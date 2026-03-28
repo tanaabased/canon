@@ -45,7 +45,6 @@ Use for:
 
 - repo purpose and boundaries
 - local folder ownership
-- migration rules
 - ambient repo policy that applies regardless of which skill is active
 
 Do not use for:
@@ -75,7 +74,6 @@ Use for:
 - decision-shaping material
 - architecture docs
 - audits
-- migrations
 - rationale and tradeoff writeups
 
 ### `ideas/`

@@ -1,0 +1,7 @@
+interface:
+  display_name: "GitHub Checks Triage"
+  short_description: "Tanaab-based triage of GitHub-hosted CI failures."
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-github-checks-triage when the task is to inspect failing GitHub PR checks, summarize the failure, and propose a focused fix plan before implementation."

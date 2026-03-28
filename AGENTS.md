@@ -4,7 +4,7 @@
 
 - This repo is the shared Tanaab canon surface for Tanaab employees, Codex, OpenClaw, and future agents.
 - It may contain both executable skills and broader canon such as guidance, ideas, references, prompts, templates, scripts, and standards.
-- Treat `skills/` as the live skill surface and `old-skills/` as migration-only input unless a task explicitly says otherwise.
+- Treat `skills/` as the live skill surface.
 
 ## Core Model
 
@@ -39,6 +39,11 @@
 - Keep `guidance/`, `ideas/`, `references/`, `prompts/`, `scripts/`, and `templates/` flat by default.
 - Use hyphenated filenames with scoped prefixes when needed, such as `skill-standard.md`.
 - Add nested folders inside the flat canon buckets only after repeated pressure shows flat naming is no longer the simpler model.
+- Shared coding-stack defaults for runtime, frameworks, and tooling live in `references/coding-stack-preferences.md`.
+- Shared JS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
+- Shared JS function-shape guidance lives in `references/javascript-function-data-flow.md`.
+- Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
+- That repo-structure guidance applies inside code-bearing subtrees such as `skills/**/scripts/` and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
 - Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
 - Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
@@ -55,7 +60,6 @@
 
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
-- Keep `old-skills/` frozen as migration evidence. Retire legacy skills from the future live surface without rewriting their quarantined source folders.
 
 ## Validation
 

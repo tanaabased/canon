@@ -1,0 +1,7 @@
+interface:
+  display_name: "JavaScript CLI Author"
+  short_description: "Tanaab-based authoring and standardization of true Bun CLI product surfaces."
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-javascript-cli-author when the task is primarily about a package-level Bun CLI entrypoint, parser, help output, version surface, or CLI packaging contract."

@@ -26,18 +26,17 @@ canon/
   references/
   prompts/
   dist/codex/
-  old-skills/
 ```
 
-- `skills/` is the future live skill surface.
+- `skills/` is the live skill surface.
 - `skills/tanaab-skill-author/` owns the local hot-path scripts, templates, and assets for canon skill authoring.
-- `guidance/` holds decision-shaping canon such as audits, retirements, standards, and migration notes.
+- `guidance/` holds decision-shaping canon such as audits, standards, and architecture notes.
 - `ideas/` holds exploratory proposals that may later mature into guidance, references, or shipped tooling.
-- `references/` holds stable lookup canon such as `skill-standard.md` and other shared reference material that still earns hoisting.
+- `references/` holds stable lookup canon such as `skill-standard.md`, `coding-stack-preferences.md`, `javascript-repo-structure.md`, `javascript-function-data-flow.md`, `cli-style-rules.md`, `readme-standards.md`, `front-end-preferences.md`, and other shared reference material that still earns hoisting.
 - `prompts/` holds reusable prompts and prompt fragments with value beyond one skill.
-- `old-skills/` is a frozen migration input, not a live runtime target.
 - `dist/codex/` is reserved for generated Codex install output.
 - Canon buckets stay flat by default.
+- That flat-bucket rule applies to top-level canon organization. Code-bearing subtrees may still use purpose-scoped folders such as `bin/`, `utils/`, or `lib/` when `references/javascript-repo-structure.md` says they earn it.
 
 ## Runtime Notes
 
