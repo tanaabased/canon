@@ -87,11 +87,14 @@ skill-id/
 ## Scope and Size Rules
 
 - `[warn]` A skill should own one concrete task surface.
+- `[warn]` For `coding` skills, broad discovery language is acceptable only when it still funnels into one dominant implementation pattern.
+- `[warn]` For `coding` skills, multiple materially different direct-test or GitHub Actions workflow mechanisms are a split signal unless they are minor flavor variations of one pattern.
 - `[warn]` If a skill needs a routing matrix, broad arbitration rules, or heavy relationship language to stay understandable, split it.
 - `[warn]` Do not add `## Relationship to Other Skills` by default. If a skill needs that section to make sense, challenge the scope first.
 - `[warn]` Keep `SKILL.md` lean. Assume the agent is already capable and add only task-specific context that materially improves performance.
 - `[warn]` Prefer references for detailed facts, schemas, and long examples instead of stuffing them into `SKILL.md`.
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.
 - `[warn]` Keep bundled references one hop from `SKILL.md`; link to them directly instead of hiding them behind deeper navigation.
+- `[manual]` For `coding` skills, `Testing` and `GitHub Actions Workflow` should each describe one canonical mechanism and one minimal example.
 - `[manual]` Hoisting decisions should be reviewed as placement choices, not assumed to be improvements.
 - `[manual]` Bulk standardization should preserve the skill's core purpose and workflow unless the task explicitly asks for a behavioral rewrite.

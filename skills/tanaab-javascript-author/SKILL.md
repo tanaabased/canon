@@ -1,6 +1,6 @@
 ---
 name: tanaab-javascript-author
-description: Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript source, Bun runtime plumbing, ESM module shape, package metadata, or bundling in a Tanaab-managed repo.
+description: Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript or Bun code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -15,30 +15,44 @@ metadata:
 
 ## Overview
 
-Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript source, Bun runtime plumbing, ESM module shape, package metadata, or bundling in a Tanaab-managed repo.
+Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript or Bun code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
+
+- Keep the broad JavaScript entrypoint for discovery, including library-shaped modules as well as helper extraction.
+- For library-facing surfaces, prefer a thin class- or module-oriented public layer that wraps lower-coupling utility logic when that decomposition is honest.
+- Keep heavier, more generic, more testable logic in `utils/`-level functions when it fits the existing `utils/` boundary.
 
 ## When to Use
 
-- Modify JavaScript source, Bun runtime plumbing, or ESM module shape.
-- Update `package.json`, `packageManager`, `engines`, `main`, or `exports` when the task is primarily JS-runtime-led.
+- Modify JavaScript source, Bun runtime plumbing, or ESM module shape when the task is primarily JS-led.
+- Shape library-facing JavaScript modules where a thin public class or module wraps reusable helper logic.
+- Write, refactor, or extract low-coupling utility functions, especially single-file ESM helpers under `utils/` or another narrow code scope.
+- Update `package.json`, `packageManager`, `engines`, `main`, or `exports` when those changes directly support the owned JS surface.
 - Migrate repo-owned JS tooling from Node or npm assumptions toward Bun when the repo actually has meaningful JS surfaces.
-- Change JS bundling or artifact generation when the main owned surface is still general JavaScript runtime work.
+- Change JS bundling or artifact generation when the main owned surface still remains general JavaScript implementation work.
 
 ## When Not to Use
 
 - Do not use this skill for true package-level CLI product work; reserve that for the narrower CLI surface.
-- Do not use this skill for GitHub Actions workflow YAML or CI triage.
+- Do not use this skill for GitHub Actions workflow topology, triggers, permissions, reusable workflows, or general workflow authoring; keep the GitHub Actions section limited to validating the owned JS code path.
 - Do not use this skill for GitHub Action product-surface work once that narrower skill exists.
+- Do not widen this skill into broad testing strategy, operational scenario design, or release gating when the task is no longer about validating the owned JS code path.
 - Do not default to TypeScript migration unless the repo already uses TypeScript or the user explicitly asks for it.
 
 ## Constraints
 
 - Prefer the smallest change that solves the task.
+- Prefer thin class or module wrappers around lower-coupling utility logic when the task is library-shaped.
+- Prefer one main exported function and a narrow file surface when a helper can be expressed that way honestly.
+- Do not force `utils/` extraction when the logic is tightly coupled to surface vocabulary, orchestration, or state.
 - Preserve existing style and local patterns unless the task clearly requires a change.
 - Avoid unrelated refactors.
 
 ## Change Strategy
 
+- Keep the broad JavaScript entrypoint, but funnel the default implementation path toward lower-coupling functions and `utils/`-style helpers.
+- For library-shaped code, keep the public class or module focused on orchestration, state, and surface-specific wrapping while extracting generic logic into utility functions when the split is honest.
+- Keep repo-coupled orchestration and surface vocabulary near the owning module instead of forcing them into `utils/`.
+- Treat broader package, module, and Bun-runtime edits as support work for the owned JS surface instead of the default authored pattern.
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first and JavaScript-first defaults instead of re-deciding the stack locally.
@@ -47,18 +61,74 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 
 1. Confirm the request is primarily JS-runtime-led rather than CLI-, workflow-, or release-led.
 2. Load only the relevant JS files plus the shared JS references that directly shape the change.
-3. Keep the module, package, and artifact surface coherent while making the smallest viable change.
-4. Validate the changed JS surface with the repo's narrowest reliable checks.
+3. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.
+4. Keep any required package, module, or artifact edits coherent with that owned JS surface.
+5. Validate the changed JS surface with the repo's narrowest reliable checks.
+
+## Testing
+
+- Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
+- Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
+- Keep test files narrow and adjacent in intent, usually under `test/` with names such as `test/normalize-tags.spec.js`.
+- Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
+- Add `c8` only when coverage reporting or enforcement is explicitly part of the task.
+- Do not merge GitHub Action input-helper testing into this skill's default path; keep that with the narrower GitHub Action surface.
+
+Minimal generic example:
+
+```js
+import assert from 'node:assert/strict';
+
+import normalizeTags from '../utils/normalize-tags.js';
+
+describe('normalizeTags', () => {
+  it('drops empty values and lowercases tags', () => {
+    assert.deepEqual(normalizeTags([' Docs ', '', null, 'API']), ['docs', 'api']);
+  });
+});
+```
+
+## GitHub Actions Workflow
+
+- When this skill's owned code path needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
+- Keep the workflow generic, Bun-first, and centered on the repo's test command.
+- Treat this as a validation lifecycle for the owned JS surface, not as ownership of workflow YAML as a product surface.
+
+Minimal generic example:
+
+```yaml
+name: Unit Tests
+
+on:
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run test
+```
 
 ## Bundled Resources
 
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first, JavaScript-first runtime defaults
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): scope folders, `bin/`, `utils/`, and hoisting rules for JS repos
 - [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): function shape, mutation discipline, and import grouping
+- [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JS code
+- [./templates/transform-unit.js](./templates/transform-unit.js): starter shape for pure or mostly pure transformation helpers
+- [./templates/async-boundary-unit.js](./templates/async-boundary-unit.js): starter shape for narrow boundary-reading helpers
 
 ## Validation
 
-- Confirm the task stayed on the general JS runtime, package, module, or bundling surface.
+- Confirm the skill still reads as the broad JavaScript entrypoint while funneling implementation toward thin library wrappers and lower-coupling utility functions when the task allows it.
+- Confirm the class guidance stayed a strong default rather than a hard requirement and did not imply a `classes/` folder or mandatory `utils/` hoisting.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
+- Confirm direct tests prioritize generic utility logic and do not absorb GitHub Action input-helper patterns.
+- Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS code surface rather than drifting into workflow-topology ownership.
 - Run the repo's narrowest relevant lint, build, test, or smoke checks for the touched JS surface.
 - Confirm the change did not widen into CLI product, workflow YAML, or release-contract work.

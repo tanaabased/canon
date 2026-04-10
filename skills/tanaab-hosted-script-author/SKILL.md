@@ -60,10 +60,12 @@ Tanaab-based authoring and standardization of hosted shell script product surfac
 ## Bundled Resources
 
 - [./references/hosted-script-conventions.md](./references/hosted-script-conventions.md): local hosted-shell distribution, hosting, and release-shaped validation rules
-- [./templates/hosted-shell-leia-example-tests.yml](./templates/hosted-shell-leia-example-tests.yml): starter workflow for hosted-shell example smoke coverage
 - [../../references/readme-standards.md](../../references/readme-standards.md): README-entrypoint rules for hosted quickstart docs
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shell-as-surface and Leia-as-operational-test defaults
 - [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI contract when the hosted entrypoint is also a CLI surface
+- [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for release-shaped operational coverage
+- [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared starter workflow for Leia-backed example smoke coverage
+- [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
 
 ## Validation
 

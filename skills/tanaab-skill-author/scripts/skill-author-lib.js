@@ -252,10 +252,25 @@ function normalizeSectionHeading(heading) {
 }
 
 function extractTopLevelHeadings(content) {
-  return String(content ?? '')
-    .split('\n')
-    .filter((line) => /^#{1,2}\s/.test(line))
-    .map((line) => normalizeSectionHeading(line.trim()));
+  const headings = [];
+  let inFence = false;
+
+  for (const line of String(content ?? '').split('\n')) {
+    if (/^```/.test(line.trim())) {
+      inFence = !inFence;
+      continue;
+    }
+
+    if (inFence) {
+      continue;
+    }
+
+    if (/^#{1,2}\s/.test(line)) {
+      headings.push(normalizeSectionHeading(line.trim()));
+    }
+  }
+
+  return headings;
 }
 
 function buildTemplateDefinition(templateContent) {
@@ -695,6 +710,15 @@ function buildManualChecks({ expectedType }) {
 
   if (expectedType) {
     checks.unshift(`Check that the selected type \`${expectedType}\` is still the smallest fit.`);
+  }
+
+  if (expectedType === 'coding') {
+    checks.push(
+      'Check that broad discovery language, if present, still funnels toward one dominant implementation pattern.',
+      'Check that `Testing` describes one canonical direct-test mechanism with one minimal example.',
+      'Check that `GitHub Actions Workflow` describes one canonical GHA validation mechanism with one minimal example.',
+      'Check whether multiple materially different testing or GitHub Actions mechanisms mean the skill should split.',
+    );
   }
 
   return checks;

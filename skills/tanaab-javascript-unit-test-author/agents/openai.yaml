@@ -1,7 +1,0 @@
-interface:
-  display_name: "JavaScript Unit Test Author"
-  short_description: "Tanaab-based authoring and standardization of JavaScript and Bun unit-test surfaces."
-  icon_small: "./assets/icon-small.svg"
-  icon_large: "./assets/icon-large.png"
-  brand_color: "#00c88a"
-  default_prompt: "Use $tanaab-javascript-unit-test-author when the task is primarily about focused Mocha-based unit tests, c8 coverage wiring, JS helper regression coverage, or action-input helper tests."

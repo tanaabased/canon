@@ -1,7 +1,0 @@
-interface:
-  display_name: "JavaScript Lint and Format Standardizer"
-  short_description: "Tanaab-based standardization of JavaScript and Bun lint and format surfaces."
-  icon_small: "./assets/icon-small.svg"
-  icon_large: "./assets/icon-large.png"
-  brand_color: "#00c88a"
-  default_prompt: "Use $tanaab-javascript-lint-format-standardizer when the task is primarily about ESLint, standalone Prettier, lint scripts, or JS/Bun lint-layer standardization."

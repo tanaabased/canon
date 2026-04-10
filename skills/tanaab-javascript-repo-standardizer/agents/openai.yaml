@@ -1,0 +1,7 @@
+interface:
+  display_name: "JavaScript Repo Standardizer"
+  short_description: "Tanaab-based standardization of JavaScript and Bun repo baselines."
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-javascript-repo-standardizer when the task is primarily about JavaScript or Bun repo baseline normalization, especially lint, format, repo structure, or baseline scripts."

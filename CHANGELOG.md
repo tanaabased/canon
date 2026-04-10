@@ -1,6 +1,4 @@
-# Changelog
-
-## Unreleased
+## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Initialized the `canon` repository scaffold.
 - Added root repo guidance and migration framing.

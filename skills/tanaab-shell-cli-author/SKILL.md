@@ -49,6 +49,54 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 3. Keep the CLI contract explicit: help order, option precedence, output streams, and safety guards.
 4. Validate the final script with the narrowest reliable shell checks for the touched surface.
 
+## Testing
+
+- Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
+- Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
+- Treat Leia as the canonical direct-test pattern for maintained shell CLI surfaces, with `shellcheck` and PowerShell parse checks as narrow supporting validators rather than separate testing patterns.
+
+Minimal generic example:
+
+```bash
+# should print help output
+./dist/my-script.sh --help > .tmp/help.txt
+
+# should mention the supported flag
+grep -F -- '--force' .tmp/help.txt
+```
+
+## GitHub Actions Workflow
+
+- Use a Bootbox-style PR examples workflow when the shell CLI needs CI-backed Leia coverage.
+- Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
+- Treat this as validation of the owned shell CLI surface, not as general workflow-topology ownership.
+
+Minimal generic example:
+
+```yaml
+name: Example Tests
+
+on:
+  pull_request:
+
+jobs:
+  examples:
+    runs-on: macos-26
+    strategy:
+      matrix:
+        example:
+          - example-name
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run build
+      - run: echo "$PWD/dist" >> "$GITHUB_PATH"
+      - run: TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
+```
+
 ## Bundled Resources
 
 - [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI help, color, logging, and `SCRIPT_VERSION` rules
@@ -56,6 +104,9 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 - [./references/shell-cli-templates.md](./references/shell-cli-templates.md): local notes for the bundled Bash and PowerShell CLI starters
 - [./templates/bash-cli.sh](./templates/bash-cli.sh): starter for Bash CLI entrypoints
 - [./templates/powershell-cli.ps1](./templates/powershell-cli.ps1): starter for PowerShell CLI entrypoints
+- [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
+- [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
+- [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
 
 ## Validation
 
@@ -63,3 +114,5 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 - Confirm help output, stream usage, and version-reporting shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
+- Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
+- Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the shell CLI surface rather than drifting into general workflow authoring.

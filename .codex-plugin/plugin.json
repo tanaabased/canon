@@ -1,0 +1,32 @@
+{
+  "name": "tanaab",
+  "version": "0.1.2",
+  "description": "Tanaab-based canon enforcement via AI.",
+  "author": {
+    "name": "Tanaab Maneuvering Systems LLC ",
+    "email": "emori@tanaab.dev",
+    "url": "https://www.tanaab.dev"
+  },
+  "homepage": "https://github.com/tanaabased/canon",
+  "repository": "https://github.com/tanaabased/canon",
+  "license": "MIT",
+  "keywords": ["tanaab", "canon", "skills", "codex"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Tanaab Maneuvering Systems",
+    "shortDescription": "Tanaab-based canon enforcement via AI",
+    "longDescription": "Tanaab-based canon enforcement as a Codex plugin, including installable skills plus a stub MCP registry for future canon resources.",
+    "developerName": "@tanaabased",
+    "category": "Tanaab-based",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Use to author or standardize this repo surface.",
+      "Load the relevant Tanaab skill and shared reference for this task."
+    ],
+    "brandColor": "#00c88a",
+    "composerIcon": "./assets/composer-icon.svg",
+    "logo": "./assets/icon-large.png",
+    "websiteURL": "https://github.com/tanaabased/canon"
+  }
+}

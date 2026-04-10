@@ -60,6 +60,7 @@
 
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
+- Before rolling a new canon release, run [`prompts/optimize-canon-repo.md`](./prompts/optimize-canon-repo.md) as a planning pass and review the resulting staged optimization plan.
 
 ## Validation
 

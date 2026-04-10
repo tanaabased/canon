@@ -22,6 +22,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Validation is a first-class workflow phase and a valid standalone mode.
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon.
+- For `coding` skills, define one owned code surface plus two lifecycle sections: `Testing` and `GitHub Actions Workflow`.
 
 ## When to Use
 
@@ -44,6 +45,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Keep structure and metadata aligned with the shared canon contract.
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
+- For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
 
 ## Anti-Patterns
 
@@ -52,6 +54,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Do not use `generic` as the default when a narrower type clearly fits.
 - Do not duplicate contract rules in skill prose when the standard or CLI already enforces them.
 - Do not hoist a file to repo root just because it might be reused later.
+- Do not let a `coding` skill accumulate multiple materially different testing or GitHub Actions validation mechanisms unless the variations are minor flavors of one pattern.
 
 ## Iteration Loop
 
@@ -59,6 +62,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Scaffold or patch the skill, then validate immediately.
 - Run validation first when the request is validation-only.
 - Tighten scope before adding new sections, resources, or hoisted canon.
+- For `coding` skills, challenge the scope before adding a second materially different direct-test or GitHub Actions workflow pattern.
 
 ## Workflow
 

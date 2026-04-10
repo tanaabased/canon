@@ -18,27 +18,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-
-      - name: Install repo tooling
-        run: |
-          # Replace this with the repo's install step if Leia or other tooling is not already available.
-          bun install --frozen-lockfile --ignore-scripts
-
-      - name: Prepare distributed entrypoint
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Prepare release-shaped build
         shell: bash
         run: |
-          # Replace this with the repo's dist build or copy step.
+          # Replace this with the repo's build or dist-prep step.
           bun run build
-          # Optional: stamp the shipped script here when the repo tests a release-shaped artifact.
+          # Optional: stamp the shipped entrypoint here when the repo tests a release-shaped artifact.
           version-injector dist/script-name.sh --style sh --version "dev"
-
-      - name: Put prepared script on PATH
+      - name: Put prepared entrypoint on PATH
         shell: bash
         run: echo "$PWD/dist" >> "$GITHUB_PATH"
-
       - name: Run Leia-backed example
         shell: bash
         run: |
           mkdir -p examples/.tmp
-          # Replace the Leia command if the repo installs or invokes it differently.
           TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin

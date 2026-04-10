@@ -1,6 +1,6 @@
 # Leia Markdown Scenarios
 
-Use this pattern when shell, bootstrap, or other operational repos need scenario coverage that is easier to express as executable shell steps than as unit tests.
+Use this pattern when shell, bootstrap, hosted-script, or other operational repos need scenario coverage that is easier to express as executable shell steps than as unit tests.
 
 ## When to Use
 

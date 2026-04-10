@@ -23,6 +23,7 @@ metadata:
 
 - Use for skills that modify, generate, refactor, debug, or explain code.
 - Keep the owned surface narrow to one code-centric artifact or workflow.
+- Broad discovery language is acceptable only when it materially improves triggerability and still funnels into one dominant implementation pattern.
 - Prefer requests that benefit from deterministic validation or repeatable code patterns.
 
 ## When Not to Use
@@ -39,6 +40,7 @@ metadata:
 ## Change Strategy
 
 - Identify the narrowest code path that owns the change.
+- Funnel the skill toward one dominant implementation pattern instead of treating every adjacent code path as equally owned.
 - Reuse existing patterns before adding new abstractions.
 
 ## Workflow
@@ -48,6 +50,18 @@ metadata:
 3. Make the smallest coherent change and validate it directly.
 4. Stop once the owned code path is complete and verified.
 
+## Testing
+
+- Describe the default direct-test lifecycle for the owned code surface.
+- Include one canonical mechanism and one minimal example only when that test pattern materially shapes the skill.
+- Keep specialized or surface-coupled test patterns in narrower companion skills.
+
+## GitHub Actions Workflow
+
+- Describe the default GitHub Actions validation path for the owned code surface when GHA is the standard CI mechanism.
+- Include one canonical mechanism and one minimal example only when it materially shapes the skill.
+- Do not widen this section into full workflow-topology ownership.
+
 ## Bundled Resources
 
 - List only the code-specific canon, scripts, templates, or assets this skill actually needs.
@@ -56,4 +70,6 @@ metadata:
 ## Validation
 
 - Run the narrowest relevant tests, lint, build, or smoke checks for the owned code path.
+- Confirm broad discovery language still funnels toward one dominant implementation pattern when present.
+- Confirm the lifecycle sections do not introduce multiple materially different validation mechanisms without a clear split decision.
 - Confirm the change did not widen scope or introduce unrelated drift.

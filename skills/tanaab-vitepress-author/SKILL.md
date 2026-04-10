@@ -51,6 +51,46 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 3. Keep the change focused on VitePress pages, config, theme wiring, and subtheme implementation.
 4. Validate the touched VitePress surface with the narrowest reliable repo-native checks.
 
+## Testing
+
+- Use build- and lint-first validation for the owned VitePress surface until a shared frontend test framework is standardized.
+- Keep the direct validation path on the docs-site implementation surface rather than inventing a separate component-test doctrine here.
+- Treat repo-native `build` and `lint` commands as the canonical direct-test mechanism when they exist.
+
+Minimal generic example:
+
+```bash
+bun run lint
+bun run build
+```
+
+## GitHub Actions Workflow
+
+- Use a PR build workflow that installs Bun dependencies and validates the touched VitePress surface with the repo's build- and lint-first commands.
+- Keep the workflow generic and centered on the same direct validation path rather than expanding into broader CI topology.
+- Treat this as validation of the VitePress implementation surface, not as ownership of workflow authoring.
+
+Minimal generic example:
+
+```yaml
+name: Site Build
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run lint
+      - run: bun run build
+```
+
 ## Bundled Resources
 
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared VitePress, SCSS, and subtheme defaults
@@ -62,4 +102,6 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 - Confirm the task stayed on VitePress implementation rather than docs-surface selection or generic Vue work.
 - Confirm VitePress 1 remained the site stack unless the repo or user explicitly requires another path.
 - Confirm local subtheme changes were preferred over upstream theme forks when a subtheme is sufficient.
+- Confirm direct validation stays on build- and lint-first site checks rather than drifting into a separate frontend test doctrine.
+- Confirm any GitHub Actions workflow example remains a VitePress validation path rather than a general workflow-topology pattern.
 - Run the narrowest relevant lint, build, or smoke checks for the touched VitePress surface.

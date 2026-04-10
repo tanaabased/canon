@@ -1,7 +1,7 @@
 interface:
   display_name: "JavaScript Author"
-  short_description: "Tanaab-based JavaScript and Bun implementation work."
+  short_description: "Tanaab-based JavaScript and Bun implementation with thin library wrappers and a utility-first default."
   icon_small: "./assets/icon-small.svg"
   icon_large: "./assets/icon-large.png"
   brand_color: "#00c88a"
-  default_prompt: "Use $tanaab-javascript-author when the request is primarily about JavaScript, Bun, ESM, package metadata, or bundling surfaces."
+  default_prompt: "Use $tanaab-javascript-author when the request is primarily about JavaScript or Bun code, especially library-facing modules, low-coupling ESM helpers, and utility functions."
