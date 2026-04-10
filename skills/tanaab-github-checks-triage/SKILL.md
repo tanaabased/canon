@@ -63,8 +63,8 @@ Tanaab-based triage of GitHub-hosted CI failures. Use when a user wants to inspe
 
 ## Bundled Resources
 
-- [./scripts/inspect-pr-checks.py](./scripts/inspect-pr-checks.py): fetch failing PR checks, pull GitHub Actions logs, and extract failure snippets
-- [./references/inspect-pr-checks-license.txt](./references/inspect-pr-checks-license.txt): license file for the bundled inspection helper
+- [./scripts/inspect-pr-checks.js](./scripts/inspect-pr-checks.js): Bun-based inspection helper for failing PR checks, GitHub Actions logs, and failure snippets
+- [./references/inspect-pr-checks-license.txt](./references/inspect-pr-checks-license.txt): provenance note for the bundled inspection helper
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first workflow defaults for reading triage context, not for replacing the triage flow itself
 
 ## Validation
