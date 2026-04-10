@@ -1,56 +1,114 @@
 # Tanaab Canon
 
-Tanaab-based canon, skills, and plugin surfaces for Tanaab employees and agent systems.
+This repo is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
 
-## Purpose
+## Overview
 
-- Ship reusable skills and canon for Tanaab employees, Codex, OpenClaw, and future agents.
-- Hold broader canon such as standards, guidance, ideas, references, prompts, templates, scripts, and branding material.
-- Keep support material local to the owning skill by default, and hoist it to repo root only when it clearly earns shared status.
+Outside the Codex plugin surface, the main Markdown canon lives in a small set of top-level folders.
 
-## Core Model
+- [`guidance/`](./guidance/) holds durable policy, architecture, and design-shaping docs that should influence decisions but do not need to trigger as skills.
+- [`ideas/`](./ideas/) holds proposals, deferred designs, and revisit notes that are not adopted canon yet.
+- [`references/`](./references/) holds stable lookup material such as standards, contracts, naming rules, repo-structure rules, and testing doctrine.
+- [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as repo maintenance and optimization workflows.
+- [`templates/`](./templates/) holds canonical copy/adapt starters, shared scaffolds, and reusable workflow templates that have proven human or cross-skill value.
 
-- `AGENTS.md` provides always-on rules and constraints.
-- `SKILL.md` provides triggered workflows and task-specific behavior.
-- Skills are executable capabilities.
-- Canon is supporting guidance, standards, and references, plus any cold-path shared material that still earns repo-root status.
+## Usage
 
-## Repository Layout
+Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills only. [`.mcp.json`](./.mcp.json) is intentionally still a stub until this repo exposes a real shared MCP surface.
 
-```text
-canon/
-  AGENTS.md
-  assets/
-  bin/
-  dist/
-  guidance/
-  ideas/
-  prompts/
-  references/
-  scripts/
-  skills/
-  templates/
-  utils/
+The live skills are:
+
+- [`tanaab-github-action-author`](./skills/github-action-author/) shapes GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
+- [`tanaab-github-checks-triage`](./skills/github-checks-triage/) investigates failing GitHub-hosted CI checks and summarizes the actionable failure surface.
+- [`tanaab-github-workflow-author`](./skills/github-workflow-author/) owns GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
+- [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript and Bun implementation work, especially low-coupling helpers and utility logic.
+- [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
+- [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript and Bun repo baselines such as layout, linting, formatting, and baseline scripts.
+- [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
+- [`tanaab-release-author`](./skills/release-author/) handles release preparation, changelog work, and release-facing readiness checks.
+- [`tanaab-shell-cli-author`](./skills/shell-cli-author/) owns Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.
+- [`tanaab-skill-author`](./skills/skill-author/) scaffolds, standardizes, and validates canon skills.
+- [`tanaab-vitepress-author`](./skills/vitepress-author/) owns VitePress docs and static-site surfaces.
+- [`tanaab-vue-author`](./skills/vue-author/) owns Vue 3 frontend implementation surfaces such as components and Composition API flows.
+
+## Installation
+
+Versioned release archives are coming soon. Once release archives are published on the [GitHub releases page](https://github.com/tanaabased/canon/releases), the preferred install path will be:
+
+1. Download the release archive for the version you want.
+2. Extract it into `~/.codex/plugins/tanaab`.
+3. Create or update `~/.agents/plugins/marketplace.json` so it points at that plugin directory.
+4. Open the Plugins view in Codex and install `Tanaab Maneuvering Systems` from your personal marketplace.
+
+Example personal marketplace entry:
+
+```json
+{
+  "name": "personal",
+  "interface": {
+    "displayName": "Personal Plugins"
+  },
+  "plugins": [
+    {
+      "name": "tanaab",
+      "source": {
+        "source": "local",
+        "path": "./.codex/plugins/tanaab"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
 ```
 
-- `skills/` is the live skill surface.
-- `skills/skill-author/` owns the local hot-path scripts, templates, and assets for canon skill authoring.
-- `assets/` holds shared plugin and canon branding material.
-- `bin/`, `scripts/`, and `utils/` are intentional reserved root buckets for future shared canon tooling or code-bearing surfaces.
-- `guidance/` holds decision-shaping canon such as audits, standards, and architecture notes.
-- `ideas/` holds exploratory proposals that may later mature into guidance, references, or shipped tooling.
-- `references/` holds stable lookup canon such as `skill-standard.md`, `coding-stack-preferences.md`, `javascript-repo-structure.md`, `javascript-function-data-flow.md`, `cli-style-rules.md`, `readme-standards.md`, `front-end-preferences.md`, and other shared reference material that still earns hoisting.
-- `prompts/` holds reusable prompts and prompt fragments with value beyond one skill.
-- `templates/` holds proven shared scaffolds, repo-wide tooling templates, and canonical human-facing starters.
-- `dist/` is reserved for generated install or export output such as future Codex bundle material.
-- Canon buckets stay flat by default.
-- That flat-bucket rule applies to top-level canon organization. Code-bearing subtrees may still use purpose-scoped folders such as `bin/`, `utils/`, or `lib/` when `references/javascript-repo-structure.md` says they earn it.
+- If `~/.agents/plugins/marketplace.json` already exists, add the `tanaab` plugin entry instead of replacing the whole file.
+- Codex resolves `source.path` relative to the marketplace root, so the `./.codex/plugins/tanaab` path is the important part.
+- For the underlying plugin and marketplace rules, see the official Codex docs for [Plugins](https://developers.openai.com/codex/plugins) and [Build plugins](https://developers.openai.com/codex/plugins/build).
+- Until published release archives exist, use the development flow below.
 
-## Runtime Notes
+## Development
 
-- Codex should prefer per-skill install or generated export and generally needs a restart after skill updates.
-- OpenClaw should point `skills.load.extraDirs` at the repo `skills/` directory.
-- `.mcp.json` is intentionally a stub until this repo exposes a real shared canon MCP server.
-- Skills may refer to shared canon in this repo, but authoring is local-first rather than hoist-first.
-- Hoist a file to repo root only when it is reused by 2+ live skills or entrypoints, is a true repo-wide contract or shared tooling surface, or is a cold-path human doc with standalone value.
-- Hoisted files should reduce total complexity, and single-consumer hoists should be reviewed for demotion.
+For live development, work from a local clone and symlink the repo into your Codex plugin directory.
+
+```sh
+git clone git@github.com:tanaabased/canon.git
+cd canon
+bun install
+
+mkdir -p ~/.codex/plugins
+ln -sfn "$PWD" ~/.codex/plugins/tanaab
+```
+
+- After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
+- If the plugin is already installed, reinstall it or restart Codex when skill text, plugin metadata, or other install-surface files do not appear to refresh.
+- For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
+
+```sh
+bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/javascript-author
+```
+
+## Issues, Questions and Support
+
+- Open a GitHub issue in [tanaabased/canon](https://github.com/tanaabased/canon) when the repo has canon drift, broken skill behavior, stale references, or missing guidance.
+- Route implementation work to the owning repo or skill surface instead of overloading this repo with unrelated product fixes.
+
+## Changelog
+
+- See [CHANGELOG.md](./CHANGELOG.md) for release history.
+- See the [GitHub releases page](https://github.com/tanaabased/canon/releases) for published release notes.
+
+## License
+
+- [MIT](./LICENSE)
+
+## Contributors
+
+<a href="https://github.com/tanaabased/canon/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tanaabased/canon" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
