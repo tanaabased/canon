@@ -34,13 +34,15 @@ Tanaab-based release preparation, changelog authoring, readiness review, and rel
 
 - Confirm the target release surface: changelog, release notes, metadata, readiness, or release contract.
 - Confirm which evidence already exists and which companion surfaces still need to be consulted.
+- When `CHANGELOG.md` is in scope, confirm whether the repo follows the shared `prepare-release-action` contract and preserve its leading unreleased heading exactly when it does.
 
 ## Workflow
 
 1. Confirm the task is release-led rather than implementation- or workflow-led.
 2. Decide the release contract before proposing workflow or automation changes.
-3. Build the release change set from tags, commit history, and changed files.
-4. Draft concise user-facing release narrative and call out any missing readiness evidence explicitly.
+3. When editing `CHANGELOG.md`, preserve or create the leading `prepare-release-action` unreleased heading exactly, with `{{ UNRELEASED_VERSION }}` followed by the unreleased date token linked through `{{ UNRELEASED_LINK }}`.
+4. Build the release change set from tags, commit history, and changed files.
+5. Draft concise user-facing release narrative and call out any missing readiness evidence explicitly.
 
 ## Checkpoints
 
@@ -50,6 +52,7 @@ Tanaab-based release preparation, changelog authoring, readiness review, and rel
 ## Completion Criteria
 
 - Define the intended release contract, the user-visible changes, and the current readiness state.
+- Keep the `CHANGELOG.md` unreleased heading aligned with `prepare-release-action` when that release contract is in scope.
 - Make any missing gates, approvals, or follow-up work explicit before closing.
 
 ## Bundled Resources
@@ -59,5 +62,6 @@ Tanaab-based release preparation, changelog authoring, readiness review, and rel
 ## Validation
 
 - Confirm the task stayed on release notes, changelog, readiness, or release contract surfaces.
+- Confirm `CHANGELOG.md` keeps the leading `prepare-release-action` unreleased heading, using `{{ UNRELEASED_VERSION }}`, `{{ UNRELEASED_DATE }}`, and `{{ UNRELEASED_LINK }}` in the expected linked heading shape.
 - Confirm release narrative is concise, user-facing, and free of workflow-mechanics drift.
 - Confirm no publish, tag, or push action is taken unless the user explicitly requested it.

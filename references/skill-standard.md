@@ -15,15 +15,16 @@ Use this file as the source of truth for canon skill validation.
 - `[error]` Frontmatter `metadata.type` must be one of the type ids defined by those canonical templates.
 - `[error]` Frontmatter `metadata.type` must equal the selected or asserted type id when one is provided.
 - `[error]` The generated machine id must use lowercase letters, digits, and hyphens only.
-- `[error]` The skill folder name must equal the generated machine id.
-- `[error]` Frontmatter `name` must equal the skill folder name exactly.
-- `[error]` Skill folder and frontmatter `name` must start with `tanaab-`.
+- `[error]` Frontmatter `name` must equal the generated machine id exactly.
+- `[error]` Frontmatter `name` must start with `tanaab-`.
+- `[error]` Outside a larger Codex plugin, the skill folder name must equal the generated machine id.
+- `[error]` Inside a larger Codex plugin, the skill folder name must equal the generated machine id with the leading `tanaab-` owner prefix removed.
 - `[error]` Strip an accidental duplicate `tanaab-` prefix before writing the final machine id.
 
 ## Required Files
 
 ```text
-skill-id/
+skill-folder/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
@@ -32,6 +33,8 @@ skill-id/
 ├── references/    # optional, only when unique to this skill
 └── scripts/       # optional, only when unique to this skill
 ```
+
+- In plugin-contained skill trees, `skill-folder/` is the unprefixed surface id while frontmatter `name` remains the full owner-prefixed machine id.
 
 - `[error]` `SKILL.md` must exist.
 - `[error]` `agents/openai.yaml` must exist.

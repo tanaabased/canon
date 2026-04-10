@@ -425,6 +425,15 @@ export function makeDefaultPrompt(skillId, description) {
   return `Use $${skillId} when you need to ${normalized}.`;
 }
 
+export function stripOwnerPrefix(value) {
+  const normalized = String(value ?? '').trim();
+  if (normalized.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
+    return normalized.slice(CANON_SKILL_PREFIX_WITH_HYPHEN.length);
+  }
+
+  return normalized;
+}
+
 export function renderTemplate(template, replacements) {
   return String(template ?? '').replaceAll(/\{\{([a-z_]+)\}\}/g, (match, key) => replacements[key] ?? match);
 }
@@ -581,7 +590,7 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
   }
 }
 
-function validateFrontmatter({ frontmatter, folderName, requestedType, errors, warnings }) {
+function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   pushMissingFieldErrors(frontmatter, REQUIRED_FRONTMATTER_FIELDS, errors);
   pushForbiddenFieldErrors(frontmatter, FORBIDDEN_TOP_LEVEL_FIELDS, errors);
 
@@ -622,11 +631,11 @@ function validateFrontmatter({ frontmatter, folderName, requestedType, errors, w
   if (frontmatter.license && frontmatter.license !== CANON_SKILL_LICENSE) {
     errors.push(`Frontmatter license must equal \`${CANON_SKILL_LICENSE}\`.`);
   }
-  if (frontmatter.name && frontmatter.name !== folderName) {
-    errors.push(`Frontmatter name must match the folder name exactly: expected \`${folderName}\`.`);
-  }
   if (frontmatter.name && !KEBAB_CASE_ID_PATTERN.test(frontmatter.name)) {
     errors.push('Frontmatter name must use lowercase letters, digits, and single hyphens only.');
+  }
+  if (frontmatter.name && !frontmatter.name.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
+    errors.push(`Frontmatter name must start with \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`.`);
   }
 
   if (declaredTags && !Array.isArray(declaredTags)) {
@@ -665,10 +674,35 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
   }
 }
 
-function validateFolderName({ folderName, frontmatterName, errors }) {
-  if (!folderName.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
+async function findContainingPluginRoot(startPath) {
+  let currentPath = path.resolve(startPath);
+  let previousPath = null;
+
+  while (currentPath && currentPath !== previousPath) {
+    if (await pathExists(path.join(currentPath, '.codex-plugin', 'plugin.json'))) {
+      return currentPath;
+    }
+
+    previousPath = currentPath;
+    currentPath = path.dirname(currentPath);
+  }
+
+  return null;
+}
+
+async function validateFolderName({ folderName, frontmatterName, skillPath, errors }) {
+  const pluginRoot = await findContainingPluginRoot(skillPath);
+
+  if (pluginRoot) {
+    if (folderName.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
+      errors.push(
+        `Plugin-contained skill folders must omit the owner prefix \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`: expected \`${stripOwnerPrefix(frontmatterName || folderName)}\`.`,
+      );
+    }
+  } else if (!folderName.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
     errors.push(`Skill folder must use the owner prefix \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`.`);
   }
+
   if (folderName.startsWith(`${CANON_SKILL_PREFIX_WITH_HYPHEN}${CANON_SKILL_PREFIX_WITH_HYPHEN}`)) {
     errors.push(`Skill folder repeats the owner prefix: ${folderName}`);
   }
@@ -677,6 +711,13 @@ function validateFolderName({ folderName, frontmatterName, errors }) {
     frontmatterName.startsWith(`${CANON_SKILL_PREFIX_WITH_HYPHEN}${CANON_SKILL_PREFIX_WITH_HYPHEN}`)
   ) {
     errors.push(`Frontmatter name repeats the owner prefix: ${frontmatterName}`);
+  }
+
+  if (frontmatterName) {
+    const expectedFolderName = pluginRoot ? stripOwnerPrefix(frontmatterName) : frontmatterName;
+    if (folderName !== expectedFolderName) {
+      errors.push(`Skill folder name must match the expected folder id: expected \`${expectedFolderName}\`.`);
+    }
   }
 }
 
@@ -849,7 +890,6 @@ export async function validateSkillDir(skillDir, options = {}) {
     } else {
       ({ actualOwner, actualType } = validateFrontmatter({
         errors,
-        folderName,
         frontmatter,
         requestedType,
         warnings,
@@ -865,10 +905,11 @@ export async function validateSkillDir(skillDir, options = {}) {
     });
   }
 
-  validateFolderName({
+  await validateFolderName({
     errors,
     folderName,
     frontmatterName: frontmatter?.name,
+    skillPath,
   });
 
   if (openAiYamlExists) {

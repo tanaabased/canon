@@ -32,6 +32,7 @@
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
 - Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
 - Treat user-facing artifacts such as generated `dist/` outputs and executable example suites as real ownership surfaces during skill design.
+- When skills live inside a larger Codex plugin, keep the owner-prefixed machine id in frontmatter and prompts but omit that owner prefix from the skill folder name under `skills/`.
 - If ownership needs a routing matrix to stay understandable, the skills are still too broad.
 
 ## Canon Design

@@ -23,6 +23,7 @@ import {
   renderCliHelp,
   renderMetadataTagsYaml,
   renderTemplate,
+  stripOwnerPrefix,
   validateSkillDir,
 } from './skill-author-lib.js';
 
@@ -181,7 +182,10 @@ async function main() {
   }
 
   const tags = [CANON_SKILL_OWNER, type, categoryTag];
-  const skillDir = path.resolve(options.outputDir ?? SKILLS_ROOT_DIR, skillId);
+  const validationTargetDir = path.resolve(options.outputDir ?? SKILLS_ROOT_DIR);
+  const pluginRootPath = path.resolve(validationTargetDir, '..', '.codex-plugin', 'plugin.json');
+  const folderName = (await exists(pluginRootPath)) ? stripOwnerPrefix(skillId) : skillId;
+  const skillDir = path.resolve(validationTargetDir, folderName);
   const agentsDir = path.join(skillDir, 'agents');
   const assetsDir = path.join(skillDir, 'assets');
 

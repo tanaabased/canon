@@ -20,7 +20,7 @@ Use these files as the governing contract for the pass:
 
 - [`../AGENTS.md`](../AGENTS.md)
 - [`../references/skill-standard.md`](../references/skill-standard.md)
-- [`../skills/tanaab-skill-author/SKILL.md`](../skills/tanaab-skill-author/SKILL.md)
+- [`../skills/skill-author/SKILL.md`](../skills/skill-author/SKILL.md)
 - [`../references/javascript-repo-structure.md`](../references/javascript-repo-structure.md)
 - [`../references/javascript-function-data-flow.md`](../references/javascript-function-data-flow.md)
 - [`../references/coding-stack-preferences.md`](../references/coding-stack-preferences.md)
@@ -115,7 +115,7 @@ Planning checkpoint:
 
 ### 5. Standardize JS Library and Helper Code
 
-- Use [`../skills/tanaab-javascript-author/SKILL.md`](../skills/tanaab-javascript-author/SKILL.md) as the standard for JS code-bearing skill assets and helpers.
+- Use [`../skills/javascript-author/SKILL.md`](../skills/javascript-author/SKILL.md) as the standard for JS code-bearing skill assets and helpers.
 - Prefer thin library wrappers around lower-coupling utility logic when that decomposition is honest.
 - Ensure heavier, more generic, more testable logic lives in utility-style functions when it fits the repo-structure and function-shape rules.
 - Ensure helper code is tested according to the current JS authoring canon.
@@ -126,8 +126,8 @@ Planning checkpoint:
 
 ### 6. Standardize JS and Shell CLIs
 
-- Use [`../skills/tanaab-javascript-cli-author/SKILL.md`](../skills/tanaab-javascript-cli-author/SKILL.md) for true Bun CLIs.
-- Use [`../skills/tanaab-shell-cli-author/SKILL.md`](../skills/tanaab-shell-cli-author/SKILL.md) for shell CLIs.
+- Use [`../skills/javascript-cli-author/SKILL.md`](../skills/javascript-cli-author/SKILL.md) for true Bun CLIs.
+- Use [`../skills/shell-cli-author/SKILL.md`](../skills/shell-cli-author/SKILL.md) for shell CLIs.
 - Ensure CLI help, version, precedence, structure, and validation follow the shared CLI canon.
 - Review any repo-local CLI that exposes human-readable usage or help output, including maintenance CLIs, and align its help output order, labeling, and styling with [`../references/cli-style-rules.md`](../references/cli-style-rules.md).
 - Use Leia-backed examples and the hoisted Leia workflow starter where the current CLI canon says they are the correct validation path.
@@ -159,7 +159,7 @@ Planning checkpoint:
 
 ### 8. Validate and Sweep
 
-- Run [`../skills/tanaab-skill-author/scripts/validate-skill.js`](../skills/tanaab-skill-author/scripts/validate-skill.js) on every changed skill.
+- Run [`../skills/skill-author/scripts/validate-skill.js`](../skills/skill-author/scripts/validate-skill.js) on every changed skill.
 - Run stale-reference searches for renamed or deleted skills and moved files.
 - Run targeted checks for touched code assets, helpers, or templates.
 - Read back plugin, package, and docs surfaces if they changed.

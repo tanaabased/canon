@@ -34,7 +34,7 @@ canon/
 ```
 
 - `skills/` is the live skill surface.
-- `skills/tanaab-skill-author/` owns the local hot-path scripts, templates, and assets for canon skill authoring.
+- `skills/skill-author/` owns the local hot-path scripts, templates, and assets for canon skill authoring.
 - `assets/` holds shared plugin and canon branding material.
 - `bin/`, `scripts/`, and `utils/` are intentional reserved root buckets for future shared canon tooling or code-bearing surfaces.
 - `guidance/` holds decision-shaping canon such as audits, standards, and architecture notes.

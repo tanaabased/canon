@@ -23,6 +23,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon.
 - For `coding` skills, define one owned code surface plus two lifecycle sections: `Testing` and `GitHub Actions Workflow`.
+- In plugin-contained skill trees, keep the owner-prefixed machine id in frontmatter and prompts while omitting that owner prefix from the skill folder name.
 - If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
 - When a skill implies durable, always-on repo policy, it may bundle `references/repo-agents-lines.md` as short copyable guidance for a target repo's `AGENTS.md`.
 
