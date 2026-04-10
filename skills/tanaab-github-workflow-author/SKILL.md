@@ -18,7 +18,7 @@ metadata:
 Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. Use when a user wants to create or update workflow YAML where the workflow graph itself is the owned artifact, including reusable workflows, permissions, triggers, or CI job structure.
 
 - Keep this skill focused on workflow topology, reusable boundaries, trigger shape, permissions, and gate placement.
-- Let coding and integration skills own their own minimal GitHub Actions validation examples when the workflow only exists to validate that narrower surface.
+- Let coding and integration skills own their own surface-local validation workflows when the workflow only exists to validate that narrower surface and no workflow-graph decision is in scope.
 
 ## When to Use
 
@@ -68,7 +68,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 ## Validation
 
 - Confirm the task stayed on workflow YAML, triggers, permissions, reusable workflow boundaries, matrix or job topology, or gate placement.
-- Confirm the skill did not absorb a narrower surface's ordinary validation workflow when no workflow-graph decision was actually in scope.
+- Confirm the skill did not absorb a narrower surface's ordinary validation workflow when no trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
 - Confirm Bun-based workflows use `oven-sh/setup-bun@v2`, `bun-version-file: .bun-version`, and `bun install --frozen-lockfile --ignore-scripts` unless the repo explicitly needs another path.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.

@@ -2,16 +2,17 @@
 
 Use this prompt to plan a staged optimization pass on this repo so canon practices what it preaches.
 
-Operate on this repo only. Treat `skills/` as the live skill surface and treat repo-root canon and plugin/package/docs surfaces as part of the live repo. Do not optimize `ideas/` as if it were live canon. Only mine `../ideas/old-skills-leftovers/bun-cli-support.js` if live CLI standardization proves it should be promoted.
+Operate on this repo only. Treat `skills/` as the live skill surface and treat repo-root canon and plugin/package/docs surfaces as part of the live repo. Do not optimize `ideas/` as if it were live canon.
 
 Use repo evidence first. Only ask the user when a decision cannot be resolved from the repo's current canon, validators, or live surface shape.
 
-## Planning Mode
+## Planning and Proposal Mode
 
-- Always start by producing a concrete staged plan that follows the exact phase order below.
-- Wrap that plan in a `<proposed_plan>` block and make it decision complete.
+- Always start by producing a concrete staged optimization proposal that follows the exact phase order below.
+- Use the phase order as the reasoning method, not as the main deliverable.
 - Do not mutate the repo on the first pass for this prompt.
-- Stop after the plan unless the user explicitly asks for implementation in a follow-up turn.
+- Stop after the proposal unless the user explicitly asks for implementation in a follow-up turn.
+- The first pass must recommend actual repo changes for the current repo, not just describe how you would audit it.
 
 ## Governing Canon
 
@@ -26,7 +27,7 @@ Use these files as the governing contract for the pass:
 - [`../references/cli-style-rules.md`](../references/cli-style-rules.md)
 - [`../references/readme-standards.md`](../references/readme-standards.md)
 - [`../references/front-end-preferences.md`](../references/front-end-preferences.md) when touching Vue or VitePress support assets or examples
-- [`../references/leia-markdown-scenarios.md`](../references/leia-markdown-scenarios.md) plus the hoisted Leia templates when touching CLI or hosted-script validation
+- [`../references/leia-markdown-scenarios.md`](../references/leia-markdown-scenarios.md) plus the hoisted Leia templates when touching CLI or other operational validation
 
 Apply these repo rules throughout the pass:
 
@@ -41,11 +42,30 @@ Apply these repo rules throughout the pass:
 
 - Work in the exact phase order below when preparing the plan.
 - Build the plan from repo evidence, not from generic cleanup instincts.
-- Prefer concrete implementation instructions over abstract commentary so the plan can be handed directly to an implementer.
+- Prefer concrete repo-specific recommendations and implementation instructions over abstract commentary so the plan can be handed directly to an implementer.
 - Do not widen into unrelated product code or external repos.
 - Do not force `utils/` extraction when code is tightly coupled.
 - Do not force hoisting just because something can be shared.
 - Do not rewrite for stylistic neatness alone.
+- Do not stop at `audit`, `review`, or `check` language when repo evidence already supports a concrete keep, merge, split, rename, delete, tighten, demote, hoist, extract, or leave-as-is decision.
+
+## Required Specificity
+
+The final proposal must include concrete repo-specific conclusions, not just the phase outline. At minimum, include:
+
+- an explicit keep, merge, split, rename, delete, or leave-as-is decision for every live skill
+- the specific skills whose prose should be tightened, with the concrete contradiction, overlap, or duplicate language to remove
+- the specific hoisted references or templates to keep, demote, review later, or mine for promotion
+- the specific code-bearing subtrees that should be reorganized, and the recommended structure change
+- the specific JS helper, library, or CLI surfaces that should be standardized first
+- the specific repo-root inconsistencies to fix in `.codex-plugin`, `.mcp.json`, `package.json`, `README.md`, `AGENTS.md`, `prompts/`, or `templates/`, including any plugin description fields that drift from the `Tanaab-based ...` convention
+- an implementation order that starts with the highest-leverage concrete changes, not with generic audit steps
+
+## Disallowed Output Pattern
+
+- Do not return a plan that mainly restates the phase order below.
+- Do not use the phase list itself as the primary content of the final answer.
+- The phase order is the analysis method; the deliverable is the concrete optimization proposal for this repo.
 
 ## Phase Order
 
@@ -57,7 +77,8 @@ Apply these repo rules throughout the pass:
 - For `type: coding` skills, check that broad discovery language still funnels into one dominant implementation pattern and that `Testing` and `GitHub Actions Workflow` each use one canonical mechanism.
 
 Planning checkpoint:
-- record keep/merge/split/delete decisions and the evidence for each
+
+- record concrete keep/merge/split/rename/delete decisions and the evidence for each
 
 ### 2. Tighten Skill Prose
 
@@ -67,7 +88,8 @@ Planning checkpoint:
 - Reduce repeated language across `Overview`, `When to Use`, `When Not to Use`, `Change Strategy`, and `Validation`.
 
 Planning checkpoint:
-- record which skills need tightening and any material boundary clarifications
+
+- record which specific skills need tightening and the exact boundary or duplication problems to fix
 
 ### 3. Review Local vs Hoisted Support Material
 
@@ -77,7 +99,8 @@ Planning checkpoint:
 - Keep `guidance/` and `ideas/` cold-path unless the task explicitly calls for them.
 
 Planning checkpoint:
-- record hoisted, demoted, moved, deleted, or retained support material and why
+
+- record which specific support files should stay local, stay hoisted, be demoted, or be promoted and why
 
 ### 4. Audit Code-Bearing Assets Against Repo Structure
 
@@ -87,7 +110,8 @@ Planning checkpoint:
 - Keep repo-level `scripts/` flat and suffix-encoded as `-cli.js`, `-task.js`, or `-lib.js`.
 
 Planning checkpoint:
-- record structure fixes, retained exceptions, and any unresolved coupling
+
+- record which code-bearing subtrees need structure changes, which should stay as-is, and any unresolved coupling
 
 ### 5. Standardize JS Library and Helper Code
 
@@ -97,18 +121,20 @@ Planning checkpoint:
 - Ensure helper code is tested according to the current JS authoring canon.
 
 Planning checkpoint:
-- record utility extraction, wrapper thinning, retained coupled logic, and test changes
+
+- record which concrete JS helper or library surfaces should be extracted, thinned, left coupled, or left alone
 
 ### 6. Standardize JS and Shell CLIs
 
 - Use [`../skills/tanaab-javascript-cli-author/SKILL.md`](../skills/tanaab-javascript-cli-author/SKILL.md) for true Bun CLIs.
 - Use [`../skills/tanaab-shell-cli-author/SKILL.md`](../skills/tanaab-shell-cli-author/SKILL.md) for shell CLIs.
 - Ensure CLI help, version, precedence, structure, and validation follow the shared CLI canon.
+- Review any repo-local CLI that exposes human-readable usage or help output, including maintenance CLIs, and align its help output order, labeling, and styling with [`../references/cli-style-rules.md`](../references/cli-style-rules.md).
 - Use Leia-backed examples and the hoisted Leia workflow starter where the current CLI canon says they are the correct validation path.
-- Treat [`../ideas/old-skills-leftovers/bun-cli-support.js`](../ideas/old-skills-leftovers/bun-cli-support.js) as a candidate source only if the live repo clearly needs promotion of that helper logic.
 
 Planning checkpoint:
-- record CLI standardization changes and whether `bun-cli-support.js` should stay cold-path or be promoted
+
+- record which concrete CLI surfaces should be standardized first and what live canon should own any missing shared support
 
 ### 7. Audit Repo-Root Live Surfaces
 
@@ -121,13 +147,15 @@ Planning checkpoint:
   - `../references/`
   - `../templates/`
   - `../prompts/`
-- Ensure root `templates/` contains only proven shared scaffolds.
+- Ensure root `templates/` contains only proven shared scaffolds, repo-wide tooling templates, or canonical human-facing starters with standalone copy/adapt value.
 - Ensure `prompts/` contains only reusable prompts with clear cross-task value.
+- Ensure Codex plugin description metadata such as `description`, `interface.shortDescription`, and `interface.longDescription` starts with `Tanaab-based` unless repo evidence clearly justifies a different contract.
 - Review root references and templates for hoist worthiness.
 - Remove stale skill ids, old names, and dead references after merges, renames, or deletions.
 
 Planning checkpoint:
-- record repo-root consistency fixes, hoist reviews, and stale identity cleanup
+
+- record which concrete repo-root consistency fixes, hoist reviews, and stale identity cleanups are recommended
 
 ### 8. Validate and Sweep
 
@@ -138,11 +166,12 @@ Planning checkpoint:
 - Report any required Codex restart or plugin-cache refresh notes.
 
 Planning checkpoint:
-- record validation steps, stale-reference sweep targets, and any remaining risks
+
+- record the exact validation steps, stale-reference sweep targets, and any remaining risks
 
 ## Final Output Shape
 
-End with one decision-complete `<proposed_plan>` block grouped by:
+End with one decision-complete optimization proposal grouped by:
 
 - skill-surface changes
 - hoist or local placement changes
@@ -150,6 +179,8 @@ End with one decision-complete `<proposed_plan>` block grouped by:
 - repo-root consistency changes
 - validation steps
 - restart or reinstall notes for the Codex plugin cache if relevant
+
+If the client supports `<proposed_plan>`, wrap the final proposal in that block. If not, return the same content as plain Markdown with the same section structure.
 
 ## Success Criteria
 
@@ -161,4 +192,4 @@ The planning pass is complete only when:
 - code-bearing assets follow the repo-structure canon where it honestly applies
 - JS library/helper code and CLI surfaces follow the current Tanaab canon
 - repo-root plugin/package/docs surfaces are consistent with the repo's own standards
-- the final plan defines validation and stale-reference cleanup for every changed live surface
+- the final proposal defines validation and stale-reference cleanup for every changed live surface

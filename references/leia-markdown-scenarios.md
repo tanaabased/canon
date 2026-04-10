@@ -1,6 +1,6 @@
 # Leia Markdown Scenarios
 
-Use this pattern when shell, bootstrap, hosted-script, or other operational repos need scenario coverage that is easier to express as executable shell steps than as unit tests.
+Use this pattern when shell, bootstrap, or other operational repos need scenario coverage that is easier to express as executable shell steps than as unit tests.
 
 ## When to Use
 
@@ -44,6 +44,7 @@ Recommended sections:
 - Do not run machine-mutating Leia scenarios locally by default; reserve local Leia execution for explicit user requests or clearly non-mutating suites.
 - Matrix one workflow job per example when failures should identify the exact broken scenario quickly.
 - When the distributed artifact is the real product surface, run Leia against the prepared `dist/` entrypoint rather than the raw source file.
+- When a Bun CLI ships as a built or compiled artifact, run Leia against that built CLI rather than `bun run` or a source-tree entrypoint.
 - Prefer a repo-local `TMPDIR` for Leia runs when sandbox or runner temp behavior is unreliable.
 
 ## Boundaries

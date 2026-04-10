@@ -46,6 +46,8 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 
 ## Implementation Notes
 
+- Files meant for direct execution should start with a shebang and be committed executable.
+- Do not mark repo-authored files executable unless they actually start with a shebang.
 - In shell, prefer `tty_*` helpers or variables such as `tty_tp`, `tty_ts`, `tty_dim`, `tty_bold`, `tty_green`, `tty_red`, and `tty_yellow`.
 - In PowerShell CLIs, prefer one small local helper layer that exposes the shared style names `bold`, `dim`, `green`, `red`, `yellow`, `tp`, and `ts` while still using conventional PowerShell parameters such as `-Force` and `-Help`.
 - In PowerShell CLIs, normalize `-Debug`, repo-specific debug env vars, and an already-enabled `$DebugPreference` into native `Write-Debug` output instead of inventing a second debug channel.

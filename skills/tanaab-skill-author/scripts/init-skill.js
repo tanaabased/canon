@@ -8,6 +8,8 @@ import {
   CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX_WITH_HYPHEN,
   SKILLS_ROOT_DIR,
+  bold,
+  dim,
   formatSkillTypeIds,
   formatValidationReport,
   getBundledLargeIconPath,
@@ -18,29 +20,31 @@ import {
   makeDefaultPrompt,
   makeShortDescription,
   normalizeTanaabBasedDescription,
+  renderCliHelp,
   renderMetadataTagsYaml,
   renderTemplate,
   validateSkillDir,
 } from './skill-author-lib.js';
 
 function usage(code = 0) {
-  const lines = [
-    'Usage: init-skill.js --type <type> --slug <slug> --display-name <name> --description <text> [options]',
-    '',
-    'Initialize a Tanaab skill from the canonical local full templates owned by tanaab-skill-author.',
-    '',
-    'Options:',
-    `  --type <type>           skill type such as ${formatSkillTypeIds()}`,
-    '  --category-tag <tag>    category tag override; must add one tag beyond owner and type',
-    '  --slug <slug>           skill slug without the tanaab- prefix',
-    '  --display-name <name>   human-readable skill display name',
-    '  --description <text>    skill description text',
-    '  --prompt <text>         default prompt for agents/openai.yaml',
-    `  --output-dir <path>     parent directory for generated skills [default: ${SKILLS_ROOT_DIR}]`,
-    '  --force                 overwrite an existing generated skill directory',
-    '  -h, --help              show this message',
-  ];
-  console.log(lines.join('\n'));
+  console.log(
+    renderCliHelp({
+      usage: `Usage: ${bold('init-skill.js')} ${dim('--type <type> --slug <slug> --display-name <name> --description <text> [options]')}`,
+      summary:
+        'Initialize a Tanaab skill from the canonical local full templates owned by tanaab-skill-author.',
+      options: [
+        `  --type <type>           skill type such as ${dim(formatSkillTypeIds())}`,
+        '  --category-tag <tag>    category tag override; must add one tag beyond owner and type',
+        '  --slug <slug>           skill slug without the tanaab- prefix',
+        '  --display-name <name>   human-readable skill display name',
+        '  --description <text>    skill description text',
+        '  --prompt <text>         default prompt for agents/openai.yaml',
+        `  --output-dir <path>     parent directory for generated skills ${dim(`[default: ${SKILLS_ROOT_DIR}]`)}`,
+        '  --force                 overwrite an existing generated skill directory',
+        '  -h, --help              show this message',
+      ],
+    }),
+  );
   process.exit(code);
 }
 

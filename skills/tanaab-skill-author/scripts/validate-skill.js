@@ -1,19 +1,20 @@
 #!/usr/bin/env bun
 
-import { formatValidationReport, validateSkillDir } from './skill-author-lib.js';
+import { bold, dim, formatValidationReport, renderCliHelp, validateSkillDir } from './skill-author-lib.js';
 
 function usage(code = 0) {
-  const lines = [
-    'Usage: validate-skill.js --skill-dir <path> [options]',
-    '',
-    'Validate a canon skill directory against references/skill-standard.md and the canonical local full templates owned by tanaab-skill-author.',
-    '',
-    'Options:',
-    '  --skill-dir <path>      skill directory to validate',
-    '  --type <type>           expected type override',
-    '  -h, --help              show this message',
-  ];
-  console.log(lines.join('\n'));
+  console.log(
+    renderCliHelp({
+      usage: `Usage: ${bold('validate-skill.js')} ${dim('--skill-dir <path> [options]')}`,
+      summary:
+        'Validate a canon skill directory against references/skill-standard.md and the canonical local full templates owned by tanaab-skill-author.',
+      options: [
+        '  --skill-dir <path>      skill directory to validate',
+        '  --type <type>           expected type override',
+        '  -h, --help              show this message',
+      ],
+    }),
+  );
   process.exit(code);
 }
 

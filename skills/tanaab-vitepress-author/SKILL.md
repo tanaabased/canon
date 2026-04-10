@@ -17,6 +17,9 @@ metadata:
 
 Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use when a user wants to build or update a VitePress docs or static site, local subtheme wiring, docs-site page implementation, or VitePress frontend structure.
 
+- Keep this skill on VitePress site implementation and local subtheme wiring.
+- Let `tanaab-vue-author` own generic Vue component work when the primary surface is not VitePress-led.
+
 ## When to Use
 
 - Build or update a VitePress 1 docs or static site once that site surface is already chosen.
@@ -42,7 +45,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
 - Use [../../references/readme-standards.md](../../references/readme-standards.md) only to preserve the boundary that README-vs-docs-site selection is a different owned surface.
-- Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy.
+- Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy or generic Vue ownership.
 
 ## Workflow
 

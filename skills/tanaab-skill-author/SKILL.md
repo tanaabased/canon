@@ -23,6 +23,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon.
 - For `coding` skills, define one owned code surface plus two lifecycle sections: `Testing` and `GitHub Actions Workflow`.
+- If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
+- When a skill implies durable, always-on repo policy, it may bundle `references/repo-agents-lines.md` as short copyable guidance for a target repo's `AGENTS.md`.
 
 ## When to Use
 
@@ -32,12 +34,15 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Validate a newly created, standardized, or migrated skill directory.
 - Review whether skill support material should stay local or be hoisted under the shared hoist test.
 - Split a broad skill into narrower skills with clearer owned surfaces.
+- Review whether a proposed skill surface is better expressed as a repo template than as a live skill.
+- Review whether a skill should bundle short repo `AGENTS.md` lines because its surface implies durable ambient repo policy.
 
 ## When Not to Use
 
 - Do not use this skill for ordinary work that merely happens inside an existing skill.
 - Do not use this skill for whole-stack audit, keep/merge/delete planning, or router cleanup unless the task is specifically about creation or standardization mechanics.
 - Do not treat shared references or helper CLIs as optional when they already cover the requested change.
+- Do not force a live skill when the real reusable artifact is a whole starter repo that users should adopt directly.
 
 ## Evaluation Criteria
 
@@ -46,6 +51,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
 - For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
+- Prefer a repo template when the reusable contract is a committed starter repository with structure, scripts, examples, and docs that users adopt as a whole; keep a live skill only for cross-repo decision-making that remains after the template choice.
+- Bundle repo `AGENTS.md` lines only for durable always-on repo rules, not for conditional workflow steps that belong in the skill itself.
 
 ## Anti-Patterns
 
@@ -55,6 +62,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Do not duplicate contract rules in skill prose when the standard or CLI already enforces them.
 - Do not hoist a file to repo root just because it might be reused later.
 - Do not let a `coding` skill accumulate multiple materially different testing or GitHub Actions validation mechanisms unless the variations are minor flavors of one pattern.
+- Do not keep a live skill whose main job is to restate one repo template's structure, scripts, examples, and docs.
+- Do not use repo `AGENTS.md` guidance as a dumping ground for task-triggered workflow detail.
 
 ## Iteration Loop
 
@@ -63,10 +72,11 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Run validation first when the request is validation-only.
 - Tighten scope before adding new sections, resources, or hoisted canon.
 - For `coding` skills, challenge the scope before adding a second materially different direct-test or GitHub Actions workflow pattern.
+- Challenge skill-vs-template ownership before adding doctrine for a surface that already looks like a reusable starter repo.
 
 ## Workflow
 
-1. Determine whether the task is create, standardize, or validate. Choose `type` whenever the task changes or asserts skill identity.
+1. Determine whether the task is create, standardize, or validate. Choose `type` whenever the task changes or asserts skill identity, and challenge whether the surface is really a live skill or would be better owned by a repo template.
 
 2. Load only the needed shared references.
 
@@ -103,6 +113,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Confirm the selected `type` is explicit and correct.
 - Confirm the selected type order is correct.
 - Confirm validation-only requests are handled by the same surface rather than a separate validator skill.
+- Confirm the surface is not better expressed as a repo template with the skill kept only as a thin discovery or adaptation layer, if needed.
+- Confirm any bundled repo `AGENTS.md` lines stay short, ambient, and worth copying into a project repo.
 - Confirm bundled resources stay local unless they clearly pass the hoist test.
 - Confirm any repo-root resources still justify being hoisted.
 - Run `validate-skill.js` and fix all `[error]` results before finishing.

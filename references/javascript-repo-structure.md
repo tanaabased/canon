@@ -27,8 +27,13 @@ Use this reference for Bun- or Node-based JavaScript repositories and for skill-
 
 - Treat a hashbang-bearing JavaScript file as a true CLI only when it exposes normal CLI behavior such as help, usage, options, arguments, or direct user-facing command behavior.
 - Put true package- or user-facing JavaScript CLIs under `bin/` and declare them in `package.json` when package metadata is in scope.
+- Commit hashbang-bearing JavaScript CLI entrypoints executable.
+- When a true Bun CLI is meant to ship as a built artifact, keep the entrypoint and its dependency graph friendly to `bun build`.
+- Prefer static `import` statements for repo-authored and package dependencies when the built CLI artifact is the real product surface.
 - If a file does not expose normal CLI behavior, omit the hashbang and treat it as an ordinary script or library module instead.
+- If a JavaScript file does not have a hashbang, do not mark it executable.
 - Skill-local helper scripts under `skills/**/scripts/` stay bundled with their owning skill and are exempt from the repo-level `bin/` convention.
+- Even when they stay outside repo-level `bin/`, skill-local shebang-bearing scripts should still be committed executable.
 
 ## `utils/` Boundary
 

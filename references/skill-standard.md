@@ -80,6 +80,9 @@ skill-id/
 - `[error]` Bundleable repo scripts must import shared templates, assets, and machine-readable canon explicitly so `bun build` can follow the dependency graph.
 - `[warn]` Keep the default scaffold minimal.
 - `[warn]` Keep skill-bundled helpers in the skill's own `scripts/` directory. Do not treat them as repo-level package `bin/` entrypoints.
+- `[warn]` Shebang-bearing skill-local scripts and executable starter templates should be committed executable.
+- `[warn]` Do not mark repo-authored files executable unless they actually start with a shebang.
+- `[warn]` If a skill bundles `references/repo-agents-lines.md`, keep it to durable ambient repo rules rather than conditional workflow steps.
 - `[warn]` `generic` is the fallback type. Prefer a narrower type when one clearly fits.
 - `[warn]` Additional skill types should add a new canonical full template under `tanaab-skill-author` instead of inventing an unrelated structure without a strong reason.
 - `[manual]` Check whether each new or retained hoisted file still passes the hoist test instead of merely reflecting historical placement.
@@ -87,6 +90,7 @@ skill-id/
 ## Scope and Size Rules
 
 - `[warn]` A skill should own one concrete task surface.
+- `[warn]` Prefer a repo template over a live skill when the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs that users should adopt wholesale.
 - `[warn]` For `coding` skills, broad discovery language is acceptable only when it still funnels into one dominant implementation pattern.
 - `[warn]` For `coding` skills, multiple materially different direct-test or GitHub Actions workflow mechanisms are a split signal unless they are minor flavor variations of one pattern.
 - `[warn]` If a skill needs a routing matrix, broad arbitration rules, or heavy relationship language to stay understandable, split it.
@@ -96,5 +100,8 @@ skill-id/
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.
 - `[warn]` Keep bundled references one hop from `SKILL.md`; link to them directly instead of hiding them behind deeper navigation.
 - `[manual]` For `coding` skills, `Testing` and `GitHub Actions Workflow` should each describe one canonical mechanism and one minimal example.
+- `[manual]` Check whether the skill mostly restates one repo template's structure, scripts, examples, and docs; if so, prefer the template as source of truth and keep only a thin discovery or adaptation skill if needed.
+- `[manual]` Check shebang and executable-bit alignment for skill-local `scripts/`, starter templates, and any `bin/` surfaces.
+- `[manual]` Optional `references/repo-agents-lines.md` should stay short, copyable, and scoped to always-on repo policy that should influence many tasks.
 - `[manual]` Hoisting decisions should be reviewed as placement choices, not assumed to be improvements.
 - `[manual]` Bulk standardization should preserve the skill's core purpose and workflow unless the task explicitly asks for a behavioral rewrite.

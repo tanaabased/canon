@@ -51,14 +51,15 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Operational Scenario Testing
 
 - Prefer Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
-- Use Leia for shell, bootstrap, hosted-script, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
+- Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
 - When a prepared `dist/` artifact is the real shipped surface, run operational scenario tests against that prepared artifact instead of raw source files.
+- For shipped Bun CLIs, prefer a build-first distribution path and treat the built CLI artifact as the Leia validation target when that artifact is the real user-facing surface.
 
 ## Shell and Scripting Exceptions
 
 - Prefer Bash, POSIX shell, or PowerShell only when shell is the actual maintained surface, distribution surface, or the clearer tool for the job.
-- Use shell for wrappers, bootstrap flows, hosted scripts, or native shell automation when that surface is primary.
+- Use shell for wrappers, bootstrap flows, or native shell automation when that surface is primary.
 - Do not choose shell for non-shell application logic just to avoid JavaScript.
 - When shell wrappers invoke repo-authored JavaScript helpers, prefer Bun-backed entrypoints over calling `node` directly.
 

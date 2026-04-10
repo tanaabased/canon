@@ -17,17 +17,20 @@ metadata:
 
 Tanaab-based authoring and standardization of GitHub Action product surfaces. Use when a user wants to shape action.yml, committed runtime artifacts, JavaScript action runtime layout, action README contract, or workflow-driven smoke patterns for a GitHub Action repo.
 
+- Keep this skill on the action product surface: `action.yml`, runtime layout, committed artifact, README contract, and action-local validation.
+- Let `tanaab-github-workflow-author` own workflow graphs when triggers, permissions, matrices, or reusable topology are the main artifact.
+
 ## When to Use
 
 - Shape `action.yml`, committed runtime artifacts, or the repo-local contract of a GitHub Action.
 - Standardize composite-wrapper JavaScript actions that install Bun and execute a committed `dist/index.js` runtime.
 - Add or standardize GitHub Action input-helper tests when the action relies on `@actions/core` getter methods or fallback environment behavior.
 - Keep a GitHub Action README aligned with the action contract, inputs, outputs, caveats, and usage.
-- Add or update workflow-driven smoke patterns when the primary owned surface is still the action product rather than general workflow topology.
+- Add or update action-local smoke or validation workflows only when they exist to validate the action product surface itself.
 
 ## When Not to Use
 
-- Do not use this skill for general GitHub Actions workflow YAML work when the main task is triggers, permissions, or job topology.
+- Do not use this skill for general GitHub Actions workflow YAML work when the main task is triggers, permissions, matrices, reusable workflows, or job topology.
 - Do not use this skill for generic JavaScript runtime work that is not action-led.
 - Do not use this skill for CI-triage-only work.
 
@@ -43,7 +46,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 
 ## Outputs
 
-- Define the expected action contract, runtime artifact path, README mode, and smoke coverage shape.
+- Define the expected action contract, runtime artifact path, README mode, and action-local validation shape.
 - Call out any follow-up handoff when a task becomes primarily workflow-topology work or broader JS implementation work.
 
 ## Failure Handling
@@ -54,7 +57,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## Workflow
 
 1. Confirm the request is action-product-led rather than workflow-led or general-JS-led.
-2. Load the local action conventions plus only the shared README, stack, JS, and input-helper canon needed for the touched surface.
+2. Load the local action conventions plus only the shared README, stack, JS, inline-doc, and input-helper canon needed for the touched surface.
 3. Keep the action contract coherent across `action.yml`, runtime entrypoint, committed artifact, README, and any dedicated input-normalization helper.
 4. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
 
@@ -66,12 +69,13 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 - [./templates/get-inputs.spec.js](./templates/get-inputs.spec.js): starter Mocha spec for a focused action input helper
 - [../../references/readme-standards.md](../../references/readme-standards.md): GitHub Action README mode rules
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first runtime and action repo defaults
+- [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for action runtime code
 - [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): shared helper-shape defaults when action runtime code is in scope
 
 ## Validation
 
-- Confirm the task stayed on the GitHub Action product surface rather than drifting into general workflow topology.
+- Confirm the task stayed on the GitHub Action product surface rather than drifting into workflow-graph authoring or workflow-only validation design.
 - Confirm JavaScript-backed actions use composite wrappers intentionally, keep a stable runtime artifact path such as `dist/index.js`, and keep source and committed artifacts aligned.
 - Confirm input-helper tests cover both local-default and explicit GitHub Actions runtime behavior when that surface changed.
 - Confirm the README matches the GitHub Action README mode when the action contract changed.
-- Confirm smoke coverage uses `uses: ./` and checks observable postconditions when that surface changed.
+- Confirm action-local validation uses `uses: ./` and checks observable postconditions when that surface changed.

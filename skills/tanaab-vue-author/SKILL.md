@@ -17,11 +17,14 @@ metadata:
 
 Tanaab-based authoring and standardization of Vue 3 frontend surfaces. Use when a user wants to build or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 
+- Keep this skill on Vue component and SFC implementation surfaces.
+- Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
+
 ## When to Use
 
 - Build or update Vue 3 components, SFC structure, or composition API flows.
 - Shape Vue-specific frontend implementation such as local component state flow, props, emits, slots, or component-level styling.
-- Standardize a frontend repo around Vue 3 when the main owned surface is still component implementation rather than docs-site or general JS runtime plumbing.
+- Standardize a frontend repo around Vue 3 when the main owned surface is still component implementation rather than VitePress site work or general JS runtime plumbing.
 - Apply shared frontend defaults such as Vue-first and SCSS-first only when the request is actually frontend-led.
 
 ## When Not to Use

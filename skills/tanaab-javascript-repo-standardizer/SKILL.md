@@ -18,8 +18,7 @@ metadata:
 Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, or baseline JS/Bun scripts in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
-- Use it to bring a JS/Bun repo onto the shared baseline for structure, linting, formatting, and related baseline scripts.
-- Leave ordinary runtime authorship, helper extraction, and library decomposition to the broader JavaScript implementation skill.
+- Use it to bring a JS/Bun repo onto the shared baseline for structure, linting, formatting, and related baseline scripts while leaving runtime authorship to the broader JavaScript implementation skill.
 
 ## When to Use
 
@@ -29,6 +28,7 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
 - Add or standardize the TypeScript or Vue lint layer only when the repo actually needs it.
 - Apply the bundled baseline starter files when the task is specifically about bringing a repo onto the shared JS/Bun baseline.
+- Add or refresh repo-local `AGENTS.md` lines when the repo wants the JS/Bun baseline to be durable ambient policy.
 
 ## When Not to Use
 
@@ -103,6 +103,7 @@ jobs:
 ## Bundled Resources
 
 - [./references/lint-format-baseline.md](./references/lint-format-baseline.md): local baseline rules and expected script shape
+- [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable JS/Bun baseline policy
 - [./templates/eslint.config.js](./templates/eslint.config.js): shared JS/Bun ESLint base
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
 - [./templates/.prettierignore](./templates/.prettierignore): shared Prettier ignore baseline

@@ -18,7 +18,7 @@ metadata:
 Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript or Bun code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
 
 - Keep the broad JavaScript entrypoint for discovery, including library-shaped modules as well as helper extraction.
-- For library-facing surfaces, prefer a thin class- or module-oriented public layer that wraps lower-coupling utility logic when that decomposition is honest.
+- Prefer thin library-facing wrappers around lower-coupling utility logic when that decomposition is honest.
 - Keep heavier, more generic, more testable logic in `utils/`-level functions when it fits the existing `utils/` boundary.
 
 ## When to Use
@@ -33,15 +33,14 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 ## When Not to Use
 
 - Do not use this skill for true package-level CLI product work; reserve that for the narrower CLI surface.
-- Do not use this skill for GitHub Actions workflow topology, triggers, permissions, reusable workflows, or general workflow authoring; keep the GitHub Actions section limited to validating the owned JS code path.
+- Do not use this skill for GitHub Actions workflow topology, triggers, permissions, reusable workflows, or general workflow authoring; keep the GitHub Actions section limited to validating the owned JS surface.
 - Do not use this skill for GitHub Action product-surface work once that narrower skill exists.
-- Do not widen this skill into broad testing strategy, operational scenario design, or release gating when the task is no longer about validating the owned JS code path.
+- Do not widen this skill into broad testing strategy, operational scenario design, or release gating when the task is no longer about validating the owned JS surface.
 - Do not default to TypeScript migration unless the repo already uses TypeScript or the user explicitly asks for it.
 
 ## Constraints
 
 - Prefer the smallest change that solves the task.
-- Prefer thin class or module wrappers around lower-coupling utility logic when the task is library-shaped.
 - Prefer one main exported function and a narrow file surface when a helper can be expressed that way honestly.
 - Do not force `utils/` extraction when the logic is tightly coupled to surface vocabulary, orchestration, or state.
 - Preserve existing style and local patterns unless the task clearly requires a change.
@@ -49,12 +48,13 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 
 ## Change Strategy
 
-- Keep the broad JavaScript entrypoint, but funnel the default implementation path toward lower-coupling functions and `utils/`-style helpers.
+- Default the implementation path toward lower-coupling functions and `utils/`-style helpers.
 - For library-shaped code, keep the public class or module focused on orchestration, state, and surface-specific wrapping while extracting generic logic into utility functions when the split is honest.
 - Keep repo-coupled orchestration and surface vocabulary near the owning module instead of forcing them into `utils/`.
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS surface instead of the default authored pattern.
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
+- Apply [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first and JavaScript-first defaults instead of re-deciding the stack locally.
 
 ## Workflow
@@ -90,7 +90,7 @@ describe('normalizeTags', () => {
 
 ## GitHub Actions Workflow
 
-- When this skill's owned code path needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
+- When this skill's owned JS surface needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
 - Keep the workflow generic, Bun-first, and centered on the repo's test command.
 - Treat this as a validation lifecycle for the owned JS surface, not as ownership of workflow YAML as a product surface.
 
@@ -117,6 +117,7 @@ jobs:
 ## Bundled Resources
 
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first, JavaScript-first runtime defaults
+- [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): scope folders, `bin/`, `utils/`, and hoisting rules for JS repos
 - [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): function shape, mutation discipline, and import grouping
 - [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JS code
@@ -129,6 +130,6 @@ jobs:
 - Confirm the class guidance stayed a strong default rather than a hard requirement and did not imply a `classes/` folder or mandatory `utils/` hoisting.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
 - Confirm direct tests prioritize generic utility logic and do not absorb GitHub Action input-helper patterns.
-- Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS code surface rather than drifting into workflow-topology ownership.
+- Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS surface rather than drifting into workflow-topology ownership.
 - Run the repo's narrowest relevant lint, build, test, or smoke checks for the touched JS surface.
 - Confirm the change did not widen into CLI product, workflow YAML, or release-contract work.

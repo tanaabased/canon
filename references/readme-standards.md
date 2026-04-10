@@ -16,7 +16,7 @@ Use these rules when deciding how much user-facing documentation should live in 
 
 - Lead with the project name and a one- or two-sentence description before support, changelog, or contributor sections.
 - Put the primary install or usage path above deeper reference material.
-- If the repo is primarily consumed through a hosted script URL, put that quickstart above local development or build steps.
+- If the repo is primarily consumed through one primary install or execution path, put that quickstart above local development or build steps.
 - Keep section titles concrete and user-facing.
 - Keep examples runnable and close to the surface they explain.
 - Do not mirror an entire docs-site sidebar into the README. Link only the key destinations readers actually need.
@@ -43,7 +43,7 @@ Typical fit:
 
 - internal tooling repos
 - bootstrap or automation repos
-- hosted bootstrap or raw-script repos
+- hosted bootstrap or raw-install repos
 - small CLIs
 - libraries with a narrow API surface
 

@@ -31,7 +31,7 @@
 - Prefer `merge`, `move`, `extract`, or `delete` before `add`.
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
 - Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
-- Treat user-facing artifacts such as generated `dist/` outputs, hosted scripts, and executable example suites as real ownership surfaces during skill design.
+- Treat user-facing artifacts such as generated `dist/` outputs and executable example suites as real ownership surfaces during skill design.
 - If ownership needs a routing matrix to stay understandable, the skills are still too broad.
 
 ## Canon Design
@@ -49,7 +49,8 @@
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
 - Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
 - Put reusable prompts and prompt fragments in `prompts/` when they have value beyond one skill.
-- Put reusable scaffolds and fragments in `templates/` only after reuse is proven.
+- Put reusable scaffolds and fragments in `templates/` when reuse is proven, when they are a repo-wide tooling surface, or when they are canonical human-facing starters with standalone copy/adapt value.
+- If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
 - Keep `scripts/` code-only. Machine-readable data should live with the smallest justified owner instead of being hoisted by default.
 - Keep `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked Bun CLIs, `-task.js` for repo automation entrypoints, and `-lib.js` for import-only helpers.

@@ -19,7 +19,10 @@ Use these notes when applying the local Bun CLI starter bundled with `tanaab-jav
 ## Usage Notes
 
 - Copy the starter into a repository `bin/` directory and declare it in `package.json` as a real CLI entrypoint.
+- Keep the shebang and commit the copied entrypoint executable.
+- Keep the entrypoint and its dependencies friendly to `bun build` when the CLI is meant to ship as a built artifact.
 - Install helper dependencies such as `ansis`, `debug`, and `yargs-parser` only when the CLI surface actually justifies them.
 - Replace `CLI_NAME`, `DEBUG_NAMESPACE`, `getScriptVersion()`, `buildDefaults()`, `buildEnvironment()`, `buildRepeatableOptions()`, `buildEnvironmentVariables()`, and `runCli()` with project-specific behavior.
 - Extend the parser, `buildEnvironment()`, and help text only after deciding the CLI contract. Keep the generic flags unless there is a strong reason not to.
 - `ansis` respects `NO_COLOR` and `FORCE_COLOR`, but the starter intentionally omits those generic env vars from help text by default.
+- Prefer static imports and validate Leia scenarios against the built CLI artifact when that artifact is the real shipped surface.

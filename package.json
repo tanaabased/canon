@@ -1,7 +1,7 @@
 {
   "name": "@tanaabased/canon",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
-  "description": "Shared canon and skills for Tanaab based systems."
+  "description": "Tanaab-based canon, skills, and plugin surfaces."
 }
