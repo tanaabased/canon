@@ -1,0 +1,7 @@
+interface:
+  display_name: "Changelog Author"
+  short_description: "Tanaab-based CHANGELOG authoring and maintenance."
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-changelog-author when the task is primarily about drafting or updating CHANGELOG.md and preserving the repo's changelog contract."

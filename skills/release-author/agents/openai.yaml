@@ -1,7 +1,0 @@
-interface:
-  display_name: "Release Author"
-  short_description: "Tanaab-based release preparation, changelog authoring, and readiness review."
-  icon_small: "./assets/icon-small.svg"
-  icon_large: "./assets/icon-large.png"
-  brand_color: "#00c88a"
-  default_prompt: "Use $tanaab-release-author when the task is primarily about release notes, CHANGELOG drafting, release readiness, or release contract decisions."
