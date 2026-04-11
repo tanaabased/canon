@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    env:
+      term: xterm
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - name: Export formatted release date
+        run: echo "RELEASE_DATE=$(date -d "${{ github.event.release.published_at }}" "+%B %e, %Y" | tr -s ' ')" >> $GITHUB_ENV
+      - name: Prepare release
+        uses: tanaabased/prepare-release-action@v1
+        with:
+          commands: |
+            version-injector .codex-plugin/plugin.json --style json --version "${{ github.event.release.tag_name }}"
+          sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}
+          sync-email: tanaabot@tanaab.dev
+          sync-username: tanaabot
+          sync-verified: true
+          update-files: CHANGELOG.md
+          update-files-header: |
+            ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
+          update-files-meta: |
+            UNRELEASED_DATE=${{ env.RELEASE_DATE }}
+            UNRELEASED_LINK=${{ github.event.release.html_url }}
+            UNRELEASED_VERSION=${{ github.event.release.tag_name }}
+      - name: Package release archive
+        env:
+          RELEASE_ARCHIVE: tanaab-${{ github.event.release.tag_name }}.tar.gz
+        run: |
+          tar \
+            --exclude-vcs \
+            -czf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" \
+            -C "${GITHUB_WORKSPACE}" \
+            .
+      - name: Upload release archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ARCHIVE: tanaab-${{ github.event.release.tag_name }}.tar.gz
+        run: |
+          gh release upload \
+            "${{ github.event.release.tag_name }}" \
+            "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" \
+            --clobber
