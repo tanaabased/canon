@@ -10,12 +10,7 @@
   "homepage": "https://github.com/tanaabased/canon",
   "repository": "https://github.com/tanaabased/canon",
   "license": "MIT",
-  "keywords": [
-    "tanaab",
-    "canon",
-    "skills",
-    "codex"
-  ],
+  "keywords": ["tanaab", "canon", "skills", "codex"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -24,10 +19,7 @@
     "longDescription": "Tanaab-based canon enforcement as a Codex plugin, including installable skills plus a stub MCP registry for future canon resources.",
     "developerName": "@tanaabased",
     "category": "Tanaab-based",
-    "capabilities": [
-      "Interactive",
-      "Write"
-    ],
+    "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
       "Write mocha unit tests for all the util functions in `utils`",
       "Standarize this repo for formatting and structure using $tanaab-javascript-repo-standardizer.",
