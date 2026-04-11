@@ -21,8 +21,12 @@
     "category": "Tanaab-based",
     "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
-      "Use to author or standardize this repo surface.",
-      "Load the relevant Tanaab skill and shared reference for this task."
+      "Write mocha unit tests for all the util functions in `utils`",
+      "Standarize this repo for formatting and structure using $tanaab-javascript-repo-standardizer.",
+      "Generate next version release notes in CHANGELOG.md.",
+      "Create a new skill using $tanaab-skill-author that can send email via cURL for AgentMail",
+      "Generate a bun-based CLI that can check for open PRs on tanaabased/canon",
+      "Create a canon approved GitHub Actions release.yml for this repo"
     ],
     "brandColor": "#00c88a",
     "composerIcon": "./assets/composer-icon.svg",
