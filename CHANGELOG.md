@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.2.0 - [April 11, 2026](https://github.com/tanaabased/canon/releases/tag/v0.2.0)
+
 ### Canon
 
 - Added canonical Markdown buckets for durable guidance, future ideas, stable references, reusable prompts, and shared templates.
