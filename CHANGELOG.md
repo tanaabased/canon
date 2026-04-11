@@ -1,11 +1,24 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Initialized the `canon` repository scaffold.
-- Added root repo guidance and migration framing.
-- Imported legacy skills into `old-skills/` as a frozen migration source.
-- Added the first stack audit and retired `tanaab-coding` from the future live skill surface.
-- Renamed `docs/` to `guidance/` and reserved `references/` for stable lookup canon.
-- Added `ideas/` for exploratory canon and future packaging proposals.
-- Flattened canon storage within `guidance/`, `ideas/`, `references/`, `scripts/`, and `templates/` by default and added `prompts/`.
-- Replaced the multi-brand model with a fixed Tanaab owner contract, removed icon scaffolding, and moved shared owner and brand rules into the skill standard and validator.
-- Added a shared generic Tanaab skill icon pair in `templates/` and scaffolded/validated local icon assets through the skill generator.
+### Canon
+
+- Added canonical Markdown buckets for durable guidance, future ideas, stable references, reusable prompts, and shared templates.
+- Added a Codex plugin that executes and enforces the live Tanaab canon through installable skills.
+- Added a local development flow for plugin symlinks, targeted validation, and day-to-day canon maintenance.
+- Added a release-ready install path for versioned archives, personal marketplace setup, and Codex plugin installation.
+- Added repo-wide standards for changelog shape, CLI behavior, inline code docs, JavaScript repo structure, and README authoring.
+
+### Skills
+
+- Added `tanaab-changelog-author` for `CHANGELOG.md` drafting, maintenance, and changelog-contract alignment.
+- Added `tanaab-github-action-author` for GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
+- Added `tanaab-github-checks-triage` for GitHub-hosted CI failure investigation and actionable failure summaries.
+- Added `tanaab-github-workflow-author` for GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
+- Added `tanaab-javascript-author` for JavaScript and Bun implementation work, especially low-coupling helpers and utility logic.
+- Added `tanaab-javascript-cli-author` for true Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
+- Added `tanaab-javascript-repo-standardizer` for JavaScript and Bun repo baselines such as layout, linting, formatting, and baseline scripts.
+- Added `tanaab-readme-author` for repository README structure and standardization.
+- Added `tanaab-shell-cli-author` for Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.
+- Added `tanaab-skill-author` for canon skill scaffolding, standardization, and validation.
+- Added `tanaab-vitepress-author` for VitePress docs and static-site surfaces.
+- Added `tanaab-vue-author` for Vue 3 frontend implementation surfaces such as components and Composition API flows.
