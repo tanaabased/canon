@@ -1,6 +1,8 @@
 ---
 template_type: integration
 default_category_tag: external-systems
+optional_top_level_headings:
+  - "## Release Workflow"
 ---
 ---
 name: {{skill_id}}
@@ -56,6 +58,12 @@ metadata:
 2. Load only the canon, tools, and external context required for the integration path.
 3. Execute the narrowest reliable sequence against the target system.
 4. Validate the resulting state and surface any remote uncertainty explicitly.
+
+## Release Workflow
+
+- Describe the default release automation path for the owned product surface only when one canonical release mechanism materially shapes the skill.
+- Include one canonical mechanism and one minimal example only when it materially shapes the skill.
+- Do not widen this section into full workflow-topology ownership.
 
 ## Bundled Resources
 

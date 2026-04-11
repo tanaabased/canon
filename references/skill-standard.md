@@ -53,6 +53,7 @@ skill-folder/
 - `[error]` `metadata.tags` must include the selected `owner` and `type`.
 - `[error]` `metadata.tags` must include at least one additional kebab-case category tag beyond `owner` and `type`.
 - `[error]` Section order must match the selected type's canonical template order.
+- `[error]` Optional top-level sections declared by the canonical template may be omitted, but if present they must appear in the template's declared order.
 - `[error]` Relative links in `SKILL.md` must resolve.
 - `[manual]` `description` should say both what the skill does and when to use it.
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.

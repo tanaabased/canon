@@ -30,6 +30,16 @@ This file is local to `tanaab-github-action-author` because it is action-product
 - Prefer one assertion step per postcondition, use `if: always()` when later checks should still execute after a failure, and emit `::notice` or `::error` annotations with a real non-zero exit code.
 - Keep assertion steps short and shell-native until the logic becomes complex enough to extract into a repo-authored helper script.
 
+## Release Workflow
+
+- For JavaScript-backed action repos that maintain committed `dist/` artifacts or sync `CHANGELOG.md`, prefer a release-published workflow that checks out full history, installs Bun, exports `RELEASE_DATE`, and calls `tanaabased/prepare-release-action@v1`.
+- Keep `actions/checkout@v6` at `fetch-depth: 0` when the release flow needs tags, history, or sync behavior.
+- Keep the `Export formatted release date` step because `prepare-release-action` uses `RELEASE_DATE` when stamping the changelog.
+- Treat `Install deps and prep` as optional. Keep it only when a final lint, test, build, or smoke pass materially validates or regenerates the shipped action surface.
+- Keep `sync-tags` on the moving major alias that corresponds to the incoming release tag. For example, a published tag such as `v1.2.3` should sync `v1`.
+- Use the `commands` block to rebuild or stamp committed action artifacts before sync when the action ships versioned runtime files.
+- In `release.yml`, use `tanaabased/prepare-release-action@v1`, not `uses: ./`.
+
 ## README and Repo Metadata
 
 - Use the GitHub Action README variant so inputs, outputs, caveats, and usage stay in `README.md`, which is the Marketplace and repository entrypoint.

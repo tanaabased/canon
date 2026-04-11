@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      TERM: xterm
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      # Optional final smoke/build step. Keep this only when the action repo
+      # needs a last release-time validation pass or regenerated artifacts.
+      - name: Install deps and prep
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun run lint
+          bun run test
+          bun run build
+
+      - name: Export formatted release date
+        run: echo "RELEASE_DATE=$(date -d "${{ github.event.release.published_at }}" "+%B %e, %Y" | tr -s ' ')" >> "$GITHUB_ENV"
+
+      - name: Prepare release
+        uses: tanaabased/prepare-release-action@v1
+        with:
+          commands: |
+            bun run build
+            # Optionally stamp committed release artifacts here before sync.
+            # version-injector dist/index.js --style js --version "${{ github.event.release.tag_name }}"
+          # Keep this on the moving major tag alias for the published release tag.
+          # For example, if github.event.release.tag_name is v1.2.3, use v1 here.
+          sync-tags: v1
+          sync-token: ${{ secrets.RELEASE_SYNC_TOKEN }}
+          sync-email: release-bot@example.com
+          sync-username: release-bot
+          update-files: CHANGELOG.md
+          update-files-header: |
+            ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
+          update-files-meta: |
+            UNRELEASED_DATE=${{ env.RELEASE_DATE }}
+            UNRELEASED_LINK=${{ github.event.release.html_url }}
+            UNRELEASED_VERSION=${{ github.event.release.tag_name }}

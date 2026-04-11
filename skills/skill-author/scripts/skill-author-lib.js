@@ -343,6 +343,9 @@ function buildTemplateDefinition(templateContent) {
   const { body, frontmatter } = splitLeadingFrontmatter(templateContent);
   const templateType = normalizeLowercaseString(frontmatter?.template_type);
   const defaultCategoryTag = normalizeLowercaseString(frontmatter?.default_category_tag);
+  const optionalTopLevelHeadings = Array.isArray(frontmatter?.optional_top_level_headings)
+    ? frontmatter.optional_top_level_headings.map((heading) => normalizeSectionHeading(String(heading).trim()))
+    : [];
 
   if (!templateType || !defaultCategoryTag) {
     throw new Error('Template metadata must include template_type and default_category_tag.');
@@ -351,6 +354,7 @@ function buildTemplateDefinition(templateContent) {
   return {
     defaultCategoryTag,
     id: templateType,
+    optionalTopLevelHeadings,
     sectionOrder: extractTopLevelHeadings(body),
     templateBody: body,
   };
@@ -463,14 +467,36 @@ async function pathExists(targetPath) {
   }
 }
 
-function hasOrderedSections(content, orderedHeadings) {
+function hasOrderedSections(content, orderedHeadings, optionalHeadings = []) {
   const headings = extractTopLevelHeadings(content);
+  const optionalSet = new Set(optionalHeadings);
 
-  if (headings.length !== orderedHeadings.length) {
+  let actualIndex = 0;
+  let expectedIndex = 0;
+
+  while (expectedIndex < orderedHeadings.length && actualIndex < headings.length) {
+    const expectedHeading = orderedHeadings[expectedIndex];
+    const actualHeading = headings[actualIndex];
+
+    if (expectedHeading === actualHeading) {
+      expectedIndex += 1;
+      actualIndex += 1;
+      continue;
+    }
+
+    if (optionalSet.has(expectedHeading)) {
+      expectedIndex += 1;
+      continue;
+    }
+
     return false;
   }
 
-  return orderedHeadings.every((expectedHeading, index) => headings[index] === expectedHeading);
+  while (expectedIndex < orderedHeadings.length && optionalSet.has(orderedHeadings[expectedIndex])) {
+    expectedIndex += 1;
+  }
+
+  return expectedIndex === orderedHeadings.length && actualIndex === headings.length;
 }
 
 function hasTanaabBasedPrefix(value) {
@@ -655,7 +681,10 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
 
 async function validateSkillMarkdown({ actualType, errors, skillContent, skillPath, warnings }) {
   const typeDefinition = getSkillType(actualType);
-  if (typeDefinition && !hasOrderedSections(skillContent, typeDefinition.sectionOrder)) {
+  if (
+    typeDefinition &&
+    !hasOrderedSections(skillContent, typeDefinition.sectionOrder, typeDefinition.optionalTopLevelHeadings)
+  ) {
     errors.push(
       `\`${actualType}\` skills must use the section order defined by the canonical ${actualType} template owned by tanaab-skill-author.`,
     );
