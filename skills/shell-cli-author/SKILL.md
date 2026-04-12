@@ -63,10 +63,10 @@ Minimal generic example:
 
 ```bash
 # should print help output
-./dist/my-script.sh --help > .tmp/help.txt
+./dist/my-script.sh --help | grep -F 'Usage: my-script.sh'
 
-# should mention the supported flag
-grep -F -- '--force' .tmp/help.txt
+# should print a version string
+test -n "$(./dist/my-script.sh --version)"
 ```
 
 ## GitHub Actions Workflow

@@ -68,10 +68,10 @@ Minimal generic example:
 
 ```bash
 # should print help output
-my-cli --help > .tmp/help.txt
+my-cli --help | grep -F 'Usage: my-cli'
 
-# should include the command usage line
-grep -F 'Usage: my-cli' .tmp/help.txt
+# should print a version string
+test -n "$(my-cli --version)"
 ```
 
 ## GitHub Actions Workflow
