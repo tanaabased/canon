@@ -22,6 +22,9 @@ Copy these files together when standardizing a repo. If a repo already has lint 
 - Prefer `.js` config filenames in ESM repos; only fall back to `.mjs` when the repo cannot mark itself as ESM.
 - Keep `node:` protocol usage and ESM defaults consistent across Bun repos.
 - Treat `prettier.config.js` in this baseline as the formatting authority for shared repo defaults, including quote style.
+- Keep the shared Prettier baseline at `printWidth: 100`, `semi: true`, `singleQuote: true`, `trailingComma: 'all'`, `arrowParens: 'always'`, `bracketSpacing: true`, `proseWrap: 'preserve'`, and `endOfLine: 'lf'`.
+- Add a `.vitepress/**/*.{js,mjs,cjs,ts}` Prettier override with `printWidth: 140` and `objectWrap: 'collapse'` to keep VitePress config objects and `head` arrays more compact without widening the repo-wide formatting baseline.
+- Treat `objectWrap: 'collapse'` as a modern Prettier 3.x behavior that helps objects stay compact when they fit within the wider VitePress-specific print width.
 - The shared ESLint 10 base intentionally avoids `eslint-plugin-import` until that package declares ESLint 10 support.
 
 ## Expected Scripts
