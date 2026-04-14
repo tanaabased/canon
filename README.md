@@ -84,7 +84,8 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 ```
 
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
-- If the plugin is already installed, reinstall it or restart Codex when skill text, plugin metadata, or other install-surface files do not appear to refresh.
+- Sync policy for live plugin surfaces is owned by [`AGENTS.md`](./AGENTS.md).
+- The repo-local entrypoint for direct cache sync checks is `./bin/codexsync.js`; the public command label remains `codexsync`.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 
 ```sh

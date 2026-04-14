@@ -67,4 +67,5 @@
 ## Validation
 
 - For skill work, check discovery shape, section structure, and bundled-resource paths.
-- If live install sync or agent restart is intentionally skipped, say so explicitly.
+- For canon changes that affect live plugin surfaces, run `bun run codex:check`; if cache drift is reported, run `bun run codex:sync`.
+- If cache sync or agent restart is intentionally skipped, say so explicitly.

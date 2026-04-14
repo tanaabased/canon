@@ -2,5 +2,12 @@
   "name": "@tanaabased/canon",
   "version": "0.2.0",
   "type": "module",
-  "description": "Tanaab-based canon, skills, and plugin surfaces."
+  "description": "Tanaab-based canon, skills, and plugin surfaces.",
+  "bin": {
+    "codexsync": "./bin/codexsync.js"
+  },
+  "scripts": {
+    "codex:check": "./bin/codexsync.js check",
+    "codex:sync": "./bin/codexsync.js sync"
+  }
 }
