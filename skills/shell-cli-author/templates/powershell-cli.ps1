@@ -440,7 +440,7 @@ function Show-Usage {
     ('  -Force            enables force mode {0}' -f (dim ('[default: {0}]' -f (Get-EnabledDisplay $Invocation.Options.Force))))
     ('  -Item <String[]>  adds repeatable items {0}' -f (dim ('[default: {0}]' -f (Get-CsvDisplay $Invocation.Options.Item))))
     ('  -Debug            shows debug messages {0}' -f (dim ('[default: {0}]' -f (Get-EnabledDisplay $Invocation.Options.Debug))))
-    ('  -Version          shows the CLI version {0}' -f (dim ('[default: {0}]' -f $script:SCRIPT_VERSION)))
+    '  -Version          shows the CLI version'
     '  -Help             displays this help message'
   )
 

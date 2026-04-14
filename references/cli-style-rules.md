@@ -28,10 +28,11 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - Include `Environment Variables` only when the CLI defines tool-specific or repo-specific env vars that are part of its documented contract.
 - Wrap `Options` and `Environment Variables` section headers in the `tp` style when those sections are present.
 - Back `--version` with a single `SCRIPT_VERSION` variable or an explicitly aligned equivalent rather than duplicating the reported version across helpers and help text.
+- Treat `--version` / `-Version` as a reporting flag, not as an option with a displayed default value.
 - Use the same precedence order across Bash and Bun CLIs: explicit CLI option, environment variable override, then auto-detected or hardcoded default.
 - For repeatable options, accept repeated CLI flags such as `--item a --item b` and represent environment defaults as comma-separated values such as `TANAAB_ITEM=a,b`.
 - When a repeatable CLI option is provided at least once, it should replace the env-sourced list rather than append to it implicitly.
-- Show computed defaults in `dim` styling when that improves clarity.
+- Show computed defaults in `dim` styling when that improves clarity, but do not show a default annotation for version-reporting flags.
 - Keep help text readable without color; color should reinforce structure, not carry it alone.
 
 ## Logging Rules
@@ -60,4 +61,5 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - For releasable or user-facing CLIs that may be stamped by release automation, keep one injection-friendly top-level `SCRIPT_VERSION` declaration or assignment line in the entrypoint.
 - In Bun or JavaScript CLIs, prefer `let SCRIPT_VERSION;` plus fallback initialization from git metadata or a hardcoded default when unstamped source still needs a usable `--version` value.
 - In shell CLIs, prefer a single top-level `SCRIPT_VERSION=...` or `$SCRIPT_VERSION = ...` assignment that resolves environment override first, then git metadata, then an unreleased fallback such as `0.0.0-unreleased`.
+- When help text mentions a version flag, describe that it reports the current script version rather than presenting the resolved version as a default.
 - Treat `SCRIPT_VERSION` as internal release metadata rather than a documented environment contract unless a repo explicitly opts into that behavior.

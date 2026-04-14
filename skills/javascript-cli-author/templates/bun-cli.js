@@ -257,7 +257,7 @@ function renderHelp() {
   --item <value>     adds a repeatable item ${dim(`[default: ${csvDisplay(invocation.options.item)}]`)}
   --debug            shows debug messages
   -h, --help         displays this message
-  -V, --version      shows the CLI version ${dim(`[default: ${CLI_VERSION}]`)}`,
+  -V, --version      shows the CLI version`,
   ];
 
   if (environmentVariables.length > 0) {
