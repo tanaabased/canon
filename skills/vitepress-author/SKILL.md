@@ -40,12 +40,18 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 - Preserve existing style and local patterns unless the task clearly requires a change.
 - Avoid unrelated refactors.
 - Prefer VitePress 1 and SCSS defaults unless the repo or user explicitly requires another stack.
+- Prefer existing global components, shared styles, tokens, and layout patterns over page-local one-offs when implementing markdown-heavy docs surfaces.
+- Do not treat page-local `<style>` blocks, bespoke markup structures, or one-off page-specific components as the default solution.
+- Allow narrow page-local glue only when it is clearly small, docs-specific, and unlikely to repeat.
 
 ## Change Strategy
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
 - Use [../../references/readme-standards.md](../../references/readme-standards.md) only to preserve the boundary that README-vs-docs-site selection is a different owned surface.
 - Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy or generic Vue ownership.
+- Keep markdown-page implementation reusable-first: reach for existing global components, theme styles, tokens, and layout patterns before solving a page locally.
+- If a pattern could plausibly appear on 2 or more pages, or if it expresses a brand-significant or site-wide pattern, promote it into the shared theme, component, or style layer instead of solving it inside one markdown page.
+- When a markdown page reveals a missing shared component, style primitive, token, or reusable pattern, call that out explicitly as shared-system work instead of hiding it inside the page.
 
 ## Workflow
 
@@ -53,6 +59,12 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 2. Load only the relevant VitePress files plus the shared frontend and docs-boundary canon needed for the task.
 3. Keep the change focused on VitePress pages, config, theme wiring, and subtheme implementation.
 4. Validate the touched VitePress surface with the narrowest reliable repo-native checks.
+
+### Markdown Pages
+
+- For markdown pages, prefer existing global components, shared styles, tokens, and layout patterns whenever possible.
+- Use page-local markup or `<style>` glue only when it is tightly scoped to that page, clearly small, and not establishing a broader pattern.
+- Interactive demos inside markdown should follow the same reusable-first rule and should stay page-local only when they are tightly scoped and not expressing a reusable site pattern.
 
 ## Testing
 
@@ -105,6 +117,9 @@ jobs:
 - Confirm the task stayed on VitePress implementation rather than docs-surface selection or generic Vue work.
 - Confirm VitePress 1 remained the site stack unless the repo or user explicitly requires another path.
 - Confirm local subtheme changes were preferred over upstream theme forks when a subtheme is sufficient.
+- Confirm markdown pages reused existing global components, shared styles, tokens, and layout patterns before introducing page-local UI.
+- Confirm page-local glue stayed narrow and docs-specific rather than becoming the default answer for repeated or brand-significant patterns.
+- Confirm reusable patterns that belonged in shared theme, component, or style layers were promoted or explicitly called out instead of being silently embedded in markdown.
 - Confirm direct validation stays on build- and lint-first site checks rather than drifting into a separate frontend test doctrine.
 - Confirm any GitHub Actions workflow example remains a VitePress validation path rather than a general workflow-topology pattern.
 - Run the narrowest relevant lint, build, or smoke checks for the touched VitePress surface.

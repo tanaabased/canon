@@ -42,6 +42,8 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Avoid unrelated refactors.
 - Prefer Vue 3 and SCSS defaults unless the repo or user explicitly requires another stack.
 - When a component lives inside a larger VitePress site, prefer the site's existing components, markup patterns, and shared styles over new local structure.
+- When a component supports a larger VitePress or docs surface, prefer extending existing shared components, theme styles, and tokens before creating a new component just for one markdown page.
+- Do not normalize bespoke docs-only components when the real need is a reusable shared primitive.
 - Only introduce new HTML structure or new styling when there is no obvious existing site-level choice to reuse.
 - Keep component styling as bare as possible and avoid inventing a parallel visual system inside the SFC.
 
@@ -52,6 +54,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Keep component implementation, layout, and styling changes near the owning Vue surface rather than widening into docs policy or generic runtime standardization.
 - Start from a small SFC shell rather than inventing the block structure case by case.
 - When the component is part of a VitePress site, inspect the local site components and existing theme styles before adding new markup or SCSS.
+- If a requested component or style is likely to be reused across multiple pages, or expresses a site-wide or brand-significant pattern, shape it as a shared component or style primitive rather than as a one-off local solution.
 - If the desired element has no obvious site-wide styling treatment, keep the component bare and call out the gap explicitly instead of hiding it behind one-off styling.
 
 ## Workflow
@@ -59,7 +62,8 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
 3. Start from the standard SFC shell and keep the change focused on component behavior, SFC structure, and local SCSS styling.
-4. Validate the touched Vue surface with the narrowest reliable repo-native checks.
+4. When the component supports a larger docs surface, decide whether the real need is a shared primitive before normalizing a one-off docs component.
+5. Validate the touched Vue surface with the narrowest reliable repo-native checks.
 
 ### Component Shape
 
@@ -168,6 +172,9 @@ jobs:
 
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3 remained the frontend framework unless the repo or user explicitly requires another path.
+- Confirm docs-surface support work preferred extending shared components, theme styles, and tokens before creating bespoke markdown-page components.
+- Confirm likely reused or brand-significant patterns were shaped as shared component or style primitives rather than normalized as docs-only one-offs.
+- Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
 - Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.
