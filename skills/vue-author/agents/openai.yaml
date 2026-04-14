@@ -1,7 +1,7 @@
 interface:
   display_name: 'Vue Author'
-  short_description: 'Tanaab-based authoring and standardization of Vue 3 frontend surfaces.'
+  short_description: 'Tanaab-based authoring and standardization of Vue 3 single-file components.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-vue-author when the task is primarily about Vue 3 components, SFC structure, composition API flows, or Vue-specific frontend implementation.'
+  default_prompt: 'Use $tanaab-vue-author when the task is primarily about creating or updating Vue 3 single-file components, especially when the surface needs template-first markup, script setup, and SCSS styling.'
