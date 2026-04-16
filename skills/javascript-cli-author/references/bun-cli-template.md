@@ -9,6 +9,7 @@ Use these notes when applying the local Bun CLI starter bundled with `tanaab-jav
 - The starter also includes generic `note()` and `success()` helpers so the branded pink and semantic green styles are exercised in a reusable way.
 - The starter follows the same precedence model as the shell CLI templates: explicit CLI option, then environment variable, then hardcoded default.
 - The starter includes a repeatable `--item` example backed by `TANAAB_ITEM=a,b` so multi-value option handling is scaffolded from the start.
+- The starter dims optional usage placeholders such as `[options]` and `[arguments...]`, and dims any displayed `[default: ...]` annotations, so help output matches the shared CLI canon.
 
 ## Version Surface
 

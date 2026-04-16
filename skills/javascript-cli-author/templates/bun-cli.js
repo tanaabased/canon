@@ -250,7 +250,7 @@ function renderHelp() {
   const invocation = resolveInvocation([], parseArgs([]));
   const environmentVariables = buildEnvironmentVariables();
   const sections = [
-    `Usage: ${bold(`${CLI_NAME} [options] [arguments...]`)}`,
+    `Usage: ${bold(CLI_NAME)} ${dim('[options] [arguments...]')}`,
     '',
     `${tp('Options')}:
   --force            enables force mode ${dim(`[default: ${enabledDisplay(invocation.options.force)}]`)}

@@ -53,6 +53,10 @@ function bold(text, stream = process.stdout) {
   return applyAnsi('1', text, stream);
 }
 
+function dim(text, stream = process.stdout) {
+  return applyAnsi('2', text, stream);
+}
+
 function green(text, stream = process.stdout) {
   return applyAnsi('32', text, stream);
 }
@@ -354,13 +358,13 @@ async function syncEntries({ sourceRoot, targetRoot, sourceEntries, targetEntrie
   return diffEntries(sourceEntries, refreshedTargetEntries);
 }
 
-function renderHelp({ cachePath, repoRoot }) {
+function renderHelp({ cachePath, repoRoot }, stream = process.stdout) {
   return [
-    `Usage: ${bold(`${CLI_NAME} <check|sync> [options]`)}`,
+    `Usage: ${bold(`${CLI_NAME} <check|sync>`, stream)} ${dim('[options]', stream)}`,
     '',
-    `${tp('Options')}:`,
-    `  --repo-root <path>    repo root to compare from [default: ${repoRoot}]`,
-    `  --cache-path <path>   cache copy to compare or sync [default: ${cachePath}]`,
+    `${tp('Options', stream)}:`,
+    `  --repo-root <path>    repo root to compare from ${dim(`[default: ${repoRoot}]`, stream)}`,
+    `  --cache-path <path>   cache copy to compare or sync ${dim(`[default: ${cachePath}]`, stream)}`,
     '  -h, --help            displays this message',
     '  -V, --version         shows the CLI version',
   ].join('\n');
@@ -418,7 +422,7 @@ async function main() {
   const context = await resolveCliContext(options.repoRoot, options.cachePath);
 
   if (options.help) {
-    writeLine(process.stdout, renderHelp({ cachePath: context.cachePath, repoRoot: options.repoRoot }));
+    writeLine(process.stdout, renderHelp({ cachePath: context.cachePath, repoRoot: options.repoRoot }, process.stdout));
     return;
   }
 
@@ -430,7 +434,7 @@ async function main() {
   if (!command) {
     fail(`expected a command (${ts('check')} or ${ts('sync')})`);
     writeLine(process.stderr, '');
-    writeLine(process.stderr, renderHelp({ cachePath: context.cachePath, repoRoot: options.repoRoot }));
+    writeLine(process.stderr, renderHelp({ cachePath: context.cachePath, repoRoot: options.repoRoot }, process.stderr));
     return;
   }
 

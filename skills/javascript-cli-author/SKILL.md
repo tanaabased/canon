@@ -45,7 +45,7 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 
 ## Change Strategy
 
-- Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) for help order, streams, colors, and `SCRIPT_VERSION` rules.
+- Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) for help order, dimmed usage placeholders, dimmed displayed defaults, streams, colors, and `SCRIPT_VERSION` rules.
 - Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) for `bin/`, `utils/`, and hoisting decisions.
 - Prefer static imports and avoid source-layout assumptions when the CLI is meant to ship as a `bun build` artifact.
 - Use [./references/bun-cli-template.md](./references/bun-cli-template.md) and the bundled starter only when the repo actually needs a reusable Bun CLI baseline.
@@ -54,7 +54,7 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 
 1. Confirm the request is primarily about a true Bun CLI product surface.
 2. Load the CLI entrypoint plus only the shared and local canon needed for the touched help, parser, version, or packaging surface.
-3. Keep the package-level CLI contract explicit: help, precedence, streams, version, and package entrypoint behavior.
+3. Keep the package-level CLI contract explicit: help, dimmed optional usage placeholders, dimmed displayed defaults, precedence, streams, version, and package entrypoint behavior.
 4. Validate the final CLI with the narrowest reliable local checks for the touched surface.
 
 ## Testing
@@ -123,6 +123,6 @@ jobs:
 - Confirm the task stayed on a true Bun CLI surface rather than drifting into shell CLI or generic JS runtime work.
 - Confirm the entrypoint uses `#!/usr/bin/env bun`, supports explicit CLI behavior, and is declared in `package.json` when package metadata is in scope.
 - Confirm any shipped Bun CLI remains `bun build`-friendly and does not depend on source-tree-only loading patterns.
-- Confirm help output, env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
+- Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the CLI surface rather than drifting into general workflow authoring.

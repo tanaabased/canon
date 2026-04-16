@@ -15,7 +15,7 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 ## Style Surface
 
 - `bold`: emphasis for the command name, important status words, or compact inline emphasis
-- `dim`: supporting context such as defaults, parenthetical notes, or secondary hints
+- `dim`: supporting context such as defaults, parenthetical notes, optional usage placeholders, or secondary hints
 - `green`: semantic success state such as `done`, `complete`, or `installed`
 - `yellow`: semantic warning state such as `warn`
 - `red`: semantic failure state such as `error`
@@ -27,12 +27,13 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - Print help sections in this order when present: `Usage`, `Options`, `Environment Variables`.
 - Include `Environment Variables` only when the CLI defines tool-specific or repo-specific env vars that are part of its documented contract.
 - Wrap `Options` and `Environment Variables` section headers in the `tp` style when those sections are present.
+- Render optional usage placeholders such as `[options]`, `[arguments...]`, or optional parameter groups in `dim` styling so the command name and required path stay primary.
 - Back `--version` with a single `SCRIPT_VERSION` variable or an explicitly aligned equivalent rather than duplicating the reported version across helpers and help text.
 - Treat `--version` / `-Version` as a reporting flag, not as an option with a displayed default value.
 - Use the same precedence order across Bash and Bun CLIs: explicit CLI option, environment variable override, then auto-detected or hardcoded default.
 - For repeatable options, accept repeated CLI flags such as `--item a --item b` and represent environment defaults as comma-separated values such as `TANAAB_ITEM=a,b`.
 - When a repeatable CLI option is provided at least once, it should replace the env-sourced list rather than append to it implicitly.
-- Show computed defaults in `dim` styling when that improves clarity, but do not show a default annotation for version-reporting flags.
+- When help output shows a computed or resolved default annotation, render the `[default: ...]` fragment in `dim` styling, but do not show a default annotation for version-reporting flags.
 - Keep help text readable without color; color should reinforce structure, not carry it alone.
 
 ## Logging Rules

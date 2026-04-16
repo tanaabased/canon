@@ -10,6 +10,7 @@ Use these notes when applying the local shell CLI starters bundled with `tanaab-
 ## Shared Rules
 
 - Both starters follow the shared CLI style rules for help section order, status colors, stream discipline, and option-over-env precedence.
+- Both starters dim optional usage placeholders and any displayed `[default: ...]` annotations so the command name and required surface stay visually primary.
 - Both starters include a repeatable `item` example backed by `TANAAB_ITEM=a,b`.
 - Both starters keep one injection-friendly top-level `SCRIPT_VERSION` assignment so release tooling can stamp the entrypoint in place.
 - Both starters respect `NO_COLOR` and `FORCE_COLOR` when deciding whether to emit ANSI styles, but those generic env vars are intentionally not listed in help output.
