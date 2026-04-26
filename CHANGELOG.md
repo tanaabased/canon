@@ -1,8 +1,20 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Canon
+
+- Added `codexsync` for validating and syncing managed plugin cache state.
+- Added PR unit-test workflow coverage for canon validation on Ubuntu and macOS.
+- Fixed release version stamping for `.codex-plugin/plugin.json`.
+- Updated CLI standards for version help text, dimmed usage placeholders, and release-stampable script versions.
+- Updated JavaScript repo canon for Bun-first validation helpers and canon script structure.
+- Updated Leia scenario guidance for release-shaped CLI examples and focused assertions.
+
 ### Skills
 
 - Added `tanaab-github-release-author` for release readiness, version selection, changelog-backed release notes, and GitHub Release drafts.
+- Updated `tanaab-javascript-author` for Codex 5.5 readiness and focused JavaScript test guidance.
+- Updated `tanaab-javascript-cli-author` and `tanaab-shell-cli-author` templates for aligned version help text.
+- Updated `tanaab-vitepress-author` and `tanaab-vue-author` to clarify VitePress and Vue ownership boundaries.
 
 ## v0.2.0 - [April 11, 2026](https://github.com/tanaabased/canon/releases/tag/v0.2.0)
 
