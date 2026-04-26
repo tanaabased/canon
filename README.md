@@ -86,7 +86,7 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
 - Sync policy for live plugin surfaces is owned by [`AGENTS.md`](./AGENTS.md).
 - The repo-local entrypoint for direct cache sync checks is `./bin/codexsync.js`; the public command label remains `codexsync`.
-- Run `bun run canon:check` before release or plugin-cache sync work to validate skills, manifest paths, root Markdown links, and workflow package-script references.
+- For managed plugin or `codexsync` changes, run `bun run test`, `bun run lint`, `bun run codex:validate`, and `bun run codex:check`; if cache drift is reported, run `bun run codex:sync` and then `bun run codex:check` again.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 
 ```sh

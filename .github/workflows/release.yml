@@ -28,7 +28,7 @@ jobs:
         with:
           bun-version-file: .bun-version
       - name: Check canon
-        run: bun run canon:check
+        run: bun run codex:validate
       - name: Export formatted release date
         run: echo "RELEASE_DATE=$(date -d "${{ github.event.release.published_at }}" "+%B %e, %Y" | tr -s ' ')" >> $GITHUB_ENV
       - name: Prepare release

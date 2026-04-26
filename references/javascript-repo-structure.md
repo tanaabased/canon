@@ -11,14 +11,19 @@ Use this reference for Bun- or Node-based JavaScript repositories and for skill-
 ## Scope Folders
 
 - Organize code by purpose and owned surface rather than by implementation type.
+- First decide whether the repo is a thin single-package surface or a multi-package, multi-app, or multi-scope surface.
 - Use the smallest purpose-named scope folder that explains why the code exists, such as `cli/`, `config-loader/`, `release/`, `build/`, or `plugins/`.
 - When a repository is effectively one surface, the repo root can act as that scope.
+- In thin single-package repos, the repo root or a direct source root such as top-level `lib/` or `src/` can be treated as the source surface.
+- In multi-package repos, or repos where `lib/` or `src/` contains multiple purpose folders, apps, packages, or independently owned surfaces, treat those inner folders as the owning scopes.
 - Avoid broad type buckets such as `helpers/`, `classes/`, or `components/` when a purpose-named scope would be clearer.
 
 ## Preferred Layout Inside a Scope
 
 - Use `bin/` only for real CLI entrypoints.
 - Use `utils/` only for low-coupling helpers that are plausible extraction candidates.
+- In thin single-package repos, top-level `utils/` is acceptable as a sibling to direct source roots such as `lib/` or `src/`.
+- In multi-scope source trees, keep `utils/` inside the nearest owning scope unless the helper passes the hoisting test.
 - Keep ordinary implementation modules at the scope root with short purpose-driven names.
 - Add `lib/` only when the scope root becomes crowded enough that grouping improves clarity.
 - Do not create empty structural folders just to satisfy the pattern.
