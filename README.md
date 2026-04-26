@@ -20,6 +20,7 @@ The live skills are:
 
 - [`tanaab-github-action-author`](./skills/github-action-author/) shapes GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
 - [`tanaab-github-checks-triage`](./skills/github-checks-triage/) investigates failing GitHub-hosted CI checks and summarizes the actionable failure surface.
+- [`tanaab-github-release-author`](./skills/github-release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
 - [`tanaab-github-workflow-author`](./skills/github-workflow-author/) owns GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
 - [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript and Bun implementation work, especially low-coupling helpers and utility logic.
 - [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.

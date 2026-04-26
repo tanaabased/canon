@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Skills
+
+- Added `tanaab-github-release-author` for release readiness, version selection, changelog-backed release notes, and GitHub Release drafts.
+
 ## v0.2.0 - [April 11, 2026](https://github.com/tanaabased/canon/releases/tag/v0.2.0)
 
 ### Canon

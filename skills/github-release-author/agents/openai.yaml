@@ -1,0 +1,7 @@
+interface:
+  display_name: "GitHub Release Author"
+  short_description: "Tanaab-based GitHub Release drafting for Tanaab and allied repos."
+  icon_small: "./assets/icon-small.svg"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#00c88a"
+  default_prompt: "Use $tanaab-github-release-author when the task is to prepare release metadata, choose a version bump, draft GitHub release notes from CHANGELOG.md, and create a GitHub Release draft for a Tanaab or allied repo."

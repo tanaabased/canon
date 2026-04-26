@@ -29,6 +29,7 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 - Do not use this skill for release notes outside `CHANGELOG.md`.
 - Do not use this skill for release readiness review, release workflow mechanics, or deployment wiring.
 - Do not use this skill for release metadata decisions, tagging, publishing, or pushing releases.
+- Use `$tanaab-github-release-author` for release readiness, version selection, GitHub Release drafts, tagging, publishing, or release body extraction.
 - Do not use this skill for raw implementation work that does not directly affect the changelog surface.
 
 ## Preconditions
