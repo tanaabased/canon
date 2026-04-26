@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.3.1 - [April 26, 2026](https://github.com/tanaabased/canon/releases/tag/v0.3.1)
+
 - Added release archive checks that reinstall production dependencies before packaging canon bundles.
 
 ## v0.3.0 - [April 26, 2026](https://github.com/tanaabased/canon/releases/tag/v0.3.0)
