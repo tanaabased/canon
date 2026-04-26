@@ -1,0 +1,64 @@
+name: Release Tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  STAMPED_VERSION: v9.9.9-ci.${{ github.event.pull_request.head.sha }}
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Check canon
+        run: bun run codex:validate
+      - name: Prepare release-shaped build
+        uses: tanaabased/prepare-release-action@v1
+        with:
+          version: dev
+          sync: false
+          commands: |
+            version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
+      - name: Verify stamped plugin manifest
+        shell: bash
+        run: |
+          plugin_version="v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')"
+          printf 'plugin=%s\n' "$plugin_version"
+          test "$plugin_version" = "${{ env.STAMPED_VERSION }}"
+      - name: Install production dependencies
+        run: |
+          rm -rf node_modules
+          bun install --production --frozen-lockfile --ignore-scripts
+      - name: Package release archive
+        env:
+          RELEASE_ARCHIVE: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
+        run: |
+          tar \
+            --exclude-vcs \
+            -czf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" \
+            -C "${GITHUB_WORKSPACE}" \
+            .
+      - name: Verify release archive contents
+        env:
+          RELEASE_ARCHIVE: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
+        run: |
+          tar -tzf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" | grep -F '.codex-plugin/plugin.json'
+          tar -tzf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" | grep -F 'skills/github-workflow-author/SKILL.md'
+          tar -tzf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" | grep -F 'bin/codexsync.js'
+          if tar -tzf "${RUNNER_TEMP}/${RELEASE_ARCHIVE}" | grep -E '(^|/)node_modules/mocha/'; then
+            echo 'release archive must not include dev dependencies' >&2
+            exit 1
+          fi

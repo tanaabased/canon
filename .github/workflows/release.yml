@@ -27,6 +27,8 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
       - name: Check canon
         run: bun run codex:validate
       - name: Export formatted release date
@@ -47,6 +49,10 @@ jobs:
             UNRELEASED_DATE=${{ env.RELEASE_DATE }}
             UNRELEASED_LINK=${{ github.event.release.html_url }}
             UNRELEASED_VERSION=${{ github.event.release.tag_name }}
+      - name: Install production dependencies
+        run: |
+          rm -rf node_modules
+          bun install --production --frozen-lockfile --ignore-scripts
       - name: Package release archive
         env:
           RELEASE_ARCHIVE: tanaab-${{ github.event.release.tag_name }}.tar.gz
