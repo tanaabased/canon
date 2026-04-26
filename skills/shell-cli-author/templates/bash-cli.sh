@@ -254,7 +254,7 @@ ${tty_tp}Options:${tty_reset}
   --force               enables force mode ${tty_dim}[default: ${force_display}]${tty_reset}
   --item                adds a repeatable item ${tty_dim}[default: ${items_display}]${tty_reset}
   --debug               shows debug messages ${tty_dim}[default: ${debug_display}]${tty_reset}
-  --version             shows the CLI version ${tty_dim}[default: ${SCRIPT_VERSION}]${tty_reset}
+  --version             shows the CLI version
   -h, --help            displays this help message
 
 ${tty_tp}Environment Variables:${tty_reset}

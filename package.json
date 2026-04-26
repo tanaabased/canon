@@ -2,5 +2,20 @@
   "name": "@tanaabased/canon",
   "version": "0.2.0",
   "type": "module",
-  "description": "Tanaab-based canon, skills, and plugin surfaces."
+  "description": "Tanaab-based canon, skills, and plugin surfaces.",
+  "bin": {
+    "codexsync": "./bin/codexsync.js"
+  },
+  "scripts": {
+    "canon:check": "./bin/codexsync.js validate",
+    "codex:check": "./bin/codexsync.js check",
+    "codex:validate": "./bin/codexsync.js validate",
+    "codex:sync": "./bin/codexsync.js sync",
+    "lint": "bun run codex:validate",
+    "test:unit": "mocha \"test/**/*.spec.js\"",
+    "test": "bun run test:unit"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.5"
+  }
 }

@@ -250,14 +250,14 @@ function renderHelp() {
   const invocation = resolveInvocation([], parseArgs([]));
   const environmentVariables = buildEnvironmentVariables();
   const sections = [
-    `Usage: ${bold(`${CLI_NAME} [options] [arguments...]`)}`,
+    `Usage: ${bold(CLI_NAME)} ${dim('[options] [arguments...]')}`,
     '',
     `${tp('Options')}:
   --force            enables force mode ${dim(`[default: ${enabledDisplay(invocation.options.force)}]`)}
   --item <value>     adds a repeatable item ${dim(`[default: ${csvDisplay(invocation.options.item)}]`)}
   --debug            shows debug messages
   -h, --help         displays this message
-  -V, --version      shows the CLI version ${dim(`[default: ${CLI_VERSION}]`)}`,
+  -V, --version      shows the CLI version`,
   ];
 
   if (environmentVariables.length > 0) {

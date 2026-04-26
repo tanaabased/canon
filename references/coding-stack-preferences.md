@@ -47,6 +47,9 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a top-level `test/` directory for this style of unit coverage.
 - For helper modules such as `utils/x.js`, prefer matching specs such as `test/x.spec.js`.
+- Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
+- Start Mocha test names with `should` so each test reads as an expected behavior.
+- For JS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
 
 ## Operational Scenario Testing
 

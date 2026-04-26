@@ -7,4 +7,13 @@ export default {
   bracketSpacing: true,
   proseWrap: 'preserve',
   endOfLine: 'lf',
+  overrides: [
+    {
+      files: ['.vitepress/**/*.{js,mjs,cjs,ts}'],
+      options: {
+        printWidth: 140,
+        objectWrap: 'collapse',
+      },
+    },
+  ],
 };

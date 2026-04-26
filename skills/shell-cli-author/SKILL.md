@@ -42,7 +42,7 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 ## Change Strategy
 
-- Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when the task touches help output, logging, color, stream behavior, or version-reporting shape.
+- Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when the task touches help output, dimmed usage placeholders, dimmed displayed defaults, logging, color, stream behavior, or version-reporting shape.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) only for shell-vs-JS boundary decisions, not as a substitute for CLI contract rules.
 - Use [./references/shell-cli-templates.md](./references/shell-cli-templates.md) and the bundled starters when the repo needs a reusable Bash or PowerShell CLI baseline.
 
@@ -50,7 +50,7 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 1. Confirm the task is shell-CLI-led rather than workflow-, hosted-distribution-, or release-led.
 2. Load only the entrypoint, wrapper, and CLI canon needed for the change.
-3. Keep the owned shell CLI contract explicit: help order, option precedence, output streams, and safety guards.
+3. Keep the owned shell CLI contract explicit: help order, dimmed optional usage placeholders, dimmed displayed defaults, option precedence, output streams, and safety guards.
 4. Validate the final script with the narrowest reliable shell checks for the touched surface.
 
 ## Testing
@@ -116,7 +116,7 @@ jobs:
 ## Validation
 
 - Confirm the task stayed on Bash or PowerShell CLI surfaces rather than drifting into workflow YAML or hosted repo-template standardization.
-- Confirm help output, stream usage, and version-reporting shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
+- Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus stream usage and version-reporting shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.

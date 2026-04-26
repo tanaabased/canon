@@ -67,4 +67,5 @@
 ## Validation
 
 - For skill work, check discovery shape, section structure, and bundled-resource paths.
-- If live install sync or agent restart is intentionally skipped, say so explicitly.
+- For managed plugin or `codexsync` changes, run `bun run test`, `bun run lint`, `bun run codex:validate`, and `bun run codex:check`; if cache drift is reported, run `bun run codex:sync` and then `bun run codex:check` again.
+- If cache sync or agent restart is intentionally skipped, say so explicitly.

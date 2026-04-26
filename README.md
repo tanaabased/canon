@@ -14,7 +14,7 @@ Outside the Codex plugin surface, the main Markdown canon lives in a small set o
 
 ## Usage
 
-Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills only. [`.mcp.json`](./.mcp.json) is intentionally still a stub until this repo exposes a real shared MCP surface.
+Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills plus a stub [`.mcp.json`](./.mcp.json) registry reserved for a future real shared MCP surface.
 
 The live skills are:
 
@@ -84,7 +84,9 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 ```
 
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
-- If the plugin is already installed, reinstall it or restart Codex when skill text, plugin metadata, or other install-surface files do not appear to refresh.
+- Sync policy for live plugin surfaces is owned by [`AGENTS.md`](./AGENTS.md).
+- The repo-local entrypoint for direct cache sync checks is `./bin/codexsync.js`; the public command label remains `codexsync`.
+- For managed plugin or `codexsync` changes, run `bun run test`, `bun run lint`, `bun run codex:validate`, and `bun run codex:check`; if cache drift is reported, run `bun run codex:sync` and then `bun run codex:check` again.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 
 ```sh
