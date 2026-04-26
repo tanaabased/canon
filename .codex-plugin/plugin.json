@@ -1,6 +1,6 @@
 {
   "name": "tanaab",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Tanaab-based canon enforcement via AI.",
   "author": {
     "name": "Tanaab Maneuvering Systems LLC",
@@ -10,7 +10,12 @@
   "homepage": "https://github.com/tanaabased/canon",
   "repository": "https://github.com/tanaabased/canon",
   "license": "MIT",
-  "keywords": ["tanaab", "canon", "skills", "codex"],
+  "keywords": [
+    "tanaab",
+    "canon",
+    "skills",
+    "codex"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -19,7 +24,10 @@
     "longDescription": "Tanaab-based canon enforcement as a Codex plugin, including installable skills plus a stub MCP registry for future canon resources.",
     "developerName": "@tanaabased",
     "category": "Tanaab-based",
-    "capabilities": ["Interactive", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
     "defaultPrompt": [
       "Use $tanaab-javascript-author to add Bun tests for utility functions in utils/.",
       "Use $tanaab-javascript-repo-standardizer to standardize formatting, structure, and baseline scripts for this repo.",
