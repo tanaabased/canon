@@ -70,6 +70,8 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 - Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
 - Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
 - Keep test files narrow and adjacent in intent, usually under `test/` with names such as `test/normalize-tags.spec.js`.
+- Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
+- Start Mocha test names with `should` so the spec reads as behavior rather than implementation narration.
 - Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
 - Add `c8` only when coverage reporting or enforcement is explicitly part of the task.
 - Do not merge GitHub Action input-helper testing into this skill's default path; keep that with the narrower GitHub Action surface.
@@ -81,8 +83,8 @@ import assert from 'node:assert/strict';
 
 import normalizeTags from '../utils/normalize-tags.js';
 
-describe('normalizeTags', () => {
-  it('drops empty values and lowercases tags', () => {
+describe('utils/normalize-tags', () => {
+  it('should drop empty values and lowercase tags', () => {
     assert.deepEqual(normalizeTags([' Docs ', '', null, 'API']), ['docs', 'api']);
   });
 });
@@ -92,6 +94,7 @@ describe('normalizeTags', () => {
 
 - When this skill's owned JS surface needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
 - Keep the workflow generic, Bun-first, and centered on the repo's test command.
+- For developer-machine code, CLIs, and plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
 - Treat this as a validation lifecycle for the owned JS surface, not as ownership of workflow YAML as a product surface.
 
 Minimal generic example:
@@ -104,7 +107,14 @@ on:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - macos-26
     steps:
       - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
