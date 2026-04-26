@@ -186,6 +186,4 @@ This mode cannot assume sibling canon paths still exist. Shared canon must eithe
 - be vendored into the bundle, or
 - have its references rewritten to bundled paths
 
-This should be treated as an export concern, not the default authoring concern.
-
-Detailed packaging and `canonfile` proposals currently live in [`../ideas/skill-bundle-export-action.md`](../ideas/skill-bundle-export-action.md) until the export contract is stable enough to freeze in `references/`.
+This should be treated as an export concern, not the default authoring concern. Flat per-skill export remains deferred until there is a real packaging reference to freeze.

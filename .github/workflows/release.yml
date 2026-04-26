@@ -27,6 +27,8 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
+      - name: Check canon
+        run: bun run canon:check
       - name: Export formatted release date
         run: echo "RELEASE_DATE=$(date -d "${{ github.event.release.published_at }}" "+%B %e, %Y" | tr -s ' ')" >> $GITHUB_ENV
       - name: Prepare release
@@ -34,7 +36,6 @@ jobs:
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "${{ github.event.release.tag_name }}"
-            bun run format:write
           sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}
           sync-email: tanaabot@tanaab.dev
           sync-username: tanaabot

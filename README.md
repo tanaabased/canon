@@ -14,7 +14,7 @@ Outside the Codex plugin surface, the main Markdown canon lives in a small set o
 
 ## Usage
 
-Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills only. [`.mcp.json`](./.mcp.json) is intentionally still a stub until this repo exposes a real shared MCP surface.
+Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills plus a stub [`.mcp.json`](./.mcp.json) registry reserved for a future real shared MCP surface.
 
 The live skills are:
 
@@ -86,6 +86,7 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
 - Sync policy for live plugin surfaces is owned by [`AGENTS.md`](./AGENTS.md).
 - The repo-local entrypoint for direct cache sync checks is `./bin/codexsync.js`; the public command label remains `codexsync`.
+- Run `bun run canon:check` before release or plugin-cache sync work to validate skills, manifest paths, root Markdown links, and workflow package-script references.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 
 ```sh
