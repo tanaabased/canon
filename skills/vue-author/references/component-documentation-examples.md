@@ -118,13 +118,13 @@ const renderedCodeBlock = computed(() => {
 <style scoped lang="scss">
 .component-doc-demo {
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
   margin-top: 1rem;
 }
 
 .component-doc-demo__group {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .component-doc-demo__title,
@@ -132,41 +132,20 @@ const renderedCodeBlock = computed(() => {
   margin: 0;
 }
 
-.component-doc-demo__description {
-  color: var(--vp-c-text-2);
-  font-size: 0.9375rem;
-}
-
 .component-doc-demo__controls {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .component-doc-demo__preview {
   display: flex;
   align-items: center;
   min-height: 180px;
-  padding: 1rem;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  background: var(--vp-c-bg-soft);
 }
 
 .component-doc-demo__controls :deep(label) {
   display: grid;
   gap: 0.35rem;
-  font-size: 0.875rem;
-}
-
-.component-doc-demo__controls :deep(input),
-.component-doc-demo__controls :deep(select) {
-  width: 100%;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  padding: 0.5rem 0.625rem;
-  font: inherit;
 }
 </style>
 ```
@@ -174,6 +153,8 @@ const renderedCodeBlock = computed(() => {
 ## Fallback Markdown Docs Page
 
 Use this page shape when documenting a component in VitePress and the project has no existing component docs page to follow.
+
+Use the target project's visually hidden label utility for controls that use placeholder-style prompts. In `@tanaabased/theme`, use `.tms-visually-hidden`. Keep placeholders concise and put examples or constraints in surrounding docs text instead of placeholder strings.
 
 ````md
 ---
@@ -206,9 +187,9 @@ description: Interactive example for the ExampleComponent Vue component.
 <script setup>
 import { computed, ref } from 'vue';
 
-const label = ref('Example');
-const href = ref('/');
-const variant = ref('default');
+const label = ref('');
+const href = ref('');
+const variant = ref('');
 
 const resolvedLabel = computed(() => {
   const value = label.value?.trim();
@@ -222,6 +203,8 @@ const resolvedHref = computed(() => {
   return value;
 });
 
+const resolvedVariant = computed(() => variant.value || 'default');
+
 function quoteProp(value) {
   return JSON.stringify(value);
 }
@@ -231,7 +214,7 @@ const demoCode = computed(() => {
 
   if (resolvedLabel.value !== 'Example') props.push(`label=${quoteProp(resolvedLabel.value)}`);
   if (resolvedHref.value !== '/') props.push(`href=${quoteProp(resolvedHref.value)}`);
-  if (variant.value !== 'default') props.push(`variant=${quoteProp(variant.value)}`);
+  if (resolvedVariant.value !== 'default') props.push(`variant=${quoteProp(resolvedVariant.value)}`);
 
   if (props.length === 0) return '<ExampleComponent />';
   return `<ExampleComponent\n  ${props.join('\n  ')}\n/>`;
@@ -244,16 +227,17 @@ const demoCode = computed(() => {
   </template>
   <template #controls>
     <label>
-      <span>Label</span>
-      <input v-model="label" type="text" placeholder="Example" />
+      <span class="visually-hidden">Label</span>
+      <input v-model="label" type="text" placeholder="Label" />
     </label>
     <label>
-      <span>Href</span>
-      <input v-model="href" type="text" placeholder="/, /components/example-component, https://..." />
+      <span class="visually-hidden">Link URL</span>
+      <input v-model="href" type="text" placeholder="Link URL" />
     </label>
     <label>
-      <span>Variant</span>
+      <span class="visually-hidden">Variant</span>
       <select v-model="variant">
+        <option value="">Variant</option>
         <option value="default">default</option>
         <option value="subtle">subtle</option>
       </select>
@@ -263,7 +247,7 @@ const demoCode = computed(() => {
     <ExampleComponent
       :label="resolvedLabel"
       :href="resolvedHref"
-      :variant="variant"
+      :variant="resolvedVariant"
     />
   </template>
 </ComponentDocDemo>
