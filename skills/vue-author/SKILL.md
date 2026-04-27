@@ -41,29 +41,33 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Preserve existing style and local patterns unless the task clearly requires a change.
 - Avoid unrelated refactors.
 - Prefer Vue 3 and SCSS defaults unless the repo or user explicitly requires another stack.
-- When a component lives inside a larger VitePress site, prefer the site's existing components, markup patterns, and shared styles over new local structure.
-- When a component supports a larger VitePress or docs surface, prefer extending existing shared components, theme styles, and tokens before creating a new component just for one markdown page.
-- Do not normalize bespoke docs-only components when the real need is a reusable shared primitive.
+- When a component supports a VitePress or docs-site Markdown page, apply the shared front-end Markdown page rules before normalizing a docs-only component.
 - Only introduce new HTML structure or new styling when there is no obvious existing site-level choice to reuse.
 - Keep component styling as bare as possible and avoid inventing a parallel visual system inside the SFC.
 
 ## Change Strategy
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for Vue 3, SCSS, and subtheme defaults.
+- Use [../../references/front-end-markdown-pages.md](../../references/front-end-markdown-pages.md) when the component is embedded in or exists primarily to support a docs-site Markdown page.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for the broader frontend stack defaults.
 - Keep component implementation, layout, and styling changes near the owning Vue surface rather than widening into docs policy or generic runtime standardization.
 - Start from a small SFC shell rather than inventing the block structure case by case.
 - When the component is part of a VitePress site, inspect the local site components and existing theme styles before adding new markup or SCSS.
-- If a requested component or style is likely to be reused across multiple pages, or expresses a site-wide or brand-significant pattern, shape it as a shared component or style primitive rather than as a one-off local solution.
 - If the desired element has no obvious site-wide styling treatment, keep the component bare and call out the gap explicitly instead of hiding it behind one-off styling.
 
 ## Workflow
 
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
-3. Start from the standard SFC shell and keep the change focused on component behavior, SFC structure, and local SCSS styling.
-4. When the component supports a larger docs surface, decide whether the real need is a shared primitive before normalizing a one-off docs component.
+3. Inspect project-local component and docs examples before using bundled fallback examples.
+4. When the component supports a docs-site Markdown page, use the shared Markdown page reference to decide whether the real need is a shared primitive.
 5. Validate the touched Vue surface with the narrowest reliable repo-native checks.
+
+### Project-Local Examples First
+
+- Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
+- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
+- In `@tanaabased/theme`, treat `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` as the local source patterns for component implementation and docs pages.
 
 ### Component Shape
 
@@ -81,47 +85,6 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Reuse existing class hooks, CSS variables, tokens, and component conventions before creating new selectors.
 - Prefer light layout or state-specific rules over fully bespoke visual treatments.
 - If an element appears unstyled because the site lacks a shared treatment for it, note that gap in your response so the site-level pattern can be added deliberately later.
-
-### Starter Template
-
-Use this as the default shell for a new component, then expand only as the surface requires:
-
-```vue
-<template>
-  <div class="component-name" :data-variant="props.variant">
-    <slot :label="resolvedLabel">{{ resolvedLabel }}</slot>
-  </div>
-</template>
-
-<script setup>
-import { computed } from 'vue';
-
-const props = defineProps({
-  label: {
-    type: String,
-    default: 'Component',
-  },
-  variant: {
-    type: String,
-    default: 'default',
-  },
-});
-
-const resolvedLabel = computed(() => {
-  if (!props.label || props.label.trim().length === 0) return 'Component';
-  return props.label.trim();
-});
-</script>
-
-<style scoped lang="scss">
-.component-name {
-  display: block;
-}
-</style>
-```
-
-- Replace `component-name`, props, and slot shape with literal names that match the actual component surface.
-- Keep the structure lean: template first, `script setup` second, SCSS last.
 
 ## Testing
 
@@ -165,15 +128,17 @@ jobs:
 
 ## Bundled Resources
 
+- [./references/component-documentation-examples.md](./references/component-documentation-examples.md): fallback component, component-doc-demo, and Markdown docs examples for projects without local precedents
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
+- [../../references/front-end-markdown-pages.md](../../references/front-end-markdown-pages.md): shared rules for docs-site Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
 
 ## Validation
 
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3 remained the frontend framework unless the repo or user explicitly requires another path.
-- Confirm docs-surface support work preferred extending shared components, theme styles, and tokens before creating bespoke markdown-page components.
-- Confirm likely reused or brand-significant patterns were shaped as shared component or style primitives rather than normalized as docs-only one-offs.
+- Confirm project-local examples were preferred before using bundled fallback examples.
+- Confirm docs-site Markdown page component work followed the shared Markdown page reference before creating bespoke docs-only components.
 - Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
