@@ -61,11 +61,13 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
 3. Inspect project-local component and docs examples before using bundled fallback examples.
 4. When the component supports a docs-site Markdown page, use the shared Markdown page reference to decide whether the real need is a shared primitive.
-5. Validate the touched Vue surface with the narrowest reliable repo-native checks.
+5. When adding a Vue component docs page inside a VitePress component docs surface, update the component index, sidebar, or equivalent navigation so the page is reachable.
+6. Validate the touched Vue surface with the narrowest reliable repo-native checks.
 
 ### Project-Local Examples First
 
 - Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
+- When local component docs demos expose generated code, preserve local source-link and slot-control conventions rather than replacing them with fallback shapes.
 - Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
 - In `@tanaabased/theme`, treat `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` as the local source patterns for component implementation and docs pages.
 
@@ -140,6 +142,9 @@ jobs:
 - Confirm project-local examples were preferred before using bundled fallback examples.
 - Confirm docs-site Markdown page component work followed the shared Markdown page reference before creating bespoke docs-only components.
 - Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
+- Confirm component docs demos cover meaningful slots as well as props when slots are part of the public API.
+- Confirm generated code examples include an adjacent source-file link when the project has a stable source path or URL.
+- Confirm new Vue component docs pages in VitePress component docs surfaces update the component index, sidebar, or equivalent navigation.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
 - Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.

@@ -5,6 +5,8 @@ Use these examples only as fallbacks when the target project does not already ha
 - Inspect the target project first for existing components, component docs pages, demo wrappers, global component registration, theme styles, and lint exceptions.
 - Prefer project-local examples over this file. In `@tanaabased/theme`, that means patterns like `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` should guide new component docs before these generic examples.
 - Keep names, props, slots, class hooks, and Markdown structure aligned with the actual project.
+- Cover meaningful public slots as well as props in fallback docs demos.
+- Include a source-link hook near generated code when a stable component source path or URL is available.
 - Pair this with [../../../references/front-end-markdown-pages.md](../../../references/front-end-markdown-pages.md) when the component is documented in a VitePress or docs-site Markdown page.
 
 ## Fallback Component
@@ -13,22 +15,27 @@ Use this component shape only when the project has no stronger local component p
 
 ```vue
 <template>
-  <a class="example-component" :href="resolvedHref" :data-variant="props.variant">
-    <span class="example-component__label">{{ resolvedLabel }}</span>
-  </a>
+  <section class="example-component" :data-variant="props.variant">
+    <header class="example-component__header">
+      <slot name="title" :title="resolvedTitle">{{ resolvedTitle }}</slot>
+    </header>
+    <div class="example-component__body">
+      <slot :description="resolvedDescription">{{ resolvedDescription }}</slot>
+    </div>
+  </section>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 
 const props = defineProps({
-  label: {
+  description: {
     type: String,
-    default: 'Example',
+    default: 'Example component body.',
   },
-  href: {
+  title: {
     type: String,
-    default: '/',
+    default: 'Example component',
   },
   variant: {
     type: String,
@@ -37,25 +44,27 @@ const props = defineProps({
   },
 });
 
-const resolvedLabel = computed(() => {
-  const value = props.label?.trim();
-  if (!value) return 'Example';
+const resolvedDescription = computed(() => {
+  const value = props.description?.trim();
+  if (!value) return 'Example component body.';
   return value;
 });
 
-const resolvedHref = computed(() => {
-  const value = props.href?.trim();
-  if (!value) return '/';
+const resolvedTitle = computed(() => {
+  const value = props.title?.trim();
+  if (!value) return 'Example component';
   return value;
 });
 </script>
 
 <style scoped lang="scss">
 .example-component {
-  display: inline-flex;
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
+  display: block;
+}
+
+.example-component__header,
+.example-component__body {
+  min-width: 0;
 }
 </style>
 ```
@@ -64,7 +73,7 @@ const resolvedHref = computed(() => {
 
 Use this wrapper when the project needs an interactive component docs primitive and has no existing equivalent.
 
-The core contract is a `code` prop plus `controls-description`, `controls`, and `preview` slots. If the project already has a code highlighter, copy button, or VitePress code-block helper, use that instead of this minimal fallback renderer.
+The core contract is a `code` prop, an optional `source` link, plus `controls-description`, `controls`, and `preview` slots. If the project already has a code highlighter, copy button, source-link helper, or VitePress code-block helper, use that instead of this minimal fallback renderer.
 
 ```vue
 <template>
@@ -90,7 +99,10 @@ The core contract is a `code` prop plus `controls-description`, `controls`, and 
 
     <section v-if="props.code" class="component-doc-demo__group">
       <h3 class="component-doc-demo__title">Code</h3>
-      <div v-html="renderedCodeBlock"></div>
+      <div class="component-doc-demo__code" v-html="renderedCodeBlock"></div>
+      <small v-if="resolvedSourceHref" class="component-doc-demo__source">
+        <a :href="resolvedSourceHref" target="_blank" rel="noreferrer">source file</a>
+      </small>
     </section>
   </div>
 </template>
@@ -100,6 +112,10 @@ import { computed } from 'vue';
 
 const props = defineProps({
   code: {
+    type: String,
+    default: '',
+  },
+  source: {
     type: String,
     default: '',
   },
@@ -113,6 +129,8 @@ const renderedCodeBlock = computed(() => {
   if (!props.code) return '';
   return `<div class="language-vue vp-adaptive-theme"><span class="lang">vue</span><pre class="vp-code"><code>${escapeHtml(props.code)}</code></pre></div>`;
 });
+
+const resolvedSourceHref = computed(() => props.source.trim());
 </script>
 
 <style scoped lang="scss">
@@ -164,22 +182,33 @@ description: Interactive example for the ExampleComponent Vue component.
 
 # Example Component
 
-`ExampleComponent` renders a project-local link treatment with a label, destination, and visual variant.
+`ExampleComponent` renders a project-local content block with a title slot, default slot, and visual variant.
 
 ## Props
 
-| Prop      | Type                    | Default     | Notes                                      |
-| --------- | ----------------------- | ----------- | ------------------------------------------ |
-| `label`   | `string`                | `'Example'` | Text rendered inside the component.        |
-| `href`    | `string`                | `'/'`       | Destination applied to the root link.      |
-| `variant` | `'default' \| 'subtle'` | `'default'` | Selects the component's visual treatment. |
+| Prop          | Type                    | Default                     | Notes                                                |
+| ------------- | ----------------------- | --------------------------- | ---------------------------------------------------- |
+| `description` | `string`                | `'Example component body.'` | Fallback default-slot text when no slot is provided. |
+| `title`       | `string`                | `'Example component'`       | Fallback title-slot text when no slot is provided.   |
+| `variant`     | `'default' \| 'subtle'` | `'default'`                 | Selects the component's visual treatment.            |
+
+## Slots
+
+| Slot      | Notes                                  |
+| --------- | -------------------------------------- |
+| `#title`  | Title or label content for the block.  |
+| `default` | Main body content for the component.   |
 
 ## Basic Usage
 
 ```vue
 <ExampleComponent />
-<ExampleComponent label="Docs" href="/components/example-component" />
-<ExampleComponent label="Subtle" variant="subtle" />
+<ExampleComponent variant="subtle">
+  <template #title>
+    Docs example
+  </template>
+  Body content can come from the default slot.
+</ExampleComponent>
 ```
 
 ## Demo
@@ -187,53 +216,43 @@ description: Interactive example for the ExampleComponent Vue component.
 <script setup>
 import { computed, ref } from 'vue';
 
-const label = ref('');
-const href = ref('');
 const variant = ref('');
+const titleSlot = ref('');
+const defaultSlot = ref('');
 
-const resolvedLabel = computed(() => {
-  const value = label.value?.trim();
-  if (!value) return 'Example';
-  return value;
-});
-
-const resolvedHref = computed(() => {
-  const value = href.value?.trim();
-  if (!value) return '/';
-  return value;
-});
+const fallbackTitleSlot = 'Example component';
+const fallbackDefaultSlot = 'Example component body.';
 
 const resolvedVariant = computed(() => variant.value || 'default');
+const resolvedTitleSlot = computed(() => titleSlot.value.trim() || fallbackTitleSlot);
+const resolvedDefaultSlot = computed(() => defaultSlot.value.trim() || fallbackDefaultSlot);
 
-function quoteProp(value) {
-  return JSON.stringify(value);
+function indentLines(value, spaces) {
+  const prefix = ' '.repeat(spaces);
+  return value
+    .trim()
+    .split('\n')
+    .map((line) => `${prefix}${line}`)
+    .join('\n');
 }
 
 const demoCode = computed(() => {
-  const props = [];
+  const variantProp = resolvedVariant.value === 'default' ? '' : ` variant="${resolvedVariant.value}"`;
 
-  if (resolvedLabel.value !== 'Example') props.push(`label=${quoteProp(resolvedLabel.value)}`);
-  if (resolvedHref.value !== '/') props.push(`href=${quoteProp(resolvedHref.value)}`);
-  if (resolvedVariant.value !== 'default') props.push(`variant=${quoteProp(resolvedVariant.value)}`);
-
-  if (props.length === 0) return '<ExampleComponent />';
-  return `<ExampleComponent\n  ${props.join('\n  ')}\n/>`;
+  return `<ExampleComponent${variantProp}>
+  <template #title>
+${indentLines(resolvedTitleSlot.value, 4)}
+  </template>
+${indentLines(resolvedDefaultSlot.value, 2)}
+</ExampleComponent>`;
 });
 </script>
 
-<ComponentDocDemo :code="demoCode">
+<ComponentDocDemo :code="demoCode" source="components/ExampleComponent.vue">
   <template #controls-description>
-    Adjust the controls to update both the live preview and the code sample.
+    Adjust the controls to update the live preview, slot contents, and code sample.
   </template>
   <template #controls>
-    <label>
-      <span class="visually-hidden">Label</span>
-      <input v-model="label" type="text" placeholder="Label" />
-    </label>
-    <label>
-      <span class="visually-hidden">Link URL</span>
-      <input v-model="href" type="text" placeholder="Link URL" />
-    </label>
     <label>
       <span class="visually-hidden">Variant</span>
       <select v-model="variant">
@@ -242,13 +261,20 @@ const demoCode = computed(() => {
         <option value="subtle">subtle</option>
       </select>
     </label>
+    <label>
+      <span class="visually-hidden">Title slot</span>
+      <textarea v-model="titleSlot" placeholder="Title slot"></textarea>
+    </label>
+    <label>
+      <span class="visually-hidden">Default slot</span>
+      <textarea v-model="defaultSlot" placeholder="Default slot"></textarea>
+    </label>
   </template>
   <template #preview>
-    <ExampleComponent
-      :label="resolvedLabel"
-      :href="resolvedHref"
-      :variant="resolvedVariant"
-    />
+    <ExampleComponent :variant="resolvedVariant">
+      <template #title>{{ resolvedTitleSlot }}</template>
+      {{ resolvedDefaultSlot }}
+    </ExampleComponent>
   </template>
 </ComponentDocDemo>
 ````
