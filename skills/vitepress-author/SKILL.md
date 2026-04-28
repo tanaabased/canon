@@ -58,11 +58,14 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 3. Keep the change focused on VitePress pages, config, theme wiring, and subtheme implementation.
 4. Validate the touched VitePress surface with the narrowest reliable repo-native checks.
 
-### Markdown Pages
+## Documentation
 
+- Treat VitePress Markdown pages as the primary documentation surface owned by this skill.
+- Use clear frontmatter, task-shaped headings, concrete examples, reachable links, and existing page conventions before adding new page structure.
 - Prefer existing global components, theme styles, tokens, and layout patterns before solving a Markdown page locally.
 - Keep page-local markup, `<style>` glue, and interactive demos narrow, content-specific, and non-repeating.
 - Promote repeated or brand-significant Markdown page patterns into the shared theme, component, or style layer.
+- Update sidebar, nav, index pages, or equivalent routing when adding or moving durable docs pages so the content is reachable.
 
 ## Testing
 
@@ -116,6 +119,7 @@ jobs:
 - Confirm the task stayed on VitePress implementation rather than docs-surface selection or generic Vue work.
 - Confirm VitePress 1 remained the site stack unless the repo or user explicitly requires another path.
 - Confirm local subtheme changes were preferred over upstream theme forks when a subtheme is sufficient.
+- Confirm Markdown documentation uses frontmatter, headings, examples, links, and navigation consistent with the existing VitePress site.
 - Confirm Markdown page work followed the shared front-end Markdown page reference before introducing page-local UI.
 - Confirm repeated or brand-significant Markdown page patterns were promoted or explicitly called out rather than silently embedded in one page.
 - Confirm direct validation stays on build- and lint-first site checks rather than drifting into a separate frontend test doctrine.

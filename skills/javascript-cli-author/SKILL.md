@@ -57,6 +57,13 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 3. Keep the package-level CLI contract explicit: help, dimmed optional usage placeholders, dimmed displayed defaults, precedence, streams, version, and package entrypoint behavior.
 4. Validate the final CLI with the narrowest reliable local checks for the touched surface.
 
+## Documentation
+
+- Treat `--help`, `--version`, displayed defaults, examples, and README-backed Leia scenarios as the CLI's primary user-facing documentation.
+- Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, streams, color, optional placeholders, and displayed defaults.
+- Use inline comments only for non-obvious parser behavior, option precedence, environment handling, build-artifact assumptions, or shell/runtime edge cases.
+- Do not duplicate the full CLI contract in prose when help output and examples already expose it clearly.
+
 ## Testing
 
 - Prefer Leia-backed example scenarios when the main risk is observable CLI behavior such as help output, exit status, file effects, or release-shaped entrypoint behavior.
@@ -123,6 +130,7 @@ jobs:
 - Confirm the task stayed on a true Bun CLI surface rather than drifting into shell CLI or generic JS runtime work.
 - Confirm the entrypoint uses `#!/usr/bin/env bun`, supports explicit CLI behavior, and is declared in `package.json` when package metadata is in scope.
 - Confirm any shipped Bun CLI remains `bun build`-friendly and does not depend on source-tree-only loading patterns.
+- Confirm help output, version output, and Leia README examples remain the primary documentation surface for user-facing CLI behavior.
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the CLI surface rather than drifting into general workflow authoring.

@@ -64,13 +64,6 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 5. When adding a Vue component docs page inside a VitePress component docs surface, update the component index, sidebar, or equivalent navigation so the page is reachable.
 6. Validate the touched Vue surface with the narrowest reliable repo-native checks.
 
-### Project-Local Examples First
-
-- Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
-- When local component docs demos expose generated code, preserve local source-link and slot-control conventions rather than replacing them with fallback shapes.
-- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
-- In `@tanaabased/theme`, treat `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` as the local source patterns for component implementation and docs pages.
-
 ### Component Shape
 
 - Default to Vue single-file components with blocks in this order: `<template>`, `<script setup>`, `<style scoped lang="scss">`.
@@ -87,6 +80,14 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Reuse existing class hooks, CSS variables, tokens, and component conventions before creating new selectors.
 - Prefer light layout or state-specific rules over fully bespoke visual treatments.
 - If an element appears unstyled because the site lacks a shared treatment for it, note that gap in your response so the site-level pattern can be added deliberately later.
+
+## Documentation
+
+- Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
+- Document component APIs through props, meaningful public slots, interactive demos, generated code examples, and source links when the project has stable source paths or URLs.
+- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
+- When documenting a Vue component in a VitePress surface, follow [../../references/front-end-markdown-pages.md](../../references/front-end-markdown-pages.md) and update the component index, sidebar, or equivalent navigation so the page is reachable.
+- In `@tanaabased/theme`, treat `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` as the local source patterns for component implementation and docs pages.
 
 ## Testing
 

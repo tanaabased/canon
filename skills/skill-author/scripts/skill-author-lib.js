@@ -125,6 +125,16 @@ export function tp(text, stream = process.stdout) {
   return applyRgb(CANON_SKILL_BRAND_COLOR, text, stream);
 }
 
+/**
+ * Renders help for skill-author CLIs without owning process exit behavior.
+ *
+ * @param {object} context Help sections to render.
+ * @param {string} context.usage Usage line.
+ * @param {string} [context.summary] Optional summary paragraph.
+ * @param {string[]} context.options Option lines.
+ * @param {string[]} [context.environmentVariables=[]] Environment variable lines.
+ * @returns {string} Help text ready to write to stdout.
+ */
 export function renderCliHelp({ usage, summary, options, environmentVariables = [] }) {
   const lines = [usage];
 
@@ -155,6 +165,14 @@ function unquoteYaml(value) {
   return trimmed;
 }
 
+/**
+ * Parses the small YAML subset used by skill frontmatter and local metadata
+ * files. This intentionally supports only scalar values, simple arrays, lists,
+ * and nested maps that the canon templates emit.
+ *
+ * @param {string} rawBlock YAML content without surrounding frontmatter markers.
+ * @returns {object} Parsed mapping for the supported subset.
+ */
 function parseYamlBlock(rawBlock) {
   const lines = String(rawBlock ?? '').split('\n');
   const indentOf = (line) => line.match(/^ */)?.[0].length ?? 0;
@@ -256,6 +274,13 @@ function parseYamlBlock(rawBlock) {
   return parseMap(0, 0).value;
 }
 
+/**
+ * Reads SKILL.md frontmatter through the same constrained YAML parser used by
+ * template metadata validation.
+ *
+ * @param {string} content SKILL.md content.
+ * @returns {object | null} Parsed frontmatter, or null when the block is absent.
+ */
 export function parseFrontmatter(content) {
   const match = String(content ?? '').match(/^---\n([\s\S]*?)\n---/);
   if (!match) {
@@ -317,6 +342,13 @@ function parsePolicyYaml(content) {
   return parseIndentedKeyValues(content, 'policy');
 }
 
+/**
+ * Reads optional agents/openai.yaml tool dependencies using the same narrow
+ * indentation contract as the generated plugin metadata.
+ *
+ * @param {string} content agents/openai.yaml content.
+ * @returns {object[]} Tool dependency entries from dependencies.tools.
+ */
 function parseDependencyTools(content) {
   const lines = String(content ?? '').split('\n');
   const tools = [];
@@ -403,6 +435,14 @@ function extractTopLevelHeadings(content) {
   return headings;
 }
 
+/**
+ * Converts a template file into the validation contract for its skill type.
+ * Fenced headings are ignored so examples do not become required sections.
+ *
+ * @param {string} templateContent Full template file content with template frontmatter.
+ * @returns {object} Template metadata, section order, and body used for validation.
+ * @throws {Error} When required template metadata is missing.
+ */
 function buildTemplateDefinition(templateContent) {
   const { body, frontmatter } = splitLeadingFrontmatter(templateContent);
   const templateType = normalizeLowercaseString(frontmatter?.template_type);
@@ -435,6 +475,12 @@ export const SKILL_TEMPLATES = Object.freeze(
 
 export const SKILL_TYPE_IDS = Object.keys(SKILL_TEMPLATES);
 
+/**
+ * Returns the canonical template definition for a declared skill type.
+ *
+ * @param {string} type Declared or requested skill type.
+ * @returns {object | null} Template definition, or null for unknown types.
+ */
 export function getSkillType(type) {
   return SKILL_TEMPLATES[String(type ?? '').trim().toLowerCase()] ?? null;
 }
@@ -531,6 +577,15 @@ async function pathExists(targetPath) {
   }
 }
 
+/**
+ * Enforces exact template section order while allowing only template-declared
+ * optional headings to be omitted.
+ *
+ * @param {string} content Skill Markdown content.
+ * @param {string[]} orderedHeadings Required heading sequence.
+ * @param {string[]} [optionalHeadings=[]] Template-declared headings that may be omitted.
+ * @returns {boolean} Whether the content exactly matches the allowed sequence.
+ */
 function hasOrderedSections(content, orderedHeadings, optionalHeadings = []) {
   const headings = extractTopLevelHeadings(content);
   const optionalSet = new Set(optionalHeadings);
@@ -572,6 +627,13 @@ function isRelativePath(value) {
   return Boolean(trimmed) && !path.isAbsolute(trimmed) && !/^[a-z]+:\/\//i.test(trimmed);
 }
 
+/**
+ * Extracts repo-relative Markdown targets for validation and deliberately skips
+ * anchors, mailto/data links, and absolute URLs.
+ *
+ * @param {string} markdown Markdown content.
+ * @returns {string[]} Relative link targets to validate.
+ */
 function extractRelativeLinks(markdown) {
   const links = [];
   const pattern = /\[[^\]]*\]\(([^)]+)\)/g;
@@ -939,9 +1001,10 @@ function buildManualChecks({ expectedType }) {
   if (expectedType === 'coding') {
     checks.push(
       'Check that broad discovery language, if present, still funnels toward one dominant implementation pattern.',
+      'Check that `Documentation` describes the canonical docs surface for the owned code path.',
       'Check that `Testing` describes one canonical direct-test mechanism with one minimal example.',
       'Check that `GitHub Actions Workflow` describes one canonical GHA validation mechanism with one minimal example.',
-      'Check whether multiple materially different testing or GitHub Actions mechanisms mean the skill should split.',
+      'Check whether multiple materially different documentation, testing, or GitHub Actions mechanisms mean the skill should split.',
     );
   }
 
@@ -966,6 +1029,16 @@ export function formatValidationReport(result) {
   ].join('\n');
 }
 
+/**
+ * Validates a skill directory against the canonical frontmatter, section order,
+ * OpenAI metadata, resource, and link contracts. The result is data-only so CLI
+ * entrypoints can decide how to format and exit.
+ *
+ * @param {string} skillDir Skill directory to validate.
+ * @param {object} [options]
+ * @param {string} [options.expectedType] Optional type requested by the caller.
+ * @returns {Promise<{errors: string[], manualChecks: string[], skillDir: string, warnings: string[]}>} Validation report.
+ */
 export async function validateSkillDir(skillDir, options = {}) {
   const requestedType = normalizeLowercaseString(options.expectedType);
   const skillPath = path.resolve(skillDir);

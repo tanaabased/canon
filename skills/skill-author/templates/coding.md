@@ -50,6 +50,13 @@ metadata:
 3. Make the smallest coherent change and validate it directly.
 4. Stop once the owned code path is complete and verified.
 
+## Documentation
+
+- Describe how this skill documents the owned code surface.
+- Keep documentation guidance focused on public contracts, user-facing examples, and durable repo-local surfaces that belong to this skill.
+- Point to narrower references or companion skills when README, docs-site, inline API docs, or operational examples have a more specific owner.
+- Keep comments and examples sparse enough to clarify the contract without duplicating obvious implementation details.
+
 ## Testing
 
 - Describe the default direct-test lifecycle for the owned code surface.

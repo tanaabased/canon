@@ -65,6 +65,13 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 4. Keep any required package, module, or artifact edits coherent with that owned JS surface.
 5. Validate the changed JS surface with the repo's narrowest reliable checks.
 
+## Documentation
+
+- Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
+- Prefer JSDoc or equivalent API docs for exported helpers, public wrappers, side effects, failure behavior, and non-obvious invariants when the code alone does not make the contract clear.
+- Keep inline comments sparse and focused on surprising runtime behavior, mutation boundaries, integration assumptions, or failure modes.
+- Do not add comments that merely restate names, obvious control flow, or local implementation details.
+
 ## Testing
 
 - Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
@@ -139,6 +146,7 @@ jobs:
 - Confirm the skill still reads as the broad JavaScript entrypoint while funneling implementation toward thin library wrappers and lower-coupling utility functions when the task allows it.
 - Confirm the class guidance stayed a strong default rather than a hard requirement and did not imply a `classes/` folder or mandatory `utils/` hoisting.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
+- Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
 - Confirm direct tests prioritize generic utility logic and do not absorb GitHub Action input-helper patterns.
 - Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS surface rather than drifting into workflow-topology ownership.
 - Run the repo's narrowest relevant lint, build, test, or smoke checks for the touched JS surface.
