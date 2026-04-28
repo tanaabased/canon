@@ -54,6 +54,8 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Start from a small SFC shell rather than inventing the block structure case by case.
 - When the component is part of a VitePress site, inspect the local site components and existing theme styles before adding new markup or SCSS.
 - If the desired element has no obvious site-wide styling treatment, keep the component bare and call out the gap explicitly instead of hiding it behind one-off styling.
+- When lifting lessons from a target project into canon, keep reusable structure, API shape, documentation sections, demo-wrapper contracts, source-link hooks, and generated-code behavior; generalize project names, class names, paths, copy, and demo content.
+- Do not copy theme-specific color, spacing, typography, focus, utility-class, control-labeling, placeholder, or brand-token choices into bundled fallback guidance.
 
 ## Workflow
 
@@ -84,10 +86,10 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 ## Documentation
 
 - Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
-- Document component APIs through props, meaningful public slots, interactive demos, generated code examples, and source links when the project has stable source paths or URLs.
+- Document component APIs through props, meaningful public slots, boolean and enum states, interactive demos, generated code examples, and source links when the project has stable source paths or URLs.
 - Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
 - When documenting a Vue component in a VitePress surface, follow [../../references/front-end-markdown-pages.md](../../references/front-end-markdown-pages.md) and update the component index, sidebar, or equivalent navigation so the page is reachable.
-- In `@tanaabased/theme`, treat `TMSComponentDocDemo.vue`, `TMSLogo.vue`, and `tms-logo.md` as the local source patterns for component implementation and docs pages.
+- Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, demo-wrapper, docs-page, and registration patterns without copying their visual doctrine into canon.
 
 ## Testing
 
@@ -141,9 +143,11 @@ jobs:
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3 remained the frontend framework unless the repo or user explicitly requires another path.
 - Confirm project-local examples were preferred before using bundled fallback examples.
+- Confirm any canonized project pattern keeps reusable structure and docs contracts while excluding target-project visual, brand, and control-labeling choices.
 - Confirm docs-site Markdown page component work followed the shared Markdown page reference before creating bespoke docs-only components.
 - Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
 - Confirm component docs demos cover meaningful slots as well as props when slots are part of the public API.
+- Confirm component docs demos cover boolean and enum states without hard-coding target-project visual doctrine into the fallback examples.
 - Confirm generated code examples include an adjacent source-file link when the project has a stable source path or URL.
 - Confirm new Vue component docs pages in VitePress component docs surfaces update the component index, sidebar, or equivalent navigation.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
