@@ -7,8 +7,8 @@ Use these examples only as fallbacks when the target project does not already ha
 - Keep component names, props, slots, and Markdown structure aligned with the actual project.
 - Cover meaningful public slots as well as props in fallback docs demos.
 - Include a source-link hook near generated code when a stable component source path or URL is available.
-- Pair this with [../../../references/front-end-markdown-pages.md](../../../references/front-end-markdown-pages.md) when the component is documented in a VitePress or docs-site Markdown page.
-- If Markdown docs pages use globally available components, follow the project's theme-entry or global-registration pattern. When adding a documented component, update the local component index, sidebar, or equivalent navigation so the docs page is reachable.
+- Pair this with [../../../references/vitepress-markdown-pages.md](../../../references/vitepress-markdown-pages.md) when the component is documented in a VitePress or docs-site Markdown page.
+- Let the shared Markdown-page reference own global component reuse and page reachability rules for VitePress docs pages.
 
 ## Canonization Filter
 
