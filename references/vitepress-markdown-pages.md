@@ -20,6 +20,7 @@ Use this reference for Markdown pages rendered inside VitePress or comparable do
 - Prefer project-local examples before bundled fallback examples. Existing component doc wrappers, documented components, and companion Markdown docs pages are the strongest starting points.
 - Use existing global components for demos, grids, media embeds, callouts, layout primitives, and other repeated page UI patterns when the project already provides them.
 - Use already-styled Markdown and semantic HTML before adding wrapper markup, bespoke classes, or new page-local Vue components.
+- Prefer semantic HTML and existing accessible global components. Ad hoc ARIA or custom widget behavior belongs in reusable Vue or theme components, not page-local Markdown.
 - Do not define ad hoc Vue components inside Markdown pages. Promote reusable needs into the theme, component, or style layer, or call out the missing primitive explicitly.
 - Promote a pattern into the shared theme, component, or style layer when it is likely to appear on 2 or more pages, expresses site navigation or brand language, or would be awkward to maintain as copied Markdown.
 - When a Markdown page reveals a missing shared component, style primitive, token, or layout pattern, call that out explicitly instead of hiding it inside page-local markup.

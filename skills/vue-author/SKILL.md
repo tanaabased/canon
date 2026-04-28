@@ -76,6 +76,15 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - In a larger VitePress site, prefer existing site components or already-styled semantic elements before introducing new wrapper markup.
 - Keep templates as lean as possible. Do not add extra containers, classes, or presentational hooks unless they materially serve the component.
 
+### Accessibility
+
+- Prefer native semantic HTML and built-in control behavior before adding ARIA.
+- Add ARIA only when native semantics do not fully express the component state, relationship, or accessible name.
+- Keep ARIA state synchronized with Vue state instead of using static decoration; common examples include `aria-expanded`, `aria-selected`, `aria-current`, `aria-invalid`, `aria-controls`, `aria-describedby`, and `aria-labelledby`.
+- Provide real labels or accessible names for form controls, icon-only buttons, media controls, and interactive regions.
+- When a component creates custom interactive controls, provide keyboard-equivalent behavior and avoid replacing native controls without a clear need.
+- Preserve visible focus states and logical DOM and focus order when adding interactive markup.
+
 ### SCSS and Templating
 
 - Treat SCSS as a thin adaptation layer, not a place to recreate site-wide styling from scratch.
@@ -150,6 +159,10 @@ jobs:
 - Confirm component docs demos cover boolean and enum states without hard-coding target-project visual doctrine into the fallback examples.
 - Confirm generated code examples include an adjacent source-file link when the project has a stable source path or URL.
 - Confirm new Vue component docs pages in VitePress component docs surfaces follow the shared page reachability rules.
+- Confirm native semantics were preferred before ARIA and that ARIA attributes are driven by real component state or relationships.
+- Confirm custom interactive controls are keyboard usable and preserve visible focus.
+- Confirm form controls, icon-only buttons, media controls, and interactive regions have labels or accessible names.
+- Confirm component docs or demos expose meaningful accessibility behavior when it is part of the component contract.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
 - Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.
