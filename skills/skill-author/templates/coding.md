@@ -54,7 +54,9 @@ metadata:
 
 - Describe how this skill documents the owned code surface.
 - Keep documentation guidance focused on public contracts, user-facing examples, and durable repo-local surfaces that belong to this skill.
-- Point to narrower references or companion skills when README, docs-site, inline API docs, or operational examples have a more specific owner.
+- Link documentation-specific references here when they materially shape the owned surface.
+- Keep `## Bundled Resources` as an inventory, not the only discovery path for documentation guidance.
+- Keep testing artifacts in `## Testing` even when they are README- or Markdown-backed, unless they are explicitly durable user-facing examples.
 - Keep comments and examples sparse enough to clarify the contract without duplicating obvious implementation details.
 
 ## Testing

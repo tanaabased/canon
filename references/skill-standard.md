@@ -108,6 +108,8 @@ skill-folder/
 - `[warn]` Prefer references for detailed facts, schemas, and long examples instead of stuffing them into `SKILL.md`.
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.
 - `[warn]` Keep bundled references one hop from `SKILL.md`; link to them directly instead of hiding them behind deeper navigation.
+- `[manual]` For `coding` skills, documentation-specific guidance should be reachable from `## Documentation`; `## Bundled Resources` is an inventory, not the primary discovery path.
+- `[manual]` For `coding` skills, testing artifacts belong in `## Testing` even when they are README- or Markdown-backed, unless the skill explicitly treats them as durable user-facing examples.
 - `[manual]` For `coding` skills, `Documentation`, `Testing`, and `GitHub Actions Workflow` should each describe one canonical mechanism and one minimal example when an example materially shapes the skill.
 - `[manual]` Check whether the skill mostly restates one repo template's structure, scripts, examples, and docs; if so, prefer the template as source of truth and keep only a thin discovery or adaptation skill if needed.
 - `[manual]` Check shebang and executable-bit alignment for skill-local `scripts/`, starter templates, and any `bin/` surfaces.
