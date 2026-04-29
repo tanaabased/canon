@@ -7,6 +7,7 @@ Use these examples only as fallbacks when the target project does not already ha
 - Keep component names, props, slots, and Markdown structure aligned with the actual project.
 - Cover meaningful public slots as well as props in fallback docs demos.
 - Include a source-link hook near generated code when a stable component source path or URL is available.
+- Use `html` fences or highlighting for component usage snippets and generated template code; use `vue` only for full Vue single-file component examples.
 - Pair this with [../../../references/vitepress-markdown-pages.md](../../../references/vitepress-markdown-pages.md) when the component is documented in a VitePress or docs-site Markdown page.
 - Let the shared Markdown-page reference own global component reuse and page reachability rules for VitePress docs pages.
 
@@ -254,7 +255,7 @@ The demo omits default-valued props from generated code. Boolean props render as
 
 ## Basic Usage
 
-```vue
+```html
 <ExampleComponent />
 <ExampleComponent variant="subtle">
   <template #title>

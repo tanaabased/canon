@@ -96,6 +96,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 
 - Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
 - Document component APIs through props, meaningful public slots, boolean and enum states, interactive demos, generated code examples, and source links when the project has stable source paths or URLs.
+- Use `html` fences or highlighting for component usage snippets and generated template code; reserve `vue` for full Vue single-file component examples.
 - Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
 - When documenting a Vue component in a VitePress surface, follow [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
 - Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, demo-wrapper, docs-page, and registration patterns without copying their visual doctrine into canon.
