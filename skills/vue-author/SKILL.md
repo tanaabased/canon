@@ -97,7 +97,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Prefer existing target-project components, component docs pages, demo wrappers, global registration patterns, and theme styles over bundled examples.
 - Document component APIs through props, meaningful public slots, boolean and enum states, interactive demos, generated code examples, and source links when the project has stable source paths or URLs.
 - Use `html` fences or highlighting for component usage snippets and generated template code; reserve `vue` for full Vue single-file component examples.
-- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) only when the project does not already have usable local examples.
+- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) and its linked fallback templates only when the project does not already have usable local examples.
 - When documenting a Vue component in a VitePress surface, follow [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
 - Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, demo-wrapper, docs-page, and registration patterns without copying their visual doctrine into canon.
 
@@ -143,7 +143,10 @@ jobs:
 
 ## Bundled Resources
 
-- [./references/component-documentation-examples.md](./references/component-documentation-examples.md): fallback component, component-doc-demo, and Markdown docs examples for projects without local precedents
+- [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
+- [./templates/example-component.vue](./templates/example-component.vue): fallback generic Vue component SFC for projects without local component precedents
+- [./templates/component-doc-demo.vue](./templates/component-doc-demo.vue): fallback VitePress component-doc demo wrapper for projects without a local demo primitive
+- [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
