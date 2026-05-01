@@ -36,6 +36,7 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 
 - Confirm that `CHANGELOG.md` is the intended owned surface.
 - Confirm the changelog format already in use and whether the repo follows the shared `prepare-release-action` contract.
+- Inspect repo-local `AGENTS.md` when present, and apply any changelog-specific guidance unless it conflicts with the shared changelog contract.
 - Load [./references/changelog-format-and-examples.md](./references/changelog-format-and-examples.md) when the exact unreleased heading line or canonical bullet shape matters.
 - Gather the narrowest change evidence needed to write or update the relevant changelog entries.
 - If the user does not explicitly state the changelog scope or source, treat the default source as the commits from `HEAD` back to the most recent versioned tag.
@@ -48,19 +49,20 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 
 1. Confirm the task is changelog-led rather than release-workflow- or implementation-led.
 2. Inspect the existing changelog format and gather the narrowest change evidence needed for the update.
-3. If the user did not specify the changelog scope or source, derive the default evidence set from the commit range between `HEAD` and the most recent versioned tag after refreshing tags when possible.
-4. Mine commit subjects, bodies, and any available merge or squash text for issue and PR references that can be attached to the resulting changelog bullets.
-5. When editing `CHANGELOG.md`, preserve or create the leading `prepare-release-action` unreleased heading in that standard tokenized linked-heading shape.
-6. Unless the user explicitly asks to revise historical release notes, limit edits to the unreleased bullet list that sits under that leading `prepare-release-action` heading.
-7. Filter the candidate changes before writing bullets: prioritize new features, bug fixes, security updates, and other behavior changes that materially affect end users or developers.
-8. Omit low-signal changes by default, such as non-breaking dependency bumps, minor documentation edits, and DevOps or workflow churn that does not materially change the user or developer experience.
-9. Check previous released sections and avoid duplicating a bullet that is already captured there unless the user explicitly asked for historical cleanup or rewording.
-10. Within each touched version section, use `-` bullets only, start each entry with a past-tense verb such as `Added`, `Fixed`, `Removed`, or `Updated`, and sort the entries alphabetically by the full bullet text.
-11. Keep each bullet as concise as possible. Aim for under 150 visible characters before any trailing issue or PR link markup, and split longer changes into multiple bullets when that reads more cleanly.
-12. Wrap machine-named surfaces such as commands, inputs, outputs, files, flags, and identifiers in backticks when they appear in a bullet.
-13. When a bullet can be matched confidently to one or more PRs or issues, suffix it with all relevant linked references on the same line.
-14. If the unreleased block becomes too large for one readable flat list, group the bullets under short `###` subsections such as `### New Features`, `### Bug Fixes`, or `### Developer Notes`.
-15. Stop once `CHANGELOG.md` is structurally correct, complete for the requested scope, and aligned with the current changelog contract.
+3. Inspect repo-local `AGENTS.md` when present and carry forward changelog-specific tone, grouping, or prioritization guidance that does not conflict with the shared contract.
+4. If the user did not specify the changelog scope or source, derive the default evidence set from the commit range between `HEAD` and the most recent versioned tag after refreshing tags when possible.
+5. Mine commit subjects, bodies, and any available merge or squash text for issue and PR references that can be attached to the resulting changelog bullets.
+6. When editing `CHANGELOG.md`, preserve or create the leading `prepare-release-action` unreleased heading in that standard tokenized linked-heading shape.
+7. Unless the user explicitly asks to revise historical release notes, limit edits to the unreleased bullet list that sits under that leading `prepare-release-action` heading.
+8. Filter the candidate changes before writing bullets: prioritize new features, bug fixes, security updates, and other behavior changes that materially affect end users or developers.
+9. Omit low-signal changes by default, such as non-breaking dependency bumps, minor documentation edits, and DevOps or workflow churn that does not materially change the user or developer experience.
+10. Check previous released sections and avoid duplicating a bullet that is already captured there unless the user explicitly asked for historical cleanup or rewording.
+11. Within each touched version section, use `-` bullets only, start each entry with a past-tense verb such as `Added`, `Fixed`, `Removed`, or `Updated`, and sort the entries alphabetically by the full bullet text.
+12. Keep each bullet as concise as possible. Aim for under 150 visible characters before any trailing issue or PR link markup, and split longer changes into multiple bullets when that reads more cleanly.
+13. Wrap machine-named surfaces such as commands, inputs, outputs, files, flags, and identifiers in backticks when they appear in a bullet.
+14. When a bullet can be matched confidently to one or more PRs or issues, suffix it with all relevant linked references on the same line.
+15. If the unreleased block becomes too large for one readable flat list, group the bullets under short `###` subsections such as `### New Features`, `### Bug Fixes`, or `### Developer Notes`.
+16. Stop once `CHANGELOG.md` is structurally correct, complete for the requested scope, and aligned with the current changelog contract.
 
 ## Checkpoints
 
@@ -90,6 +92,7 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 
 - Confirm the task stayed on the `CHANGELOG.md` surface only.
 - Confirm `CHANGELOG.md` keeps the leading `prepare-release-action` unreleased heading in that standard tokenized linked-heading shape when that contract is in scope.
+- Confirm repo-local changelog guidance from `AGENTS.md` was considered when present and did not override shared structural rules.
 - Confirm older released sections were left untouched unless the user explicitly asked for historical changelog cleanup or standardization.
 - Confirm that an unspecified scope defaulted to the commits between `HEAD` and the latest versioned tag available to the agent, and that any inability to refresh tags was made explicit.
 - Confirm the unreleased bullets do not duplicate entries already captured in prior released sections unless the user explicitly asked for historical cleanup.
