@@ -1,5 +1,21 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Canon
+
+- Added `ideas/branding-accessibility-skill.md` for future visual accessibility ownership.
+- Added `references/vitepress-markdown-pages.md` for VitePress Markdown page UI, global component reuse, and page reachability.
+- Documented high-value helper contracts across canon sync, CLI support, utility, and skill-author scripts.
+- Updated coding skill standards to require `## Documentation` lifecycle sections.
+- Updated `references/inline-code-and-api-docs.md` to prefer useful JSDoc tags for exported helpers.
+
+### Skills
+
+- Added component-level accessibility guidance to `tanaab-vue-author`.
+- Added playground-first Vue component documentation fallbacks with schema-driven generated usage code.
+- Updated current coding skills with dedicated `## Documentation` sections.
+- Updated JavaScript and CLI authoring guidance for API docs, help surfaces, and documentation routing.
+- Updated Vue and VitePress guidance for component docs, Markdown pages, and reusable frontend boundaries.
+
 ## v0.3.1 - [April 26, 2026](https://github.com/tanaabased/canon/releases/tag/v0.3.1)
 
 - Added release archive checks that reinstall production dependencies before packaging canon bundles.
