@@ -75,6 +75,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 - Treat VitePress Markdown files as the primary documentation surface this skill writes and maintains.
 - Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for docs-site Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
+- For reusable component docs pages, follow the shared reference's playground-first Usage pattern and leave reusable playground behavior to `tanaab-vue-author`.
 - Use clear frontmatter, task-shaped headings, concrete examples, reachable links, and existing page conventions before adding new page structure.
 - Prefer existing global components, theme styles, tokens, and layout patterns from the active theme and subthemes before solving a Markdown page locally.
 - Keep page-local markup, `<style>` glue, and interactive demos narrow, content-specific, and non-repeating.

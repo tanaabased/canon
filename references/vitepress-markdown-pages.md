@@ -39,6 +39,14 @@ Use this reference for Markdown pages rendered inside VitePress or comparable do
 - Keep headings and section order concrete to the reader's task; avoid visual-only sections whose purpose depends on styling to make sense.
 - Use VitePress features or existing components for repeated callouts, examples, and demos instead of hand-rolled markup blocks.
 
+## Component Documentation Pages
+
+- When a VitePress page documents a reusable component, prefer the project’s existing global playground component when one is available.
+- Put the representative playground at the top of the page under `## Usage`, after frontmatter, H1, intro copy, and any required `<script setup>` schema.
+- Let that playground combine live preview and generated component usage code; avoid separate Basic Usage and Demo sections when they would duplicate the same example.
+- Keep API material after Usage: Props, Slots when present, Variables or other extension surfaces when present, and short notes only when they clarify behavior that does not fit a table.
+- If no suitable playground primitive exists, promote the need into a reusable Vue or theme component rather than building a one-off page-local demo.
+
 ## Page Reachability
 
 - When adding or moving a durable VitePress page, place it in the best existing sidebar, nav, index, collection, or equivalent route surface as part of the same change.
