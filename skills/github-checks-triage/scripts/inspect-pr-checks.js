@@ -302,6 +302,16 @@ function parseAvailableFields(message) {
   return fields;
 }
 
+/**
+ * Fetches PR checks across gh versions. Newer gh exposes conclusion/detailsUrl;
+ * older versions may only expose bucket/link, so the field list is negotiated
+ * from the CLI error response before retrying.
+ *
+ * @param {string} prValue PR number or URL accepted by gh pr checks.
+ * @param {string} repoRoot Target repository root for gh commands.
+ * @returns {object[]} Raw check records from gh.
+ * @throws {Error} When gh output cannot be parsed or no usable fields are available.
+ */
 function fetchChecks(prValue, repoRoot) {
   const primaryFields = ['name', 'state', 'conclusion', 'detailsUrl', 'startedAt', 'completedAt'];
   let result = runGhCommand(['pr', 'checks', prValue, '--json', primaryFields.join(',')], repoRoot);
@@ -476,6 +486,17 @@ function isLogPendingMessage(message) {
   return PENDING_LOG_MARKERS.some((marker) => lowered.includes(marker));
 }
 
+/**
+ * Prefers run-level logs and falls back to job logs only when GitHub reports
+ * that run logs are still pending. The status lets callers distinguish pending
+ * logs from hard log-fetch failures.
+ *
+ * @param {object} context
+ * @param {string} context.runId GitHub Actions run id.
+ * @param {string | null} context.jobId Optional job id parsed from the details URL.
+ * @param {string} context.repoRoot Target repository root for gh commands.
+ * @returns {{status: string, text: string, error: string}} Log fetch result.
+ */
 function fetchCheckLog({ runId, jobId, repoRoot }) {
   const runLog = fetchRunLog(runId, repoRoot);
   if (!runLog.error) {
@@ -524,6 +545,16 @@ function tailLines(text, maxLines) {
   return lines.slice(-maxLines).join('\n').trimEnd();
 }
 
+/**
+ * Returns context around the last likely failure marker, or a bounded tail when
+ * no marker is found. Searching from the end favors the final actionable error.
+ *
+ * @param {string} logText Full GitHub Actions log text.
+ * @param {object} options
+ * @param {number} options.context Lines of context around the marker.
+ * @param {number} options.maxLines Maximum output lines.
+ * @returns {string} Bounded failure snippet.
+ */
 function extractFailureSnippet(logText, { context, maxLines }) {
   const lines = String(logText).split('\n');
   if (lines.length === 0) {
@@ -541,6 +572,17 @@ function extractFailureSnippet(logText, { context, maxLines }) {
   return window.join('\n').trimEnd();
 }
 
+/**
+ * Normalizes one failing check into a serializable triage record, including run
+ * metadata plus either a log snippet or the reason logs could not be inspected.
+ *
+ * @param {object} check Raw check record from gh.
+ * @param {object} options
+ * @param {number} options.context Lines of context around failure markers.
+ * @param {number} options.maxLines Maximum snippet or tail lines.
+ * @param {string} options.repoRoot Target repository root for gh commands.
+ * @returns {object} Serializable check analysis.
+ */
 function analyzeCheck(check, { context, maxLines, repoRoot }) {
   const detailsUrl = check.detailsUrl || check.link || '';
   const runId = extractRunId(detailsUrl);

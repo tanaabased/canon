@@ -50,6 +50,15 @@ metadata:
 3. Make the smallest coherent change and validate it directly.
 4. Stop once the owned code path is complete and verified.
 
+## Documentation
+
+- Describe how this skill documents the owned code surface.
+- Keep documentation guidance focused on public contracts, user-facing examples, and durable repo-local surfaces that belong to this skill.
+- Link documentation-specific references here when they materially shape the owned surface.
+- Keep `## Bundled Resources` as an inventory, not the only discovery path for documentation guidance.
+- Keep testing artifacts in `## Testing` even when they are README- or Markdown-backed, unless they are explicitly durable user-facing examples.
+- Keep comments and examples sparse enough to clarify the contract without duplicating obvious implementation details.
+
 ## Testing
 
 - Describe the default direct-test lifecycle for the owned code surface.

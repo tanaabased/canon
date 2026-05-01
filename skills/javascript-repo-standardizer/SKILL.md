@@ -59,6 +59,13 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 3. Keep lint, format, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
 4. Validate the resulting repo baseline with the narrowest reliable local checks.
 
+## Documentation
+
+- Document durable repo baseline choices only when they affect future maintainers or future agents, such as repo-local `AGENTS.md`, README notes, package scripts, config comments, or template comments.
+- Prefer short repo-local policy notes over broad documentation rewrites when standardizing lint, format, script, or folder baselines.
+- Keep config comments sparse and limited to non-obvious extension points, generated-file exclusions, or project-specific deviations from the shared baseline.
+- Do not turn baseline standardization into README authoring, docs-site migration, or general implementation documentation.
+
 ## Testing
 
 - Treat direct lint and format commands as the canonical validation mechanism for this surface.
@@ -117,6 +124,7 @@ jobs:
 - Confirm the task stayed on repo baseline standardization rather than drifting into general JS runtime work or implementation refactors.
 - Confirm repo-structure normalization followed [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) without turning this skill into general code authorship.
 - Confirm ESLint and Prettier ownership remain separate.
+- Confirm durable baseline documentation stayed limited to repo policy notes, package scripts, config comments, or README notes that directly explain the standardized baseline.
 - Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
 - Confirm any GitHub Actions workflow example remains a repo-baseline validation path rather than a general workflow-topology pattern.

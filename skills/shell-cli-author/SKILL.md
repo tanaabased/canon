@@ -53,6 +53,14 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 3. Keep the owned shell CLI contract explicit: help order, dimmed optional usage placeholders, dimmed displayed defaults, option precedence, output streams, and safety guards.
 4. Validate the final script with the narrowest reliable shell checks for the touched surface.
 
+## Documentation
+
+- Treat help output, version output, logging text, and error text as the maintained shell CLI's user-facing documentation.
+- Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, stream behavior, color, and displayed defaults.
+- Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) only for sparse inline comments around shell safety, quoting, platform differences, destructive operations, environment assumptions, and other non-obvious shell edge cases.
+- Keep README-backed Leia scenarios in `## Testing` unless a repo explicitly treats them as durable user-facing examples.
+- Keep comments sparse; do not narrate ordinary shell syntax or duplicate help output in the source.
+
 ## Testing
 
 - Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
@@ -104,6 +112,7 @@ jobs:
 ## Bundled Resources
 
 - [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI help, color, logging, and `SCRIPT_VERSION` rules
+- [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shell-as-exception boundary and Bun-wrapper defaults
 - [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable shell CLI policy
 - [./references/shell-cli-templates.md](./references/shell-cli-templates.md): local notes for the bundled Bash and PowerShell CLI starters
@@ -116,6 +125,7 @@ jobs:
 ## Validation
 
 - Confirm the task stayed on Bash or PowerShell CLI surfaces rather than drifting into workflow YAML or hosted repo-template standardization.
+- Confirm help output, version output, logging text, and error text remain the primary documentation surface for user-facing shell behavior.
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus stream usage and version-reporting shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.

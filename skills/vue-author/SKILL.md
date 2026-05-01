@@ -41,29 +41,30 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Preserve existing style and local patterns unless the task clearly requires a change.
 - Avoid unrelated refactors.
 - Prefer Vue 3 and SCSS defaults unless the repo or user explicitly requires another stack.
-- When a component lives inside a larger VitePress site, prefer the site's existing components, markup patterns, and shared styles over new local structure.
-- When a component supports a larger VitePress or docs surface, prefer extending existing shared components, theme styles, and tokens before creating a new component just for one markdown page.
-- Do not normalize bespoke docs-only components when the real need is a reusable shared primitive.
+- When a component supports a VitePress or docs-site Markdown page, apply the shared VitePress Markdown page rules before normalizing a docs-only component.
 - Only introduce new HTML structure or new styling when there is no obvious existing site-level choice to reuse.
 - Keep component styling as bare as possible and avoid inventing a parallel visual system inside the SFC.
 
 ## Change Strategy
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for Vue 3, SCSS, and subtheme defaults.
+- Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) when the component is embedded in or exists primarily to support a VitePress or docs-site Markdown page.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for the broader frontend stack defaults.
 - Keep component implementation, layout, and styling changes near the owning Vue surface rather than widening into docs policy or generic runtime standardization.
 - Start from a small SFC shell rather than inventing the block structure case by case.
 - When the component is part of a VitePress site, inspect the local site components and existing theme styles before adding new markup or SCSS.
-- If a requested component or style is likely to be reused across multiple pages, or expresses a site-wide or brand-significant pattern, shape it as a shared component or style primitive rather than as a one-off local solution.
 - If the desired element has no obvious site-wide styling treatment, keep the component bare and call out the gap explicitly instead of hiding it behind one-off styling.
+- When lifting lessons from a target project into canon, keep reusable structure, API shape, documentation sections, playground contracts, source-link hooks, and generated-code behavior; generalize project names, class names, paths, copy, and demo content.
+- Do not copy theme-specific color, spacing, typography, focus, utility-class, control-labeling, placeholder, or brand-token choices into bundled fallback guidance.
 
 ## Workflow
 
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
-3. Start from the standard SFC shell and keep the change focused on component behavior, SFC structure, and local SCSS styling.
-4. When the component supports a larger docs surface, decide whether the real need is a shared primitive before normalizing a one-off docs component.
-5. Validate the touched Vue surface with the narrowest reliable repo-native checks.
+3. Inspect project-local component and docs examples before using bundled fallback examples.
+4. When the component supports a docs-site Markdown page, use the shared Markdown page reference to decide whether the real need is a shared primitive.
+5. When adding a Vue component docs page inside a VitePress component docs surface, update the component index, sidebar, or equivalent navigation so the page is reachable.
+6. Validate the touched Vue surface with the narrowest reliable repo-native checks.
 
 ### Component Shape
 
@@ -75,6 +76,15 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - In a larger VitePress site, prefer existing site components or already-styled semantic elements before introducing new wrapper markup.
 - Keep templates as lean as possible. Do not add extra containers, classes, or presentational hooks unless they materially serve the component.
 
+### Accessibility
+
+- Prefer native semantic HTML and built-in control behavior before adding ARIA.
+- Add ARIA only when native semantics do not fully express the component state, relationship, or accessible name.
+- Keep ARIA state synchronized with Vue state instead of using static decoration; common examples include `aria-expanded`, `aria-selected`, `aria-current`, `aria-invalid`, `aria-controls`, `aria-describedby`, and `aria-labelledby`.
+- Provide real labels or accessible names for form controls, icon-only buttons, media controls, and interactive regions.
+- When a component creates custom interactive controls, provide keyboard-equivalent behavior and avoid replacing native controls without a clear need.
+- Preserve visible focus states and logical DOM and focus order when adding interactive markup.
+
 ### SCSS and Templating
 
 - Treat SCSS as a thin adaptation layer, not a place to recreate site-wide styling from scratch.
@@ -82,46 +92,15 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Prefer light layout or state-specific rules over fully bespoke visual treatments.
 - If an element appears unstyled because the site lacks a shared treatment for it, note that gap in your response so the site-level pattern can be added deliberately later.
 
-### Starter Template
+## Documentation
 
-Use this as the default shell for a new component, then expand only as the surface requires:
-
-```vue
-<template>
-  <div class="component-name" :data-variant="props.variant">
-    <slot :label="resolvedLabel">{{ resolvedLabel }}</slot>
-  </div>
-</template>
-
-<script setup>
-import { computed } from 'vue';
-
-const props = defineProps({
-  label: {
-    type: String,
-    default: 'Component',
-  },
-  variant: {
-    type: String,
-    default: 'default',
-  },
-});
-
-const resolvedLabel = computed(() => {
-  if (!props.label || props.label.trim().length === 0) return 'Component';
-  return props.label.trim();
-});
-</script>
-
-<style scoped lang="scss">
-.component-name {
-  display: block;
-}
-</style>
-```
-
-- Replace `component-name`, props, and slot shape with literal names that match the actual component surface.
-- Keep the structure lean: template first, `script setup` second, SCSS last.
+- Prefer existing target-project components, component docs pages, playgrounds, global registration patterns, and theme styles over bundled examples.
+- Document component APIs through props, meaningful public slots, boolean and enum states, a top Usage playground, generated code examples, and source links when the project has stable source paths or URLs.
+- Prefer component docs pages shaped as H1 and intro copy, `<script setup>` schema, `## Usage` playground, then API sections such as Props, Slots, Variables, and focused notes.
+- Use `html` fences or highlighting for component usage snippets and generated template code; reserve `vue` for full Vue single-file component examples.
+- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) and its linked fallback templates only when the project does not already have usable local examples.
+- When documenting a Vue component in a VitePress surface, follow [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
+- Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, playground, docs-page, and registration patterns without copying their visual doctrine into canon.
 
 ## Testing
 
@@ -165,16 +144,32 @@ jobs:
 
 ## Bundled Resources
 
+- [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
+- [./templates/example-component.vue](./templates/example-component.vue): fallback generic Vue component SFC for projects without local component precedents
+- [./templates/component-playground.vue](./templates/component-playground.vue): fallback VitePress component-doc playground for projects without a local playground primitive
+- [./templates/component-playground-codegen.js](./templates/component-playground-codegen.js): fallback schema-to-usage helper for the component playground template
+- [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
+- [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
 
 ## Validation
 
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3 remained the frontend framework unless the repo or user explicitly requires another path.
-- Confirm docs-surface support work preferred extending shared components, theme styles, and tokens before creating bespoke markdown-page components.
-- Confirm likely reused or brand-significant patterns were shaped as shared component or style primitives rather than normalized as docs-only one-offs.
+- Confirm project-local examples were preferred before using bundled fallback examples.
+- Confirm any canonized project pattern keeps reusable structure and docs contracts while excluding target-project visual, brand, and control-labeling choices.
+- Confirm docs-site Markdown page component work followed the shared Markdown page reference before creating bespoke docs-only components.
 - Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
+- Confirm component docs playgrounds cover meaningful slots as well as props when slots are part of the public API.
+- Confirm component docs playgrounds cover boolean and enum states without hard-coding target-project visual doctrine into the fallback examples.
+- Confirm component docs pages use a top Usage playground rather than duplicating separate Basic Usage and Demo sections when the playground covers both.
+- Confirm generated code examples include an adjacent source-file link when the project has a stable source path or URL.
+- Confirm new Vue component docs pages in VitePress component docs surfaces follow the shared page reachability rules.
+- Confirm native semantics were preferred before ARIA and that ARIA attributes are driven by real component state or relationships.
+- Confirm custom interactive controls are keyboard usable and preserve visible focus.
+- Confirm form controls, icon-only buttons, media controls, and interactive regions have labels or accessible names.
+- Confirm component docs or playgrounds expose meaningful accessibility behavior when it is part of the component contract.
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
 - Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.
