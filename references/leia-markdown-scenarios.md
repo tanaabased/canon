@@ -36,7 +36,10 @@ Recommended sections:
 - Keep `Setup` focused on minimal prerequisites for the scenario.
 - For broad runtime scenarios such as `options` or `envvars`, use the final `Setup` test to run the real script once with the relevant options or environment, then inspect the resulting machine state in `Testing`.
 - For CLI-contract scenarios, keep assertions direct and lightweight: `script --help | grep ...`, `test -n "$(script --version)"`, or inline status-code checks.
-- Capture output to files only when direct inspection would be awkward or when a failure-path assertion needs the full output.
+- Prefer direct output assertions such as `command | grep -F ...` for simple stdout/stderr checks.
+- In runtime scenarios, prefer observable state such as installed files, symlinks, command availability, service status, and generated config over setup-log assertions.
+- Capture output to files only when the output itself is the contract, a failure-path assertion needs full stdout/stderr, a secret non-leak assertion needs the complete command output, or one expensive command output must be reused across multiple assertions.
+- Do not capture setup output just to assert internal argv assembly when state or user-facing command behavior can be checked directly.
 - Use setup log files only when log output itself is part of the contract.
 - If the safe default target is manageable to clean up, testing that default target directly is acceptable instead of forcing an example-local override.
 - For precedence behavior, test the simplest observable contract first, such as help or default display, and only expand to a full runtime scenario when that behavior is not sufficient.

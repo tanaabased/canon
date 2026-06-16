@@ -43,7 +43,10 @@ rm -rf .tmp/home
 - Add fixtures in this example directory when the scenario needs Brewfiles, dotpackages, keys, or other support files.
 - For broad runtime scenarios such as `options` or `envvars`, make the final `Setup` test run the real script once, then inspect the resulting machine state in `Testing`.
 - For CLI-contract scenarios, prefer direct checks such as `script-under-test.sh --help | grep ...`, `test -n "$(script-under-test.sh --version)"`, or inline status checks.
-- Capture output to files only when direct inspection is awkward or when failure output is the contract under test.
+- Prefer direct output assertions such as `command | grep -F ...` for simple stdout/stderr checks.
+- In runtime scenarios, prefer observable state such as installed files, command availability, service status, and generated config over setup-log assertions.
+- Capture output to files only when the output itself is the contract, a failure-path assertion needs full stdout/stderr, a secret non-leak assertion needs complete output, or one expensive command output must be reused across multiple assertions.
+- Do not capture setup output just to assert internal argv assembly when state or user-facing command behavior can be checked directly.
 - If the real product surface is a generated `dist/` entrypoint, make the workflow put `dist/` on `PATH` before Leia runs.
 - If the real script can safely run in CI, prefer that over fake bootstrap stubs.
 - If the scenario mutates machine state, installs packages, or uses secrets, prefer CI-only execution on fresh runners.
