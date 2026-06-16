@@ -28,6 +28,10 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - Include `Environment Variables` only when the CLI defines tool-specific or repo-specific env vars that are part of its documented contract.
 - Wrap `Options` and `Environment Variables` section headers in the `tp` style when those sections are present.
 - Render optional usage placeholders such as `[options]`, `[arguments...]`, or optional parameter groups in `dim` styling so the command name and required path stay primary.
+- In usage lines, name unscoped control env vars directly when they are common shell or CI controls, such as `[NONINTERACTIVE=1]` or `[CI=1]`.
+- When a CLI has multiple documented tool-scoped env vars, prefer a compact namespace placeholder such as `[AGENTBOX_*...]` in usage and document the exact names in `Environment Variables`.
+- For env vars that exactly mirror public options, prefer `same as --flag` instead of duplicating the option description.
+- Use standalone env-var prose only when there is no exact option equivalent or the behavior is otherwise non-obvious.
 - Back `--version` with a single `SCRIPT_VERSION` variable or an explicitly aligned equivalent rather than duplicating the reported version across helpers and help text.
 - Treat `--version` / `-Version` as a reporting flag, not as an option with a displayed default value.
 - Use the same precedence order across Bash and Bun CLIs: explicit CLI option, environment variable override, then auto-detected or hardcoded default.
