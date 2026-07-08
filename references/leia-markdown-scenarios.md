@@ -45,6 +45,9 @@ Recommended sections:
 - For precedence behavior, test the simplest observable contract first, such as help or default display, and only expand to a full runtime scenario when that behavior is not sufficient.
 - Use fenced code blocks for executable Leia steps. The language tag is optional, but unfenced shell snippets are not valid Leia scenario input.
 - Start each Leia test with a single `# should ...` line so the scenario still reads like documentation.
+- Keep the prose in `# should ...` descriptions lowercase so parser tokenization stays predictable.
+- Avoid camelCase or PascalCase as prose in `# should ...` descriptions; rewrite those terms as lowercase words unless the exact casing is part of the contract being tested.
+- Preserve required casing only for exact literals and conventional identifiers such as environment variables, command names, flags, paths, filenames, product names, file formats, acronyms, HTTP methods, status or error codes, and expected output strings.
 - Put the commands for that test immediately below its `# should ...` line with no blank lines inside the test body.
 - Separate one `# should ...` test from the next with a blank line.
 - Do not place another `# should ...` line directly after commands without a separating blank line.

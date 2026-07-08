@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Canon
+
+- Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
+
 ## v0.4.0 - [May 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.4.0)
 
 ### Canon

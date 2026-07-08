@@ -39,7 +39,8 @@ rm -rf .tmp/home
 
 - Keep assertions shell-native and focused on observable behavior, not internals.
 - Use example-local `.tmp/` paths so cleanup is deterministic, but avoid deleting shared example-local temp roots by default.
-- Keep Leia tests inside fenced code blocks, start each test with `# should ...`, and use blank lines only between tests rather than inside a single test body.
+- Keep Leia tests inside fenced code blocks, start each test with lowercase `# should ...` prose, avoid camelCase or PascalCase prose, and use blank lines only between tests rather than inside a single test body.
+- Preserve uppercase or mixed-case terms in `# should ...` descriptions only when they are exact literals or conventional identifiers, such as environment variables, command names, flags, paths, file formats, acronyms, HTTP methods, status or error codes, or expected output strings.
 - Add fixtures in this example directory when the scenario needs Brewfiles, dotpackages, keys, or other support files.
 - For broad runtime scenarios such as `options` or `envvars`, make the final `Setup` test run the real script once, then inspect the resulting machine state in `Testing`.
 - For CLI-contract scenarios, prefer direct checks such as `script-under-test.sh --help | grep ...`, `test -n "$(script-under-test.sh --version)"`, or inline status checks.
