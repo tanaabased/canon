@@ -65,6 +65,7 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 - Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
+- When standardizing a Leia-backed `examples/` suite, consider adding `examples/package.json` for CommonJS helper boundaries and `examples/AGENTS.md` for durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for maintained shell CLI surfaces, with `shellcheck` and PowerShell parse checks as narrow supporting validators rather than separate testing patterns.
 
 Minimal generic example:
@@ -121,6 +122,8 @@ jobs:
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
+- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` starter for CommonJS example-local helpers
+- [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
 
@@ -130,4 +133,5 @@ jobs:
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
+- Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the shell CLI surface rather than drifting into general workflow authoring.

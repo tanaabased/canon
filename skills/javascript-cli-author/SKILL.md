@@ -69,6 +69,7 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 
 - Prefer Leia-backed example scenarios when the main risk is observable CLI behavior such as help output, exit status, file effects, or release-shaped entrypoint behavior.
 - Keep one example flow per `examples/<scenario>/README.md` and assert the user-facing CLI contract rather than internal parser details.
+- When standardizing a Leia-backed `examples/` suite, consider adding `examples/package.json` for CommonJS helper boundaries and `examples/AGENTS.md` for durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for true CLI product surfaces rather than layering multiple unrelated local test styles by default.
 - When the CLI ships as a built artifact, run Leia against the built CLI rather than the source entrypoint.
 
@@ -126,6 +127,8 @@ jobs:
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
+- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` starter for CommonJS example-local helpers
+- [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
 
@@ -135,4 +138,5 @@ jobs:
 - Confirm help output, version output, and maintained examples remain the primary documentation surface for user-facing CLI behavior.
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
+- Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the CLI surface rather than drifting into general workflow authoring.

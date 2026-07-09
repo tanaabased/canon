@@ -49,5 +49,6 @@ rm -rf .tmp/home
 - Capture output to files only when the output itself is the contract, a failure-path assertion needs full stdout/stderr, a secret non-leak assertion needs complete output, or one expensive command output must be reused across multiple assertions.
 - Do not capture setup output just to assert internal argv assembly when state or user-facing command behavior can be checked directly.
 - If the real product surface is a generated `dist/` entrypoint, make the workflow put `dist/` on `PATH` before Leia runs.
+- If example-local JavaScript helpers or generated scripts must run as CommonJS inside an ESM repo, use the shared `examples/package.json` starter.
 - If the real script can safely run in CI, prefer that over fake bootstrap stubs.
 - If the scenario mutates machine state, installs packages, or uses secrets, prefer CI-only execution on fresh runners.

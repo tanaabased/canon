@@ -16,6 +16,14 @@ Use this pattern when shell, bootstrap, or other operational repos need scenario
 - Keep fixtures beside the README so each example stays self-contained.
 - Prefer broad contract names such as `options`, `envvars`, or `cli-contract` unless the scenario is truly about one narrow case.
 
+## Examples Directory Contract
+
+- Treat `examples/` as a scoped runtime boundary when the suite includes executable README scenarios plus example-local support files.
+- Add `examples/package.json` with `{ "type": "commonjs" }` when example-local JavaScript helpers, fixtures, or generated scripts must run as CommonJS inside a package that may otherwise be ESM.
+- Add `examples/AGENTS.md` when executable examples need durable editing rules beyond the repo root guidance, especially for Leia block shape, CI locality, fresh-runner assumptions, or fixture handling.
+- Keep examples-level `AGENTS.md` files short, ambient, and scoped to `examples/**`; put scenario-specific behavior in the scenario README instead.
+- Use the shared starters in `templates/leia-examples-package.json` and `templates/leia-examples-agents.md` when bootstrapping this boundary.
+
 ## README Structure
 
 Recommended sections:
