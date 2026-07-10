@@ -62,6 +62,22 @@ Recommended sections:
 - Do not leave stray commands after a blank line without a new `# should ...` header.
 - Always include cleanup in `Destroy tests`, even when CI runners are ephemeral, and remove only the artifacts created by that scenario.
 
+## Generator Safety
+
+Leia currently embeds parsed command text inside a JavaScript template literal while generating its
+test harness. These restrictions apply only to commands inside executable fenced blocks under
+Leia-recognized setup, test, and cleanup sections:
+
+- Do not use literal backticks. Use `$(command)` for command substitution.
+- Do not use braced shell expansions such as `${VAR}`. Use `$VAR` when it is unambiguous, or use
+  quoting such as `"$VAR"suffix` when text follows the value.
+- When shell semantics require braces, such as `${VAR:-default}`, move that logic into a checked-in
+  example-local helper script and call the helper from the README.
+- Do not rely on escaping backticks or `${...}` through both the generated JavaScript and shell
+  layers.
+- Markdown fence markers, inline-code backticks outside executable blocks, `$(...)`, `$VAR`,
+  `[ ... ]`, and `[[ ... ]]` are safe.
+
 ## CI Guidance
 
 - Prefer real CI execution over local stubs when fresh runners can safely exercise the actual product surface.
