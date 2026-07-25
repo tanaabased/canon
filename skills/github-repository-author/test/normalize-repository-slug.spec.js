@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 
-import normalizeRepositorySlug from '../../skills/github-repository-author/scripts/utils/normalize-repository-slug.js';
+import normalizeRepositorySlug from '../utils/normalize-repository-slug.js';
 
-describe('skills/github-repository-author/scripts/utils/normalize-repository-slug', () => {
+describe('skills/github-repository-author/utils/normalize-repository-slug', () => {
   it('should trim an explicit owner and repository slug', () => {
     assert.equal(normalizeRepositorySlug(' tanaabased/canon '), 'tanaabased/canon');
   });

@@ -12,7 +12,7 @@
     "codex:validate": "./bin/codexsync.js validate",
     "codex:sync": "./bin/codexsync.js sync",
     "lint": "bun run codex:validate",
-    "test:unit": "mocha \"test/**/*.spec.js\"",
+    "test:unit": "mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit"
   },
   "devDependencies": {

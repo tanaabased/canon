@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { bold, dim, formatValidationReport, renderCliHelp, validateSkillDir } from './skill-author-lib.js';
+import { bold, dim, formatValidationReport, renderCliHelp, validateSkillDir } from '../lib/skill-author.js';
 
 function usage(code = 0) {
   console.log(

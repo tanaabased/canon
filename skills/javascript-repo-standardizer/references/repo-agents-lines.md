@@ -2,7 +2,9 @@
 
 Use these lines only when the target repo wants the JS/Bun baseline as durable ambient policy in its own `AGENTS.md`.
 
-- Keep JavaScript and Bun repos aligned to the shared baseline for scope folders, `bin/`, `utils/`, and related layout decisions.
+- Keep JavaScript and Bun code in the nearest owning scope, organized as public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and scope-local `test/` surfaces as needed.
+- Keep each scope's `test/` directory flat by default, with specs, fixtures, fakes, and support JavaScript directly beneath it.
+- Apply the same hoisting test to tests as to source; keep nested-scope tests with their owner instead of collecting them at repo root.
 - Keep linting and formatting ownership separate: ESLint for lint rules and standalone Prettier for formatting.
 - Prefer the shared baseline script shape such as `lint:eslint`, `format:check`, `format:write`, and composed `lint` when the repo adopts the standard baseline.
 - Prefer Bun-first baseline package wiring for repos with meaningful JavaScript or TypeScript surfaces.

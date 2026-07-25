@@ -82,7 +82,7 @@ function normalizedReviewSettings(value = {}) {
 /**
  * Normalizes GitHub or policy branch protection to a URL-free, order-stable shape.
  *
- * @param {object | null} value Branch-protection response or desired payload.
+ * @param {object | null} value GitHub response or desired protection payload.
  * @returns {object | null} Comparable protection state.
  */
 export default function normalizeBranchProtection(value) {

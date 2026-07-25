@@ -104,10 +104,12 @@ Planning checkpoint:
 
 ### 4. Audit Code-Bearing Assets Against Repo Structure
 
-- Review code-bearing skill subtrees such as `skills/**/scripts/`, helper code in templates, and any bundled runtime code against [`../references/javascript-repo-structure.md`](../references/javascript-repo-structure.md).
-- Reorganize files into scope folders such as `bin/`, `utils/`, or `lib/` only when the repo-structure rules clearly support it.
+- Review every code-bearing skill scope, helper code in templates, and bundled runtime code against [`../references/javascript-repo-structure.md`](../references/javascript-repo-structure.md).
+- Organize each owning scope into public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and scope-local `test/` folders as needed.
+- Review tests with the same ownership and hoisting rules as source instead of treating root `test/` as a special collection point.
+- Keep each scoped `test/` directory flat by default, with specs, fixtures, fakes, and support JavaScript as siblings.
 - Hoist shared helpers only when reuse is proven and the helper is no longer surface-coupled.
-- Keep repo-level `scripts/` flat and suffix-encoded as `-cli.js`, `-task.js`, or `-lib.js`.
+- Keep repo-level `scripts/` flat and suffix-encoded as `-cli.js` or `-task.js`; put import-only modules in `lib/`.
 
 Planning checkpoint:
 

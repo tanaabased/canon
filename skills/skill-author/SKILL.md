@@ -21,7 +21,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Choose the narrowest type that fits; keep `generic` as the fallback.
 - Validation is a first-class workflow phase and a valid standalone mode.
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
-- Keep support material local unless it clearly passes the hoist test for repo-root canon.
+- Keep support material local unless it clearly passes the hoist test for repo-root canon, and apply that same ownership test to skill-local tests.
 - For `coding` skills, define one owned code surface plus three lifecycle sections: `Documentation`, `Testing`, and `GitHub Actions Workflow`.
 - In plugin-contained skill trees, keep the owner-prefixed machine id in frontmatter and prompts while omitting that owner prefix from the skill folder name.
 - If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
@@ -33,7 +33,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Choose or refine a skill's `type`.
 - Standardize an existing skill's `SKILL.md`, `agents/openai.yaml`, naming, or `metadata.owner`.
 - Validate a newly created, standardized, or migrated skill directory.
-- Review whether skill support material should stay local or be hoisted under the shared hoist test.
+- Review whether skill support material and tests should stay local or be hoisted under the shared hoist test.
 - Split a broad skill into narrower skills with clearer owned surfaces.
 - Review whether a proposed skill surface is better expressed as a repo template than as a live skill.
 - Review whether a skill should bundle short repo `AGENTS.md` lines because its surface implies durable ambient repo policy.
@@ -90,6 +90,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Patch manually when the task is a partial migration or standardization pass.
 - Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
+- Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
+- Keep skill-owned `test/` directories flat by default, with specs, fixtures, fakes, and support JavaScript as siblings.
 - Hoist only when the file is reused across live surfaces, is a repo-wide contract or tooling surface, or has standalone human value.
 - Review existing hoisted files with one meaningful live consumer for demotion.
 
@@ -106,7 +108,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - [./templates/meta.md](./templates/meta.md): canonical full-template model for `meta` skills; sibling templates define the other type shapes
 - [./scripts/init-skill.js](./scripts/init-skill.js): deterministic scaffolder for canonical full templates
 - [./scripts/validate-skill.js](./scripts/validate-skill.js): validation entrypoint for skill directories
-- [./scripts/skill-author-lib.js](./scripts/skill-author-lib.js): shared local authoring and validation helpers
+- [./lib/skill-author.js](./lib/skill-author.js): shared local authoring and validation library
 
 ## Validation
 
@@ -118,5 +120,6 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Confirm the surface is not better expressed as a repo template with the skill kept only as a thin discovery or adaptation layer, if needed.
 - Confirm any bundled repo `AGENTS.md` lines stay short, ambient, and worth copying into a project repo.
 - Confirm bundled resources stay local unless they clearly pass the hoist test.
+- Confirm skill-owned test files remain flat beneath the skill's `test/` directory unless an external tool requires a fixed nested path.
 - Confirm any repo-root resources still justify being hoisted.
 - Run `validate-skill.js` and fix all `[error]` results before finishing.

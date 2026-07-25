@@ -9,7 +9,7 @@ import workflowTemplateText from '../templates/workflow.md' with { type: 'text' 
 import bundledLargeIconImport from '../assets/icon-large.png';
 import bundledSmallIconImport from '../assets/icon-small.svg';
 
-const MODULE_DIR = path.dirname(fileURLToPath(import.meta.url));
+const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
 const AUXILIARY_DOCS = [
   'README.md',
   'CHANGELOG.md',
@@ -17,7 +17,16 @@ const AUXILIARY_DOCS = [
   'INSTALLATION_GUIDE.md',
   'QUICK_REFERENCE.md',
 ];
-const OPTIONAL_RESOURCE_NAMES = ['templates', 'assets', 'references', 'scripts'];
+const OPTIONAL_RESOURCE_NAMES = [
+  'assets',
+  'bin',
+  'lib',
+  'references',
+  'scripts',
+  'templates',
+  'test',
+  'utils',
+];
 const KEBAB_CASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const KEBAB_CASE_HELPER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*(\.[a-z0-9]+)?$/;
 const RELATIONSHIP_SECTION_HEADING = '## Relationship to Other Skills';
@@ -75,7 +84,7 @@ export const CANON_SKILL_PREFIX_WITH_HYPHEN = `${CANON_SKILL_PREFIX}-`;
 export const CANON_SKILL_LICENSE = 'MIT';
 export const CANON_SKILL_BRAND_COLOR = '#00c88a';
 export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
-export const SKILLS_ROOT_DIR = path.resolve(MODULE_DIR, '..', '..');
+export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
 const ANSI_ESCAPE_PREFIX = '\u001B[';
 
 function supportsColor(stream = process.stdout) {
@@ -502,7 +511,7 @@ function resolveImportedAssetPath(importedAssetPath) {
     return importedAssetPath;
   }
 
-  return path.resolve(MODULE_DIR, importedAssetPath);
+  return path.resolve(LIB_DIR, importedAssetPath);
 }
 
 export function getBundledSmallIconPath() {
@@ -973,10 +982,6 @@ async function validateOptionalResources(skillPath, warnings) {
       warnings.push(`Empty optional resource directory: ${resourceName}/`);
     }
 
-    if (resourceName === 'scripts') {
-      continue;
-    }
-
     for (const entry of entries) {
       if (!KEBAB_CASE_HELPER_PATTERN.test(entry) && !entry.includes('.')) {
         warnings.push(`Repo-authored helper name should prefer kebab-case: ${resourceName}/${entry}`);
@@ -991,6 +996,8 @@ function buildManualChecks({ expectedType }) {
     'Check that the skill owns one narrow, concrete surface.',
     'Check that bundled resources stay local unless they clearly pass the hoist test for repo-root canon.',
     'Check that any repo-root resources referenced by the skill still earn hoisted status through proven reuse, repo-wide contract status, or standalone human value.',
+    'Check that skill code uses public bin, internal scripts, orchestration lib, unit-shaped utils, and scoped test roles consistently.',
+    'Check that tests remain with their owning scope unless their implementation or coverage is intentionally shared.',
     'Check that bulk standardization preserved the skill purpose unless a behavioral rewrite was requested.',
   ];
 

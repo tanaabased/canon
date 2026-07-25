@@ -30,7 +30,7 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 
 ## When Not to Use
 
-- Do not use this skill for skill-local helper scripts under `skills/**/scripts/`; those are not package-level CLIs.
+- Do not use this skill for internal skill, agent, automation, or maintainer commands under `scripts/`; those are not public CLI product surfaces even when they expose CLI-like arguments and help.
 - Do not use this skill for Bash or PowerShell CLI entrypoints.
 - Do not use this skill for general JS runtime work that is not really about the package-level CLI product surface.
 
@@ -46,7 +46,7 @@ Tanaab-based authoring and standardization of true Bun CLI product surfaces. Use
 ## Change Strategy
 
 - Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) for help order, dimmed usage placeholders, dimmed displayed defaults, streams, colors, and `SCRIPT_VERSION` rules.
-- Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) for `bin/`, `utils/`, and hoisting decisions.
+- Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) to keep the public `bin/` entrypoint distinct from internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and scoped `test/` surfaces.
 - Prefer static imports and avoid source-layout assumptions when the CLI is meant to ship as a `bun build` artifact.
 - Use [./references/bun-cli-template.md](./references/bun-cli-template.md) and the bundled starter only when the repo actually needs a reusable Bun CLI baseline.
 
@@ -122,7 +122,7 @@ jobs:
 - [./templates/bun-cli.js](./templates/bun-cli.js): reusable starter for true Bun CLI entrypoints
 - [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI help, color, stream, and version rules
 - [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
-- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): `bin/`, `utils/`, and JS hoisting rules
+- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): public `bin/`, internal `scripts/`, `lib/`, `utils/`, scoped `test/`, and hoisting rules
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first runtime defaults
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples

@@ -1,10 +1,10 @@
 import canonicalPolicy from '../references/canonical-repository-settings.json' with {
   type: 'json',
 };
-import diffManagedValues from './utils/diff-managed-values.js';
-import normalizeBranchProtection from './utils/normalize-branch-protection.js';
-import normalizeRepositorySlug from './utils/normalize-repository-slug.js';
-import runGh from './utils/run-gh.js';
+import diffManagedValues from '../utils/diff-managed-values.js';
+import normalizeBranchProtection from '../utils/normalize-branch-protection.js';
+import normalizeRepositorySlug from '../utils/normalize-repository-slug.js';
+import runGh from '../utils/run-gh.js';
 
 const MAIN_BRANCH = 'main';
 const DEFAULT_MAIN_WAIT_ATTEMPTS = 5;

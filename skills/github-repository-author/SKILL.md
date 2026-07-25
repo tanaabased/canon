@@ -74,8 +74,9 @@ This skill owns one GitHub repository-policy surface. Creation and synchronizati
 
 - [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state captured from `tanaabased/canon`
 - [./scripts/repository-policy.js](./scripts/repository-policy.js): non-interactive Bun entrypoint for inspect, create, and apply operations
-- [./scripts/repository-policy-lib.js](./scripts/repository-policy-lib.js): GitHub API orchestration over an injected command boundary
-- [./scripts/utils/](./scripts/utils/): focused slug, diff, protection-normalization, argument, rendering, and `gh` process units
+- [./lib/repository-policy-client.js](./lib/repository-policy-client.js): GitHub API orchestration over an injected command boundary
+- [./utils/](./utils/): focused slug, diff, protection-normalization, argument, rendering, and `gh` process units
+- [./test/](./test/): scope-local direct unit, library-boundary, command-wrapper, and fake-GitHub coverage
 
 ## Validation
 

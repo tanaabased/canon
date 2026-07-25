@@ -1,5 +1,5 @@
 /**
- * Parses the skill-local repository-policy command contract.
+ * Parses the internal repository-policy command contract.
  *
  * @param {string[]} argv Arguments without the executable path.
  * @returns {{command: string | null, help: boolean, initialize: boolean, json: boolean,

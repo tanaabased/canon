@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 
 /**
- * Runs `gh` synchronously without shell interpolation.
+ * Runs the internal `gh` process boundary without shell interpolation.
  *
  * @param {string[]} args GitHub CLI arguments.
  * @param {{input?: string}} [options] Optional standard input.

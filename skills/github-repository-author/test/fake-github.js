@@ -1,4 +1,4 @@
-import canonicalPolicy from '../../../skills/github-repository-author/references/canonical-repository-settings.json' with {
+import canonicalPolicy from '../references/canonical-repository-settings.json' with {
   type: 'json',
 };
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
-import { runCli } from '../../skills/github-repository-author/scripts/repository-policy.js';
-import { TARGET } from './support/fake-github.js';
+import { runCli } from '../scripts/repository-policy.js';
+import { TARGET } from './fake-github.js';
 
 function captureStream() {
   let content = '';

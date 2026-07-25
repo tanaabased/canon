@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   RepositoryPolicyClient,
   RepositoryPolicyError,
-} from '../../skills/github-repository-author/scripts/repository-policy-lib.js';
+} from '../lib/repository-policy-client.js';
 import {
   TARGET,
   canonicalPolicy,
@@ -11,7 +11,7 @@ import {
   createRemote,
   mutatingCommands,
   protectionResponse,
-} from './support/fake-github.js';
+} from './fake-github.js';
 
 function clientFor(remote) {
   return new RepositoryPolicyClient({
@@ -21,7 +21,7 @@ function clientFor(remote) {
   });
 }
 
-describe('skills/github-repository-author/scripts/repository-policy-lib', () => {
+describe('skills/github-repository-author/lib/repository-policy-client', () => {
   it('should report canon-aligned managed state while preserving unmanaged settings', () => {
     const remote = createRemote();
     const report = clientFor(remote).inspect(TARGET);

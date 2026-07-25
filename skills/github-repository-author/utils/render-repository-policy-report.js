@@ -3,7 +3,7 @@ function displayValue(value) {
 }
 
 /**
- * Renders one stable human-readable policy report.
+ * Renders a stable human-readable policy report.
  *
  * @param {object} report Repository policy report.
  * @returns {string} Newline-terminated report.

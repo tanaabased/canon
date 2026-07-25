@@ -1,7 +1,7 @@
 /**
  * Validates and normalizes one explicit GitHub repository slug.
  *
- * @param {string} value Candidate `OWNER/REPO` slug.
+ * @param {string} value Raw `OWNER/REPO` slug.
  * @returns {string} Trimmed explicit slug.
  * @throws {Error} When the slug is missing or has an unsupported shape.
  */

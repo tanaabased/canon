@@ -11,7 +11,7 @@ function comparable(value) {
 }
 
 /**
- * Returns stable field-level drift for the managed desired-state keys.
+ * Returns stable field-level drift for managed desired-state keys.
  * Current-only keys are ignored so unmanaged remote state is preserved.
  *
  * @param {unknown} current Normalized current state.

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 
-import diffManagedValues from '../../skills/github-repository-author/scripts/utils/diff-managed-values.js';
+import diffManagedValues from '../utils/diff-managed-values.js';
 
-describe('skills/github-repository-author/scripts/utils/diff-managed-values', () => {
+describe('skills/github-repository-author/utils/diff-managed-values', () => {
   it('should report only desired managed paths', () => {
     const changes = diffManagedValues(
       { managed: ['ci'], unmanaged: 'keep' },

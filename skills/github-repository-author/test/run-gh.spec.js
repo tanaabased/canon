@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 
-import runGh from '../../skills/github-repository-author/scripts/utils/run-gh.js';
+import runGh from '../utils/run-gh.js';
 
-describe('skills/github-repository-author/scripts/utils/run-gh', () => {
+describe('skills/github-repository-author/utils/run-gh', () => {
   it('should invoke gh without shell interpolation and pass standard input', () => {
     const calls = [];
     const spawnSync = (command, args, options) => {

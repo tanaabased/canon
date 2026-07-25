@@ -18,14 +18,15 @@ metadata:
 Tanaab-based JavaScript and Bun implementation work. Use when a user wants to modify JavaScript or Bun code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
 
 - Keep the broad JavaScript entrypoint for discovery, including library-shaped modules as well as helper extraction.
-- Prefer thin library-facing wrappers around lower-coupling utility logic when that decomposition is honest.
-- Keep heavier, more generic, more testable logic in `utils/`-level functions when it fits the existing `utils/` boundary.
+- Keep public `bin/` and internal `scripts/` entrypoints thin over surface-specific `lib/` modules and lower-coupling `utils/` units.
+- Keep independently testable function-shaped logic in `utils/` when that decomposition is honest, even when the vocabulary remains local to the owning scope.
 
 ## When to Use
 
 - Modify JavaScript source, Bun runtime plumbing, or ESM module shape when the task is primarily JS-led.
-- Shape library-facing JavaScript modules where a thin public class or module wraps reusable helper logic.
+- Shape library-facing JavaScript modules where a focused `lib/` class or module wraps reusable utility logic.
 - Write, refactor, or extract low-coupling utility functions, especially single-file ESM helpers under `utils/` or another narrow code scope.
+- Organize a code-bearing skill, package, app, or plugin beneath its nearest owning scope rather than defaulting files to the repository root.
 - Update `package.json`, `packageManager`, `engines`, `main`, or `exports` when those changes directly support the owned JS surface.
 - Migrate repo-owned JS tooling from Node or npm assumptions toward Bun when the repo actually has meaningful JS surfaces.
 - Change JS bundling or artifact generation when the main owned surface still remains general JavaScript implementation work.
@@ -41,15 +42,16 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 ## Constraints
 
 - Prefer the smallest change that solves the task.
-- Prefer one main exported function and a narrow file surface when a helper can be expressed that way honestly.
+- Prefer one main exported function, one utility file, and one focused spec when a helper can be expressed that way honestly.
 - Do not force `utils/` extraction when the logic is tightly coupled to surface vocabulary, orchestration, or state.
 - Preserve existing style and local patterns unless the task clearly requires a change.
 - Avoid unrelated refactors.
 
 ## Change Strategy
 
-- Default the implementation path toward lower-coupling functions and `utils/`-style helpers.
-- For library-shaped code, keep the public class or module focused on orchestration, state, and surface-specific wrapping while extracting generic logic into utility functions when the split is honest.
+- First identify the nearest owning scope, then place public commands in `bin/`, internal machine- or agent-facing commands in `scripts/`, orchestration in `lib/`, unit-shaped functions in `utils/`, and owned tests in `test/`.
+- Default the implementation path toward lower-coupling functions and directly tested `utils/` units.
+- For library-shaped code, keep the `lib/` class or module focused on orchestration, state, and surface-specific wrapping while extracting testable function logic into utilities when the split is honest.
 - Keep repo-coupled orchestration and surface vocabulary near the owning module instead of forcing them into `utils/`.
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS surface instead of the default authored pattern.
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
@@ -76,7 +78,9 @@ Tanaab-based JavaScript and Bun implementation work. Use when a user wants to mo
 
 - Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
 - Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
-- Keep test files narrow and adjacent in intent, usually under `test/` with names such as `test/normalize-tags.spec.js`.
+- Keep test files narrow and inside the nearest owning scope, such as `feature/test/normalize-tags.spec.js` for `feature/utils/normalize-tags.js`.
+- Keep the scoped `test/` directory flat by default, including specs, fixtures, fakes, and support JavaScript; use descriptive filenames instead of mirrored source-role folders.
+- Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so the spec reads as behavior rather than implementation narration.
 - Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
@@ -90,7 +94,7 @@ import assert from 'node:assert/strict';
 
 import normalizeTags from '../utils/normalize-tags.js';
 
-describe('utils/normalize-tags', () => {
+describe('feature/utils/normalize-tags', () => {
   it('should drop empty values and lowercase tags', () => {
     assert.deepEqual(normalizeTags([' Docs ', '', null, 'API']), ['docs', 'api']);
   });
@@ -135,7 +139,7 @@ jobs:
 
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first, JavaScript-first runtime defaults
 - [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
-- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): scope folders, `bin/`, `utils/`, and hoisting rules for JS repos
+- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): owning scopes plus `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
 - [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): function shape, mutation discipline, and import grouping
 - [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JS code
 - [./templates/transform-unit.js](./templates/transform-unit.js): starter shape for pure or mostly pure transformation helpers
@@ -144,10 +148,11 @@ jobs:
 ## Validation
 
 - Confirm the skill still reads as the broad JavaScript entrypoint while funneling implementation toward thin library wrappers and lower-coupling utility functions when the task allows it.
-- Confirm the class guidance stayed a strong default rather than a hard requirement and did not imply a `classes/` folder or mandatory `utils/` hoisting.
+- Confirm public and internal entrypoints are thin, orchestration stays in `lib/`, and independently testable function logic moves to scoped `utils/` without creating a `classes/` bucket.
+- Confirm tests remain flat within their owning scope and are hoisted only with their implementation or for intentional cross-scope coverage.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
 - Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
-- Confirm direct tests prioritize generic utility logic and do not absorb GitHub Action input-helper patterns.
+- Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
 - Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS surface rather than drifting into workflow-topology ownership.
 - Run the repo's narrowest relevant lint, build, test, or smoke checks for the touched JS surface.
 - Confirm the change did not widen into CLI product, workflow YAML, or release-contract work.

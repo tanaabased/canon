@@ -28,10 +28,14 @@ skill-folder/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── bin/           # optional, public human-facing commands
+├── lib/           # optional, skill-specific libraries and orchestration
+├── scripts/       # optional, internal agent- or machine-facing commands
+├── utils/         # optional, independently testable units
+├── test/          # optional, flat tests and test support owned by this skill
 ├── templates/     # optional, only when unique to this skill
 ├── assets/        # optional, only when unique to this skill
-├── references/    # optional, only when unique to this skill
-└── scripts/       # optional, only when unique to this skill
+└── references/    # optional, only when unique to this skill
 ```
 
 - In plugin-contained skill trees, `skill-folder/` is the unprefixed surface id while frontmatter `name` remains the full owner-prefixed machine id.
@@ -80,16 +84,19 @@ skill-folder/
 - `[error]` Start every skill from the canonical full type template owned by `tanaab-skill-author`.
 - `[error]` Type-specific authoring and validation behavior must come from those canonical templates rather than ad hoc parallel registries.
 - `[error]` Use the shared Tanaab owner contract from this standard and the validator. Do not load owner behavior from a separate owner-data folder.
-- `[error]` Use kebab-case for repo-authored helper filenames in `scripts/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
+- `[error]` Use kebab-case for repo-authored filenames in `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
 - `[error]` `scripts/` is code-only. Do not store static registry data there as JS object literals.
-- `[error]` Repo-level script filenames must end in `-cli.js`, `-task.js`, or `-lib.js`.
+- `[error]` Repo-level script filenames must end in `-cli.js` or `-task.js`; import-only modules belong in `lib/`.
 - `[warn]` Keep support material local to the owning skill by default.
 - `[warn]` Hoist support material to repo root only on proven reuse across live surfaces, repo-wide contract or tooling status, or standalone human value.
 - `[warn]` Machine-readable data should live with the smallest justified owner. Hoist it into repo-root `references/` only when multiple live consumers or independent human value justify it.
 - `[error]` Bundleable repo scripts must import shared templates, assets, and machine-readable canon explicitly so `bun build` can follow the dependency graph.
 - `[warn]` Keep the default scaffold minimal.
-- `[warn]` Keep skill-bundled helpers in the skill's own `scripts/` directory. Do not treat them as repo-level package `bin/` entrypoints.
-- `[warn]` Shebang-bearing skill-local scripts and executable starter templates should be committed executable.
+- `[warn]` Keep skill-owned code beneath the skill directory and organize it by role: public human-facing commands in `bin/`, internal agent- or machine-facing commands in `scripts/`, orchestration in `lib/`, and independently testable units in `utils/`.
+- `[warn]` Keep a skill's tests in its own `test/` directory unless the tested implementation genuinely belongs to a higher shared scope.
+- `[warn]` Keep a skill's `test/` directory flat by default, with specs, fixtures, fakes, and support JavaScript as siblings rather than mirrored source-role folders.
+- `[warn]` Do not use `scripts/` as a blanket container for skill libraries, utilities, or tests.
+- `[warn]` Shebang-bearing skill-local `bin/` and `scripts/` entrypoints plus executable starter templates should be committed executable.
 - `[warn]` Do not mark repo-authored files executable unless they actually start with a shebang.
 - `[warn]` If a skill bundles `references/repo-agents-lines.md`, keep it to durable ambient repo rules rather than conditional workflow steps.
 - `[warn]` `generic` is the fallback type. Prefer a narrower type when one clearly fits.
@@ -112,7 +119,9 @@ skill-folder/
 - `[manual]` For `coding` skills, testing artifacts belong in `## Testing` even when they are README- or Markdown-backed, unless the skill explicitly treats them as durable user-facing examples.
 - `[manual]` For `coding` skills, `Documentation`, `Testing`, and `GitHub Actions Workflow` should each describe one canonical mechanism and one minimal example when an example materially shapes the skill.
 - `[manual]` Check whether the skill mostly restates one repo template's structure, scripts, examples, and docs; if so, prefer the template as source of truth and keep only a thin discovery or adaptation skill if needed.
-- `[manual]` Check shebang and executable-bit alignment for skill-local `scripts/`, starter templates, and any `bin/` surfaces.
+- `[manual]` Check shebang and executable-bit alignment for `bin/`, `scripts/`, starter templates, and other directly executable surfaces.
+- `[manual]` Check that tests pass the same ownership and hoisting test as the code they validate.
+- `[manual]` Check that scope-local tests remain flat unless an external tool requires a fixed nested path.
 - `[manual]` Optional `references/repo-agents-lines.md` should stay short, copyable, and scoped to always-on repo policy that should influence many tasks.
 - `[manual]` Hoisting decisions should be reviewed as placement choices, not assumed to be improvements.
 - `[manual]` Bulk standardization should preserve the skill's core purpose and workflow unless the task explicitly asks for a behavioral rewrite.

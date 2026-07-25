@@ -44,7 +44,10 @@
 - Shared JS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
 - Shared JS function-shape guidance lives in `references/javascript-function-data-flow.md`.
 - Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
-- That repo-structure guidance applies inside code-bearing subtrees such as `skills/**/scripts/` and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
+- That repo-structure guidance applies inside every code-bearing owning scope, including individual skills, and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
+- Inside a code-bearing scope, use `bin/` for public human-facing commands, `scripts/` for internal machine- or agent-facing commands, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.
+- Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support JavaScript directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
+- Apply the same hoisting test to tests as to source; root `test/` is only for root-owned or intentionally cross-scope coverage.
 - Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
 - Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
@@ -54,7 +57,7 @@
 - If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
 - Keep `scripts/` code-only. Machine-readable data should live with the smallest justified owner instead of being hoisted by default.
-- Keep `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked Bun CLIs, `-task.js` for repo automation entrypoints, and `-lib.js` for import-only helpers.
+- Keep repo-root `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked internal commands and `-task.js` for automation entrypoints. Put import-only modules in `lib/`.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 - If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.
 

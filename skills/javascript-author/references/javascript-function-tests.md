@@ -6,7 +6,9 @@ Use these defaults when validating low-coupling JavaScript helpers and utility f
 
 - Prefer focused Mocha tests for pure or mostly pure ESM helpers.
 - Keep the spec scoped to one helper surface and assert observable return values or narrow boundary behavior.
-- For helper modules such as `utils/x.js`, prefer matching specs such as `test/x.spec.js`.
+- For helper modules such as `feature/utils/x.js`, prefer matching specs such as `feature/test/x.spec.js`.
+- Keep each scoped `test/` directory flat by default, including specs, fixtures, fakes, and support JavaScript.
+- Keep specs in the nearest scope that owns the helper; hoist tests only when their implementation is also hoisted or the coverage is intentionally cross-scope.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so each test states the expected behavior.
 - Add `c8` only when coverage reporting or enforcement is actually part of the task.

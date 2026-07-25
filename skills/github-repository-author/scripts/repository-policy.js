@@ -1,6 +1,6 @@
-import { RepositoryPolicyClient, RepositoryPolicyError } from './repository-policy-lib.js';
-import parseRepositoryPolicyArgs from './utils/parse-repository-policy-args.js';
-import renderRepositoryPolicyReport from './utils/render-repository-policy-report.js';
+import { RepositoryPolicyClient, RepositoryPolicyError } from '../lib/repository-policy-client.js';
+import parseRepositoryPolicyArgs from '../utils/parse-repository-policy-args.js';
+import renderRepositoryPolicyReport from '../utils/render-repository-policy-report.js';
 
 function usage() {
   return `Usage: bun repository-policy.js <inspect|apply|create> OWNER/REPO [options]

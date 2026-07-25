@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 
-import normalizeBranchProtection from '../../skills/github-repository-author/scripts/utils/normalize-branch-protection.js';
-import { canonicalPolicy, protectionResponse } from './support/fake-github.js';
+import normalizeBranchProtection from '../utils/normalize-branch-protection.js';
+import { canonicalPolicy, protectionResponse } from './fake-github.js';
 
-describe('skills/github-repository-author/scripts/utils/normalize-branch-protection', () => {
+describe('skills/github-repository-author/utils/normalize-branch-protection', () => {
   it('should remove response wrappers and normalize actor names', () => {
     const normalized = normalizeBranchProtection(protectionResponse());
 

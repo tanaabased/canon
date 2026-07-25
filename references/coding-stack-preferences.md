@@ -45,8 +45,10 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Prefer focused unit tests for pure or mostly pure JavaScript helpers and modules.
 - For JS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
-- Prefer a top-level `test/` directory for this style of unit coverage.
-- For helper modules such as `utils/x.js`, prefer matching specs such as `test/x.spec.js`.
+- Prefer a `test/` directory inside the nearest scope that owns the implementation.
+- Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support JavaScript.
+- For helper modules such as `feature/utils/x.js`, prefer matching specs such as `feature/test/x.spec.js`.
+- Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so each test reads as an expected behavior.
 - For JS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.

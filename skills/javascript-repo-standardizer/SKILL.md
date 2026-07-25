@@ -18,12 +18,13 @@ metadata:
 Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, or baseline JS/Bun scripts in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
-- Use it to bring a JS/Bun repo onto the shared baseline for structure, linting, formatting, and related baseline scripts while leaving runtime authorship to the broader JavaScript implementation skill.
+- Use it to bring a JS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, and related baseline scripts while leaving runtime authorship to the broader JavaScript implementation skill.
 
 ## When to Use
 
 - Align a repo to the shared ESLint and standalone Prettier baseline.
-- Normalize JS repo structure around scope folders, `bin/`, `utils/`, and related layout decisions using the shared repo-structure canon.
+- Normalize JS repo structure around owning scopes plus public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and flat scope-local `test/` surfaces.
+- Review test placement with the same ownership and hoisting rules as implementation code, using human or agent judgment rather than a structural validator.
 - Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`.
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
 - Add or standardize the TypeScript or Vue lint layer only when the repo actually needs it.
@@ -48,7 +49,7 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 ## Change Strategy
 
 - Use [./references/lint-format-baseline.md](./references/lint-format-baseline.md) as the local source of truth for the lint and format baseline.
-- Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing scope folders, `bin/`, `utils/`, or hoisting decisions.
+- Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline defaults rather than re-deciding the tool stack locally.
 - Apply the bundled starter files together when standardizing a repo instead of inventing a partial local baseline.
 
@@ -69,7 +70,7 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 ## Testing
 
 - Treat direct lint and format commands as the canonical validation mechanism for this surface.
-- When repo structure changed, add targeted inspection of folders, entrypoints, or baseline files instead of widening into runtime smoke tests.
+- When repo structure changed, inspect owning scopes, role folders, flat source-to-test locality, entrypoints, and baseline files instead of widening into runtime smoke tests.
 - Keep the validation path explicit: ESLint for lint rules, Prettier for format checks, and `lint` only when it intentionally composes those commands.
 - Do not add unrelated smoke or scenario layers unless the task clearly expands beyond repo baseline standardization.
 
@@ -116,13 +117,13 @@ jobs:
 - [./templates/.prettierignore](./templates/.prettierignore): shared Prettier ignore baseline
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
-- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared scope-folder, `bin/`, `utils/`, and hoisting rules for JS repos
+- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared linting and formatting defaults
 
 ## Validation
 
 - Confirm the task stayed on repo baseline standardization rather than drifting into general JS runtime work or implementation refactors.
-- Confirm repo-structure normalization followed [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) without turning this skill into general code authorship.
+- Confirm repo-structure normalization followed [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md), including flat scope-local tests and equal hoisting rules for source and tests, without turning this skill into general code authorship.
 - Confirm ESLint and Prettier ownership remain separate.
 - Confirm durable baseline documentation stayed limited to repo policy notes, package scripts, config comments, or README notes that directly explain the standardized baseline.
 - Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
