@@ -1,3 +1,4 @@
+import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
 import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
@@ -17,4 +18,5 @@ export const vueLintLayer = [
       },
     },
   },
+  prettierConfig,
 ];

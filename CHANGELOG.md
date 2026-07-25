@@ -2,7 +2,14 @@
 
 ### Canon
 
+- Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
+- Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
+
+### Skills
+
+- Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
+- Updated Skill Author and GitHub Checks Triage with focused libraries, testable utilities, and thin internal commands.
 
 ## v0.4.0 - [May 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.4.0)
 

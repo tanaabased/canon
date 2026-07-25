@@ -1,4 +1,4 @@
-name: Unit Tests
+name: PR Checks
 
 on:
   pull_request:
@@ -7,6 +7,18 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    name: Lint and Canon Validation
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run lint
+      - run: bun run codex:validate
+
   unit-tests:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}

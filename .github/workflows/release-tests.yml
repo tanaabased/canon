@@ -24,7 +24,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Check canon
-        run: bun run codex:validate
+        run: |
+          bun run lint
+          bun run codex:validate
       - name: Prepare release-shaped build
         uses: tanaabased/prepare-release-action@v1
         with:

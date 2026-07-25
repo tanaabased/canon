@@ -26,7 +26,6 @@ export default defineConfig([
     '**/.vitepress/dist/**',
   ]),
   js.configs.recommended,
-  prettierConfig,
   {
     files: ['**/*.{js,mjs}'],
     languageOptions: {
@@ -98,4 +97,5 @@ export default defineConfig([
       },
     },
   },
+  prettierConfig,
 ]);

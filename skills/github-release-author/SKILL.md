@@ -1,6 +1,6 @@
 ---
 name: tanaab-github-release-author
-description: Tanaab-based GitHub Release drafting workflow for Tanaab and allied repositories.
+description: Tanaab-based GitHub Release drafting workflow for Tanaab and allied repositories. Use when a user wants to prepare a changelog-backed release draft, verify the next tag, or review release readiness.
 license: MIT
 metadata:
   type: integration

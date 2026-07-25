@@ -57,4 +57,5 @@ Use this shape by default when standardizing a repo. If an existing repo already
 
 - Add the TypeScript layer only when the repo actually lints `.ts` or `.tsx`.
 - Add the Vue layer only when the repo lints `.vue` files.
+- Keep `eslint-config-prettier` after the Vue recommended layer so Vue formatting rules do not override the standalone Prettier contract.
 - Keep docs-site or VitePress repos on the same ESLint base and only append the Vue layer where `.vue` files are present.
