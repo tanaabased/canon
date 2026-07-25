@@ -54,10 +54,7 @@
           "required_approving_review_count": 1,
           "require_last_push_approval": false,
           "bypass_pull_request_allowances": {
-            "users": [
-              "pirog",
-              "tanaabot"
-            ],
+            "users": ["pirog", "tanaabot"],
             "teams": [],
             "apps": []
           }

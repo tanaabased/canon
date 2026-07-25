@@ -12,6 +12,17 @@ Use this baseline when standardizing a repository around one Bun-first lint and 
 
 Copy these files together when standardizing a repo. If a repo already has lint or format config, align it to these files rather than inventing a separate local formatting baseline.
 
+## Baseline Drift Checklist
+
+Report each missing item as baseline drift instead of treating this reference as an optional recommendation:
+
+- files: `eslint.config.js`, `prettier.config.js`, and `.prettierignore`
+- scripts: `lint:eslint`, `format:check`, `format:write`, and the composed `lint`
+- development dependencies: `@eslint/js`, `eslint`, `eslint-config-prettier`, `globals`, and `prettier`
+- Bun metadata: `packageManager`, `.bun-version`, and a committed `bun.lock`
+
+When a selected layer imports more packages, report those packages too. The Vue layer requires `eslint-plugin-vue` and `vue-eslint-parser`; the TypeScript layer requires the dependencies imported by its snippet.
+
 ## Baseline Rules
 
 - Use flat ESLint config at the repo root.

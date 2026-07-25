@@ -25,8 +25,7 @@ export default function diffManagedValues(current, desired, pathPrefix = '') {
   }
 
   const canCompareObject =
-    isPlainObject(desired) &&
-    (isPlainObject(current) || current === null || current === undefined);
+    isPlainObject(desired) && (isPlainObject(current) || current === null || current === undefined);
   if (canCompareObject) {
     return Object.keys(desired)
       .sort((left, right) => left.localeCompare(right))

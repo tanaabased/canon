@@ -1,7 +1,20 @@
 #!/usr/bin/env bun
 
-import { displayPositionals, fail, parseCodexsyncArgv, renderHelp, ts, writeLine } from '../lib/bun-cli-support.js';
-import { CLI_NAME, COMMANDS, DEFAULT_REPO_ROOT, getScriptVersion, resolveCodexsyncContext } from '../lib/codexsync-context.js';
+import {
+  displayPositionals,
+  fail,
+  parseCodexsyncArgv,
+  renderHelp,
+  ts,
+  writeLine,
+} from '../lib/bun-cli-support.js';
+import {
+  CLI_NAME,
+  COMMANDS,
+  DEFAULT_REPO_ROOT,
+  getScriptVersion,
+  resolveCodexsyncContext,
+} from '../lib/codexsync-context.js';
 import { runCheck } from '../lib/codexsync-check.js';
 import { runSync } from '../lib/codexsync-sync.js';
 import { runValidate } from '../lib/codexsync-validate.js';
@@ -16,7 +29,15 @@ async function main() {
   });
 
   if (options.help) {
-    writeLine(process.stdout, renderHelp({ cachePath: context.cachePath, cliName: CLI_NAME, commands: COMMANDS, repoRoot: options.repoRoot }));
+    writeLine(
+      process.stdout,
+      renderHelp({
+        cachePath: context.cachePath,
+        cliName: CLI_NAME,
+        commands: COMMANDS,
+        repoRoot: options.repoRoot,
+      }),
+    );
     return true;
   }
 
@@ -28,7 +49,18 @@ async function main() {
   if (!command) {
     fail(`expected a command (${COMMANDS.map((entry) => ts(entry)).join(', ')})`);
     writeLine(process.stderr, '');
-    writeLine(process.stderr, renderHelp({ cachePath: context.cachePath, cliName: CLI_NAME, commands: COMMANDS, repoRoot: options.repoRoot }, process.stderr));
+    writeLine(
+      process.stderr,
+      renderHelp(
+        {
+          cachePath: context.cachePath,
+          cliName: CLI_NAME,
+          commands: COMMANDS,
+          repoRoot: options.repoRoot,
+        },
+        process.stderr,
+      ),
+    );
     return false;
   }
 

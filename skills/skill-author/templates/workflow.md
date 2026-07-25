@@ -2,14 +2,16 @@
 template_type: workflow
 default_category_tag: operations
 ---
+
 ---
+
 name: {{skill_id}}
 description: {{description}}
 license: {{license}}
 metadata:
-  type: {{type}}
-  owner: {{owner}}
-  tags:
+type: {{type}}
+owner: {{owner}}
+tags:
 {{metadata_tags_yaml}}
 ---
 

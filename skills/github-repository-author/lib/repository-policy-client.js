@@ -1,6 +1,4 @@
-import canonicalPolicy from '../references/canonical-repository-settings.json' with {
-  type: 'json',
-};
+import canonicalPolicy from '../references/canonical-repository-settings.json' with { type: 'json' };
 import diffManagedValues from '../utils/diff-managed-values.js';
 import normalizeBranchProtection from '../utils/normalize-branch-protection.js';
 import normalizeRepositorySlug from '../utils/normalize-repository-slug.js';
@@ -208,19 +206,21 @@ export class RepositoryPolicyClient {
       step: 'inspect-main',
     });
     const branches = mainResponse.missing
-      ? this.request('GET', `/repos/${slug}/branches?per_page=100`, undefined, {
+      ? (this.request('GET', `/repos/${slug}/branches?per_page=100`, undefined, {
           step: 'inspect-branches',
-        }).data ?? []
+        }).data ?? [])
       : [mainResponse.data];
-    const invitations = this.request('GET', `/repos/${slug}/invitations`, undefined, {
-      step: 'inspect-invitations',
-    }).data ?? [];
-    const directCollaborators = this.request(
-      'GET',
-      `/repos/${slug}/collaborators?affiliation=direct&per_page=100`,
-      undefined,
-      { step: 'inspect-direct-collaborators' },
-    ).data ?? [];
+    const invitations =
+      this.request('GET', `/repos/${slug}/invitations`, undefined, {
+        step: 'inspect-invitations',
+      }).data ?? [];
+    const directCollaborators =
+      this.request(
+        'GET',
+        `/repos/${slug}/collaborators?affiliation=direct&per_page=100`,
+        undefined,
+        { step: 'inspect-direct-collaborators' },
+      ).data ?? [];
     const mainExists = !mainResponse.missing;
     const collaborators = {};
 
@@ -261,7 +261,7 @@ export class RepositoryPolicyClient {
           protection: normalizeBranchProtection(protectionResponse.data),
           required_signatures: Boolean(
             protectionResponse.data?.required_signatures?.enabled ??
-              protectionResponse.data?.required_signatures,
+            protectionResponse.data?.required_signatures,
           ),
         },
       },

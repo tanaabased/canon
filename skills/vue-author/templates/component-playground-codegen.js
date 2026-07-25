@@ -1,5 +1,7 @@
 function toKebabCase(value) {
-  return String(value ?? '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return String(value ?? '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function escapeAttributeValue(value) {
@@ -11,7 +13,10 @@ function escapeAttributeValue(value) {
 }
 
 function escapeSlotText(value) {
-  return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
 
 function escapeJsStringValue(value) {
@@ -251,7 +256,9 @@ function formatChildProps(props = {}) {
 }
 
 function resolveRepeatCount(definition, state) {
-  const controlValue = definition.countControl ? state.controls?.[definition.countControl] : undefined;
+  const controlValue = definition.countControl
+    ? state.controls?.[definition.countControl]
+    : undefined;
 
   if (controlValue === 'auto') {
     const autoValue = Number(state.props?.[definition.autoCountProp]);

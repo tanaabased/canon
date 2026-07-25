@@ -2,16 +2,18 @@
 template_type: integration
 default_category_tag: external-systems
 optional_top_level_headings:
-  - "## Release Workflow"
+  - '## Release Workflow'
 ---
+
 ---
+
 name: {{skill_id}}
 description: {{description}}
 license: {{license}}
 metadata:
-  type: {{type}}
-  owner: {{owner}}
-  tags:
+type: {{type}}
+owner: {{owner}}
+tags:
 {{metadata_tags_yaml}}
 ---
 

@@ -44,11 +44,7 @@
         class="component-playground__fieldset"
       >
         <legend>{{ group.label }}</legend>
-        <label
-          v-for="field in group.fields"
-          :key="field.name"
-          class="component-playground__field"
-        >
+        <label v-for="field in group.fields" :key="field.name" class="component-playground__field">
           <input
             v-if="field.kind === 'boolean'"
             v-model="field.model[field.name]"
@@ -150,7 +146,9 @@ const state = reactive(createPlaygroundState(props.schema, props.initialState));
 
 const generated = computed(() => generateComponentUsage(props.schema, state));
 const previewProps = computed(() => getPreviewProps(props.schema, state));
-const resolvedPreviewFit = computed(() => (props.previewFit === 'contained' ? 'contained' : 'full'));
+const resolvedPreviewFit = computed(() =>
+  props.previewFit === 'contained' ? 'contained' : 'full',
+);
 const slotDefinitions = computed(() => Object.entries(props.schema?.slots ?? {}));
 const namedPreviewSlots = computed(() => {
   return slotDefinitions.value
@@ -202,7 +200,9 @@ function createFields(name, label, definitions = {}, model) {
     name,
     label,
     fields: Object.entries(definitions)
-      .filter(([, definition]) => definition.kind !== 'object-array' && definition.kind !== 'repeat')
+      .filter(
+        ([, definition]) => definition.kind !== 'object-array' && definition.kind !== 'repeat',
+      )
       .map(([fieldName, definition]) => ({
         name: fieldName,
         label: definition.label ?? fieldName,

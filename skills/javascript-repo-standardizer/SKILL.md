@@ -29,6 +29,7 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
 - Add or standardize the TypeScript or Vue lint layer only when the repo actually needs it.
 - Apply the bundled baseline starter files when the task is specifically about bringing a repo onto the shared JS/Bun baseline.
+- Audit required config files, package scripts, development dependencies, Bun metadata, and the lockfile as concrete baseline signals; report every missing signal as drift.
 - Add or refresh repo-local `AGENTS.md` lines when the repo wants the JS/Bun baseline to be durable ambient policy.
 
 ## When Not to Use
@@ -58,7 +59,8 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 1. Confirm the request is specifically about JS/Bun repo baseline standardization rather than implementation authorship.
 2. Load the local lint baseline reference plus the shared repo-structure canon needed for the target repo surface.
 3. Keep lint, format, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
-4. Validate the resulting repo baseline with the narrowest reliable local checks.
+4. Compare the target against the complete baseline checklist and report missing files, scripts, dependencies, or Bun metadata explicitly.
+5. Validate the resulting repo baseline with the narrowest reliable local checks.
 
 ## Documentation
 
@@ -127,6 +129,8 @@ jobs:
 - Confirm ESLint and Prettier ownership remain separate.
 - Confirm durable baseline documentation stayed limited to repo policy notes, package scripts, config comments, or README notes that directly explain the standardized baseline.
 - Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
+- Confirm `packageManager`, `.bun-version`, and the committed `bun.lock` are present in Bun-managed repositories.
+- Confirm all dependencies imported by the selected ESLint and Prettier layers are declared as development dependencies.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
 - Confirm any GitHub Actions workflow example remains a repo-baseline validation path rather than a general workflow-topology pattern.
 - Run the narrowest repo-native lint, format, or baseline checks available for the touched surface.

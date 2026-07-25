@@ -1,6 +1,4 @@
-import canonicalPolicy from '../references/canonical-repository-settings.json' with {
-  type: 'json',
-};
+import canonicalPolicy from '../references/canonical-repository-settings.json' with { type: 'json' };
 
 export const TARGET = 'acme/widget';
 

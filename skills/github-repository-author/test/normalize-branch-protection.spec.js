@@ -7,10 +7,10 @@ describe('skills/github-repository-author/utils/normalize-branch-protection', ()
   it('should remove response wrappers and normalize actor names', () => {
     const normalized = normalizeBranchProtection(protectionResponse());
 
-    assert.deepEqual(normalized.required_pull_request_reviews.bypass_pull_request_allowances.users, [
-      'pirog',
-      'tanaabot',
-    ]);
+    assert.deepEqual(
+      normalized.required_pull_request_reviews.bypass_pull_request_allowances.users,
+      ['pirog', 'tanaabot'],
+    );
     assert.deepEqual(normalized.required_status_checks.checks, []);
     assert.equal(normalized.required_linear_history, true);
   });

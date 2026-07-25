@@ -132,9 +132,13 @@ function makeOpenAiYaml({ displayName, shortDescription, defaultPrompt }) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
-  const type = String(options.type ?? '').trim().toLowerCase();
+  const type = String(options.type ?? '')
+    .trim()
+    .toLowerCase();
   const rawSlug = normalizeSlug(options.slug ?? '');
-  const categoryTagOverride = String(options.categoryTag ?? '').trim().toLowerCase();
+  const categoryTagOverride = String(options.categoryTag ?? '')
+    .trim()
+    .toLowerCase();
   const displayName = String(options.displayName ?? '').trim();
   const description = String(options.description ?? '').trim();
 
@@ -156,10 +160,15 @@ async function main() {
   }
 
   if (categoryTagOverride && !isKebabCaseId(categoryTagOverride)) {
-    throw new Error(`Category tag must use lowercase letters, digits, and hyphens only: ${categoryTagOverride}`);
+    throw new Error(
+      `Category tag must use lowercase letters, digits, and hyphens only: ${categoryTagOverride}`,
+    );
   }
 
-  if (categoryTagOverride && (categoryTagOverride === CANON_SKILL_OWNER || categoryTagOverride === type)) {
+  if (
+    categoryTagOverride &&
+    (categoryTagOverride === CANON_SKILL_OWNER || categoryTagOverride === type)
+  ) {
     throw new Error('Category tag override must add one tag beyond owner and type.');
   }
 
@@ -172,7 +181,8 @@ async function main() {
     slug: skillId,
     type,
   });
-  const categoryTag = categoryTagOverride || inferredCategoryTag || typeDefinition.defaultCategoryTag;
+  const categoryTag =
+    categoryTagOverride || inferredCategoryTag || typeDefinition.defaultCategoryTag;
 
   if (!categoryTag || !isKebabCaseId(categoryTag)) {
     throw new Error(`Category tag must be a kebab-case id: ${categoryTag || '<empty>'}`);
@@ -209,7 +219,8 @@ async function main() {
     skill_id: skillId,
     type,
   });
-  const defaultPrompt = String(options.prompt ?? '').trim() || makeDefaultPrompt(skillId, normalizedDescription);
+  const defaultPrompt =
+    String(options.prompt ?? '').trim() || makeDefaultPrompt(skillId, normalizedDescription);
   const openAiContent = makeOpenAiYaml({
     defaultPrompt,
     displayName,

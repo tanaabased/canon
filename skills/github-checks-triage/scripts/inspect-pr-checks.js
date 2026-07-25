@@ -3,20 +3,9 @@
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 
-const FAILURE_CONCLUSIONS = new Set([
-  'failure',
-  'cancelled',
-  'timed_out',
-  'action_required',
-]);
+const FAILURE_CONCLUSIONS = new Set(['failure', 'cancelled', 'timed_out', 'action_required']);
 
-const FAILURE_STATES = new Set([
-  'failure',
-  'error',
-  'cancelled',
-  'timed_out',
-  'action_required',
-]);
+const FAILURE_STATES = new Set(['failure', 'error', 'cancelled', 'timed_out', 'action_required']);
 
 const FAILURE_BUCKETS = new Set(['fail']);
 
@@ -35,10 +24,7 @@ const FAILURE_MARKERS = [
 
 const DEFAULT_MAX_LINES = 160;
 const DEFAULT_CONTEXT_LINES = 30;
-const PENDING_LOG_MARKERS = [
-  'still in progress',
-  'log will be available when it is complete',
-];
+const PENDING_LOG_MARKERS = ['still in progress', 'log will be available when it is complete'];
 const ANSI_ESCAPE_PREFIX = '\u001B[';
 const BRAND_COLOR = '#00c88a';
 
@@ -207,8 +193,12 @@ function runCommandRaw(command, args, cwd) {
   return {
     error: result.error ?? null,
     returncode: result.status ?? 1,
-    stderr: Buffer.isBuffer(result.stderr) ? result.stderr.toString('utf8') : String(result.stderr ?? ''),
-    stdout: Buffer.isBuffer(result.stdout) ? result.stdout : Buffer.from(String(result.stdout ?? '')),
+    stderr: Buffer.isBuffer(result.stderr)
+      ? result.stderr.toString('utf8')
+      : String(result.stderr ?? ''),
+    stdout: Buffer.isBuffer(result.stdout)
+      ? result.stdout
+      : Buffer.from(String(result.stdout ?? '')),
   };
 }
 
@@ -324,7 +314,15 @@ function fetchChecks(prValue, repoRoot) {
       throw new Error(message || 'gh pr checks failed.');
     }
 
-    const fallbackFields = ['name', 'state', 'bucket', 'link', 'startedAt', 'completedAt', 'workflow'];
+    const fallbackFields = [
+      'name',
+      'state',
+      'bucket',
+      'link',
+      'startedAt',
+      'completedAt',
+      'workflow',
+    ];
     const selectedFields = fallbackFields.filter((field) => availableFields.includes(field));
 
     if (selectedFields.length === 0) {
@@ -403,7 +401,16 @@ function extractJobId(url) {
 }
 
 function fetchRunMetadata(runId, repoRoot) {
-  const fields = ['conclusion', 'status', 'workflowName', 'name', 'event', 'headBranch', 'headSha', 'url'];
+  const fields = [
+    'conclusion',
+    'status',
+    'workflowName',
+    'name',
+    'event',
+    'headBranch',
+    'headSha',
+    'url',
+  ];
   const result = runGhCommand(['run', 'view', runId, '--json', fields.join(',')], repoRoot);
   if (result.returncode !== 0) {
     return null;

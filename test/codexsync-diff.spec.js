@@ -73,7 +73,10 @@ describe('lib/codexsync-diff', () => {
   });
 
   it('should summarize diff counts', () => {
-    assert.equal(summarizeDiff({ changed: ['a'], extra: ['b', 'c'], missing: [] }), 'changed 1, extra 2');
+    assert.equal(
+      summarizeDiff({ changed: ['a'], extra: ['b', 'c'], missing: [] }),
+      'changed 1, extra 2',
+    );
     assert.equal(summarizeDiff({ changed: [], extra: [], missing: [] }), 'in sync');
   });
 });

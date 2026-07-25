@@ -38,9 +38,9 @@ const REQUIRED_FRONTMATTER_FIELDS = [
   { key: 'metadata', message: "SKILL.md frontmatter must contain 'metadata'." },
 ];
 const FORBIDDEN_TOP_LEVEL_FIELDS = [
-  { key: 'type', message: "Use SKILL.md frontmatter `metadata.type`, not top-level `type`." },
-  { key: 'owner', message: "Use SKILL.md frontmatter `metadata.owner`, not top-level `owner`." },
-  { key: 'tags', message: "Use SKILL.md frontmatter `metadata.tags`, not top-level `tags`." },
+  { key: 'type', message: 'Use SKILL.md frontmatter `metadata.type`, not top-level `type`.' },
+  { key: 'owner', message: 'Use SKILL.md frontmatter `metadata.owner`, not top-level `owner`.' },
+  { key: 'tags', message: 'Use SKILL.md frontmatter `metadata.tags`, not top-level `tags`.' },
 ];
 const REQUIRED_METADATA_FIELDS = [
   { key: 'type', message: "SKILL.md frontmatter metadata must contain 'type'." },
@@ -332,7 +332,7 @@ function parseIndentedKeyValues(content, sectionName) {
       break;
     }
 
-    const match = line.match(/^  ([a-z_]+):\s*(.+)$/);
+    const match = line.match(/^ {2}([a-z_]+):\s*(.+)$/);
     if (!match) {
       continue;
     }
@@ -392,7 +392,7 @@ function parseDependencyTools(content) {
       break;
     }
 
-    const firstEntryMatch = line.match(/^    -\s+([a-z_]+):\s*(.+)$/);
+    const firstEntryMatch = line.match(/^ {4}-\s+([a-z_]+):\s*(.+)$/);
     if (firstEntryMatch) {
       currentTool = {
         [firstEntryMatch[1]]: unquoteYaml(firstEntryMatch[2]),
@@ -401,7 +401,7 @@ function parseDependencyTools(content) {
       continue;
     }
 
-    const entryMatch = line.match(/^      ([a-z_]+):\s*(.+)$/);
+    const entryMatch = line.match(/^ {6}([a-z_]+):\s*(.+)$/);
     if (entryMatch && currentTool) {
       currentTool[entryMatch[1]] = unquoteYaml(entryMatch[2]);
     }
@@ -457,7 +457,9 @@ function buildTemplateDefinition(templateContent) {
   const templateType = normalizeLowercaseString(frontmatter?.template_type);
   const defaultCategoryTag = normalizeLowercaseString(frontmatter?.default_category_tag);
   const optionalTopLevelHeadings = Array.isArray(frontmatter?.optional_top_level_headings)
-    ? frontmatter.optional_top_level_headings.map((heading) => normalizeSectionHeading(String(heading).trim()))
+    ? frontmatter.optional_top_level_headings.map((heading) =>
+        normalizeSectionHeading(String(heading).trim()),
+      )
     : [];
 
   if (!templateType || !defaultCategoryTag) {
@@ -491,7 +493,13 @@ export const SKILL_TYPE_IDS = Object.keys(SKILL_TEMPLATES);
  * @returns {object | null} Template definition, or null for unknown types.
  */
 export function getSkillType(type) {
-  return SKILL_TEMPLATES[String(type ?? '').trim().toLowerCase()] ?? null;
+  return (
+    SKILL_TEMPLATES[
+      String(type ?? '')
+        .trim()
+        .toLowerCase()
+    ] ?? null
+  );
 }
 
 export function isKnownSkillType(type) {
@@ -558,7 +566,10 @@ export function stripOwnerPrefix(value) {
 }
 
 export function renderTemplate(template, replacements) {
-  return String(template ?? '').replaceAll(/\{\{([a-z_]+)\}\}/g, (match, key) => replacements[key] ?? match);
+  return String(template ?? '').replaceAll(
+    /\{\{([a-z_]+)\}\}/g,
+    (match, key) => replacements[key] ?? match,
+  );
 }
 
 export function renderMetadataTagsYaml(tags) {
@@ -569,7 +580,11 @@ export function inferCategoryTag({ description = '', displayName = '', slug = ''
   const haystack = `${displayName} ${description} ${slug}`.toLowerCase();
 
   for (const [tag, pattern] of CATEGORY_INFERENCE_RULES) {
-    if (pattern.test(haystack) && tag !== CANON_SKILL_OWNER && tag !== String(type).trim().toLowerCase()) {
+    if (
+      pattern.test(haystack) &&
+      tag !== CANON_SKILL_OWNER &&
+      tag !== String(type).trim().toLowerCase()
+    ) {
       return tag;
     }
   }
@@ -620,7 +635,10 @@ function hasOrderedSections(content, orderedHeadings, optionalHeadings = []) {
     return false;
   }
 
-  while (expectedIndex < orderedHeadings.length && optionalSet.has(orderedHeadings[expectedIndex])) {
+  while (
+    expectedIndex < orderedHeadings.length &&
+    optionalSet.has(orderedHeadings[expectedIndex])
+  ) {
     expectedIndex += 1;
   }
 
@@ -722,10 +740,10 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
   }
 
   if (normalizedTags.length === 0) {
-    errors.push("SKILL.md frontmatter metadata.tags must not be empty.");
+    errors.push('SKILL.md frontmatter metadata.tags must not be empty.');
   }
   if (new Set(normalizedTags).size !== normalizedTags.length) {
-    errors.push("SKILL.md frontmatter metadata.tags must not contain duplicates.");
+    errors.push('SKILL.md frontmatter metadata.tags must not contain duplicates.');
   }
 
   for (const tag of normalizedTags) {
@@ -743,7 +761,9 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
 
   const categoryTags = normalizedTags.filter((tag) => tag !== actualOwner && tag !== actualType);
   if (categoryTags.length === 0) {
-    errors.push('Skill tags must include at least one additional category tag beyond owner and type.');
+    errors.push(
+      'Skill tags must include at least one additional category tag beyond owner and type.',
+    );
   }
 
   if (normalizedTags.length > 5) {
@@ -771,14 +791,16 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   const actualOwner = declaredOwner ?? CANON_SKILL_OWNER;
 
   if (rawDeclaredType && typeof rawDeclaredType !== 'string') {
-    errors.push("SKILL.md frontmatter metadata.type must be a string.");
+    errors.push('SKILL.md frontmatter metadata.type must be a string.');
   }
   if (rawDeclaredOwner && typeof rawDeclaredOwner !== 'string') {
-    errors.push("SKILL.md frontmatter metadata.owner must be a string.");
+    errors.push('SKILL.md frontmatter metadata.owner must be a string.');
   }
 
   if (requestedType && declaredType && declaredType !== requestedType) {
-    errors.push(`SKILL.md metadata.type must match the requested type: expected \`${requestedType}\`.`);
+    errors.push(
+      `SKILL.md metadata.type must match the requested type: expected \`${requestedType}\`.`,
+    );
   }
   if (declaredOwner && declaredOwner !== CANON_SKILL_OWNER) {
     errors.push(`SKILL.md metadata.owner must be \`${CANON_SKILL_OWNER}\`.`);
@@ -800,7 +822,7 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   }
 
   if (declaredTags && !Array.isArray(declaredTags)) {
-    errors.push("SKILL.md frontmatter metadata.tags must be a list of strings.");
+    errors.push('SKILL.md frontmatter metadata.tags must be a list of strings.');
   }
 
   validateNormalizedTags({
@@ -818,7 +840,11 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
   const typeDefinition = getSkillType(actualType);
   if (
     typeDefinition &&
-    !hasOrderedSections(skillContent, typeDefinition.sectionOrder, typeDefinition.optionalTopLevelHeadings)
+    !hasOrderedSections(
+      skillContent,
+      typeDefinition.sectionOrder,
+      typeDefinition.optionalTopLevelHeadings,
+    )
   ) {
     errors.push(
       `\`${actualType}\` skills must use the section order defined by the canonical ${actualType} template owned by tanaab-skill-author.`,
@@ -834,7 +860,9 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
   }
 
   if (skillContent.includes(RELATIONSHIP_SECTION_HEADING)) {
-    warnings.push('Avoid `## Relationship to Other Skills` unless the scope has already been challenged.');
+    warnings.push(
+      'Avoid `## Relationship to Other Skills` unless the scope has already been challenged.',
+    );
   }
 }
 
@@ -880,7 +908,9 @@ async function validateFolderName({ folderName, frontmatterName, skillPath, erro
   if (frontmatterName) {
     const expectedFolderName = pluginRoot ? stripOwnerPrefix(frontmatterName) : frontmatterName;
     if (folderName !== expectedFolderName) {
-      errors.push(`Skill folder name must match the expected folder id: expected \`${expectedFolderName}\`.`);
+      errors.push(
+        `Skill folder name must match the expected folder id: expected \`${expectedFolderName}\`.`,
+      );
     }
   }
 }
@@ -932,12 +962,19 @@ async function validateOpenAiMetadata({
   if (actualOwner && interfaceValues.display_name) {
     const ownerLabel = `${actualOwner[0].toUpperCase()}${actualOwner.slice(1)} `;
     if (interfaceValues.display_name.startsWith(ownerLabel)) {
-      warnings.push('display_name is owner-prefixed. Keep display_name unprefixed unless explicitly requested.');
+      warnings.push(
+        'display_name is owner-prefixed. Keep display_name unprefixed unless explicitly requested.',
+      );
     }
   }
 
-  if (interfaceValues.short_description && !hasTanaabBasedPrefix(interfaceValues.short_description)) {
-    errors.push(`interface.short_description must start with \`${CANON_DESCRIPTION_PREFIX.trim()}\`.`);
+  if (
+    interfaceValues.short_description &&
+    !hasTanaabBasedPrefix(interfaceValues.short_description)
+  ) {
+    errors.push(
+      `interface.short_description must start with \`${CANON_DESCRIPTION_PREFIX.trim()}\`.`,
+    );
   }
 
   if (
@@ -984,7 +1021,9 @@ async function validateOptionalResources(skillPath, warnings) {
 
     for (const entry of entries) {
       if (!KEBAB_CASE_HELPER_PATTERN.test(entry) && !entry.includes('.')) {
-        warnings.push(`Repo-authored helper name should prefer kebab-case: ${resourceName}/${entry}`);
+        warnings.push(
+          `Repo-authored helper name should prefer kebab-case: ${resourceName}/${entry}`,
+        );
       }
     }
   }
@@ -1073,10 +1112,9 @@ export async function validateSkillDir(skillDir, options = {}) {
     errors.push('Missing agents/openai.yaml.');
   }
 
-  let skillContent = '';
   let frontmatter = null;
   if (skillMdExists) {
-    skillContent = await readFile(skillMdPath, 'utf8');
+    const skillContent = await readFile(skillMdPath, 'utf8');
     if (!skillContent.startsWith('---\n')) {
       errors.push('SKILL.md must start with YAML frontmatter.');
     }

@@ -1,9 +1,6 @@
 import assert from 'node:assert/strict';
 
-import {
-  RepositoryPolicyClient,
-  RepositoryPolicyError,
-} from '../lib/repository-policy-client.js';
+import { RepositoryPolicyClient, RepositoryPolicyError } from '../lib/repository-policy-client.js';
 import {
   TARGET,
   canonicalPolicy,
