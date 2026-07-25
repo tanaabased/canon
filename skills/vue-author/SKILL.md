@@ -17,7 +17,6 @@ metadata:
 
 Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 
-- Keep this skill centered on creating and refining Vue components.
 - Keep this skill on Vue component and SFC implementation surfaces.
 - Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
 

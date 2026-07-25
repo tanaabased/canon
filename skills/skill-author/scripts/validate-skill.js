@@ -1,17 +1,13 @@
 #!/usr/bin/env bun
 
-import {
-  bold,
-  dim,
-  formatValidationReport,
-  renderCliHelp,
-  validateSkillDir,
-} from '../lib/skill-author.js';
+import { bold, dim, renderCliHelp, writeLine } from '../../../lib/bun-cli-support.js';
+import { formatValidationReport, validateSkillDir } from '../lib/skill-validator.js';
+import parseValidateSkillArgs from '../utils/parse-validate-skill-args.js';
 
-function usage(code = 0) {
-  console.log(
-    renderCliHelp({
-      usage: `Usage: ${bold('validate-skill.js')} ${dim('--skill-dir <path> [options]')}`,
+function renderUsage(stream = process.stdout) {
+  return renderCliHelp(
+    {
+      usage: `Usage: ${bold('validate-skill.js', stream)} ${dim('--skill-dir <path> [options]', stream)}`,
       summary:
         'Validate a canon skill directory against references/skill-standard.md and the canonical local full templates owned by tanaab-skill-author.',
       options: [
@@ -19,55 +15,31 @@ function usage(code = 0) {
         '  --type <type>           expected type override',
         '  -h, --help              show this message',
       ],
-    }),
+    },
+    stream,
   );
-  process.exit(code);
-}
-
-function parseArgs(argv) {
-  const parsed = {};
-
-  for (let index = 0; index < argv.length; index += 1) {
-    const arg = argv[index];
-
-    if (arg === '-h' || arg === '--help') {
-      usage(0);
-    }
-
-    if (!arg.startsWith('--')) {
-      throw new Error(`Positional arguments are not supported: ${arg}`);
-    }
-
-    const value = argv[index + 1];
-    if (!value || value.startsWith('--')) {
-      throw new Error(`Missing value for ${arg}`);
-    }
-
-    const key = arg.slice(2).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-    parsed[key] = value;
-    index += 1;
-  }
-
-  return parsed;
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
-  const skillDir = String(options.skillDir ?? '').trim();
-
-  if (!skillDir) {
-    throw new Error('Skill directory is required.');
+  const options = parseValidateSkillArgs(process.argv.slice(2));
+  if (options.help) {
+    writeLine(process.stdout, renderUsage());
+    return true;
   }
 
-  const result = await validateSkillDir(skillDir, {
-    expectedType: options.type,
-  });
+  const skillDir = String(options.skillDir ?? '').trim();
+  if (!skillDir) throw new Error('Skill directory is required.');
 
-  console.log(formatValidationReport(result));
-  process.exit(result.errors.length === 0 ? 0 : 1);
+  const result = await validateSkillDir(skillDir, { expectedType: options.type });
+  writeLine(process.stdout, formatValidationReport(result));
+  return result.errors.length === 0;
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : String(error));
-  usage(1);
-});
+try {
+  const ok = await main();
+  if (!ok) process.exitCode = 1;
+} catch (error) {
+  writeLine(process.stderr, error instanceof Error ? error.message : String(error));
+  writeLine(process.stderr, renderUsage(process.stderr));
+  process.exitCode = 1;
+}

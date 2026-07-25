@@ -1,15 +1,21 @@
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import codingTemplateText from '../templates/coding.md' with { type: 'text' };
-import genericTemplateText from '../templates/generic.md' with { type: 'text' };
-import integrationTemplateText from '../templates/integration.md' with { type: 'text' };
-import metaTemplateText from '../templates/meta.md' with { type: 'text' };
-import workflowTemplateText from '../templates/workflow.md' with { type: 'text' };
-import bundledLargeIconImport from '../assets/icon-large.png';
-import bundledSmallIconImport from '../assets/icon-small.svg';
 
-const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
+import pathExists from '../../../utils/path-exists.js';
+import {
+  CANON_DESCRIPTION_PREFIX,
+  CANON_SKILL_BRAND_COLOR,
+  CANON_SKILL_LICENSE,
+  CANON_SKILL_OWNER,
+  CANON_SKILL_PREFIX_WITH_HYPHEN,
+  extractTopLevelSkillHeadings,
+  formatSkillTypeIds,
+  getSkillType,
+  isKnownSkillType,
+  stripOwnerPrefix,
+} from './skill-contract.js';
+import isKebabCaseId from '../utils/is-kebab-case-id.js';
+import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
 const AUXILIARY_DOCS = [
   'README.md',
   'CHANGELOG.md',
@@ -27,7 +33,6 @@ const OPTIONAL_RESOURCE_NAMES = [
   'test',
   'utils',
 ];
-const KEBAB_CASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const KEBAB_CASE_HELPER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*(\.[a-z0-9]+)?$/;
 const RELATIONSHIP_SECTION_HEADING = '## Relationship to Other Skills';
 
@@ -55,112 +60,6 @@ const REQUIRED_OPENAI_INTERFACE_KEYS = [
   'default_prompt',
   'brand_color',
 ];
-const TEMPLATE_TEXT_IMPORTS = [
-  genericTemplateText,
-  codingTemplateText,
-  integrationTemplateText,
-  workflowTemplateText,
-  metaTemplateText,
-];
-const CATEGORY_INFERENCE_RULES = [
-  ['validation', /\b(validat|verify|lint|check)\w*/],
-  ['testing', /\b(test|coverage|assert|spec)\w*/],
-  ['skills', /\b(skill|template|scaffold|creator|author|initializer|standardiz)\w*/],
-  ['frontend', /\b(frontend|vue|react|component|css|scss|tailwind|vitepress)\w*/],
-  ['design', /\b(design|brand|visual|ui|ux)\w*/],
-  ['docs', /\b(doc|docs|documentation|readme|markdown|mdx|copy)\w*/],
-  ['release', /\b(release|version|changelog|publish)\w*/],
-  ['shell', /\b(shell|bash|zsh|cli|terminal|command[- ]line)\w*/],
-  ['integration', /\b(github|gitlab|openai|api|mcp|webhook|integration)\w*/],
-  ['coding', /\b(code|coding|typescript|javascript|bun|node|function|library)\w*/],
-  ['research', /\b(research|investigat|audit|analysis)\w*/],
-  ['automation', /\b(automate|automation|cron|scheduled|job|workflow)\w*/],
-  ['meta', /\b(meta|canon|convention|prompt|template|packag|refin|standard)\w*/],
-];
-
-export const CANON_SKILL_OWNER = 'tanaab';
-export const CANON_SKILL_PREFIX = 'tanaab';
-export const CANON_SKILL_PREFIX_WITH_HYPHEN = `${CANON_SKILL_PREFIX}-`;
-export const CANON_SKILL_LICENSE = 'MIT';
-export const CANON_SKILL_BRAND_COLOR = '#00c88a';
-export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
-export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
-const ANSI_ESCAPE_PREFIX = '\u001B[';
-
-function supportsColor(stream = process.stdout) {
-  const forceColor = process.env.FORCE_COLOR;
-  if (forceColor !== undefined) {
-    return !['0', 'false'].includes(forceColor.toLowerCase());
-  }
-
-  if (process.env.NO_COLOR !== undefined) {
-    return false;
-  }
-
-  return Boolean(stream?.isTTY);
-}
-
-function applyAnsi(code, text, stream = process.stdout) {
-  const value = String(text);
-  if (!supportsColor(stream)) {
-    return value;
-  }
-
-  return `${ANSI_ESCAPE_PREFIX}${code}m${value}${ANSI_ESCAPE_PREFIX}0m`;
-}
-
-function applyRgb(hex, text, stream = process.stdout) {
-  const value = String(text);
-  if (!supportsColor(stream)) {
-    return value;
-  }
-
-  const normalized = hex.replace(/^#/, '');
-  const red = Number.parseInt(normalized.slice(0, 2), 16);
-  const green = Number.parseInt(normalized.slice(2, 4), 16);
-  const blue = Number.parseInt(normalized.slice(4, 6), 16);
-  return `${ANSI_ESCAPE_PREFIX}38;2;${red};${green};${blue}m${value}${ANSI_ESCAPE_PREFIX}0m`;
-}
-
-export function bold(text, stream = process.stdout) {
-  return applyAnsi('1', text, stream);
-}
-
-export function dim(text, stream = process.stdout) {
-  return applyAnsi('2', text, stream);
-}
-
-export function tp(text, stream = process.stdout) {
-  return applyRgb(CANON_SKILL_BRAND_COLOR, text, stream);
-}
-
-/**
- * Renders help for skill-author CLIs without owning process exit behavior.
- *
- * @param {object} context Help sections to render.
- * @param {string} context.usage Usage line.
- * @param {string} [context.summary] Optional summary paragraph.
- * @param {string[]} context.options Option lines.
- * @param {string[]} [context.environmentVariables=[]] Environment variable lines.
- * @returns {string} Help text ready to write to stdout.
- */
-export function renderCliHelp({ usage, summary, options, environmentVariables = [] }) {
-  const lines = [usage];
-
-  if (summary) {
-    lines.push('', summary);
-  }
-
-  if (options.length > 0) {
-    lines.push('', `${tp('Options')}:`, ...options);
-  }
-
-  if (environmentVariables.length > 0) {
-    lines.push('', `${tp('Environment Variables')}:`, ...environmentVariables);
-  }
-
-  return lines.join('\n');
-}
 
 function unquoteYaml(value) {
   const trimmed = String(value ?? '').trim();
@@ -172,143 +71,6 @@ function unquoteYaml(value) {
   }
 
   return trimmed;
-}
-
-/**
- * Parses the small YAML subset used by skill frontmatter and local metadata
- * files. This intentionally supports only scalar values, simple arrays, lists,
- * and nested maps that the canon templates emit.
- *
- * @param {string} rawBlock YAML content without surrounding frontmatter markers.
- * @returns {object} Parsed mapping for the supported subset.
- */
-function parseYamlBlock(rawBlock) {
-  const lines = String(rawBlock ?? '').split('\n');
-  const indentOf = (line) => line.match(/^ */)?.[0].length ?? 0;
-  const listPattern = (indent) => new RegExp(`^\\s{${indent}}-\\s+(.+)$`);
-  const keyPattern = (indent) => new RegExp(`^\\s{${indent}}([a-z][a-z0-9_-]*):(.*)$`);
-
-  function parseList(startIndex, indent) {
-    const items = [];
-    let index = startIndex;
-
-    while (index < lines.length) {
-      const line = lines[index];
-      if (!line.trim()) {
-        index += 1;
-        continue;
-      }
-
-      if (indentOf(line) < indent) {
-        break;
-      }
-
-      const matchList = line.match(listPattern(indent));
-      if (!matchList) {
-        break;
-      }
-
-      items.push(unquoteYaml(matchList[1]));
-      index += 1;
-    }
-
-    return { value: items, nextIndex: index };
-  }
-
-  function parseMap(startIndex, indent) {
-    const entries = {};
-    let index = startIndex;
-
-    while (index < lines.length) {
-      const line = lines[index];
-      if (!line.trim()) {
-        index += 1;
-        continue;
-      }
-
-      if (indentOf(line) < indent) {
-        break;
-      }
-
-      const matchEntry = line.match(keyPattern(indent));
-      if (!matchEntry) {
-        break;
-      }
-
-      const [, key, rawValue] = matchEntry;
-      const value = rawValue.trim();
-
-      if (value) {
-        if (value.startsWith('[') && value.endsWith(']')) {
-          entries[key] = value
-            .slice(1, -1)
-            .split(',')
-            .map((item) => unquoteYaml(item))
-            .filter(Boolean);
-        } else {
-          entries[key] = unquoteYaml(value);
-        }
-        index += 1;
-        continue;
-      }
-
-      const nextLine = lines[index + 1];
-      if (!nextLine || !nextLine.trim() || indentOf(nextLine) <= indent) {
-        entries[key] = '';
-        index += 1;
-        continue;
-      }
-
-      if (nextLine.match(listPattern(indent + 2))) {
-        const parsedList = parseList(index + 1, indent + 2);
-        entries[key] = parsedList.value;
-        index = parsedList.nextIndex;
-        continue;
-      }
-
-      if (nextLine.match(keyPattern(indent + 2))) {
-        const parsedMap = parseMap(index + 1, indent + 2);
-        entries[key] = parsedMap.value;
-        index = parsedMap.nextIndex;
-        continue;
-      }
-
-      entries[key] = '';
-      index += 1;
-    }
-
-    return { value: entries, nextIndex: index };
-  }
-
-  return parseMap(0, 0).value;
-}
-
-/**
- * Reads SKILL.md frontmatter through the same constrained YAML parser used by
- * template metadata validation.
- *
- * @param {string} content SKILL.md content.
- * @returns {object | null} Parsed frontmatter, or null when the block is absent.
- */
-export function parseFrontmatter(content) {
-  const match = String(content ?? '').match(/^---\n([\s\S]*?)\n---/);
-  if (!match) {
-    return null;
-  }
-
-  return parseYamlBlock(match[1]);
-}
-
-function splitLeadingFrontmatter(content) {
-  const match = String(content ?? '').match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
-  if (!match) {
-    throw new Error('Template is missing leading template frontmatter.');
-  }
-
-  return {
-    body: match[2],
-    frontmatter: parseYamlBlock(match[1]),
-  };
 }
 
 function parseIndentedKeyValues(content, sectionName) {
@@ -414,193 +176,6 @@ function hasDependenciesToolsSection(content) {
   return /^\s{2}tools:\s*$/m.test(String(content ?? ''));
 }
 
-function normalizeSectionHeading(heading) {
-  if (/^#\s/.test(heading)) {
-    return '# ';
-  }
-
-  return heading;
-}
-
-function extractTopLevelHeadings(content) {
-  const headings = [];
-  let inFence = false;
-
-  for (const line of String(content ?? '').split('\n')) {
-    if (/^```/.test(line.trim())) {
-      inFence = !inFence;
-      continue;
-    }
-
-    if (inFence) {
-      continue;
-    }
-
-    if (/^#{1,2}\s/.test(line)) {
-      headings.push(normalizeSectionHeading(line.trim()));
-    }
-  }
-
-  return headings;
-}
-
-/**
- * Converts a template file into the validation contract for its skill type.
- * Fenced headings are ignored so examples do not become required sections.
- *
- * @param {string} templateContent Full template file content with template frontmatter.
- * @returns {object} Template metadata, section order, and body used for validation.
- * @throws {Error} When required template metadata is missing.
- */
-function buildTemplateDefinition(templateContent) {
-  const { body, frontmatter } = splitLeadingFrontmatter(templateContent);
-  const templateType = normalizeLowercaseString(frontmatter?.template_type);
-  const defaultCategoryTag = normalizeLowercaseString(frontmatter?.default_category_tag);
-  const optionalTopLevelHeadings = Array.isArray(frontmatter?.optional_top_level_headings)
-    ? frontmatter.optional_top_level_headings.map((heading) =>
-        normalizeSectionHeading(String(heading).trim()),
-      )
-    : [];
-
-  if (!templateType || !defaultCategoryTag) {
-    throw new Error('Template metadata must include template_type and default_category_tag.');
-  }
-
-  return {
-    defaultCategoryTag,
-    id: templateType,
-    optionalTopLevelHeadings,
-    sectionOrder: extractTopLevelHeadings(body),
-    templateBody: body,
-  };
-}
-
-export const SKILL_TEMPLATES = Object.freeze(
-  Object.fromEntries(
-    TEMPLATE_TEXT_IMPORTS.map((templateContent) => {
-      const definition = buildTemplateDefinition(templateContent);
-      return [definition.id, definition];
-    }),
-  ),
-);
-
-export const SKILL_TYPE_IDS = Object.keys(SKILL_TEMPLATES);
-
-/**
- * Returns the canonical template definition for a declared skill type.
- *
- * @param {string} type Declared or requested skill type.
- * @returns {object | null} Template definition, or null for unknown types.
- */
-export function getSkillType(type) {
-  return (
-    SKILL_TEMPLATES[
-      String(type ?? '')
-        .trim()
-        .toLowerCase()
-    ] ?? null
-  );
-}
-
-export function isKnownSkillType(type) {
-  return getSkillType(type) !== null;
-}
-
-export function formatSkillTypeIds() {
-  return SKILL_TYPE_IDS.join(', ');
-}
-
-export function isKebabCaseId(value) {
-  return KEBAB_CASE_ID_PATTERN.test(String(value ?? '').trim());
-}
-
-function resolveImportedAssetPath(importedAssetPath) {
-  if (path.isAbsolute(importedAssetPath)) {
-    return importedAssetPath;
-  }
-
-  return path.resolve(LIB_DIR, importedAssetPath);
-}
-
-export function getBundledSmallIconPath() {
-  return resolveImportedAssetPath(bundledSmallIconImport);
-}
-
-export function getBundledLargeIconPath() {
-  return resolveImportedAssetPath(bundledLargeIconImport);
-}
-
-export function normalizeTanaabBasedDescription(value) {
-  const trimmed = String(value ?? '').trim();
-  const withoutPrefix = trimmed.replace(/^tanaab[- ]based\s+/i, '');
-  return `${CANON_DESCRIPTION_PREFIX}${withoutPrefix}`;
-}
-
-export function makeShortDescription(description) {
-  const cleaned = normalizeTanaabBasedDescription(description).replace(/\.$/, '');
-  if (cleaned.length <= 64) {
-    return cleaned;
-  }
-
-  const remainder = cleaned.slice(CANON_DESCRIPTION_PREFIX.length);
-  const maxRemainderLength = 64 - CANON_DESCRIPTION_PREFIX.length - 3;
-  return `${CANON_DESCRIPTION_PREFIX}${remainder.slice(0, maxRemainderLength).trimEnd()}...`;
-}
-
-export function makeDefaultPrompt(skillId, description) {
-  const cleaned = String(description ?? '')
-    .trim()
-    .replace(/^tanaab[- ]based\s+/i, '')
-    .replace(/\.$/, '');
-  const normalized = cleaned ? `${cleaned[0].toLowerCase()}${cleaned.slice(1)}` : cleaned;
-  return `Use $${skillId} when you need to ${normalized}.`;
-}
-
-export function stripOwnerPrefix(value) {
-  const normalized = String(value ?? '').trim();
-  if (normalized.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
-    return normalized.slice(CANON_SKILL_PREFIX_WITH_HYPHEN.length);
-  }
-
-  return normalized;
-}
-
-export function renderTemplate(template, replacements) {
-  return String(template ?? '').replaceAll(
-    /\{\{([a-z_]+)\}\}/g,
-    (match, key) => replacements[key] ?? match,
-  );
-}
-
-export function renderMetadataTagsYaml(tags) {
-  return tags.map((tag) => `    - ${tag}`).join('\n');
-}
-
-export function inferCategoryTag({ description = '', displayName = '', slug = '', type = '' }) {
-  const haystack = `${displayName} ${description} ${slug}`.toLowerCase();
-
-  for (const [tag, pattern] of CATEGORY_INFERENCE_RULES) {
-    if (
-      pattern.test(haystack) &&
-      tag !== CANON_SKILL_OWNER &&
-      tag !== String(type).trim().toLowerCase()
-    ) {
-      return tag;
-    }
-  }
-
-  return null;
-}
-
-async function pathExists(targetPath) {
-  try {
-    await stat(targetPath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 /**
  * Enforces exact template section order while allowing only template-declared
  * optional headings to be omitted.
@@ -611,7 +186,7 @@ async function pathExists(targetPath) {
  * @returns {boolean} Whether the content exactly matches the allowed sequence.
  */
 function hasOrderedSections(content, orderedHeadings, optionalHeadings = []) {
-  const headings = extractTopLevelHeadings(content);
+  const headings = extractTopLevelSkillHeadings(content);
   const optionalSet = new Set(optionalHeadings);
 
   let actualIndex = 0;
@@ -747,7 +322,7 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
   }
 
   for (const tag of normalizedTags) {
-    if (!KEBAB_CASE_ID_PATTERN.test(tag)) {
+    if (!isKebabCaseId(tag)) {
       errors.push(`Skill tag must use lowercase letters, digits, and hyphens only: ${tag}`);
     }
   }
@@ -814,7 +389,7 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   if (frontmatter.license && frontmatter.license !== CANON_SKILL_LICENSE) {
     errors.push(`Frontmatter license must equal \`${CANON_SKILL_LICENSE}\`.`);
   }
-  if (frontmatter.name && !KEBAB_CASE_ID_PATTERN.test(frontmatter.name)) {
+  if (frontmatter.name && !isKebabCaseId(frontmatter.name)) {
     errors.push('Frontmatter name must use lowercase letters, digits, and single hyphens only.');
   }
   if (frontmatter.name && !frontmatter.name.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
@@ -1119,7 +694,7 @@ export async function validateSkillDir(skillDir, options = {}) {
       errors.push('SKILL.md must start with YAML frontmatter.');
     }
 
-    frontmatter = parseFrontmatter(skillContent);
+    frontmatter = parseSkillFrontmatter(skillContent);
     if (!frontmatter) {
       errors.push('SKILL.md frontmatter is missing or malformed.');
     } else {

@@ -64,7 +64,10 @@ Tanaab-based triage of GitHub-hosted CI failures. Use when a user wants to inspe
 ## Bundled Resources
 
 - [./scripts/inspect-pr-checks.js](./scripts/inspect-pr-checks.js): Bun-based inspection helper for failing PR checks, GitHub Actions logs, and failure snippets
-- [./references/inspect-pr-checks-license.txt](./references/inspect-pr-checks-license.txt): provenance note for the bundled inspection helper
+- [./lib/github-checks-client.js](./lib/github-checks-client.js): injected `git` and `gh` command boundary used by the inspection helper
+- [./lib/pr-checks-inspector.js](./lib/pr-checks-inspector.js): failing-check inspection orchestration
+- [./utils/](./utils/): independently testable argument, classification, identifier, snippet, and rendering units
+- [./references/inspect-pr-checks-license.txt](./references/inspect-pr-checks-license.txt): Apache-2.0 provenance retained for the reorganized script, library, and utility implementation
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first workflow defaults for reading triage context, not for replacing the triage flow itself
 
 ## Validation

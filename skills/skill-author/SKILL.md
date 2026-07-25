@@ -108,7 +108,10 @@ Use this skill when the skill itself is the artifact being created, standardized
 - [./templates/meta.md](./templates/meta.md): canonical full-template model for `meta` skills; sibling templates define the other type shapes
 - [./scripts/init-skill.js](./scripts/init-skill.js): deterministic scaffolder for canonical full templates
 - [./scripts/validate-skill.js](./scripts/validate-skill.js): validation entrypoint for skill directories
-- [./lib/skill-author.js](./lib/skill-author.js): shared local authoring and validation library
+- [./lib/skill-contract.js](./lib/skill-contract.js): canonical type, template, naming, and bundled-asset contract
+- [./lib/skill-scaffolder.js](./lib/skill-scaffolder.js): deterministic skill creation and post-write validation workflow
+- [./lib/skill-validator.js](./lib/skill-validator.js): skill-directory validation orchestration and reporting
+- [./utils/](./utils/): independently testable frontmatter, description, inference, rendering, naming, and argument units
 
 ## Validation
 
