@@ -1,13 +1,6 @@
 #!/usr/bin/env bun
 
-import {
-  displayPositionals,
-  fail,
-  parseCodexsyncArgv,
-  renderHelp,
-  ts,
-  writeLine,
-} from '../lib/bun-cli-support.js';
+import { fail, ts, writeLine } from '../lib/bun-cli-support.js';
 import {
   CLI_NAME,
   COMMANDS,
@@ -18,9 +11,12 @@ import {
 import { runCheck } from '../lib/codexsync-check.js';
 import { runSync } from '../lib/codexsync-sync.js';
 import { runValidate } from '../lib/codexsync-validate.js';
+import csvDisplay from '../utils/csv-display.js';
+import parseCodexsyncArgs from '../utils/parse-codexsync-args.js';
+import renderCodexsyncHelp from '../utils/render-codexsync-help.js';
 
 async function main() {
-  const { command, extraPositionals, options } = parseCodexsyncArgv(process.argv.slice(2), {
+  const { command, extraPositionals, options } = parseCodexsyncArgs(process.argv.slice(2), {
     defaultRepoRoot: DEFAULT_REPO_ROOT,
   });
   const context = await resolveCodexsyncContext({
@@ -31,7 +27,7 @@ async function main() {
   if (options.help) {
     writeLine(
       process.stdout,
-      renderHelp({
+      renderCodexsyncHelp({
         cachePath: context.cachePath,
         cliName: CLI_NAME,
         commands: COMMANDS,
@@ -51,7 +47,7 @@ async function main() {
     writeLine(process.stderr, '');
     writeLine(
       process.stderr,
-      renderHelp(
+      renderCodexsyncHelp(
         {
           cachePath: context.cachePath,
           cliName: CLI_NAME,
@@ -65,7 +61,7 @@ async function main() {
   }
 
   if (extraPositionals.length > 0) {
-    return fail(`unexpected positional arguments: ${displayPositionals(extraPositionals)}`);
+    return fail(`unexpected positional arguments: ${csvDisplay(extraPositionals)}`);
   }
 
   if (command === 'check') {
