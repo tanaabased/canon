@@ -110,7 +110,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - [./scripts/validate-skill.js](./scripts/validate-skill.js): validation entrypoint for skill directories
 - [./lib/skill-contract.js](./lib/skill-contract.js): canonical type, template, naming, and bundled-asset contract
 - [./lib/skill-scaffolder.js](./lib/skill-scaffolder.js): deterministic skill creation and post-write validation workflow
-- [./lib/skill-validator.js](./lib/skill-validator.js): skill-directory validation orchestration and reporting
+- [./lib/skill-validator.js](./lib/skill-validator.js): skill-directory validation orchestration
 - [./utils/](./utils/): independently testable frontmatter, description, inference, rendering, naming, and argument units
 
 ## Validation

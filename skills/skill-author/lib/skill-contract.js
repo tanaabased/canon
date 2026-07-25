@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import bundledLargeIconImport from '../assets/icon-large.png';
 import bundledSmallIconImport from '../assets/icon-small.svg';
 import codingTemplateText from '../templates/coding.md' with { type: 'text' };
+import extractTopLevelSkillHeadings from '../utils/extract-top-level-skill-headings.js';
 import genericTemplateText from '../templates/generic.md' with { type: 'text' };
 import integrationTemplateText from '../templates/integration.md' with { type: 'text' };
 import metaTemplateText from '../templates/meta.md' with { type: 'text' };
@@ -27,27 +28,6 @@ export const CANON_SKILL_BRAND_COLOR = '#00c88a';
 export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
 export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
 
-function normalizeSectionHeading(heading) {
-  return /^#\s/.test(heading) ? '# ' : heading;
-}
-
-export function extractTopLevelSkillHeadings(content) {
-  const headings = [];
-  let inFence = false;
-
-  for (const line of String(content ?? '').split('\n')) {
-    if (/^```/.test(line.trim())) {
-      inFence = !inFence;
-      continue;
-    }
-    if (!inFence && /^#{1,2}\s/.test(line)) {
-      headings.push(normalizeSectionHeading(line.trim()));
-    }
-  }
-
-  return headings;
-}
-
 function buildTemplateDefinition(templateContent) {
   const { body, frontmatter } = splitLeadingSkillFrontmatter(templateContent);
   const id = String(frontmatter?.template_type ?? '')
@@ -58,7 +38,7 @@ function buildTemplateDefinition(templateContent) {
     .toLowerCase();
   const optionalTopLevelHeadings = Array.isArray(frontmatter?.optional_top_level_headings)
     ? frontmatter.optional_top_level_headings.map((heading) =>
-        normalizeSectionHeading(String(heading).trim()),
+        /^#\s/.test(String(heading).trim()) ? '# ' : String(heading).trim(),
       )
     : [];
 

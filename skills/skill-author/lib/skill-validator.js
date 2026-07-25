@@ -8,13 +8,15 @@ import {
   CANON_SKILL_LICENSE,
   CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX_WITH_HYPHEN,
-  extractTopLevelSkillHeadings,
   formatSkillTypeIds,
   getSkillType,
   isKnownSkillType,
   stripOwnerPrefix,
 } from './skill-contract.js';
+import extractRelativeMarkdownLinks from '../utils/extract-relative-markdown-links.js';
+import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
+import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
 import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
 const AUXILIARY_DOCS = [
   'README.md',
@@ -61,165 +63,6 @@ const REQUIRED_OPENAI_INTERFACE_KEYS = [
   'brand_color',
 ];
 
-function unquoteYaml(value) {
-  const trimmed = String(value ?? '').trim();
-  if (
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"))
-  ) {
-    return trimmed.slice(1, -1);
-  }
-
-  return trimmed;
-}
-
-function parseIndentedKeyValues(content, sectionName) {
-  const lines = String(content ?? '').split('\n');
-  const values = {};
-  let inSection = false;
-
-  for (const line of lines) {
-    if (!inSection) {
-      if (line.trim() === `${sectionName}:`) {
-        inSection = true;
-      }
-      continue;
-    }
-
-    if (!line.trim()) {
-      continue;
-    }
-
-    if (!line.startsWith('  ')) {
-      break;
-    }
-
-    const match = line.match(/^ {2}([a-z_]+):\s*(.+)$/);
-    if (!match) {
-      continue;
-    }
-
-    values[match[1]] = unquoteYaml(match[2]);
-  }
-
-  return values;
-}
-
-function parseInterfaceYaml(content) {
-  return parseIndentedKeyValues(content, 'interface');
-}
-
-function parsePolicyYaml(content) {
-  return parseIndentedKeyValues(content, 'policy');
-}
-
-/**
- * Reads optional agents/openai.yaml tool dependencies using the same narrow
- * indentation contract as the generated plugin metadata.
- *
- * @param {string} content agents/openai.yaml content.
- * @returns {object[]} Tool dependency entries from dependencies.tools.
- */
-function parseDependencyTools(content) {
-  const lines = String(content ?? '').split('\n');
-  const tools = [];
-  let inDependencies = false;
-  let inTools = false;
-  let currentTool = null;
-
-  for (const line of lines) {
-    if (!inDependencies) {
-      if (line.trim() === 'dependencies:') {
-        inDependencies = true;
-      }
-      continue;
-    }
-
-    if (!line.trim()) {
-      continue;
-    }
-
-    if (!line.startsWith('  ')) {
-      break;
-    }
-
-    if (!inTools) {
-      if (line.trim() === 'tools:') {
-        inTools = true;
-      }
-      continue;
-    }
-
-    if (!line.startsWith('    ')) {
-      break;
-    }
-
-    const firstEntryMatch = line.match(/^ {4}-\s+([a-z_]+):\s*(.+)$/);
-    if (firstEntryMatch) {
-      currentTool = {
-        [firstEntryMatch[1]]: unquoteYaml(firstEntryMatch[2]),
-      };
-      tools.push(currentTool);
-      continue;
-    }
-
-    const entryMatch = line.match(/^ {6}([a-z_]+):\s*(.+)$/);
-    if (entryMatch && currentTool) {
-      currentTool[entryMatch[1]] = unquoteYaml(entryMatch[2]);
-    }
-  }
-
-  return tools;
-}
-
-function hasDependenciesToolsSection(content) {
-  return /^\s{2}tools:\s*$/m.test(String(content ?? ''));
-}
-
-/**
- * Enforces exact template section order while allowing only template-declared
- * optional headings to be omitted.
- *
- * @param {string} content Skill Markdown content.
- * @param {string[]} orderedHeadings Required heading sequence.
- * @param {string[]} [optionalHeadings=[]] Template-declared headings that may be omitted.
- * @returns {boolean} Whether the content exactly matches the allowed sequence.
- */
-function hasOrderedSections(content, orderedHeadings, optionalHeadings = []) {
-  const headings = extractTopLevelSkillHeadings(content);
-  const optionalSet = new Set(optionalHeadings);
-
-  let actualIndex = 0;
-  let expectedIndex = 0;
-
-  while (expectedIndex < orderedHeadings.length && actualIndex < headings.length) {
-    const expectedHeading = orderedHeadings[expectedIndex];
-    const actualHeading = headings[actualIndex];
-
-    if (expectedHeading === actualHeading) {
-      expectedIndex += 1;
-      actualIndex += 1;
-      continue;
-    }
-
-    if (optionalSet.has(expectedHeading)) {
-      expectedIndex += 1;
-      continue;
-    }
-
-    return false;
-  }
-
-  while (
-    expectedIndex < orderedHeadings.length &&
-    optionalSet.has(orderedHeadings[expectedIndex])
-  ) {
-    expectedIndex += 1;
-  }
-
-  return expectedIndex === orderedHeadings.length && actualIndex === headings.length;
-}
-
 function hasTanaabBasedPrefix(value) {
   return /^tanaab[- ]based\s+/i.test(String(value ?? '').trim());
 }
@@ -227,37 +70,6 @@ function hasTanaabBasedPrefix(value) {
 function isRelativePath(value) {
   const trimmed = String(value ?? '').trim();
   return Boolean(trimmed) && !path.isAbsolute(trimmed) && !/^[a-z]+:\/\//i.test(trimmed);
-}
-
-/**
- * Extracts repo-relative Markdown targets for validation and deliberately skips
- * anchors, mailto/data links, and absolute URLs.
- *
- * @param {string} markdown Markdown content.
- * @returns {string[]} Relative link targets to validate.
- */
-function extractRelativeLinks(markdown) {
-  const links = [];
-  const pattern = /\[[^\]]*\]\(([^)]+)\)/g;
-
-  for (const match of String(markdown ?? '').matchAll(pattern)) {
-    const rawTarget = match[1].trim();
-    const target = rawTarget.split(/\s+/)[0];
-
-    if (
-      !target ||
-      target.startsWith('#') ||
-      target.startsWith('mailto:') ||
-      target.startsWith('data:') ||
-      /^[a-z]+:\/\//i.test(target)
-    ) {
-      continue;
-    }
-
-    links.push(target);
-  }
-
-  return links;
 }
 
 function getSkillMetadata(frontmatter) {
@@ -415,7 +227,7 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
   const typeDefinition = getSkillType(actualType);
   if (
     typeDefinition &&
-    !hasOrderedSections(
+    !hasOrderedSkillSections(
       skillContent,
       typeDefinition.sectionOrder,
       typeDefinition.optionalTopLevelHeadings,
@@ -426,7 +238,7 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
     );
   }
 
-  for (const relativeTarget of extractRelativeLinks(skillContent)) {
+  for (const relativeTarget of extractRelativeMarkdownLinks(skillContent)) {
     const [targetPath] = relativeTarget.split('#', 1);
     const resolvedTarget = path.resolve(skillPath, targetPath);
     if (!(await pathExists(resolvedTarget))) {
@@ -498,8 +310,8 @@ async function validateOpenAiMetadata({
   skillPath,
   warnings,
 }) {
-  const interfaceValues = parseInterfaceYaml(openAiContent);
-  const policyValues = parsePolicyYaml(openAiContent);
+  const { dependencyTools, hasDependencyToolsSection, interfaceValues, policyValues } =
+    parseOpenAiSkillMetadata(openAiContent);
 
   for (const key of REQUIRED_OPENAI_INTERFACE_KEYS) {
     if (!interfaceValues[key]) {
@@ -559,8 +371,7 @@ async function validateOpenAiMetadata({
     errors.push('policy.allow_implicit_invocation must be `true` or `false` when present.');
   }
 
-  if (hasDependenciesToolsSection(openAiContent)) {
-    const dependencyTools = parseDependencyTools(openAiContent);
+  if (hasDependencyToolsSection) {
     if (dependencyTools.length === 0) {
       errors.push('dependencies.tools must contain at least one tool entry when present.');
     }
@@ -630,24 +441,6 @@ function buildManualChecks({ expectedType }) {
   }
 
   return checks;
-}
-
-function formatList(title, items) {
-  if (items.length === 0) {
-    return `${title}: none`;
-  }
-
-  return `${title}:\n${items.map((item) => `- ${item}`).join('\n')}`;
-}
-
-export function formatValidationReport(result) {
-  return [
-    `skill: ${result.skillDir}`,
-    `status: ${result.errors.length === 0 ? 'ok' : 'failed'}`,
-    formatList('errors', result.errors),
-    formatList('warnings', result.warnings),
-    formatList('manual_checks', result.manualChecks),
-  ].join('\n');
 }
 
 /**

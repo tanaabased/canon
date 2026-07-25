@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
 import { bold, dim, renderCliHelp, writeLine } from '../../../lib/bun-cli-support.js';
-import { formatValidationReport, validateSkillDir } from '../lib/skill-validator.js';
+import { validateSkillDir } from '../lib/skill-validator.js';
+import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
 import parseValidateSkillArgs from '../utils/parse-validate-skill-args.js';
 
 function renderUsage(stream = process.stdout) {
@@ -31,7 +32,7 @@ async function main() {
   if (!skillDir) throw new Error('Skill directory is required.');
 
   const result = await validateSkillDir(skillDir, { expectedType: options.type });
-  writeLine(process.stdout, formatValidationReport(result));
+  writeLine(process.stdout, formatSkillValidationReport(result));
   return result.errors.length === 0;
 }
 

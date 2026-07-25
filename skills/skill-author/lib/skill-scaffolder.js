@@ -2,6 +2,7 @@ import { copyFile, mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import pathExists from '../../../utils/path-exists.js';
+import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
 import inferSkillCategoryTag from '../utils/infer-skill-category-tag.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
 import normalizeSkillDescription, {
@@ -22,7 +23,7 @@ import {
   renderMetadataTagsYaml,
   stripOwnerPrefix,
 } from './skill-contract.js';
-import { formatValidationReport, validateSkillDir } from './skill-validator.js';
+import { validateSkillDir } from './skill-validator.js';
 
 function normalizeSlug(value) {
   const slug = String(value ?? '')
@@ -149,7 +150,7 @@ export async function initializeSkill(options) {
 
   const result = await validateSkillDir(skillDir, { expectedType: type });
   if (result.errors.length > 0) {
-    throw new Error(`Generated skill failed validation.\n${formatValidationReport(result)}`);
+    throw new Error(`Generated skill failed validation.\n${formatSkillValidationReport(result)}`);
   }
 
   return { result, skillDir };

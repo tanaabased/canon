@@ -3,7 +3,7 @@
 import { bold, dim, renderCliHelp, writeLine } from '../../../lib/bun-cli-support.js';
 import { formatSkillTypeIds, SKILLS_ROOT_DIR } from '../lib/skill-contract.js';
 import { initializeSkill } from '../lib/skill-scaffolder.js';
-import { formatValidationReport } from '../lib/skill-validator.js';
+import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
 import parseInitSkillArgs from '../utils/parse-init-skill-args.js';
 
 function renderUsage(stream = process.stdout) {
@@ -38,7 +38,7 @@ async function main() {
   const { result, skillDir } = await initializeSkill(options);
   writeLine(process.stdout, `Created skill at ${skillDir}`);
   if (result.warnings.length > 0 || result.manualChecks.length > 0) {
-    writeLine(process.stdout, formatValidationReport(result));
+    writeLine(process.stdout, formatSkillValidationReport(result));
   }
   return true;
 }
