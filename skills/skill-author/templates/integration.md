@@ -73,9 +73,11 @@ metadata:
 
 ## Optimization
 
+Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
+
 - **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
-- **Compare:** Normalize current and canonical state into an exact managed diff, keeping unmanaged fields and unrelated systems out of scope.
-- **Recommend:** Prioritize confirmed drift, surface partial-failure risk, and report aligned or unavailable state without guessing.
+- **Compare:** Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
+- **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
 - **Apply:** After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
 - **Verify:** Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.
 

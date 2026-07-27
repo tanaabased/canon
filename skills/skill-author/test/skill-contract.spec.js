@@ -23,6 +23,11 @@ describe('skills/skill-author/templates', () => {
       assert.ok(frontmatter.optional_top_level_headings.includes('## Optimization'), templateName);
       assert.ok(optimizationIndex >= 0, templateName);
       assert.equal(optimizationIndex + 1, resourcesIndex, templateName);
+      assert.match(
+        templateContent,
+        /\*\*keep\*\*.*\*\*reconcile\*\*.*\*\*deduplicate\*\*.*\*\*consolidate\/merge\*\*.*\*\*split\*\*.*\*\*extract\*\*.*\*\*move\*\*.*\*\*tighten\*\*.*\*\*remove\*\*/s,
+        templateName,
+      );
     }
   });
 });

@@ -430,6 +430,7 @@ function buildManualChecks({ expectedType }) {
     'Check that tests remain with their owning scope unless their implementation or coverage is intentionally shared.',
     'Check that bulk standardization preserved the skill purpose unless a behavioral rewrite was requested.',
     'Check whether the skill owns persistent alignment and therefore should retain and tailor `Optimization`, or should intentionally omit it as incident-specific, event-specific, or execution-only.',
+    'Check that a retained `Optimization` facet applies the shared keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove lenses where appropriate without manufacturing work.',
   ];
 
   if (expectedType) {

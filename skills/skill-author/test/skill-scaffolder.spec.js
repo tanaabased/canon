@@ -50,6 +50,7 @@ describe('skills/skill-author/lib/skill-scaffolder', () => {
       assert.match(skillContent, /\*\*Recommend:\*\*/);
       assert.match(skillContent, /\*\*Apply:\*\*/);
       assert.match(skillContent, /\*\*Verify:\*\*/);
+      assert.match(skillContent, /\*\*keep\*\*.*\*\*remove\*\*/s);
       assert.equal(frontmatter.metadata.openclaw.emoji, '🧩');
       assert.equal(
         frontmatter.metadata.openclaw.homepage,

@@ -46,9 +46,11 @@ metadata:
 
 ## Optimization
 
+Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this owned surface; do not manufacture changes to satisfy the list.
+
 - **Inspect:** Inventory the existing files, state, and evidence that belong to this skill's singular surface.
-- **Compare:** Evaluate the observed surface against its durable local and shared contracts; classify unrelated areas as not applicable.
-- **Recommend:** Prioritize supported, high-leverage improvements and report an aligned surface without manufacturing work.
+- **Compare:** Evaluate the observed surface against its durable local and shared contracts, including contradictions, duplication, overloaded artifacts, misplaced material, and obsolete state; classify unrelated areas as not applicable.
+- **Recommend:** Preserve aligned state; reconcile conflicting representations; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
 - **Apply:** After explicit authorization, make the smallest safe change within the owned surface and preserve unrelated state.
 - **Verify:** Run the narrowest checks that prove the surface is aligned, then report any remaining uncertainty.
 

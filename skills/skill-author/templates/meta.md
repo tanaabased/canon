@@ -61,9 +61,11 @@ metadata:
 
 ## Optimization
 
+Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this artifact family; do not manufacture changes to satisfy the list.
+
 - **Inspect:** Inventory the existing artifact family, discovery metadata, structure, bundled resources, and validation evidence owned by this skill.
-- **Compare:** Evaluate the surface against the shared contract and canonical template while preserving its narrow purpose.
-- **Recommend:** Prioritize scope, discovery, consistency, and ownership improvements without turning the skill into a router or duplicating doctrine.
+- **Compare:** Evaluate each artifact and the collection against the shared contract and canonical template, including contradictions, duplicated doctrine, fragmented variants, overloaded owners, misplaced resources, and obsolete identities.
+- **Recommend:** Preserve clear owners; reconcile conflicting contracts; and prioritize justified merging, splitting, extraction, movement, tightening, or removal without turning the skill into a router.
 - **Apply:** After explicit authorization, make the smallest contract-aligned change and keep reusable support at its nearest justified owner.
 - **Verify:** Run the existing validator, review manual checks, and confirm the optimized artifact still owns one clear surface.
 

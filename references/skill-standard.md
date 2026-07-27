@@ -71,6 +71,10 @@ skill-folder/
 - `[manual]` Retain and tailor the optional `## Optimization` section when a skill can inspect an existing surface against durable canon.
 - `[manual]` Remove `## Optimization` from incident-specific, event-specific, or execution-only skills that do not own persistent alignment.
 - `[manual]` Keep optimization guidance surface-specific and concise. Use the standard `Inspect`, `Compare`, `Recommend`, `Apply`, and `Verify` labels without repeating the shared workflow doctrine.
+- `[manual]` Name the highest-value concrete compliance checks and likely corrections for the owned surface directly in the facet. Do not leave the five labels as generic boilerplate that depends on the optimizer guessing which canon rules matter.
+- `[manual]` Treat the facet as a routing summary into the skill's full relevant contract and directly linked canon, not as a replacement for that guidance.
+- `[manual]` Apply the evidence-led lenses in [`optimization-operations.md`](./optimization-operations.md) as appropriate to the owned surface: keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove. They are not mandatory output fields, and aligned surfaces must not be changed to satisfy the list.
+- `[manual]` Reconcile contradictions and establish one authoritative owner before polishing, reorganizing, or adding another representation.
 - `[manual]` Optimization must begin read-only, report aligned or not-applicable results honestly, and require explicit authorization before mutation.
 - `[error]` When present, `## Optimization` must appear in the position declared by the selected full type template.
 
