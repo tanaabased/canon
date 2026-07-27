@@ -1,6 +1,8 @@
 ---
 template_type: coding
 default_category_tag: implementation
+optional_top_level_headings:
+  - '## Optimization'
 ---
 
 ---
@@ -75,6 +77,14 @@ metadata:
 - Describe the default GitHub Actions validation path for the owned code surface when GHA is the standard CI mechanism.
 - Include one canonical mechanism and one minimal example only when it materially shapes the skill.
 - Do not widen this section into full workflow-topology ownership.
+
+## Optimization
+
+- **Inspect:** Inventory the existing implementation, owning scopes, public behavior, documentation, tests, and CI for this code surface.
+- **Compare:** Evaluate the observed surface against repository-local patterns and the linked coding canon; classify unsupported layers as not applicable.
+- **Recommend:** Prioritize behavior, maintainability, and validation improvements with concrete evidence, and report an aligned surface without manufacturing cleanup.
+- **Apply:** After explicit authorization, make the smallest coherent code change; avoid style-only refactors, forced utility extraction, and unrequested language migration.
+- **Verify:** Run the narrowest relevant tests, lint, type-check, build, or smoke checks, then re-inspect the changed surface for remaining drift.
 
 ## Bundled Resources
 

@@ -64,6 +64,16 @@ skill-folder/
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
 - `[warn]` Keep `metadata.tags` short. Prefer one category tag by default instead of a long keyword list.
 
+## Workflow Facets
+
+- A workflow facet is a reusable path through one skill-owned surface. Operating modes, lifecycle phases, and output variants may use their natural domain language instead of being renamed generically.
+- `Optimization` is the canonical cross-skill facet for evidence-led alignment and maintainability improvement of an existing persistent surface.
+- `[manual]` Retain and tailor the optional `## Optimization` section when a skill can inspect an existing surface against durable canon.
+- `[manual]` Remove `## Optimization` from incident-specific, event-specific, or execution-only skills that do not own persistent alignment.
+- `[manual]` Keep optimization guidance surface-specific and concise. Use the standard `Inspect`, `Compare`, `Recommend`, `Apply`, and `Verify` labels without repeating the shared workflow doctrine.
+- `[manual]` Optimization must begin read-only, report aligned or not-applicable results honestly, and require explicit authorization before mutation.
+- `[error]` When present, `## Optimization` must appear in the position declared by the selected full type template.
+
 ## Required OpenClaw Metadata
 
 - `[error]` `metadata.openclaw` must be a mapping.

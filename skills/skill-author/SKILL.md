@@ -26,6 +26,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - `type` is the only variable identity input for new or standardized skills.
 - Choose the narrowest type that fits; keep `generic` as the fallback.
 - Validation is a first-class workflow phase and a valid standalone mode.
+- Treat a workflow facet as a reusable path through one owned surface; keep domain-appropriate mode, lifecycle, and variant language instead of forcing one label onto every skill.
+- Retain and tailor the optional `Optimization` facet when the skill can audit an existing persistent surface against durable canon; remove it for incident-specific, event-specific, or execution-only workflows.
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon, and apply that same ownership test to skill-local tests.
 - For `coding` skills, define one owned code surface plus three lifecycle sections: `Documentation`, `Testing`, and `GitHub Actions Workflow`.
@@ -44,6 +46,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Split a broad skill into narrower skills with clearer owned surfaces.
 - Review whether a proposed skill surface is better expressed as a repo template than as a live skill.
 - Review whether a skill should bundle short repo `AGENTS.md` lines because its surface implies durable ambient repo policy.
+- Decide whether a new or standardized skill should retain and tailor the full template's optional `Optimization` facet.
 
 ## When Not to Use
 
@@ -62,6 +65,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
 - Prefer a repo template when the reusable contract is a committed starter repository with structure, scripts, examples, and docs that users adopt as a whole; keep a live skill only for cross-repo decision-making that remains after the template choice.
 - Bundle repo `AGENTS.md` lines only for durable always-on repo rules, not for conditional workflow steps that belong in the skill itself.
+- Keep `Optimization` only when the skill owns persistent alignment, and make its read-only inspection, comparison, recommendation, authorized application, and verification boundaries specific to that surface.
 
 ## Anti-Patterns
 
@@ -73,6 +77,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Do not let a `coding` skill accumulate multiple materially different documentation, testing, or GitHub Actions validation mechanisms unless the variations are minor flavors of one pattern.
 - Do not keep a live skill whose main job is to restate one repo template's structure, scripts, examples, and docs.
 - Do not use repo `AGENTS.md` guidance as a dumping ground for task-triggered workflow detail.
+- Do not require `Optimization` for incident-specific or event-specific skills, and do not leave a generic template section untailored.
 
 ## Iteration Loop
 
@@ -82,6 +87,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Tighten scope before adding new sections, resources, or hoisted canon.
 - For `coding` skills, challenge the scope before adding a second materially different documentation, direct-test, or GitHub Actions workflow pattern.
 - Challenge skill-vs-template ownership before adding doctrine for a surface that already looks like a reusable starter repo.
+- Review optimization applicability before finalizing a new or standardized skill; retain and tailor the full-template section or remove it deliberately.
 
 ## Workflow
 
@@ -97,6 +103,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Use [`./scripts/init-skill.js`](./scripts/init-skill.js) when the task is a clean scaffold.
 - Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
+- Review the scaffolded `Optimization` section. Retain and tailor it when the skill can audit an existing persistent surface against durable canon; otherwise remove it.
 - Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
 - Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
@@ -135,4 +142,5 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Confirm bundled resources stay local unless they clearly pass the hoist test.
 - Confirm skill-owned test files remain flat beneath the skill's `test/` directory unless an external tool requires a fixed nested path.
 - Confirm any repo-root resources still justify being hoisted.
+- Confirm `Optimization` is present and surface-specific when persistent alignment is owned, or intentionally omitted for incident-specific, event-specific, or execution-only workflows.
 - Run `validate-skill.js` and fix all `[error]` results before finishing.

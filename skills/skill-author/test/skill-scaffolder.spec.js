@@ -44,6 +44,12 @@ describe('skills/skill-author/lib/skill-scaffolder', () => {
       const openAiContent = await readFile(path.join(skillDir, 'agents', 'openai.yaml'), 'utf8');
       const frontmatter = parseSkillFrontmatter(skillContent);
 
+      assert.match(skillContent, /## Optimization/);
+      assert.match(skillContent, /\*\*Inspect:\*\*/);
+      assert.match(skillContent, /\*\*Compare:\*\*/);
+      assert.match(skillContent, /\*\*Recommend:\*\*/);
+      assert.match(skillContent, /\*\*Apply:\*\*/);
+      assert.match(skillContent, /\*\*Verify:\*\*/);
       assert.equal(frontmatter.metadata.openclaw.emoji, '🧩');
       assert.equal(
         frontmatter.metadata.openclaw.homepage,

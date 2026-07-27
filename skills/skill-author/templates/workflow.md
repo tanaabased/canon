@@ -1,6 +1,8 @@
 ---
 template_type: workflow
 default_category_tag: operations
+optional_top_level_headings:
+  - '## Optimization'
 ---
 
 ---
@@ -56,6 +58,14 @@ metadata:
 
 - Define what finished looks like before closing the task.
 - List the signals or artifacts that prove the workflow is complete.
+
+## Optimization
+
+- **Inspect:** Inventory the current preconditions, sequence, checkpoints, handoffs, and completion evidence for this operational surface.
+- **Compare:** Evaluate the observed workflow against its durable contract and classify unsupported paths as not applicable.
+- **Recommend:** Prioritize correctness, clarity, and handoff improvements without widening the workflow or manufacturing work for aligned stages.
+- **Apply:** After explicit authorization, change the smallest coherent part of the sequence while preserving required approvals and external boundaries.
+- **Verify:** Re-run the relevant checkpoints and confirm the documented completion criteria prove the optimized workflow is complete.
 
 ## Bundled Resources
 

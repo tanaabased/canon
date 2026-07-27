@@ -3,6 +3,7 @@ template_type: integration
 default_category_tag: external-systems
 optional_top_level_headings:
   - '## Release Workflow'
+  - '## Optimization'
 ---
 
 ---
@@ -69,6 +70,14 @@ metadata:
 - Describe the default release automation path for the owned product surface only when one canonical release mechanism materially shapes the skill.
 - Include one canonical mechanism and one minimal example only when it materially shapes the skill.
 - Do not widen this section into full workflow-topology ownership.
+
+## Optimization
+
+- **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
+- **Compare:** Normalize current and canonical state into an exact managed diff, keeping unmanaged fields and unrelated systems out of scope.
+- **Recommend:** Prioritize confirmed drift, surface partial-failure risk, and report aligned or unavailable state without guessing.
+- **Apply:** After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
+- **Verify:** Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.
 
 ## Bundled Resources
 

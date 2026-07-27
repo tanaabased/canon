@@ -429,6 +429,7 @@ function buildManualChecks({ expectedType }) {
     'Check that skill code uses public bin, internal scripts, orchestration lib, unit-shaped utils, and scoped test roles consistently.',
     'Check that tests remain with their owning scope unless their implementation or coverage is intentionally shared.',
     'Check that bulk standardization preserved the skill purpose unless a behavioral rewrite was requested.',
+    'Check whether the skill owns persistent alignment and therefore should retain and tailor `Optimization`, or should intentionally omit it as incident-specific, event-specific, or execution-only.',
   ];
 
   if (expectedType) {

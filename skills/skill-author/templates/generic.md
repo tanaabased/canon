@@ -1,6 +1,8 @@
 ---
 template_type: generic
 default_category_tag: workflow
+optional_top_level_headings:
+  - '## Optimization'
 ---
 
 ---
@@ -41,6 +43,14 @@ metadata:
 2. Load only the canon, inputs, and local resources required for this task.
 3. Do the work using the narrowest reliable approach for this surface.
 4. Validate the result before finishing.
+
+## Optimization
+
+- **Inspect:** Inventory the existing files, state, and evidence that belong to this skill's singular surface.
+- **Compare:** Evaluate the observed surface against its durable local and shared contracts; classify unrelated areas as not applicable.
+- **Recommend:** Prioritize supported, high-leverage improvements and report an aligned surface without manufacturing work.
+- **Apply:** After explicit authorization, make the smallest safe change within the owned surface and preserve unrelated state.
+- **Verify:** Run the narrowest checks that prove the surface is aligned, then report any remaining uncertainty.
 
 ## Bundled Resources
 

@@ -1,6 +1,8 @@
 ---
 template_type: meta
 default_category_tag: skills
+optional_top_level_headings:
+  - '## Optimization'
 ---
 
 ---
@@ -56,6 +58,14 @@ metadata:
 2. Load only the shared standard and local resources required for the task.
 3. Create, standardize, or validate using the narrowest reliable approach.
 4. Re-run validation before finishing and surface any manual review points.
+
+## Optimization
+
+- **Inspect:** Inventory the existing artifact family, discovery metadata, structure, bundled resources, and validation evidence owned by this skill.
+- **Compare:** Evaluate the surface against the shared contract and canonical template while preserving its narrow purpose.
+- **Recommend:** Prioritize scope, discovery, consistency, and ownership improvements without turning the skill into a router or duplicating doctrine.
+- **Apply:** After explicit authorization, make the smallest contract-aligned change and keep reusable support at its nearest justified owner.
+- **Verify:** Run the existing validator, review manual checks, and confirm the optimized artifact still owns one clear surface.
 
 ## Bundled Resources
 
