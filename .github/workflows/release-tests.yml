@@ -30,21 +30,22 @@ jobs:
       - name: Prepare release-shaped build
         uses: tanaabased/prepare-release-action@v1
         with:
-          version: dev
+          version: ${{ env.STAMPED_VERSION }}
           sync: false
           commands: |
-            version-injector package.json --style json --version "${{ env.STAMPED_VERSION }}"
-            version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
+            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
       - name: Verify stamped versions
         shell: bash
         run: |
           package_version="v$(bun --eval 'const pkg = JSON.parse(await Bun.file("package.json").text()); console.log(pkg.version)')"
           plugin_version="v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')"
           cli_version="v$(./bin/codexsync.js --version)"
-          printf 'package=%s\nplugin=%s\ncli=%s\n' "$package_version" "$plugin_version" "$cli_version"
-          test "$package_version" = "${{ env.STAMPED_VERSION }}"
-          test "$plugin_version" = "${{ env.STAMPED_VERSION }}"
-          test "$cli_version" = "${{ env.STAMPED_VERSION }}"
+          tagged_version="$(git tag --points-at HEAD --list "$STAMPED_VERSION")"
+          printf 'package=%s\nplugin=%s\ncli=%s\ntag=%s\n' "$package_version" "$plugin_version" "$cli_version" "$tagged_version"
+          test "$package_version" = "$STAMPED_VERSION"
+          test "$plugin_version" = "$STAMPED_VERSION"
+          test "$cli_version" = "$STAMPED_VERSION"
+          test "$tagged_version" = "$STAMPED_VERSION"
       - name: Install production dependencies
         run: |
           rm -rf node_modules
