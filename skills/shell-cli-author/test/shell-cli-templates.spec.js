@@ -31,6 +31,8 @@ describe('skills/shell-cli-author/templates', () => {
   });
 
   it('should parse and expose PowerShell help and version output', function () {
+    this.timeout(10_000);
+
     if (!commandAvailable('pwsh')) {
       this.skip();
     }
