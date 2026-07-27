@@ -10,6 +10,7 @@
 
 - Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
 - Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
+- Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
 - Updated Skill Author and GitHub Checks Triage with focused libraries, testable utilities, and thin internal commands.
 
 ## v0.4.0 - [May 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.4.0)

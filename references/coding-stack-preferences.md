@@ -79,8 +79,9 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Documentation Surface Defaults
 
 - Prefer a full `README.md` by default when one durable file can realistically carry the repo's user-facing contract.
+- Prefer a companion-guides README when the common path belongs in `README.md` but one or two linear root-level references keep advanced or topical material focused.
 - Prefer the GitHub Action README shape when the repository's primary product is a GitHub Action.
-- Escalate to a VitePress docs-wrapper README only when the repository clearly needs multiple durable guides, deeper reference pages, or multiple user journeys.
+- Require an explicit VitePress review when a repository reaches `README.md`, `ADVANCED.md`, and three or more topical guides, or earlier when navigation, search, versioning, or multiple independent journeys are needed.
 - Keep the README as a strong entrypoint even when the repo later grows a docs site.
 
 ## Baseline Repo Signals

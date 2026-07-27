@@ -13,11 +13,13 @@
 
 One or two sentences that explain what the project is, who it is for, and why it exists.
 
-> Optional: add a short status, compatibility, or support note when readers need it before starting.
+> Optional: add a short status, compatibility, safety, or support note when readers need it before starting.
 
 ## Overview
 
-Summarize the project's most important capabilities. Prefer a short paragraph or a concise list over repeating the sections below.
+Summarize the project's most important capabilities and boundaries. Keep the common path here; move long-tail reference material into the companion guides.
+
+For a complete inventory or deeper behavioral reference, see [Advanced](./ADVANCED.md).
 
 ## Quickstart
 
@@ -28,36 +30,26 @@ Show the fastest path to a successful first run. Delete this section when the re
 # run the main command
 ```
 
-## Installation
-
-Explain the supported installation or setup path.
-
-- Required runtime or tool versions
-- Required environment or credentials
-- Any platform-specific notes that matter before use
-
 ## Usage
 
-Explain the most important user flows first.
+Explain the workflows most readers need first.
 
 ```sh
 # primary example
 ```
 
-Add one or two follow-up examples only if they materially expand understanding.
+Document only common inputs and configuration here. Link the complete reference from the paragraph where readers first need it:
 
-## Configuration
+- `COMMON_OPTION`: what it does and when most readers should use it
+- `COMMON_ENV_VAR`: the common environment override
 
-Document the main configuration surface only when the repo actually exposes one.
+See [Advanced](./ADVANCED.md#configuration-reference) for the complete configuration contract.
 
-- `ENV_VAR_ONE`: what it does and when to set it
-- `ENV_VAR_TWO`: what it does and when to set it
+When one substantial optional subject has its own audience, rename `topic-guide.md` to a stable subject name and link it here, such as a Codex, OpenClaw, operations, or upgrade guide.
 
-If configuration grows beyond a concise section, review whether the full reference belongs in a companion guide or a VitePress docs site.
+## Verification
 
-## Advanced
-
-Use this section only when the repo has meaningful secondary flows that still fit comfortably inside one README. Switch to the companion-guides template when advanced material becomes a durable reference.
+Show the shortest supported check that confirms the primary workflow succeeded. Keep detailed fields, log interpretation, and recovery procedures in [Advanced](./ADVANCED.md#verification-details).
 
 ## Development
 
@@ -67,8 +59,9 @@ Keep this section contributor-focused and repo-specific.
 INSTALL_COMMAND
 LINT_COMMAND
 TEST_COMMAND
-BUILD_COMMAND
 ```
+
+Call out build, generated-output, privileged, or machine-mutating workflows instead of presenting them as routine local commands.
 
 ## Issues, Questions and Support
 
