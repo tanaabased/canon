@@ -25,6 +25,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 - `type` is the only variable identity input for new or standardized skills.
 - Choose the narrowest type that fits; keep `generic` as the fallback.
+- Treat project management as a domain and category rather than a separate skill type. Use `integration` for one provider-backed object or mutation boundary and `workflow` for a fixed multi-object lifecycle.
+- Prefer domain-led names for Project, Task, Project Milestone, and Release surfaces; retain provider-led names when provider mechanics are the actual product surface.
 - Validation is a first-class workflow phase and a valid standalone mode.
 - Treat a workflow facet as a reusable path through one owned surface; keep domain-appropriate mode, lifecycle, and variant language instead of forcing one label onto every skill.
 - Retain and tailor the optional `Optimization` facet when the skill can audit an existing persistent surface against durable canon; remove it for incident-specific, event-specific, or execution-only workflows.
@@ -61,6 +63,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 ## Evaluation Criteria
 
 - Use the smallest type that clearly fits the skill's owned surface.
+- For project-management skills, keep domain naming separate from implementation detail and choose `integration` or `workflow` from the actual permission and lifecycle boundary.
 - Keep structure and metadata aligned with the shared canon contract.
 - Keep OpenClaw display metadata in `SKILL.md` and Codex interface metadata in `agents/openai.yaml`.
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
@@ -77,6 +80,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Do not treat type selection as runtime routing.
 - Do not keep a separate validator skill when validation is only a lifecycle phase of skill authoring.
 - Do not use `generic` as the default when a narrower type clearly fits.
+- Do not add a project-management type or a provider-neutral umbrella skill when existing integration and workflow types already express the owned boundary.
 - Do not duplicate contract rules in skill prose when the standard or CLI already enforces them.
 - Do not hoist a file to repo root just because it might be reused later.
 - Do not let a `coding` skill accumulate multiple materially different documentation, testing, or GitHub Actions validation mechanisms unless the variations are minor flavors of one pattern.
@@ -98,7 +102,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 ## Workflow
 
-1. Determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, and challenge whether the surface is really a live skill or would be better owned by a repo template.
+1. Determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
 
 2. Load only the needed shared references.
 
@@ -146,6 +150,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 - [../../references/skill-standard.md](../../references/skill-standard.md): naming, structure, metadata, and validation contract
 - [../../references/optimization-operations.md](../../references/optimization-operations.md): shared evidence-led operations for persistent-surface and portfolio optimization
+- [../../references/project-management-model.md](../../references/project-management-model.md): domain naming, GitHub mappings, lifecycle ownership, and project-management skill type boundaries
 - [./templates/meta.md](./templates/meta.md): canonical full-template model for `meta` skills; sibling templates define the other type shapes
 - [./scripts/init-skill.js](./scripts/init-skill.js): deterministic scaffolder for canonical full templates
 - [./scripts/validate-skill.js](./scripts/validate-skill.js): validation entrypoint for skill directories
@@ -158,6 +163,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 - Confirm the new or updated skill has a distinct owned surface.
 - Confirm the selected `type` is explicit and correct.
+- Confirm project-management surfaces use domain-led names unless provider-specific mechanics are the owned product, without introducing another skill type.
 - Confirm the selected type order is correct.
 - Confirm `metadata.openclaw` has a skill-specific emoji and correct HTTPS homepage, with dependency gates only for hard runtime requirements.
 - Confirm `coding` skills include `Documentation`, `Testing`, and `GitHub Actions Workflow` as the canonical lifecycle sections.

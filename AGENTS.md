@@ -13,6 +13,14 @@
 - Do not hide workflow logic in `AGENTS.md`.
 - Do not duplicate global repo doctrine across multiple `SKILL.md` files when one ambient rule will do.
 
+## Project Management Model
+
+- Treat GitHub as the canonical project-management implementation for Tanaab work.
+- In Canon terminology, a Project is represented by one GitHub repository, a Task by one GitHub issue, a project milestone by one GitHub milestone, a Change by a pull request, Validation by checks or Actions results, and a Release by a tag plus GitHub Release.
+- The Task owns task state. Pull requests and checks provide completion evidence but are not themselves proof that the Task is complete.
+- Refer to an optional planning board explicitly as a GitHub Projects board; it is a view over project work, not the Project's identity or source of truth.
+- Apply the complete shared contract in [`references/project-management-model.md`](./references/project-management-model.md). Cross-project strategic goals remain outside this initial model.
+
 ## Runtime Boundaries
 
 - Keep support material local to the owning skill by default.
