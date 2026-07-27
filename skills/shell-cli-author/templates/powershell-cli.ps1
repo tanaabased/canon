@@ -23,7 +23,6 @@ Run `./powershell-cli.ps1 -Help` for more advanced usage.
 param(
   [switch]$Force,
   [string[]]$Item,
-  [switch]$Debug = $false,
   [switch]$Help,
   [switch]$Version,
 
@@ -88,14 +87,13 @@ function Get-FirstNonEmpty {
 }
 
 $script:DEBUG_ENABLED =
-  $Debug.IsPresent -or
+  ($PSBoundParameters.ContainsKey('Debug') -and [bool]$PSBoundParameters['Debug']) -or
   (Test-Truthy $env:TANAAB_DEBUG) -or
   (Test-Truthy $env:RUNNER_DEBUG)
 
 $DebugPreference = if ($script:DEBUG_ENABLED) { 'Continue' } else { $DebugPreference }
 if ($DebugPreference -eq 'Inquire' -or $DebugPreference -eq 'Continue') {
   $script:DEBUG_ENABLED = $true
-  $Debug = $true
 }
 
 try {

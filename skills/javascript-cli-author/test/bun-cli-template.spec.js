@@ -21,7 +21,10 @@ describe('skills/javascript-cli-author/templates/bun-cli', () => {
       );
       assert.equal(build.status, 0, build.stderr || build.stdout);
 
-      const help = spawnSync('bun', [outputPath, '--help'], { encoding: 'utf8' });
+      const help = spawnSync('bun', [outputPath, '--help'], {
+        encoding: 'utf8',
+        env: { ...process.env, NO_COLOR: '1' },
+      });
       assert.equal(help.status, 0, help.stderr);
       assert.match(help.stdout, /^Usage: bun-cli\.js /m);
       assert.match(help.stdout, /^Options:$/m);
