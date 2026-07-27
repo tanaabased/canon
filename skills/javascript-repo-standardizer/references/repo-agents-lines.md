@@ -8,5 +8,6 @@ Use these lines only when the target repo wants the JS/TS/Bun baseline as durabl
 - Keep linting and formatting ownership separate: ESLint for lint rules and standalone Prettier for formatting.
 - Prefer the shared baseline script shape such as `lint:eslint`, `format:check`, `format:write`, and composed `lint` when the repo adopts the standard baseline.
 - Prefer Bun-first baseline package wiring for repos with meaningful JavaScript or TypeScript surfaces.
+- In Bun monorepos, keep the root private with one lockfile, treat each workspace package as an owning scope, and import sibling packages through declared workspace dependencies and public exports.
 - When the repo owns TypeScript source, keep `typecheck` separate from lint and use the shared strict, no-emit TypeScript baseline.
 - Treat baseline normalization as separate from ordinary runtime authorship and feature refactors.

@@ -37,6 +37,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 
 - Do not use this skill for ordinary `CHANGELOG.md` drafting without release creation intent; use `$tanaab-changelog-author`.
 - Do not edit release workflows, packaging scripts, or `prepare-release-action` wiring unless the user asks for workflow authoring separately.
+- Do not invent a multi-package versioning or publication strategy while drafting a release; require that repository contract to exist first.
 - Do not publish a release directly by default; create a draft unless the user explicitly asks to publish immediately.
 - Do not bump `package.json` or other stamped version files locally before drafting the release; the release workflow owns that mutation.
 
@@ -46,6 +47,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Confirm the local worktree is clean before checking out the release target branch; pause if unrelated local changes exist.
 - Confirm `gh` is installed and authenticated for the target repository.
 - Confirm `.github/workflows/release.yml` is triggered by `release.published` before relying on draft publication as the release gate.
+- Inspect root workspaces and their manifests. When more than one publishable workspace exists, identify the repo's fixed-version or independent-version and tag strategy before deriving a release.
 - Resolve the GitHub default branch and use it as the release target unless the user explicitly specifies another branch.
 - Check out the release target branch, pull its latest remote state, and fetch tags before deriving the release range or version.
 
@@ -54,7 +56,8 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Accept an explicit version or tag from the user when supplied; normalize it to a `v<semver>` tag for the release.
 - Accept an explicit release target branch when supplied; otherwise use the GitHub default branch.
 - Accept an explicit prerelease/latest override when supplied.
-- Otherwise derive the base version from `package.json.version` and the latest matching `v*` tag.
+- In a single-package repo, otherwise derive the base version from `package.json.version` and the latest matching `v*` tag.
+- In a workspace repo, derive package versions and tags only from its explicit release contract; never treat a private coordinator root's version as the publishable package version.
 - Use the unreleased `CHANGELOG.md` entries prepared by `$tanaab-changelog-author` as the release notes source.
 
 ## Outputs
@@ -68,6 +71,8 @@ Use this skill to prepare a release from the repository's current changelog cont
 
 - Stop on a dirty worktree, failed checkout, failed pull, failed tag fetch, missing `gh` auth, or missing release workflow.
 - Stop when `package.json.version` is not semver-valid or conflicts with the latest reachable release tag in a way that makes the next version ambiguous.
+- Stop when multiple publishable workspaces exist but their package selection, fixed-versus-independent versioning, or tag naming is unclear.
+- Stop when the release workflow only stamps a single root package but the requested release requires multiple independently publishable workspaces.
 - Stop when the changelog has no unreleased entries unless the user explicitly wants an empty or manually supplied release body.
 - Stop when the proposed release tag already exists remotely; do not silently reuse or move it.
 - Stop when `gh release create` fails and report the exact remote error instead of retrying with a different release shape.
@@ -77,7 +82,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 
 1. Confirm the task is release-creation-led. Resolve the target with `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'` unless the user explicitly supplied another branch.
 2. Check `git status --short`, check out and pull the latest target branch, fetch tags, and verify `gh auth status`.
-3. Inspect `package.json.version`, the latest `v*` tag, `CHANGELOG.md`, and `.github/workflows/release.yml`.
+3. Inspect the root package, any workspace manifests, relevant package versions, matching tags, `CHANGELOG.md`, and `.github/workflows/release.yml`.
 4. Use `$tanaab-changelog-author` to update the unreleased changelog entries when they are incomplete for the upcoming release.
 5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release.
 6. Choose the release tag: explicit user version wins; otherwise default to patch, use minor for meaningful user or developer additions, and reserve major for explicit or unusually large incompatible changes.
@@ -94,6 +99,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Stable releases default to latest; prerelease tags default to prerelease and not latest.
 - `prepare-release-action` owns release-time package and manifest version stamping after the draft is published.
 - For `prepare-release-action`-backed repos, the release tag should be the semver-valid value consumed by `github.event.release.tag_name`.
+- Do not assume that the single-package `prepare-release-action` contract covers multiple publishable workspaces; require explicit repo-local release wiring before using it for that shape.
 
 ## Bundled Resources
 
@@ -106,6 +112,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Confirm explicit versions override auto bump selection and are normalized to `v<semver>`.
 - Confirm auto bump selection covers patch, minor, explicit major, and explicit prerelease cases.
 - Confirm package/tag mismatches, dirty worktrees, existing remote tags, and missing changelog entries pause before remote release creation.
+- Confirm workspace repos do not derive a release from a private coordinator root or proceed without an explicit package-version and tag contract.
 - Confirm the release body is only the upcoming changelog entries and excludes the tokenized unreleased heading.
 - Confirm the GitHub Release is a draft unless immediate publication was explicitly requested.
 - Confirm the release's `targetCommitish` matches the selected target branch.

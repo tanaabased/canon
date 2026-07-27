@@ -1,6 +1,6 @@
 ---
 name: tanaab-javascript-repo-standardizer
-description: Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, type-checking, or baseline JS/TS/Bun scripts in a Tanaab-managed repo.
+description: Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -10,6 +10,7 @@ metadata:
     - coding
     - javascript
     - typescript
+    - monorepo
   openclaw:
     emoji: '📐'
     homepage: https://github.com/tanaabased/canon/tree/main/skills/javascript-repo-standardizer
@@ -19,7 +20,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, type-checking, or baseline JS/TS/Bun scripts in a Tanaab-managed repo.
+Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
 - Use it to bring a JS/TS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, type-checking when applicable, and related baseline scripts while leaving runtime authorship to the broader implementation skill.
@@ -31,6 +32,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Review test placement with the same ownership and hoisting rules as implementation code, using human or agent judgment rather than a structural validator.
 - Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`, plus a separate `typecheck` script when owned TypeScript source is present.
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
+- Standardize a Bun workspace monorepo around a private coordinator root, package-local ownership, workspace dependencies, and root-filtered commands.
 - Add or standardize the TypeScript baseline only when the repo owns TypeScript source, excluding generated output, vendored code, and documentation templates.
 - Add or standardize the Vue lint layer only when the repo actually needs it.
 - Apply the bundled baseline starter files when the task is specifically about bringing a repo onto the shared JS/TS/Bun baseline.
@@ -55,6 +57,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 ## Change Strategy
 
 - Use [./references/lint-format-baseline.md](./references/lint-format-baseline.md) as the local source of truth for the lint and format baseline.
+- Use [./references/bun-workspace-baseline.md](./references/bun-workspace-baseline.md) when a repo contains multiple workspace packages or aggregate and leaf package surfaces.
 - Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline defaults rather than re-deciding the tool stack locally.
 - Apply the bundled base files together when standardizing a repo, then add the complete TypeScript or Vue layer only when that layer is needed.
@@ -62,7 +65,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 ## Workflow
 
 1. Confirm the request is specifically about JS/TS/Bun repo baseline standardization rather than implementation authorship.
-2. Load the local lint baseline reference plus the shared repo-structure canon needed for the target repo surface.
+2. Load the local lint baseline reference, the workspace baseline when applicable, and the shared repo-structure canon needed for the target repo surface.
 3. Keep lint, format, type-check, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
 4. Compare the target against the complete baseline checklist and report missing files, scripts, dependencies, or Bun metadata explicitly.
 5. Validate the resulting repo baseline with the narrowest reliable local checks.
@@ -72,12 +75,14 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Document durable repo baseline choices only when they affect future maintainers or future agents, such as repo-local `AGENTS.md`, README notes, package scripts, config comments, or template comments.
 - Prefer short repo-local policy notes over broad documentation rewrites when standardizing lint, format, script, or folder baselines.
 - Keep config comments sparse and limited to non-obvious extension points, generated-file exclusions, or project-specific deviations from the shared baseline.
+- Document an explicit version and tag strategy before a workspace repo grows multi-package release automation.
 - Do not turn baseline standardization into README authoring, docs-site migration, or general implementation documentation.
 
 ## Testing
 
 - Treat direct lint, format, and applicable type-check commands as the canonical validation mechanism for this surface.
 - When repo structure changed, inspect owning scopes, role folders, flat source-to-test locality, entrypoints, and baseline files instead of widening into runtime smoke tests.
+- For a workspace repo, inspect package manifests, declared workspace dependencies, exports, package contents, and root command delegation without publishing anything.
 - Keep the validation path explicit: ESLint for lint rules, Prettier for format checks, `lint` only when it intentionally composes those commands, and `typecheck` as a separate TypeScript command.
 - Do not add unrelated smoke or scenario layers unless the task clearly expands beyond repo baseline standardization.
 
@@ -121,6 +126,7 @@ jobs:
 ## Bundled Resources
 
 - [./references/lint-format-baseline.md](./references/lint-format-baseline.md): local baseline rules and expected script shape
+- [./references/bun-workspace-baseline.md](./references/bun-workspace-baseline.md): private-root, package-boundary, aggregate-package, and filtered-command guidance for Bun workspaces
 - [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable JS/TS/Bun baseline policy
 - [./templates/eslint.config.js](./templates/eslint.config.js): shared JS/TS/Bun ESLint base
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
@@ -141,6 +147,9 @@ jobs:
 - Confirm `packageManager`, `.bun-version`, and the committed `bun.lock` are present in Bun-managed repositories.
 - Confirm all dependencies imported by the selected ESLint and Prettier layers are declared as development dependencies.
 - Confirm repositories with owned TypeScript source expose `tsconfig.json`, `typecheck`, the TypeScript ESLint layer, TypeScript-capable test discovery, and the required development dependencies.
+- Confirm Bun workspace roots are private, use one lockfile, treat each package as an owning scope, and keep cross-package imports on declared package exports.
+- Confirm aggregate packages re-export leaf packages through declared workspace dependencies instead of duplicating or reaching into leaf implementations.
+- Confirm package inspection uses pack or publish dry runs and that repo standardization performs no live package publication.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
 - Confirm any GitHub Actions workflow example remains a repo-baseline validation path rather than a general workflow-topology pattern.
 - Run the narrowest repo-native lint, format, or baseline checks available for the touched surface.

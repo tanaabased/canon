@@ -3,6 +3,7 @@
 ### Canon
 
 - Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
+- Added a Bun workspace baseline for private monorepo roots, publishable package boundaries, aggregate packages, and filtered commands.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
 - Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
@@ -12,6 +13,7 @@
 - Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
 - Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
 - Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
+- Updated JavaScript Repo Standardizer and GitHub Release Author for Bun workspace structure and safe multi-package release boundaries.
 - Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
 - Updated Skill Author and GitHub Checks Triage with focused libraries, testable utilities, and thin internal commands.
 

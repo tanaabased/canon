@@ -36,6 +36,15 @@ scope/
 - Do not keep ordinary implementation modules loose at the scope root when one of these roles describes them.
 - Purpose-named subscopes may repeat this layout when one owner contains multiple independently understandable surfaces.
 
+## Workspace Packages
+
+- In a Bun workspace monorepo, treat `packages/` as a grouping boundary and each workspace package as an owning scope.
+- Keep the workspace root focused on repository coordination, shared development tooling, and cross-package commands. Mark it private instead of making it double as a publishable aggregate package.
+- Apply the normal role folders independently inside each package. A thin package-root entrypoint such as `index.js` or `index.ts` may remain at the package root when the published package contract requires it.
+- Import sibling packages through their declared package names and public exports rather than relative paths into another package's implementation.
+- Keep ordinary tests with their package. Use a monorepo-root `test/` directory only for intentional cross-package behavior.
+- When implementation is genuinely shared across packages, prefer a clearly owned workspace package over loose code at the monorepo root.
+
 ## `bin/` Boundary
 
 - Use `bin/` for commands intended as a public or directly human-facing interface.
@@ -98,4 +107,5 @@ scope/
 
 - Framework, generated-output, published-artifact, and external-tool contracts may require fixed filenames or directories that take precedence over this reference.
 - A repo may keep an established `src/` boundary when it is part of one of those contracts; do not add or remove that boundary solely to distinguish TypeScript from JavaScript.
+- A package manager's workspace directory is an ownership boundary, not another role folder; its child packages still follow the nearest-owner rules above.
 - Code embedded in `templates/` remains owned by the template artifact and should model the target layout rather than being moved into the live scope's role folders.

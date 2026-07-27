@@ -22,7 +22,7 @@
     "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
       "Use $tanaab-javascript-author to add Bun-run tests for TypeScript utility functions in utils/.",
-      "Use $tanaab-javascript-repo-standardizer to standardize JavaScript and TypeScript formatting, structure, type-checking, and baseline scripts for this repo.",
+      "Use $tanaab-javascript-repo-standardizer to standardize a JavaScript and TypeScript Bun workspace monorepo, including package boundaries, formatting, type-checking, and baseline scripts.",
       "Use $tanaab-changelog-author to draft the next CHANGELOG.md release notes.",
       "Use $tanaab-skill-author to create a skill for sending AgentMail email through cURL.",
       "Use $tanaab-javascript-cli-author to build a TypeScript Bun CLI that lists open PRs for tanaabased/canon.",

@@ -31,6 +31,7 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Shape library-facing JavaScript or TypeScript modules where a focused `lib/` class or module wraps reusable utility logic.
 - Write, refactor, or extract low-coupling utility functions, especially single-file ESM helpers under `utils/` or another narrow code scope.
 - Organize a code-bearing skill, package, app, or plugin beneath its nearest owning scope rather than defaulting files to the repository root.
+- Implement workspace package APIs or aggregate-package re-exports when the task is primarily about JavaScript or TypeScript behavior rather than monorepo baseline normalization.
 - Update `package.json`, `packageManager`, `engines`, `main`, or `exports` when those changes directly support the owned JS or TS surface.
 - Migrate repo-owned JS tooling from Node or npm assumptions toward Bun when the repo actually has meaningful JS surfaces.
 - Change JS or TS bundling or artifact generation when the main owned surface still remains general implementation work.
@@ -57,6 +58,8 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Default the implementation path toward lower-coupling functions and directly tested `utils/` units.
 - For library-shaped code, keep the `lib/` class or module focused on orchestration, state, and surface-specific wrapping while extracting testable function logic into utilities when the split is honest.
 - Keep repo-coupled orchestration and surface vocabulary near the owning module instead of forcing them into `utils/`.
+- In a workspace repo, treat each package as an owning scope, consume sibling packages through declared dependencies and public exports, and avoid relative imports into another package's private implementation.
+- Keep aggregate packages thin: depend on leaf workspaces and re-export their public APIs instead of copying their utility implementations.
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS or TS surface instead of the default authored pattern.
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
@@ -85,6 +88,7 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Keep test files narrow and inside the nearest owning scope, such as `feature/test/normalize-tags.spec.ts` for `feature/utils/normalize-tags.ts`.
 - Keep the scoped `test/` directory flat by default, including specs, fixtures, fakes, and support code; use descriptive filenames instead of mirrored source-role folders.
 - Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
+- In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so the spec reads as behavior rather than implementation narration.
 - Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
@@ -154,6 +158,7 @@ jobs:
 - Confirm the skill still reads as the broad JavaScript and TypeScript entrypoint while funneling implementation toward thin library wrappers and lower-coupling utility functions when the task allows it.
 - Confirm public and internal entrypoints are thin, orchestration stays in `lib/`, and independently testable function logic moves to scoped `utils/` without creating a `classes/` bucket.
 - Confirm tests remain flat within their owning scope and are hoisted only with their implementation or for intentional cross-scope coverage.
+- Confirm workspace packages use declared package boundaries, aggregate packages stay thin, and no package reaches into a sibling's private source paths.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
 - Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
