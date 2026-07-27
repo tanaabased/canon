@@ -2,17 +2,22 @@
 
 ### Canon
 
-- Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
 - Added a Bun workspace baseline for private monorepo roots, publishable package boundaries, aggregate packages, and filtered commands.
+- Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
+- Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
+- Updated the Canon optimization prompt to discover live skills, code surfaces, validation commands, and release state dynamically.
+- Updated the Canon README with a visual entrypoint and the published release-archive installation path.
 - Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
 
 ### Skills
 
-- Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
 - Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
+- Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
 - Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
+- Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
+- Updated GitHub Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
 - Updated JavaScript Repo Standardizer and GitHub Release Author for Bun workspace structure and safe multi-package release boundaries.
 - Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
 - Updated Skill Author and GitHub Checks Triage with focused libraries, testable utilities, and thin internal commands.

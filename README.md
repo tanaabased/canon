@@ -1,6 +1,18 @@
-# Tanaab Canon
+<p align="center">
+  <img src="./assets/canon-book.png" alt="Tanaab Canon" width="360" />
+</p>
 
-This repo is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+<h1 align="center">Tanaab Canon</h1>
+
+<p align="center">
+  This repo is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+</p>
+
+<p align="center">
+  <a href="https://github.com/tanaabased/canon/releases/latest"><img src="https://img.shields.io/github/v/release/tanaabased/canon" alt="Latest release" /></a>
+  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-checks.yml"><img src="https://github.com/tanaabased/canon/actions/workflows/pr-checks.yml/badge.svg" alt="PR checks" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/tanaabased/canon" alt="MIT license" /></a>
+</p>
 
 ## Overview
 
@@ -35,7 +47,7 @@ The live skills are:
 
 ## Installation
 
-Versioned release archives are coming soon. Once release archives are published on the [GitHub releases page](https://github.com/tanaabased/canon/releases), the preferred install path will be:
+Versioned release archives are published on the [GitHub releases page](https://github.com/tanaabased/canon/releases). The preferred install path is:
 
 1. Download the release archive for the version you want.
 2. Extract it into `~/.codex/plugins/tanaab`.
@@ -70,7 +82,6 @@ Example personal marketplace entry:
 - If `~/.agents/plugins/marketplace.json` already exists, add the `tanaab` plugin entry instead of replacing the whole file.
 - Codex resolves `source.path` relative to the marketplace root, so the `./.codex/plugins/tanaab` path is the important part.
 - For the underlying plugin and marketplace rules, see the official Codex docs for [Plugins](https://developers.openai.com/codex/plugins) and [Build plugins](https://developers.openai.com/codex/plugins/build).
-- Until published release archives exist, use the development flow below.
 
 ## Development
 
