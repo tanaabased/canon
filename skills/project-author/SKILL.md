@@ -1,6 +1,6 @@
 ---
-name: tanaab-github-repository-author
-description: Tanaab-based creation and canonical settings synchronization for GitHub repositories. Use when a user wants to create, inspect, or synchronize a repository against the checked-in Tanaab policy.
+name: tanaab-project-author
+description: Tanaab-based creation and canonical settings synchronization for GitHub-backed Projects. Use when a user wants to create, inspect, or synchronize the repository that represents a Project.
 license: MIT
 metadata:
   type: integration
@@ -8,33 +8,34 @@ metadata:
   tags:
     - tanaab
     - integration
-    - repositories
+    - project-management
   openclaw:
     emoji: '🏗️'
-    homepage: https://github.com/tanaabased/canon/tree/main/skills/github-repository-author
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/project-author
     requires:
       bins:
         - bun
         - gh
 ---
 
-# GitHub Repository Author
+# Project Author
 
 ## Overview
 
-Tanaab-based creation and canonical settings synchronization for GitHub repositories. Use when a user wants to create, inspect, or synchronize a repository against the checked-in Tanaab policy.
+Tanaab-based creation and canonical settings synchronization for GitHub-backed Projects. Use when a user wants to create, inspect, or synchronize the repository that represents a Project.
 
-This skill owns one GitHub repository-policy surface. Creation and synchronization are two modes over the same checked-in desired state, not separate skills.
+This skill owns one Project-container policy surface implemented through GitHub repositories. Creation and synchronization are two modes over the same checked-in desired state, not separate skills.
 
 ## When to Use
 
-- Create an explicit `OWNER/REPO` with the canonical Tanaab GitHub settings.
+- Create the explicit `OWNER/REPO` that represents a Project with the canonical Tanaab GitHub settings.
 - Inspect an existing repository and show only managed-setting drift.
 - Synchronize an existing repository after the user reviews and confirms the exact diff.
 
 ## When Not to Use
 
 - Do not use this skill for repository contents, templates, secrets, webhooks, environments, Actions policy, security settings, or rulesets.
+- Do not create or manage Tasks, Project Milestones, Releases, or GitHub Projects boards through this skill.
 - Do not change visibility, description, homepage, topics, template/archive state, Pages, other collaborators, or other unmanaged settings on an existing repository.
 - Do not use it for ordinary local Git initialization or cloning without GitHub repository-policy intent.
 
@@ -48,7 +49,7 @@ This skill owns one GitHub repository-policy surface. Creation and synchronizati
 
 ## Inputs
 
-- Required: one explicit `OWNER/REPO` slug and one intent: inspect, create, or synchronize.
+- Required: one explicit Project slug in `OWNER/REPO` form and one intent: inspect, create, or synchronize.
 - Resolve [the bundled entrypoint](./scripts/repository-policy.js) relative to this `SKILL.md`, then run `bun <resolved-path> inspect OWNER/REPO --json` to get normalized state and a stable diff.
 - After the user authorizes the displayed mutation, run the same entrypoint with `apply OWNER/REPO --json`; add `--initialize` only for an existing empty repository or `--rename-default` only after separate approval to rename a non-`main` default branch.
 - Run the entrypoint with `create OWNER/REPO --json` only when inspection reports `missing` and creation of that exact slug is authorized.

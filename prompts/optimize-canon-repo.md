@@ -1,6 +1,6 @@
 # Optimize Canon Repo
 
-Use `$tanaab-repository-optimizer` to plan a staged optimization pass on this repository so Canon practices what it preaches.
+Use `$tanaab-project-optimizer` to plan a staged optimization pass on this repository-backed Project so Canon practices what it preaches.
 
 Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean or mostly aligned result is valid.
 
@@ -15,7 +15,7 @@ Operate on this repository only. Keep the first pass read-only and stop after a 
 
 ## Canon-Specific Audit Expectations
 
-Follow the Repository Optimizer workflow and its dynamic skill discovery. In addition:
+Follow the Project Optimizer workflow and its dynamic skill discovery. In addition:
 
 1. Account for every live skill and apply only the installed Tanaab skills whose owned surfaces are observed and whose instructions expose `## Optimization`.
 2. Because Canon contains multiple live skills, always select Skill Author and compare the collection as well as each skill for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior.

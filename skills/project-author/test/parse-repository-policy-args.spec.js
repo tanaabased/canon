@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import parseRepositoryPolicyArgs from '../utils/parse-repository-policy-args.js';
 
-describe('skills/github-repository-author/utils/parse-repository-policy-args', () => {
+describe('skills/project-author/utils/parse-repository-policy-args', () => {
   it('should parse apply-only branch authorization flags', () => {
     assert.deepEqual(
       parseRepositoryPolicyArgs([

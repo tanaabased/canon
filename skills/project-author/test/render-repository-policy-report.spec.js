@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import renderRepositoryPolicyReport from '../utils/render-repository-policy-report.js';
 import { TARGET } from './fake-github.js';
 
-describe('skills/github-repository-author/utils/render-repository-policy-report', () => {
+describe('skills/project-author/utils/render-repository-policy-report', () => {
   it('should render current-to-desired changes', () => {
     const report = {
       branch_action: null,

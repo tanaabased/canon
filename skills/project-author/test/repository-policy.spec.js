@@ -14,7 +14,7 @@ function captureStream() {
   };
 }
 
-describe('skills/github-repository-author/scripts/repository-policy', () => {
+describe('skills/project-author/scripts/repository-policy', () => {
   it('should dispatch inspect and print JSON', () => {
     const stdout = captureStream();
     const stderr = captureStream();

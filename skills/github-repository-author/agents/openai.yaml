@@ -1,7 +1,0 @@
-interface:
-  display_name: 'GitHub Repository Author'
-  short_description: 'Tanaab-based GitHub repository creation and settings sync.'
-  icon_small: './assets/icon-small.svg'
-  icon_large: './assets/icon-large.png'
-  brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-repository-author to create, inspect, or synchronize an explicit OWNER/REPO against the checked-in Tanaab GitHub repository policy.'

@@ -56,7 +56,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 ## When Not to Use
 
 - Do not use this skill for ordinary work that merely happens inside an existing skill.
-- Do not use this skill for a whole-stack repository audit outside skill surfaces; use Repository Optimizer and let it select Skill Author when a skill collection is present.
+- Do not use this skill for a whole-Project audit outside skill surfaces; use Project Optimizer and let it select Skill Author when a skill collection is present.
 - Do not treat shared references or helper CLIs as optional when they already cover the requested change.
 - Do not force a live skill when the real reusable artifact is a whole starter repo that users should adopt directly.
 

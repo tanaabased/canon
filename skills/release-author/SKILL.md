@@ -1,6 +1,6 @@
 ---
-name: tanaab-github-release-author
-description: Tanaab-based GitHub Release drafting workflow for Tanaab and allied repositories. Use when a user wants to prepare a changelog-backed release draft, verify the next tag, or review release readiness.
+name: tanaab-release-author
+description: Tanaab-based Release drafting and readiness workflow implemented through GitHub Releases. Use when a user wants to prepare a changelog-backed Release draft, verify the next tag, or review release readiness.
 license: MIT
 metadata:
   type: integration
@@ -11,18 +11,18 @@ metadata:
     - release
   openclaw:
     emoji: '🚀'
-    homepage: https://github.com/tanaabased/canon/tree/main/skills/github-release-author
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/release-author
     requires:
       bins:
         - git
         - gh
 ---
 
-# GitHub Release Author
+# Release Author
 
 ## Overview
 
-Tanaab-based GitHub Release drafting workflow for Tanaab and allied repositories.
+Tanaab-based Release drafting and readiness workflow implemented through GitHub Releases for Tanaab and allied Projects.
 
 Use this skill to prepare a release from the repository's current changelog contract, choose or verify the next release tag, and create a GitHub Release draft that a human can review and publish.
 

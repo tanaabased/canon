@@ -18,7 +18,7 @@ function clientFor(remote) {
   });
 }
 
-describe('skills/github-repository-author/lib/repository-policy-client', () => {
+describe('skills/project-author/lib/repository-policy-client', () => {
   it('should report canon-aligned managed state while preserving unmanaged settings', () => {
     const remote = createRemote();
     const report = clientFor(remote).inspect(TARGET);

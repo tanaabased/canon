@@ -1,6 +1,6 @@
 ---
-name: tanaab-repository-optimizer
-description: Tanaab-based read-only repository optimization planning. Use when a user wants to audit a repository against applicable Tanaab skill optimization facets, classify aligned and drifted surfaces, and produce a staged improvement plan before implementation.
+name: tanaab-project-optimizer
+description: Tanaab-based read-only Project optimization planning. Use when a user wants to audit a repository-backed Project against applicable Tanaab skill optimization facets and produce a staged improvement plan before implementation.
 license: MIT
 metadata:
   type: workflow
@@ -11,21 +11,21 @@ metadata:
     - optimization
   openclaw:
     emoji: '🧭'
-    homepage: 'https://github.com/tanaabased/canon/tree/main/skills/repository-optimizer'
+    homepage: 'https://github.com/tanaabased/canon/tree/main/skills/project-optimizer'
     requires:
       bins:
         - git
 ---
 
-# Repository Optimizer
+# Project Optimizer
 
 ## Overview
 
-Audit a repository against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed surface is classified without modifying the repository.
+Audit a repository-backed Project against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed surface is classified without modifying the Project.
 
 ## When to Use
 
-- Run a repeatable, repository-wide alignment and maintainability audit before an optimization pass.
+- Run a repeatable, Project-wide alignment and maintainability audit before an optimization pass.
 - Reconcile documentation, code, package, workflow, skill, and other observed surfaces through their existing Tanaab owners.
 - Turn evidence-backed findings into a staged implementation and validation plan before any changes are made.
 - Include GitHub-hosted repository settings only when the user explicitly requests remote coverage and supplies or confirms the repository slug.
@@ -56,6 +56,15 @@ Audit a repository against the Optimization facets owned by applicable Tanaab sk
 8. Produce a dependency-ordered implementation plan with proportional, repo-native validation and reviewable commit boundaries.
 9. Stop without modifying files. A later explicit implementation request may invoke the owning skills against the approved plan.
 
+### Dependency Ordering
+
+- Audit every applicable surface against the same initial repository snapshot before sequencing implementation; audit order must not decide the findings.
+- Order findings rather than whole skills. One finding precedes another when it can change the downstream finding's owner, location, name, command, public contract, generated output, or documented truth.
+- Prefer these implementation waves when applicable: authority and ownership; target structure and tooling baseline; implementation and tests; public interfaces, generated artifacts, and automation; documentation and changelog; then separately authorized remote state.
+- When structure and behavior both drift, decide the final owning scopes and destinations first, refactor directly into them, and use the structural owner for final verification instead of performing two full reorganizations.
+- Run independent findings within one wave together, validate each completed wave through its owning skills, and revisit downstream surfaces only when an upstream change affected their inputs.
+- End the approved implementation with one read-only convergence audit of the initially selected and newly exposed surfaces rather than repeatedly restarting the entire optimizer.
+
 ## Checkpoints
 
 - Pause when a target, owner, or policy decision cannot be resolved from checked-in repository evidence.
@@ -71,6 +80,7 @@ Audit a repository against the Optimization facets owned by applicable Tanaab sk
 - Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
 - The staged plan is ordered by dependency and leverage, includes proportional validation, and does not invent work to fill an output shape.
+- Every planned finding either names its upstream dependencies or is explicitly independent, with source-of-truth changes ordered before downstream projections and one final convergence audit included.
 - Optional remote coverage is clearly labeled and was performed only after explicit request and target confirmation.
 - A final working-tree check confirms the audit made no repository changes.
 
