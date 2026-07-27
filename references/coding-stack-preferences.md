@@ -75,6 +75,10 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
 - Replace `actions/setup-node` with `oven-sh/setup-bun` when migrating a workflow to Bun.
 - Prefer `bun-version-file: .bun-version` over repeated Bun version literals in workflow jobs.
+- Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
+- For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
+- Add separate files such as `pr-examples-tests.yml`, `pr-options-tests.yml`, or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
+- Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
 - For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.
 - Keep the action contract in `README.md` when the repository's primary product is a GitHub Action.
 

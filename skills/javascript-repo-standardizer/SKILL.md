@@ -98,7 +98,8 @@ For a repo with owned TypeScript source, also run `bun run typecheck`.
 
 ## GitHub Actions Workflow
 
-- Use a Bun-first GitHub Actions workflow that installs dependencies once and runs the repo's lint and format checks.
+- Use a Bun-first `.github/workflows/pr-linter.yml` that installs dependencies once and runs the repo's lint, format, applicable type-check, and repo-specific static validation commands.
+- Keep that linter workflow separate from `.github/workflows/pr-unit-tests.yml` when the repo owns both independent surfaces; hand broader topology exceptions to GitHub Workflow Author.
 - Keep the workflow generic and centered on the repo baseline scripts rather than inventing repo-specific CI topology in the skill.
 - Add a separate `bun run typecheck` step when the repo owns TypeScript source.
 - Treat this as validation of the repo baseline, not ownership of general workflow authoring.
@@ -159,5 +160,6 @@ jobs:
 - Confirm aggregate packages re-export leaf packages through declared workspace dependencies instead of duplicating or reaching into leaf implementations.
 - Confirm package inspection uses pack or publish dry runs and that repo standardization performs no live package publication.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
+- Confirm the canonical linter workflow remains separate from an independently owned unit-test workflow unless a repo-specific shared runner, matrix, ownership, and status boundary justifies combining them.
 - Confirm any GitHub Actions workflow example remains a repo-baseline validation path rather than a general workflow-topology pattern.
 - Run the narrowest repo-native lint, format, or baseline checks available for the touched surface.

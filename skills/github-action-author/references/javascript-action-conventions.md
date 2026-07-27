@@ -25,7 +25,7 @@ This file is local to `tanaab-github-action-author` because it is action-product
 - Keep input parsing in a dedicated helper such as `utils/get-inputs.js` or `utils/get-inputs.ts`.
 - Unit test that helper by stubbing `@actions/core` getter methods and toggling `process.env.GITHUB_ACTIONS` so local-default and real Actions-runtime behavior are both covered.
 - Use `uses: ./` in workflow-driven smoke tests for end-to-end action behavior, permissions, sync flows, or OS matrix coverage.
-- Split PR workflows by surface when the repo benefits from separate lint, unit, options, and sync validation.
+- Prefer separate `pr-linter.yml`, `pr-unit-tests.yml`, and other surface-specific PR workflows when their commands, runners, matrices, ownership, or status identities differ; combine only operationally inseparable gates.
 - Use `fetch-depth: 0` only in workflows that actually need tags, full history, or sync behavior.
 - In workflow-driven smoke tests, assert observable postconditions after the action runs, such as file mutations, tags, config changes, or verification state.
 - Prefer one assertion step per postcondition, use `if: always()` when later checks should still execute after a failure, and emit `::notice` or `::error` annotations with a real non-zero exit code.

@@ -112,6 +112,7 @@ describe('feature/utils/normalize-tags', () => {
 ## GitHub Actions Workflow
 
 - When this skill's owned JS or TS surface needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
+- Prefer `.github/workflows/pr-unit-tests.yml` for this surface and keep it separate from the repo's linter workflow when both independent gates exist.
 - Keep the workflow generic, Bun-first, and centered on the repo's test command.
 - For developer-machine code, CLIs, and plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
 - Treat this as a validation lifecycle for the owned JS or TS surface, not as ownership of workflow YAML as a product surface.
@@ -170,6 +171,6 @@ jobs:
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
 - Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
-- Confirm any GitHub Actions workflow example or wiring remains a validation path for the owned JS or TS surface rather than drifting into workflow-topology ownership.
+- Confirm any GitHub Actions workflow example or wiring remains a standalone unit-test validation path for the owned JS or TS surface rather than absorbing linting or drifting into workflow-topology ownership.
 - Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface.
 - Confirm the change did not widen into CLI product, workflow YAML, or release-contract work.

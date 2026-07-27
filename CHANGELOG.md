@@ -10,6 +10,8 @@
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Clarified project-management naming boundaries and lowercase domain terminology.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
+- Fixed synthetic release checks so package, plugin, CLI, and tag identity share the action-resolved version.
+- Split pull-request lint and unit-test gates into independent canonical workflows.
 - Updated the Canon optimization prompt to delegate dynamic discovery and shared audit behavior to Project Optimizer.
 - Updated the Canon README with a visual entrypoint and the published release-archive installation path.
 - Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
@@ -25,6 +27,7 @@
 - Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
 - Renamed `tanaab-github-release-author` to domain-led `tanaab-release-author` without changing its GitHub-backed release workflow.
 - Replaced `tanaab-github-checks-triage` with `tanaab-task-completion-check` for read-only, task-first completion assessment.
+- Updated GitHub Workflow Author and coding guidance with separate pull-request gate boundaries.
 - Updated JavaScript Repo Standardizer and Release Author for Bun workspace structure and safe multi-package release boundaries.
 - Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
 - Updated Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
