@@ -1,9 +1,5 @@
 <template>
-  <section
-    class="example-component"
-    :data-framed="props.framed"
-    :data-variant="props.variant"
-  >
+  <section class="example-component" :data-framed="props.framed" :data-variant="props.variant">
     <header class="example-component__header">
       <slot name="title" :title="resolvedTitle">{{ resolvedTitle }}</slot>
     </header>

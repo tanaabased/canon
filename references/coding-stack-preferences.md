@@ -9,16 +9,18 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Default Runtime
 
-- Prefer ESM JavaScript on Bun for repositories that have meaningful JavaScript or TypeScript tooling, CLI, docs, frontend, or automation surfaces.
+- Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
 - Prefer Bun as both the runtime and package manager for those repositories.
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
 
 ## TypeScript
 
-- Do not default to TypeScript.
-- Prefer JavaScript first unless the repository already uses TypeScript, an external contract requires it, or the build and release path is already standardized well enough to justify the extra layer.
-- Treat TypeScript migration as an explicit follow-on decision rather than automatic cleanup.
+- Support JavaScript and TypeScript as first-class implementation languages under the same ownership and folder rules.
+- Preserve the language already used by an existing scope unless the repository or user selects TypeScript.
+- Use TypeScript for new work when the repo already uses it, an external contract requires it, or the user chooses it.
+- Treat migration of unrelated JavaScript as an explicit follow-on decision rather than automatic cleanup.
+- In mixed-language Bun repos, use `allowJs` to support gradual adoption and keep static type-checking separate from execution or bundling.
 
 ## Frontend
 
@@ -42,14 +44,18 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Testing Defaults
 
-- Prefer focused unit tests for pure or mostly pure JavaScript helpers and modules.
-- For JS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
+- Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
+- For JS/TS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
-- Prefer a top-level `test/` directory for this style of unit coverage.
-- For helper modules such as `utils/x.js`, prefer matching specs such as `test/x.spec.js`.
+- Prefer a `test/` directory inside the nearest scope that owns the implementation.
+- Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support code.
+- For helper modules such as `feature/utils/x.ts`, prefer matching specs such as `feature/test/x.spec.ts`.
+- Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so each test reads as an expected behavior.
-- For JS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
+- For JS/TS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
+- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone is not sufficient evidence.
+- When Windows CI is explicitly required, use a supported versioned runner label selected for that repository and never `windows-latest`.
 
 ## Operational Scenario Testing
 
@@ -64,21 +70,26 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Prefer Bash, POSIX shell, or PowerShell only when shell is the actual maintained surface, distribution surface, or the clearer tool for the job.
 - Use shell for wrappers, bootstrap flows, or native shell automation when that surface is primary.
 - Do not choose shell for non-shell application logic just to avoid JavaScript.
-- When shell wrappers invoke repo-authored JavaScript helpers, prefer Bun-backed entrypoints over calling `node` directly.
+- When shell wrappers invoke repo-authored JavaScript or TypeScript helpers, prefer Bun-backed entrypoints over calling `node` directly.
 
 ## GitHub Actions
 
-- Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript.
+- Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
 - Replace `actions/setup-node` with `oven-sh/setup-bun` when migrating a workflow to Bun.
 - Prefer `bun-version-file: .bun-version` over repeated Bun version literals in workflow jobs.
-- For Bun-backed JavaScript actions, prefer composite wrappers that install Bun and invoke a stable built runtime artifact such as `dist/index.js`.
+- Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
+- For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
+- Add separate files such as `pr-examples-tests.yml`, `pr-options-tests.yml`, or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
+- Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
+- For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.
 - Keep the action contract in `README.md` when the repository's primary product is a GitHub Action.
 
 ## Documentation Surface Defaults
 
 - Prefer a full `README.md` by default when one durable file can realistically carry the repo's user-facing contract.
+- Prefer a companion-guides README when the common path belongs in `README.md` but one or two linear root-level references keep advanced or topical material focused.
 - Prefer the GitHub Action README shape when the repository's primary product is a GitHub Action.
-- Escalate to a VitePress docs-wrapper README only when the repository clearly needs multiple durable guides, deeper reference pages, or multiple user journeys.
+- Require an explicit VitePress review when a repository reaches `README.md`, `ADVANCED.md`, and three or more topical guides, or earlier when navigation, search, versioning, or multiple independent journeys are needed.
 - Keep the README as a strong entrypoint even when the repo later grows a docs site.
 
 ## Baseline Repo Signals
@@ -90,8 +101,8 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Pairing
 
-- Pair this reference with [javascript-repo-structure.md](./javascript-repo-structure.md) for JS/Bun code layout and hoisting decisions.
-- Pair it with [javascript-function-data-flow.md](./javascript-function-data-flow.md) when the task is about JS helper shape, mutation discipline, or import grouping.
+- Pair this reference with [javascript-repo-structure.md](./javascript-repo-structure.md) for JS/TS/Bun code layout and hoisting decisions.
+- Pair it with [javascript-function-data-flow.md](./javascript-function-data-flow.md) when the task is about JavaScript or TypeScript helper shape, mutation discipline, type flow, or import grouping.
 - Pair it with [readme-standards.md](./readme-standards.md) when the task is about repository README mode or docs-wrapper decisions.
 - Pair it with [front-end-preferences.md](./front-end-preferences.md) when the task is specifically frontend- or VitePress-led.
 - Pair it with the relevant surface-specific canon when the repo is frontend-, docs-, workflow-, shell-, or release-led.

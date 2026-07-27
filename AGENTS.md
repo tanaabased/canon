@@ -13,6 +13,14 @@
 - Do not hide workflow logic in `AGENTS.md`.
 - Do not duplicate global repo doctrine across multiple `SKILL.md` files when one ambient rule will do.
 
+## Project Management Model
+
+- Treat GitHub as the canonical project-management implementation for Tanaab work.
+- In Canon terminology, a project is represented by one GitHub repository, a task by one GitHub issue, a project milestone by one GitHub milestone, a change by a pull request, validation by checks or Actions results, and a release by a tag plus GitHub Release.
+- The task owns task state. Pull requests and checks provide completion evidence but are not themselves proof that the task is complete.
+- Refer to an optional planning board explicitly as a GitHub Projects board; it is a view over project work, not the project's identity or source of truth.
+- Apply the complete shared contract in [`references/project-management-model.md`](./references/project-management-model.md). Cross-project strategic goals remain outside this initial model.
+
 ## Runtime Boundaries
 
 - Keep support material local to the owning skill by default.
@@ -29,11 +37,13 @@
 - Avoid umbrella routers and mega-skills as the long-term steady state.
 - Deterministic orchestrators are acceptable only when they call fixed sub-steps and do not act as dynamic routers.
 - Prefer `merge`, `move`, `extract`, or `delete` before `add`.
+- Apply the shared [`references/optimization-operations.md`](./references/optimization-operations.md) lenses to persistent surfaces during optimization, but do not manufacture changes to exercise every operation.
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
 - Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
 - Treat user-facing artifacts such as generated `dist/` outputs and executable example suites as real ownership surfaces during skill design.
 - When skills live inside a larger Codex plugin, keep the owner-prefixed machine id in frontmatter and prompts but omit that owner prefix from the skill folder name under `skills/`.
 - If ownership needs a routing matrix to stay understandable, the skills are still too broad.
+- When optimizing a collection of skills, review both each skill and the portfolio as a whole through Skill Author so overlap, contradictions, fragmented variants, and mega-skill behavior are visible.
 
 ## Canon Design
 
@@ -41,10 +51,13 @@
 - Use hyphenated filenames with scoped prefixes when needed, such as `skill-standard.md`.
 - Add nested folders inside the flat canon buckets only after repeated pressure shows flat naming is no longer the simpler model.
 - Shared coding-stack defaults for runtime, frameworks, and tooling live in `references/coding-stack-preferences.md`.
-- Shared JS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
-- Shared JS function-shape guidance lives in `references/javascript-function-data-flow.md`.
+- Shared JS/TS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
+- Shared JS/TS function-shape guidance lives in `references/javascript-function-data-flow.md`.
 - Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
-- That repo-structure guidance applies inside code-bearing subtrees such as `skills/**/scripts/` and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
+- That repo-structure guidance applies inside every code-bearing owning scope, including individual skills, and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
+- Inside a code-bearing scope, use `bin/` for public human-facing commands, `scripts/` for internal machine- or agent-facing commands, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.
+- Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support code directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
+- Apply the same hoisting test to tests as to source; root `test/` is only for root-owned or intentionally cross-scope coverage.
 - Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
 - Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
@@ -54,7 +67,7 @@
 - If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
 - Keep `scripts/` code-only. Machine-readable data should live with the smallest justified owner instead of being hoisted by default.
-- Keep `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked Bun CLIs, `-task.js` for repo automation entrypoints, and `-lib.js` for import-only helpers.
+- Keep repo-root `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked internal commands and `-task.js` for automation entrypoints. Put import-only modules in `lib/`.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 - If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.
 
@@ -62,7 +75,7 @@
 
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
-- Before rolling a new canon release, run [`prompts/optimize-canon-repo.md`](./prompts/optimize-canon-repo.md) as a planning pass and review the resulting staged optimization plan.
+- Before rolling a new canon release, run [`prompts/optimize-canon-project.md`](./prompts/optimize-canon-project.md) as a planning pass and review the resulting staged optimization plan.
 
 ## Validation
 

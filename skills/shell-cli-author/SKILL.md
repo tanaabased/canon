@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - coding
     - shell
+  openclaw:
+    emoji: '🐚'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/shell-cli-author
 ---
 
 # Shell CLI Author
@@ -82,6 +85,7 @@ test -n "$(./dist/my-script.sh --version)"
 
 - Use a Bootbox-style PR examples workflow when the shell CLI needs CI-backed Leia coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
+- Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
 - Treat this as validation of the owned shell CLI surface, not as general workflow-topology ownership.
 
 Minimal generic example:
@@ -100,7 +104,7 @@ jobs:
         example:
           - example-name
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
@@ -109,6 +113,14 @@ jobs:
       - run: echo "$PWD/dist" >> "$GITHUB_PATH"
       - run: TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
 ```
+
+## Optimization
+
+- **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, and Leia scenarios.
+- **Compare:** Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, and stale paths against CLI and platform rules.
+- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
+- **Apply:** After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
+- **Verify:** Run available static or parse checks, smoke help and version output, and execute the relevant Leia scenarios.
 
 ## Bundled Resources
 
@@ -135,3 +147,4 @@ jobs:
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
 - Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the shell CLI surface rather than drifting into general workflow authoring.
+- Confirm PowerShell coverage remains portable or opportunistic unless Windows CI was explicitly requested; if requested, confirm the workflow uses a versioned Windows runner label rather than `windows-latest`.

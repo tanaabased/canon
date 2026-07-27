@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - coding
     - vitepress
+  openclaw:
+    emoji: '📚'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/vitepress-author
 ---
 
 # VitePress Author
@@ -114,7 +117,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
@@ -122,6 +125,14 @@ jobs:
       - run: bun run lint
       - run: bun run build
 ```
+
+## Optimization
+
+- **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
+- **Compare:** Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
+- **Recommend:** Keep coherent site structure; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
+- **Apply:** After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
+- **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
 
 ## Bundled Resources
 

@@ -2,7 +2,38 @@
 
 ### Canon
 
+- Added a Bun workspace baseline for private monorepo roots, publishable package boundaries, aggregate packages, and filtered commands.
+- Added a GitHub-backed project-management model for projects, tasks, milestones, changes, validation, releases, and optional boards.
+- Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
+- Added shared optimization operations for contradiction resolution, deduplication, consolidation, extraction, placement, tightening, and removal.
+- Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
+- Clarified project-management naming boundaries and lowercase domain terminology.
+- Clarified that Windows CI is opt-in, is not implied by PowerShell assets, and requires a versioned runner label.
+- Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
+- Fixed synthetic release checks so package, plugin, CLI, and tag identity share the action-resolved version.
+- Split pull-request lint and unit-test gates into independent canonical workflows.
+- Updated the Canon optimization prompt to delegate dynamic discovery and shared audit behavior to Project Optimizer.
+- Updated the Canon README with a visual entrypoint and the published release-archive installation path.
+- Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
+
+### Skills
+
+- Added optional, type-shaped `Optimization` facets to canonical skill scaffolding and applicable live skills.
+- Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
+- Added `tanaab-project-author` for canonical project creation, audits, and confirmed repository-policy synchronization.
+- Added `tanaab-project-optimizer` for read-only cross-surface project audits and staged improvement plans.
+- Expanded `tanaab-skill-author` and `tanaab-project-optimizer` with individual and portfolio-wide skill optimization.
+- Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
+- Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
+- Renamed `tanaab-github-release-author` to domain-led `tanaab-release-author` without changing its GitHub-backed release workflow.
+- Replaced `tanaab-github-checks-triage` with `tanaab-task-completion-check` for read-only, task-first completion assessment.
+- Updated GitHub Workflow Author and coding guidance with separate pull-request gate boundaries.
+- Updated JavaScript Repo Standardizer and Release Author for Bun workspace structure and safe multi-package release boundaries.
+- Updated Project Optimizer with a convergence gate that suppresses low-value implementation churn.
+- Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
+- Updated Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
+- Updated Skill Author and Task Completion Check with focused libraries, testable utilities, and thin internal commands.
 
 ## v0.4.0 - [May 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.4.0)
 

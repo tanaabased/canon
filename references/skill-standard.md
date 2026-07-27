@@ -20,6 +20,10 @@ Use this file as the source of truth for canon skill validation.
 - `[error]` Outside a larger Codex plugin, the skill folder name must equal the generated machine id.
 - `[error]` Inside a larger Codex plugin, the skill folder name must equal the generated machine id with the leading `tanaab-` owner prefix removed.
 - `[error]` Strip an accidental duplicate `tanaab-` prefix before writing the final machine id.
+- `[manual]` Treat project management as a domain or category, not an additional skill type.
+- `[manual]` Prefer domain-led names for skills that own projects, tasks, project milestones, or releases. Treat those concepts as lowercase ordinary nouns in prose; retain capitalization only in proper skill, product, or document names.
+- `[manual]` Prefer provider-led names when provider-specific mechanics are the owned surface, and retain repository or repo when a technical container, layout, configuration, or tooling baseline is the exact owned surface.
+- `[manual]` For project-management surfaces, prefer `integration` for one provider-backed object or mutation boundary and `workflow` for a fixed lifecycle spanning multiple objects.
 
 ## Required Files
 
@@ -28,10 +32,14 @@ skill-folder/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── bin/           # optional, public human-facing commands
+├── lib/           # optional, skill-specific libraries and orchestration
+├── scripts/       # optional, internal agent- or machine-facing commands
+├── utils/         # optional, independently testable units
+├── test/          # optional, flat tests and test support owned by this skill
 ├── templates/     # optional, only when unique to this skill
 ├── assets/        # optional, only when unique to this skill
-├── references/    # optional, only when unique to this skill
-└── scripts/       # optional, only when unique to this skill
+└── references/    # optional, only when unique to this skill
 ```
 
 - In plugin-contained skill trees, `skill-folder/` is the unprefixed surface id while frontmatter `name` remains the full owner-prefixed machine id.
@@ -46,7 +54,7 @@ skill-folder/
 - `[error]` `SKILL.md` must start with YAML frontmatter.
 - `[error]` Frontmatter must contain `name`, `description`, `license`, and `metadata`.
 - `[error]` Frontmatter `license` must equal `MIT`.
-- `[error]` Frontmatter `metadata` must contain `type`, `owner`, and `tags`.
+- `[error]` Frontmatter `metadata` must contain `type`, `owner`, `tags`, and `openclaw`.
 - `[error]` Do not use top-level `type`, `owner`, or `tags`; Codex warns on unsupported top-level skill attributes.
 - `[error]` Frontmatter `description` must start with `Tanaab-based`.
 - `[error]` `metadata.tags` must be a list of strings.
@@ -59,6 +67,31 @@ skill-folder/
 - `[manual]` `description` should say both what the skill does and when to use it.
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
 - `[warn]` Keep `metadata.tags` short. Prefer one category tag by default instead of a long keyword list.
+
+## Workflow Facets
+
+- A workflow facet is a reusable path through one skill-owned surface. Operating modes, lifecycle phases, and output variants may use their natural domain language instead of being renamed generically.
+- `Optimization` is the canonical cross-skill facet for evidence-led alignment and maintainability improvement of an existing persistent surface.
+- `[manual]` Retain and tailor the optional `## Optimization` section when a skill can inspect an existing surface against durable canon.
+- `[manual]` Remove `## Optimization` from incident-specific, event-specific, or execution-only skills that do not own persistent alignment.
+- `[manual]` Keep optimization guidance surface-specific and concise. Use the standard `Inspect`, `Compare`, `Recommend`, `Apply`, and `Verify` labels without repeating the shared workflow doctrine.
+- `[manual]` Name the highest-value concrete compliance checks and likely corrections for the owned surface directly in the facet. Do not leave the five labels as generic boilerplate that depends on the optimizer guessing which canon rules matter.
+- `[manual]` Treat the facet as a routing summary into the skill's full relevant contract and directly linked canon, not as a replacement for that guidance.
+- `[manual]` Apply the evidence-led lenses in [`optimization-operations.md`](./optimization-operations.md) as appropriate to the owned surface: keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove. They are not mandatory output fields, and aligned surfaces must not be changed to satisfy the list.
+- `[manual]` Reconcile contradictions and establish one authoritative owner before polishing, reorganizing, or adding another representation.
+- `[manual]` Optimization must begin read-only, report aligned or not-applicable results honestly, and require explicit authorization before mutation.
+- `[error]` When present, `## Optimization` must appear in the position declared by the selected full type template.
+
+## Required OpenClaw Metadata
+
+- `[error]` `metadata.openclaw` must be a mapping.
+- `[error]` `metadata.openclaw.emoji` must be a nonempty skill-specific string.
+- `[error]` `metadata.openclaw.homepage` must be a nonempty HTTPS URL.
+- `[error]` Optional `metadata.openclaw.os` must be a list containing only `darwin`, `linux`, or `win32`.
+- `[error]` Known lists beneath optional `metadata.openclaw.requires` must contain nonempty strings.
+- `[manual]` Add OpenClaw dependency gates only for hard load-time requirements. Do not require Bun universally for prose-only skills.
+- `[manual]` Preserve supported or custom OpenClaw fields that the canonical validator does not own.
+- `[manual]` Keep OpenClaw metadata in `SKILL.md`; do not duplicate it in `agents/openai.yaml` or add a native OpenClaw plugin manifest to a Codex-compatible plugin.
 
 ## Required OpenAI Metadata
 
@@ -80,16 +113,19 @@ skill-folder/
 - `[error]` Start every skill from the canonical full type template owned by `tanaab-skill-author`.
 - `[error]` Type-specific authoring and validation behavior must come from those canonical templates rather than ad hoc parallel registries.
 - `[error]` Use the shared Tanaab owner contract from this standard and the validator. Do not load owner behavior from a separate owner-data folder.
-- `[error]` Use kebab-case for repo-authored helper filenames in `scripts/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
+- `[error]` Use kebab-case for repo-authored filenames in `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
 - `[error]` `scripts/` is code-only. Do not store static registry data there as JS object literals.
-- `[error]` Repo-level script filenames must end in `-cli.js`, `-task.js`, or `-lib.js`.
+- `[error]` Repo-level script filenames must end in `-cli.js` or `-task.js`; import-only modules belong in `lib/`.
 - `[warn]` Keep support material local to the owning skill by default.
 - `[warn]` Hoist support material to repo root only on proven reuse across live surfaces, repo-wide contract or tooling status, or standalone human value.
 - `[warn]` Machine-readable data should live with the smallest justified owner. Hoist it into repo-root `references/` only when multiple live consumers or independent human value justify it.
 - `[error]` Bundleable repo scripts must import shared templates, assets, and machine-readable canon explicitly so `bun build` can follow the dependency graph.
 - `[warn]` Keep the default scaffold minimal.
-- `[warn]` Keep skill-bundled helpers in the skill's own `scripts/` directory. Do not treat them as repo-level package `bin/` entrypoints.
-- `[warn]` Shebang-bearing skill-local scripts and executable starter templates should be committed executable.
+- `[warn]` Keep skill-owned code beneath the skill directory and organize it by role: public human-facing commands in `bin/`, internal agent- or machine-facing commands in `scripts/`, orchestration in `lib/`, and independently testable units in `utils/`.
+- `[warn]` Keep a skill's tests in its own `test/` directory unless the tested implementation genuinely belongs to a higher shared scope.
+- `[warn]` Keep a skill's `test/` directory flat by default, with specs, fixtures, fakes, and support code as siblings rather than mirrored source-role folders.
+- `[warn]` Do not use `scripts/` as a blanket container for skill libraries, utilities, or tests.
+- `[warn]` Shebang-bearing skill-local `bin/` and `scripts/` entrypoints plus executable starter templates should be committed executable.
 - `[warn]` Do not mark repo-authored files executable unless they actually start with a shebang.
 - `[warn]` If a skill bundles `references/repo-agents-lines.md`, keep it to durable ambient repo rules rather than conditional workflow steps.
 - `[warn]` `generic` is the fallback type. Prefer a narrower type when one clearly fits.
@@ -112,7 +148,9 @@ skill-folder/
 - `[manual]` For `coding` skills, testing artifacts belong in `## Testing` even when they are README- or Markdown-backed, unless the skill explicitly treats them as durable user-facing examples.
 - `[manual]` For `coding` skills, `Documentation`, `Testing`, and `GitHub Actions Workflow` should each describe one canonical mechanism and one minimal example when an example materially shapes the skill.
 - `[manual]` Check whether the skill mostly restates one repo template's structure, scripts, examples, and docs; if so, prefer the template as source of truth and keep only a thin discovery or adaptation skill if needed.
-- `[manual]` Check shebang and executable-bit alignment for skill-local `scripts/`, starter templates, and any `bin/` surfaces.
+- `[manual]` Check shebang and executable-bit alignment for `bin/`, `scripts/`, starter templates, and other directly executable surfaces.
+- `[manual]` Check that tests pass the same ownership and hoisting test as the code they validate.
+- `[manual]` Check that scope-local tests remain flat unless an external tool requires a fixed nested path.
 - `[manual]` Optional `references/repo-agents-lines.md` should stay short, copyable, and scoped to always-on repo policy that should influence many tasks.
 - `[manual]` Hoisting decisions should be reviewed as placement choices, not assumed to be improvements.
 - `[manual]` Bulk standardization should preserve the skill's core purpose and workflow unless the task explicitly asks for a behavioral rewrite.

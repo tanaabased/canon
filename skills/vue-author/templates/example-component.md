@@ -55,20 +55,20 @@ const examplePlaygroundSchema = {
 
 ## Props
 
-| Prop          | Type                    | Default                     | Notes                                                   |
-| ------------- | ----------------------- | --------------------------- | ------------------------------------------------------- |
-| `description` | `string`                | `'Example component body.'` | Fallback default-slot text when no slot is provided.    |
-| `framed`      | `boolean`               | `false`                     | Enables the component's optional framed state.          |
-| `title`       | `string`                | `'Example component'`       | Fallback title-slot text when no slot is provided.      |
-| `variant`     | `'default' \| 'subtle'` | `'default'`                 | Selects the component mode.                             |
+| Prop          | Type                    | Default                     | Notes                                                |
+| ------------- | ----------------------- | --------------------------- | ---------------------------------------------------- |
+| `description` | `string`                | `'Example component body.'` | Fallback default-slot text when no slot is provided. |
+| `framed`      | `boolean`               | `false`                     | Enables the component's optional framed state.       |
+| `title`       | `string`                | `'Example component'`       | Fallback title-slot text when no slot is provided.   |
+| `variant`     | `'default' \| 'subtle'` | `'default'`                 | Selects the component mode.                          |
 
 ## Slots
 
-| Slot       | Notes                                |
-| ---------- | ------------------------------------ |
-| `#actions` | Optional actions or secondary links. |
+| Slot       | Notes                                 |
+| ---------- | ------------------------------------- |
+| `#actions` | Optional actions or secondary links.  |
 | `#title`   | Title or label content for the block. |
-| `default`  | Main body content for the component. |
+| `default`  | Main body content for the component.  |
 
 ## Behavior Notes
 

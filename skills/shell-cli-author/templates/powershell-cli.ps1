@@ -23,7 +23,6 @@ Run `./powershell-cli.ps1 -Help` for more advanced usage.
 param(
   [switch]$Force,
   [string[]]$Item,
-  [switch]$Debug = $false,
   [switch]$Help,
   [switch]$Version,
 
@@ -47,8 +46,6 @@ $CLI_NAME = if (
 } else {
   'powershell-cli.ps1'
 }
-# Keep a single top-level assignment so release automation can stamp the entrypoint in place.
-$SCRIPT_VERSION = if (-not [string]::IsNullOrWhiteSpace($env:SCRIPT_VERSION)) { $env:SCRIPT_VERSION } else { Get-DefaultScriptVersion }
 $ESCAPE = [char]27
 $USE_COLOR = $false
 $DEBUG_ENABLED = $false
@@ -90,14 +87,13 @@ function Get-FirstNonEmpty {
 }
 
 $script:DEBUG_ENABLED =
-  $Debug.IsPresent -or
+  ($PSBoundParameters.ContainsKey('Debug') -and [bool]$PSBoundParameters['Debug']) -or
   (Test-Truthy $env:TANAAB_DEBUG) -or
   (Test-Truthy $env:RUNNER_DEBUG)
 
 $DebugPreference = if ($script:DEBUG_ENABLED) { 'Continue' } else { $DebugPreference }
 if ($DebugPreference -eq 'Inquire' -or $DebugPreference -eq 'Continue') {
   $script:DEBUG_ENABLED = $true
-  $Debug = $true
 }
 
 try {
@@ -125,6 +121,9 @@ function Get-DefaultScriptVersion {
     return '0.0.0-unreleased'
   }
 }
+
+# Keep a single top-level assignment so release automation can stamp the entrypoint in place.
+$SCRIPT_VERSION = if (-not [string]::IsNullOrWhiteSpace($env:SCRIPT_VERSION)) { $env:SCRIPT_VERSION } else { Get-DefaultScriptVersion }
 
 function Test-ColorEnabled {
   if (-not [string]::IsNullOrWhiteSpace($env:NO_COLOR)) {
@@ -468,7 +467,6 @@ function Invoke-RunCli {
     'none'
   }
 
-  debug 'raw args {0} {1}' $script:CLI_NAME, (Join-Arguments -Values $script:OriginalArgs)
   debug 'raw Debug={0}' $Invocation.Options.Debug
   debug 'raw Force={0}' $Invocation.Options.Force
   debug 'raw Item={0}' (Get-CsvDisplay $Invocation.Options.Item)
@@ -484,7 +482,6 @@ function Invoke-RunCli {
 }
 
 $script:USE_COLOR = Test-ColorEnabled
-$script:OriginalArgs = @($args)
 
 $script:Resolved = Resolve-Invocation
 

@@ -10,12 +10,7 @@
   "homepage": "https://github.com/tanaabased/canon",
   "repository": "https://github.com/tanaabased/canon",
   "license": "MIT",
-  "keywords": [
-    "tanaab",
-    "canon",
-    "skills",
-    "codex"
-  ],
+  "keywords": ["tanaab", "canon", "skills", "codex"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -24,18 +19,18 @@
     "longDescription": "Tanaab-based canon enforcement as a Codex plugin, including installable skills plus a stub MCP registry for future canon resources.",
     "developerName": "@tanaabased",
     "category": "Tanaab-based",
-    "capabilities": [
-      "Interactive",
-      "Write"
-    ],
+    "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
-      "Use $tanaab-javascript-author to add Bun tests for utility functions in utils/.",
-      "Use $tanaab-javascript-repo-standardizer to standardize formatting, structure, and baseline scripts for this repo.",
+      "Use $tanaab-javascript-author to add Bun-run tests for TypeScript utility functions in utils/.",
+      "Use $tanaab-javascript-repo-standardizer to standardize a JavaScript and TypeScript Bun workspace monorepo, including package boundaries, formatting, type-checking, and baseline scripts.",
       "Use $tanaab-changelog-author to draft the next CHANGELOG.md release notes.",
       "Use $tanaab-skill-author to create a skill for sending AgentMail email through cURL.",
-      "Use $tanaab-javascript-cli-author to build a Bun CLI that lists open PRs for tanaabased/canon.",
-      "Use $tanaab-github-release-author to prepare a GitHub Release draft from CHANGELOG.md entries.",
-      "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow."
+      "Use $tanaab-javascript-cli-author to build a TypeScript Bun CLI that lists open PRs for tanaabased/canon.",
+      "Use $tanaab-release-author to prepare a GitHub Release draft from CHANGELOG.md entries.",
+      "Use $tanaab-project-author to inspect or synchronize the managed repository settings for the tanaabased/example project.",
+      "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow.",
+      "Use $tanaab-project-optimizer to audit a project's checked-in repository surfaces against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
+      "Use $tanaab-task-completion-check to assess whether tanaabased/example#12 is complete or ready from its acceptance criteria, linked pull requests, reviews, and checks."
     ],
     "brandColor": "#00c88a",
     "composerIcon": "./assets/composer-icon.svg",

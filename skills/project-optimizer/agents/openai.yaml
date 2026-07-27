@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Project Optimizer'
+  short_description: 'Tanaab-based read-only project optimization'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: "Use $tanaab-project-optimizer to audit this project's checked-in repository surfaces against applicable Tanaab optimization facets, determine whether action-worthy improvements clear its convergence gate, and produce a staged read-only plan only when warranted."

@@ -22,6 +22,23 @@ Use this reference when inline comments, API docs, or starter-file comments are 
 - Treat omitted tags on exported helpers as an explicit choice. The doc should still make the public contract clear without forcing readers to infer accepted values, object shapes, return reports, or failure modes from implementation.
 - Do not add tags that only restate names or obvious primitive types without clarifying contract semantics.
 
+## TypeScript Shape
+
+- Let TypeScript signatures describe parameter and return types; do not duplicate those types in JSDoc.
+- Use documentation comments when they add behavioral meaning such as accepted vocabulary, normalization, side effects, failure behavior, or non-obvious invariants.
+- Keep `@throws` or prose about failures when callers need that contract, even when the rest of the signature is fully typed.
+
+```ts
+/**
+ * Resolves a repository slug after validating its externally supplied owner and name.
+ *
+ * @throws {Error} When either slug segment is empty.
+ */
+export function repositorySlug(owner: string, name: string): string {
+  // ...
+}
+```
+
 Summary-only is enough for a tiny wrapper:
 
 ```js
@@ -56,5 +73,6 @@ export function booleanFromEnv(env, key, fallback = false) {
 - Confirm exported helper docs use `@param`, `@returns`, and `@throws` by default when those tags clarify the public contract.
 - Confirm omitted JSDoc tags are justified by genuinely obvious signatures or prose that already explains the contract.
 - Confirm JSDoc tags are selective and explain useful semantics instead of repeating the JavaScript signature mechanically.
+- Confirm TypeScript documentation adds behavioral meaning instead of repeating static types already present in the signature.
 - Confirm boilerplate comments stay sparse and are limited to non-obvious contracts, extension points, or edge cases.
 - Confirm public entrypoints or reusable helpers document surprising inputs, outputs, side effects, or failure behavior when the code alone would not make them clear.

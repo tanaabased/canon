@@ -1,9 +1,9 @@
-# JavaScript Function Data Flow
+# JavaScript and TypeScript Function Data Flow
 
-Use these rules when shaping JavaScript or Bun functions in Tanaab-managed repos.
+Use these rules when shaping JavaScript, TypeScript, or Bun functions in Tanaab-managed repos.
 
 - Pair this reference with [javascript-repo-structure.md](./javascript-repo-structure.md) for file and module placement.
-- Treat this file as the shared function-shape layer for JavaScript-centric skills.
+- Treat this file as the shared function-shape layer for JavaScript- and TypeScript-centric skills.
 
 ## Function Shape
 
@@ -15,6 +15,22 @@ Use these rules when shaping JavaScript or Bun functions in Tanaab-managed repos
 - Keep side effects at the boundary. Read from the filesystem, environment, network, or child processes near the edge, then pass parsed data into smaller helpers.
 - Prefer one main exported function per utility file.
 
+## Type Flow
+
+- Add explicit types at public APIs and at external, stateful, or uncertain-data boundaries.
+- Prefer inference for clear local constants and implementation details instead of annotating every value.
+- Accept `unknown` at untrusted boundaries and narrow it before use; do not replace uncertainty with unconstrained `any`.
+- Use `import type` for dependencies used only by the type system.
+- Keep types with the module that owns them by default. Export shared types deliberately instead of creating a catch-all type bucket.
+
+```ts
+import type { Repository } from '../lib/repository.js';
+
+export function repositorySlug(repository: Repository): string {
+  return `${repository.owner}/${repository.name}`;
+}
+```
+
 ## Imports
 
 - Group imports in this order when they are present:
@@ -23,6 +39,7 @@ Use these rules when shaping JavaScript or Bun functions in Tanaab-managed repos
   3. local or repo-provided modules
 - Separate present import groups with a single blank line.
 - Sort imports alphabetically within each group by imported binding name.
+- Keep type-only imports within the appropriate group and use `import type` rather than creating a separate type-import group.
 
 ## Scope Notes
 

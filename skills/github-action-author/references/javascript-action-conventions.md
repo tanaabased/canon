@@ -1,30 +1,31 @@
-# JavaScript Action Conventions
+# JavaScript and TypeScript Action Conventions
 
-Use these rules when a GitHub Action repository's product surface is a JavaScript-backed action executed with Bun.
+Use these rules when a GitHub Action repository's product surface is a JavaScript-backed action authored in JavaScript or TypeScript and executed with Bun.
 
-This file is local to `tanaab-github-action-author` because it is action-product doctrine, not a shared rule for every workflow or JavaScript task.
+This file is local to `tanaab-github-action-author` because it is action-product doctrine, not a shared rule for every workflow or JavaScript or TypeScript task.
 
 ## Runtime Shape
 
 - Prefer `runs.using: "composite"` even for JavaScript-backed actions so the wrapper can install Bun and execute the built runtime artifact explicitly.
-- Keep the real runtime logic in ESM JavaScript files and keep `action.yml` focused on inputs, setup, and invoking the built artifact.
+- Keep the real runtime logic in ESM JavaScript or TypeScript source and keep `action.yml` focused on inputs, setup, and invoking the built JavaScript artifact.
 - Export action inputs into `INPUT_*` env vars explicitly in the composite step when the runtime code relies on `@actions/core` getters.
 - Keep the entrypoint path stable, usually `${{ github.action_path }}/dist/index.js`.
 
 ## Build and Distribution
 
-- Compile the runtime with `bun build` to `dist/index.js`.
-- Prefer a build script such as `bun build ./entry.js --target=bun --format=esm --sourcemap=linked --outdir dist --entry-naming index.js`.
+- Compile JavaScript or TypeScript source with `bun build` to `dist/index.js`.
+- Prefer a build script such as `bun build ./entry.ts --target=bun --format=esm --sourcemap=linked --outdir dist --entry-naming index.js` when the action source is TypeScript.
+- Run the repo's separate type-check command before treating a successful TypeScript build as complete validation.
 - Commit `dist/index.js` and related sourcemaps when action consumers load the action directly from repository refs or Marketplace tags.
 - Keep `package.json` `main` and `exports` aligned to the built artifact when the repo is also published as a package.
 - Use `prepare` or equivalent release plumbing so committed action artifacts do not drift from source.
 
 ## Tests and Workflows
 
-- Keep input parsing in a dedicated helper such as `utils/get-inputs.js`.
+- Keep input parsing in a dedicated helper such as `utils/get-inputs.js` or `utils/get-inputs.ts`.
 - Unit test that helper by stubbing `@actions/core` getter methods and toggling `process.env.GITHUB_ACTIONS` so local-default and real Actions-runtime behavior are both covered.
 - Use `uses: ./` in workflow-driven smoke tests for end-to-end action behavior, permissions, sync flows, or OS matrix coverage.
-- Split PR workflows by surface when the repo benefits from separate lint, unit, options, and sync validation.
+- Prefer separate `pr-linter.yml`, `pr-unit-tests.yml`, and other surface-specific PR workflows when their commands, runners, matrices, ownership, or status identities differ; combine only operationally inseparable gates.
 - Use `fetch-depth: 0` only in workflows that actually need tags, full history, or sync behavior.
 - In workflow-driven smoke tests, assert observable postconditions after the action runs, such as file mutations, tags, config changes, or verification state.
 - Prefer one assertion step per postcondition, use `if: always()` when later checks should still execute after a failure, and emit `::notice` or `::error` annotations with a real non-zero exit code.
@@ -33,7 +34,7 @@ This file is local to `tanaab-github-action-author` because it is action-product
 ## Release Workflow
 
 - For JavaScript-backed action repos that maintain committed `dist/` artifacts or sync `CHANGELOG.md`, prefer a release-published workflow that checks out full history, installs Bun, exports `RELEASE_DATE`, and calls `tanaabased/prepare-release-action@v1`.
-- Keep `actions/checkout@v6` at `fetch-depth: 0` when the release flow needs tags, history, or sync behavior.
+- Keep `actions/checkout@v7` at `fetch-depth: 0` when the release flow needs tags, history, or sync behavior.
 - Keep the `Export formatted release date` step because `prepare-release-action` uses `RELEASE_DATE` when stamping the changelog.
 - Treat `Install deps and prep` as optional. Keep it only when a final lint, test, build, or smoke pass materially validates or regenerates the shipped action surface.
 - Keep `sync-tags` on the moving major alias that corresponds to the incoming release tag. For example, a published tag such as `v1.2.3` should sync `v1`.

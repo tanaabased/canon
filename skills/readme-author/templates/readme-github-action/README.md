@@ -1,5 +1,16 @@
 # ACTION_NAME
 
+<!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
+
+<p align="center">
+  <img src="./assets/ACTION_IMAGE" alt="ACTION_NAME" width="180" />
+</p>
+
+<p align="center">
+  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
+  <a href="WORKFLOW_URL"><img src="WORKFLOW_BADGE_URL" alt="Build status" /></a>
+</p>
+
 One or two sentences that explain what the action does, who it is for, and the workflow problem it solves.
 
 > Optional: add a short status, compatibility, or support note when readers need it before copying the action into a workflow.

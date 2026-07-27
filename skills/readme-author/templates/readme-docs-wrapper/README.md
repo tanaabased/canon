@@ -1,12 +1,27 @@
 # PROJECT_NAME
 
+<!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
+
+<p align="center">
+  <img src="./assets/PROJECT_IMAGE" alt="PROJECT_NAME" width="180" />
+</p>
+
+<p align="center">
+  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
+  <img src="PLATFORM_OR_RUNTIME_BADGE_URL" alt="SUPPORTED_PLATFORM_OR_RUNTIME" />
+</p>
+
 One or two sentences that explain what the project is, who it is for, and why it exists.
 
 > Optional: add a short status, compatibility, or support note when readers need it before starting.
 
+## Overview
+
+Summarize the project's most important capabilities without reproducing the docs-site navigation.
+
 ## Quickstart
 
-Show the shortest path to a successful first run.
+Show the shortest path to a successful first run. Delete this section when the repository has no truthful supported first-run path.
 
 ```sh
 # install or clone

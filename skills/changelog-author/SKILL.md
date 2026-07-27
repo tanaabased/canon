@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - workflow
     - changelog
+  openclaw:
+    emoji: '🗒️'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/changelog-author
 ---
 
 # Changelog Author
@@ -29,7 +32,7 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 - Do not use this skill for release notes outside `CHANGELOG.md`.
 - Do not use this skill for release readiness review, release workflow mechanics, or deployment wiring.
 - Do not use this skill for release metadata decisions, tagging, publishing, or pushing releases.
-- Use `$tanaab-github-release-author` for release readiness, version selection, GitHub Release drafts, tagging, publishing, or release body extraction.
+- Use `$tanaab-release-author` for release readiness, version selection, GitHub Release drafts, tagging, publishing, or release body extraction.
 - Do not use this skill for raw implementation work that does not directly affect the changelog surface.
 
 ## Preconditions
@@ -81,6 +84,14 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 - Add trailing PR or issue links on the same line when the mapping is known from commit or changelog evidence, including multiple links when one bullet is supported by more than one PR or issue.
 - Use `###` subsections only when the unreleased block is large enough that grouping materially improves readability.
 - Make any missing change evidence or unresolved changelog ambiguity explicit before closing.
+
+## Optimization
+
+- **Inspect:** Inventory the changelog, its leading unreleased block, the relevant tag or commit evidence, and the preserved release history.
+- **Compare:** Reconcile the unreleased heading and bullets with tag or commit evidence, then identify contradictions, duplicate or fragmented entries, weak ordering, missing links, and low-signal content against the changelog canon.
+- **Recommend:** Keep evidence-backed entries; correct contradictions; deduplicate or consolidate related bullets; split overloaded bullets; move entries into justified subsections; and tighten or remove low-signal wording without manufacturing changes.
+- **Apply:** After explicit authorization, make those operations in the unreleased block only unless historical repair is separately requested; never rewrite released history by default.
+- **Verify:** Recheck heading shape, concise alphabetized bullets, deduplication, links, and the evidence boundary used for every entry.
 
 ## Bundled Resources
 

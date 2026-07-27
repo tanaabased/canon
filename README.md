@@ -1,6 +1,19 @@
-# Tanaab Canon
+<p align="center">
+  <img src="./assets/canon-book.png" alt="Tanaab Canon" width="360" />
+</p>
 
-This repo is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+<h1 align="center">Tanaab Canon</h1>
+
+<p align="center">
+  This project is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+</p>
+
+<p align="center">
+  <a href="https://github.com/tanaabased/canon/releases/latest"><img src="https://img.shields.io/github/v/release/tanaabased/canon" alt="Latest release" /></a>
+  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-linter.yml"><img src="https://github.com/tanaabased/canon/actions/workflows/pr-linter.yml/badge.svg" alt="Lint" /></a>
+  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-unit-tests.yml"><img src="https://github.com/tanaabased/canon/actions/workflows/pr-unit-tests.yml/badge.svg" alt="Unit tests" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/tanaabased/canon" alt="MIT license" /></a>
+</p>
 
 ## Overview
 
@@ -9,7 +22,7 @@ Outside the Codex plugin surface, the main Markdown canon lives in a small set o
 - [`guidance/`](./guidance/) holds durable policy, architecture, and design-shaping docs that should influence decisions but do not need to trigger as skills.
 - [`ideas/`](./ideas/) holds proposals, deferred designs, and revisit notes that are not adopted canon yet.
 - [`references/`](./references/) holds stable lookup material such as standards, contracts, naming rules, repo-structure rules, and testing doctrine.
-- [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as repo maintenance and optimization workflows.
+- [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as project maintenance and optimization workflows.
 - [`templates/`](./templates/) holds canonical copy/adapt starters, shared scaffolds, and reusable workflow templates that have proven human or cross-skill value.
 
 ## Usage
@@ -18,23 +31,25 @@ Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugi
 
 The live skills are:
 
-- [`tanaab-github-action-author`](./skills/github-action-author/) shapes GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
-- [`tanaab-github-checks-triage`](./skills/github-checks-triage/) investigates failing GitHub-hosted CI checks and summarizes the actionable failure surface.
-- [`tanaab-github-release-author`](./skills/github-release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
-- [`tanaab-github-workflow-author`](./skills/github-workflow-author/) owns GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
-- [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript and Bun implementation work, especially low-coupling helpers and utility logic.
-- [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
-- [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript and Bun repo baselines such as layout, linting, formatting, and baseline scripts.
-- [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
 - [`tanaab-changelog-author`](./skills/changelog-author/) owns `CHANGELOG.md` drafting, maintenance, and changelog-contract alignment.
+- [`tanaab-github-action-author`](./skills/github-action-author/) shapes GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
+- [`tanaab-github-workflow-author`](./skills/github-workflow-author/) owns GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
+- [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript, TypeScript, and Bun implementation work, especially low-coupling helpers and utility logic.
+- [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true JavaScript or TypeScript Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
+- [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript, TypeScript, and Bun repo baselines such as workspace layout, linting, formatting, type-checking, and baseline scripts.
+- [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a project and audits or synchronizes its managed settings against canon.
+- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only, reports convergence, and produces a staged, skill-owned improvement plan only when warranted.
+- [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
+- [`tanaab-release-author`](./skills/release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
 - [`tanaab-shell-cli-author`](./skills/shell-cli-author/) owns Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.
 - [`tanaab-skill-author`](./skills/skill-author/) scaffolds, standardizes, and validates canon skills.
+- [`tanaab-task-completion-check`](./skills/task-completion-check/) assesses whether a GitHub-backed task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.
 - [`tanaab-vitepress-author`](./skills/vitepress-author/) owns VitePress docs and static-site surfaces.
 - [`tanaab-vue-author`](./skills/vue-author/) owns Vue 3 frontend implementation surfaces such as components and Composition API flows.
 
 ## Installation
 
-Versioned release archives are coming soon. Once release archives are published on the [GitHub releases page](https://github.com/tanaabased/canon/releases), the preferred install path will be:
+Versioned release archives are published on the [GitHub releases page](https://github.com/tanaabased/canon/releases). The preferred install path is:
 
 1. Download the release archive for the version you want.
 2. Extract it into `~/.codex/plugins/tanaab`.
@@ -69,7 +84,6 @@ Example personal marketplace entry:
 - If `~/.agents/plugins/marketplace.json` already exists, add the `tanaab` plugin entry instead of replacing the whole file.
 - Codex resolves `source.path` relative to the marketplace root, so the `./.codex/plugins/tanaab` path is the important part.
 - For the underlying plugin and marketplace rules, see the official Codex docs for [Plugins](https://developers.openai.com/codex/plugins) and [Build plugins](https://developers.openai.com/codex/plugins/build).
-- Until published release archives exist, use the development flow below.
 
 ## Development
 
@@ -96,8 +110,8 @@ bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/javascript-
 
 ## Issues, Questions and Support
 
-- Open a GitHub issue in [tanaabased/canon](https://github.com/tanaabased/canon) when the repo has canon drift, broken skill behavior, stale references, or missing guidance.
-- Route implementation work to the owning repo or skill surface instead of overloading this repo with unrelated product fixes.
+- Open a task as a GitHub issue in [tanaabased/canon](https://github.com/tanaabased/canon) when the project has canon drift, broken skill behavior, stale references, or missing guidance.
+- Route implementation work to the owning project or skill surface instead of overloading this repository with unrelated product fixes.
 
 ## Changelog
 

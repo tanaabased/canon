@@ -1,6 +1,6 @@
 ---
 name: tanaab-vue-author
-description: Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+description: Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -9,15 +9,17 @@ metadata:
     - tanaab
     - coding
     - vue
+  openclaw:
+    emoji: '💚'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/vue-author
 ---
 
 # Vue Author
 
 ## Overview
 
-Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 
-- Keep this skill centered on creating and refining Vue components.
 - Keep this skill on Vue component and SFC implementation surfaces.
 - Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
 
@@ -71,6 +73,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Default to Vue single-file components with blocks in this order: `<template>`, `<script setup>`, `<style scoped lang="scss">`.
 - Keep the first block declarative and HTML-led. Reach for render functions or JSX only when the repo already uses them or the task clearly requires them.
 - Use `<script setup>` for component logic by default. Keep props, emits, computed state, and local helpers there.
+- When the repo uses TypeScript, preserve or adopt `<script setup lang="ts">`, use typed props and emits, and mark type-only dependencies with `import type`; do not migrate unrelated components solely for consistency.
 - Put styling in the final block and write it in SCSS whenever a style block exists.
 - Prefer `scoped` styles for component-owned styling unless the repo or task clearly requires a shared or global surface.
 - In a larger VitePress site, prefer existing site components or already-styled semantic elements before introducing new wrapper markup.
@@ -133,7 +136,7 @@ jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
@@ -141,6 +144,14 @@ jobs:
       - run: bun run lint
       - run: bun run build
 ```
+
+## Optimization
+
+- **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
+- **Compare:** Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
+- **Recommend:** Keep cohesive components; deduplicate or consolidate repeated logic and styles; split overloaded SFCs; extract composables or child components; move shared code to its owner; tighten public API; and remove stale paths without imposing unrelated visual doctrine.
+- **Apply:** After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
+- **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
 
 ## Bundled Resources
 

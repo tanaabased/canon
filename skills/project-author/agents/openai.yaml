@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Project Author'
+  short_description: 'Tanaab-based GitHub-backed project creation and settings sync.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-project-author to create, inspect, or synchronize the explicit OWNER/REPO that represents a project against the checked-in Tanaab GitHub repository policy.'
