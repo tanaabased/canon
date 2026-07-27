@@ -1,39 +1,48 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-### Canon
+### Breaking Changes
 
-- Added a Bun workspace baseline for private monorepo roots, publishable package boundaries, aggregate packages, and filtered commands.
-- Added a GitHub-backed project-management model for projects, tasks, milestones, changes, validation, releases, and optional boards.
-- Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
-- Added shared optimization operations for contradiction resolution, deduplication, consolidation, extraction, placement, tightening, and removal.
-- Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
-- Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
-- Clarified project-management naming boundaries and lowercase domain terminology.
-- Clarified that Windows CI is opt-in, is not implied by PowerShell assets, and requires a versioned runner label.
-- Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
-- Fixed synthetic release checks so package, plugin, CLI, and tag identity share the action-resolved version.
-- Split pull-request lint and unit-test gates into independent canonical workflows.
-- Updated the Canon optimization prompt to delegate dynamic discovery and shared audit behavior to Project Optimizer.
-- Updated the Canon README with a visual entrypoint and the published release-archive installation path.
-- Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
+- Changed `bun run lint` to enforce ESLint and Prettier; Canon validation remains available through `bun run codex:validate`. [#7](https://github.com/tanaabased/canon/pull/7)
+- Renamed `tanaab-github-release-author` to `tanaab-release-author` without a compatibility alias. [#7](https://github.com/tanaabased/canon/pull/7)
+- Replaced `tanaab-github-checks-triage` with the task-first `tanaab-task-completion-check`. [#7](https://github.com/tanaabased/canon/pull/7)
+- Required `metadata.openclaw` and `--openclaw-emoji` for Canon skill scaffolding and validation. [#7](https://github.com/tanaabased/canon/pull/7)
 
-### Skills
+### New Features
 
-- Added optional, type-shaped `Optimization` facets to canonical skill scaffolding and applicable live skills.
-- Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
-- Added `tanaab-project-author` for canonical project creation, audits, and confirmed repository-policy synchronization.
-- Added `tanaab-project-optimizer` for read-only cross-surface project audits and staged improvement plans.
-- Expanded `tanaab-skill-author` and `tanaab-project-optimizer` with individual and portfolio-wide skill optimization.
-- Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
-- Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
-- Renamed `tanaab-github-release-author` to domain-led `tanaab-release-author` without changing its GitHub-backed release workflow.
-- Replaced `tanaab-github-checks-triage` with `tanaab-task-completion-check` for read-only, task-first completion assessment.
-- Updated GitHub Workflow Author and coding guidance with separate pull-request gate boundaries.
-- Updated JavaScript Repo Standardizer and Release Author for Bun workspace structure and safe multi-package release boundaries.
-- Updated Project Optimizer with a convergence gate that suppresses low-value implementation churn.
-- Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
-- Updated Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
-- Updated Skill Author and Task Completion Check with focused libraries, testable utilities, and thin internal commands.
+- Added `Optimization` facets to applicable skills and type-shaped Skill Author scaffolds. [#7](https://github.com/tanaabased/canon/pull/7)
+- Added README companion-guide templates for advanced, topical, and docs-wrapper content. [#7](https://github.com/tanaabased/canon/pull/7)
+- Added `tanaab-project-author` for GitHub-backed project creation, policy inspection, and confirmed settings synchronization. [#7](https://github.com/tanaabased/canon/pull/7)
+- Added `tanaab-project-optimizer` for read-only cross-surface audits, staged plans, and convergence decisions. [#7](https://github.com/tanaabased/canon/pull/7)
+- Added `tanaab-task-completion-check` for issue criteria, linked pull requests, reviews, checks, and failure evidence. [#7](https://github.com/tanaabased/canon/pull/7)
+
+### Policy and Guidance
+
+- Added conditional TypeScript and Bun workspace monorepo baselines without making `src/` the default. [#7](https://github.com/tanaabased/canon/pull/7)
+- Adopted ESLint and standalone Prettier as the required JavaScript and TypeScript lint and format baseline. [#7](https://github.com/tanaabased/canon/pull/7)
+- Clarified CLI and Leia conventions for environment variables, literal matching, lowercase test prose, safe negative tests, and example support.
+- Defined GitHub-backed mappings for projects, tasks, milestones, changes, validation, and releases. [#7](https://github.com/tanaabased/canon/pull/7)
+- Expanded README policy with an 80/20 content split, companion-guide signals, visual entrypoints, and a docs-site threshold. [#7](https://github.com/tanaabased/canon/pull/7)
+- Standardized JavaScript and TypeScript scopes around `bin`, `scripts`, `lib`, `utils`, and flat owner-local tests. [#7](https://github.com/tanaabased/canon/pull/7)
+- Standardized optimization operations, portfolio review, dependency ordering, and a no-churn convergence gate. [#7](https://github.com/tanaabased/canon/pull/7)
+- Updated CI policy to separate independent gates, prefer Ubuntu and macOS, and require explicit versioned Windows coverage. [#7](https://github.com/tanaabased/canon/pull/7)
+
+### Improvements
+
+- Expanded focused tests for project policy, task completion, skill validation, CLI templates, and Vue code generation. [#7](https://github.com/tanaabased/canon/pull/7)
+- Pinned Canon to Bun `1.3.14` across local and CI metadata. [#7](https://github.com/tanaabased/canon/pull/7)
+- Refreshed canonical workflows and examples to use `actions/checkout@v7`. [#6](https://github.com/tanaabased/canon/pull/6) [#7](https://github.com/tanaabased/canon/pull/7)
+- Reorganized Canon JavaScript into thin entrypoints, orchestration libraries, one-function utilities, and flat tests. [#7](https://github.com/tanaabased/canon/pull/7)
+- Separated pull-request lint and unit-test checks into independent workflows and status identities. [#7](https://github.com/tanaabased/canon/pull/7)
+- Updated plugin discovery, prompts, and metadata for TypeScript, project management, optimization, and OpenClaw. [#7](https://github.com/tanaabased/canon/pull/7)
+- Updated the root README with visual identity, truthful status badges, and release-archive installation guidance. [#7](https://github.com/tanaabased/canon/pull/7)
+
+### Bug Fixes
+
+- Fixed generated skill default-prompt grammar. [#7](https://github.com/tanaabased/canon/pull/7)
+- Fixed PowerShell template argument handling and cross-platform smoke startup. [#7](https://github.com/tanaabased/canon/pull/7)
+- Fixed release stamping so package, plugin, CLI, and tag versions share one resolved value. [#7](https://github.com/tanaabased/canon/pull/7)
+- Fixed release workflow version expansion and terminal setup. [#7](https://github.com/tanaabased/canon/pull/7)
+- Fixed `tanaab-release-author` to target the default branch and verify existing tags before reuse. [#7](https://github.com/tanaabased/canon/pull/7)
 
 ## v0.4.0 - [May 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.4.0)
 
