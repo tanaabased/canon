@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - generic
     - documentation
+  openclaw:
+    emoji: '📖'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/readme-author
 ---
 
 # README Author

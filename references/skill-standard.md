@@ -50,7 +50,7 @@ skill-folder/
 - `[error]` `SKILL.md` must start with YAML frontmatter.
 - `[error]` Frontmatter must contain `name`, `description`, `license`, and `metadata`.
 - `[error]` Frontmatter `license` must equal `MIT`.
-- `[error]` Frontmatter `metadata` must contain `type`, `owner`, and `tags`.
+- `[error]` Frontmatter `metadata` must contain `type`, `owner`, `tags`, and `openclaw`.
 - `[error]` Do not use top-level `type`, `owner`, or `tags`; Codex warns on unsupported top-level skill attributes.
 - `[error]` Frontmatter `description` must start with `Tanaab-based`.
 - `[error]` `metadata.tags` must be a list of strings.
@@ -63,6 +63,17 @@ skill-folder/
 - `[manual]` `description` should say both what the skill does and when to use it.
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
 - `[warn]` Keep `metadata.tags` short. Prefer one category tag by default instead of a long keyword list.
+
+## Required OpenClaw Metadata
+
+- `[error]` `metadata.openclaw` must be a mapping.
+- `[error]` `metadata.openclaw.emoji` must be a nonempty skill-specific string.
+- `[error]` `metadata.openclaw.homepage` must be a nonempty HTTPS URL.
+- `[error]` Optional `metadata.openclaw.os` must be a list containing only `darwin`, `linux`, or `win32`.
+- `[error]` Known lists beneath optional `metadata.openclaw.requires` must contain nonempty strings.
+- `[manual]` Add OpenClaw dependency gates only for hard load-time requirements. Do not require Bun universally for prose-only skills.
+- `[manual]` Preserve supported or custom OpenClaw fields that the canonical validator does not own.
+- `[manual]` Keep OpenClaw metadata in `SKILL.md`; do not duplicate it in `agents/openai.yaml` or add a native OpenClaw plugin manifest to a Codex-compatible plugin.
 
 ## Required OpenAI Metadata
 

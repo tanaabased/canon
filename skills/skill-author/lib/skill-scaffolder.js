@@ -10,8 +10,10 @@ import normalizeSkillDescription, {
   makeSkillDefaultPrompt,
 } from '../utils/normalize-skill-description.js';
 import renderSkillTemplate from '../utils/render-skill-template.js';
+import resolveOpenClawHomepage from '../utils/resolve-openclaw-homepage.js';
 import {
   CANON_SKILL_BRAND_COLOR,
+  CANON_SKILL_HOMEPAGE_BASE,
   CANON_SKILL_LICENSE,
   CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX_WITH_HYPHEN,
@@ -66,10 +68,12 @@ export async function initializeSkill(options) {
     .toLowerCase();
   const displayName = String(options.displayName ?? '').trim();
   const description = String(options.description ?? '').trim();
+  const openclawEmoji = String(options.openclawEmoji ?? '').trim();
 
   if (!type) throw new Error('Type is required.');
   if (!displayName) throw new Error('Display name is required.');
   if (!description) throw new Error('Description is required.');
+  if (!openclawEmoji) throw new Error('OpenClaw emoji is required.');
 
   const typeDefinition = getSkillType(type);
   if (!typeDefinition) {
@@ -113,6 +117,13 @@ export async function initializeSkill(options) {
   const pluginManifestPath = path.resolve(outputDir, '..', '.codex-plugin', 'plugin.json');
   const folderName = (await pathExists(pluginManifestPath)) ? stripOwnerPrefix(skillId) : skillId;
   const skillDir = path.resolve(outputDir, folderName);
+  const openclawHomepage = resolveOpenClawHomepage({
+    canonicalHomepageBase: CANON_SKILL_HOMEPAGE_BASE,
+    canonicalSkillsRoot: SKILLS_ROOT_DIR,
+    folderName,
+    homepage: options.openclawHomepage,
+    outputDir,
+  });
 
   if ((await pathExists(skillDir)) && !options.force) {
     throw new Error(`Skill directory already exists: ${skillDir}`);
@@ -129,6 +140,8 @@ export async function initializeSkill(options) {
     display_name: displayName,
     license: CANON_SKILL_LICENSE,
     metadata_tags_yaml: renderMetadataTagsYaml(tags),
+    openclaw_emoji: quoteYaml(openclawEmoji),
+    openclaw_homepage: quoteYaml(openclawHomepage),
     owner: CANON_SKILL_OWNER,
     skill_id: skillId,
     type,

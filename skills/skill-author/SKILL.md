@@ -9,6 +9,12 @@ metadata:
     - tanaab
     - meta
     - skills
+  openclaw:
+    emoji: '🛠️'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/skill-author
+    requires:
+      bins:
+        - bun
 ---
 
 # Skill Author
@@ -24,6 +30,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Keep support material local unless it clearly passes the hoist test for repo-root canon, and apply that same ownership test to skill-local tests.
 - For `coding` skills, define one owned code surface plus three lifecycle sections: `Documentation`, `Testing`, and `GitHub Actions Workflow`.
 - In plugin-contained skill trees, keep the owner-prefixed machine id in frontmatter and prompts while omitting that owner prefix from the skill folder name.
+- Give every skill a skill-specific `metadata.openclaw.emoji` and an HTTPS source homepage; add load-time gates only for hard runtime dependencies.
 - If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
 - When a skill implies durable, always-on repo policy, it may bundle `references/repo-agents-lines.md` as short copyable guidance for a target repo's `AGENTS.md`.
 
@@ -31,7 +38,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 - Create a new skill from scratch.
 - Choose or refine a skill's `type`.
-- Standardize an existing skill's `SKILL.md`, `agents/openai.yaml`, naming, or `metadata.owner`.
+- Standardize an existing skill's `SKILL.md`, `agents/openai.yaml`, naming, `metadata.owner`, or `metadata.openclaw`.
 - Validate a newly created, standardized, or migrated skill directory.
 - Review whether skill support material and tests should stay local or be hoisted under the shared hoist test.
 - Split a broad skill into narrower skills with clearer owned surfaces.
@@ -49,6 +56,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 - Use the smallest type that clearly fits the skill's owned surface.
 - Keep structure and metadata aligned with the shared canon contract.
+- Keep OpenClaw display metadata in `SKILL.md` and Codex interface metadata in `agents/openai.yaml`.
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
 - For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
@@ -87,6 +95,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 3. Scaffold or patch the skill.
 
 - Use [`./scripts/init-skill.js`](./scripts/init-skill.js) when the task is a clean scaffold.
+- Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
 - Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
@@ -118,6 +127,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Confirm the new or updated skill has a distinct owned surface.
 - Confirm the selected `type` is explicit and correct.
 - Confirm the selected type order is correct.
+- Confirm `metadata.openclaw` has a skill-specific emoji and correct HTTPS homepage, with dependency gates only for hard runtime requirements.
 - Confirm `coding` skills include `Documentation`, `Testing`, and `GitHub Actions Workflow` as the canonical lifecycle sections.
 - Confirm validation-only requests are handled by the same surface rather than a separate validator skill.
 - Confirm the surface is not better expressed as a repo template with the skill kept only as a thin discovery or adaptation layer, if needed.

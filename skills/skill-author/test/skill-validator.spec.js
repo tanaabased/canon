@@ -28,4 +28,42 @@ describe('skills/skill-author/lib/skill-validator', () => {
       await rm(tempDir, { force: true, recursive: true });
     }
   });
+
+  it('should report missing OpenClaw metadata through the existing validator', async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), 'canon-skill-validator-'));
+    const skillDir = path.join(tempDir, 'tanaab-example');
+
+    try {
+      await mkdir(path.join(skillDir, 'agents'), { recursive: true });
+      await writeFile(
+        path.join(skillDir, 'SKILL.md'),
+        `---
+name: tanaab-example
+description: Tanaab-based example skill. Use when testing validation.
+license: MIT
+metadata:
+  type: generic
+  owner: tanaab
+  tags:
+    - tanaab
+    - generic
+    - example
+---
+
+# Example
+`,
+      );
+      await writeFile(path.join(skillDir, 'agents', 'openai.yaml'), 'interface:\n');
+
+      const result = spawnSync('bun', [VALIDATOR_PATH, '--skill-dir', skillDir], {
+        encoding: 'utf8',
+      });
+      const output = `${result.stdout}\n${result.stderr}`;
+
+      assert.equal(result.status, 1);
+      assert.match(output, /metadata must contain 'openclaw'/);
+    } finally {
+      await rm(tempDir, { force: true, recursive: true });
+    }
+  });
 });

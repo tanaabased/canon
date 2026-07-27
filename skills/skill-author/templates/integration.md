@@ -15,6 +15,9 @@ metadata:
   owner: {{owner}}
   tags:
 {{metadata_tags_yaml}}
+  openclaw:
+    emoji: {{openclaw_emoji}}
+    homepage: {{openclaw_homepage}}
 ---
 
 # {{display_name}}

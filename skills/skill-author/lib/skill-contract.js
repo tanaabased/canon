@@ -25,6 +25,7 @@ export const CANON_SKILL_PREFIX = 'tanaab';
 export const CANON_SKILL_PREFIX_WITH_HYPHEN = `${CANON_SKILL_PREFIX}-`;
 export const CANON_SKILL_LICENSE = 'MIT';
 export const CANON_SKILL_BRAND_COLOR = '#00c88a';
+export const CANON_SKILL_HOMEPAGE_BASE = 'https://github.com/tanaabased/canon/tree/main/skills';
 export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
 export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
 

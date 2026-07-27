@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - workflow
     - changelog
+  openclaw:
+    emoji: '🗒️'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/changelog-author
 ---
 
 # Changelog Author

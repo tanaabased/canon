@@ -9,6 +9,13 @@ metadata:
     - tanaab
     - integration
     - repositories
+  openclaw:
+    emoji: '🏗️'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/github-repository-author
+    requires:
+      bins:
+        - bun
+        - gh
 ---
 
 # GitHub Repository Author

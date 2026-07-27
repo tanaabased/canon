@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - coding
     - javascript
+  openclaw:
+    emoji: '📐'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/javascript-repo-standardizer
 ---
 
 # JavaScript Repo Standardizer

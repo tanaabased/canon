@@ -9,6 +9,13 @@ metadata:
     - tanaab
     - integration
     - release
+  openclaw:
+    emoji: '🚀'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/github-release-author
+    requires:
+      bins:
+        - git
+        - gh
 ---
 
 # GitHub Release Author

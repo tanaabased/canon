@@ -14,7 +14,7 @@ function parseYamlBlock(rawBlock) {
   const lines = String(rawBlock ?? '').split('\n');
   const indentOf = (line) => line.match(/^ */)?.[0].length ?? 0;
   const listPattern = (indent) => new RegExp(`^\\s{${indent}}-\\s+(.+)$`);
-  const keyPattern = (indent) => new RegExp(`^\\s{${indent}}([a-z][a-z0-9_-]*):(.*)$`);
+  const keyPattern = (indent) => new RegExp(`^\\s{${indent}}([A-Za-z][A-Za-z0-9_-]*):(.*)$`);
 
   function parseList(startIndex, indent) {
     const items = [];

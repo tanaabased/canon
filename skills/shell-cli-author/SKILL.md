@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - coding
     - shell
+  openclaw:
+    emoji: '🐚'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/shell-cli-author
 ---
 
 # Shell CLI Author

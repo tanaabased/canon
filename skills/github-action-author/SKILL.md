@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - integration
     - github-actions
+  openclaw:
+    emoji: '⚡'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/github-action-author
 ---
 
 # GitHub Action Author

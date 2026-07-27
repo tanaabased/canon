@@ -9,7 +9,7 @@ import parseInitSkillArgs from '../utils/parse-init-skill-args.js';
 function renderUsage(stream = process.stdout) {
   return renderCliHelp(
     {
-      usage: `Usage: ${bold('init-skill.js', stream)} ${dim('--type <type> --slug <slug> --display-name <name> --description <text> [options]', stream)}`,
+      usage: `Usage: ${bold('init-skill.js', stream)} ${dim('--type <type> --slug <slug> --display-name <name> --description <text> --openclaw-emoji <emoji> [options]', stream)}`,
       summary:
         'Initialize a Tanaab skill from the canonical local full templates owned by tanaab-skill-author.',
       options: [
@@ -18,6 +18,8 @@ function renderUsage(stream = process.stdout) {
         '  --slug <slug>           skill slug without the tanaab- prefix',
         '  --display-name <name>   human-readable skill display name',
         '  --description <text>    skill description text',
+        '  --openclaw-emoji <emoji> skill-specific emoji for metadata.openclaw',
+        '  --openclaw-homepage <url> homepage override; required for a custom output directory',
         '  --prompt <text>         default prompt for agents/openai.yaml',
         `  --output-dir <path>     parent directory for generated skills ${dim(`[default: ${SKILLS_ROOT_DIR}]`, stream)}`,
         '  --force                 overwrite an existing generated skill directory',

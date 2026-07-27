@@ -18,6 +18,7 @@ import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
 import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
+import validateOpenClawMetadata from '../utils/validate-openclaw-metadata.js';
 const AUXILIARY_DOCS = [
   'README.md',
   'CHANGELOG.md',
@@ -53,6 +54,7 @@ const REQUIRED_METADATA_FIELDS = [
   { key: 'type', message: "SKILL.md frontmatter metadata must contain 'type'." },
   { key: 'owner', message: "SKILL.md frontmatter metadata must contain 'owner'." },
   { key: 'tags', message: "SKILL.md frontmatter metadata must contain 'tags'." },
+  { key: 'openclaw', message: "SKILL.md frontmatter metadata must contain 'openclaw'." },
 ];
 const REQUIRED_OPENAI_INTERFACE_KEYS = [
   'display_name',
@@ -167,6 +169,9 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
     errors.push("SKILL.md frontmatter 'metadata' must be a mapping.");
   } else {
     pushMissingFieldErrors(metadata, REQUIRED_METADATA_FIELDS, errors);
+    if (metadata.openclaw) {
+      errors.push(...validateOpenClawMetadata(metadata.openclaw));
+    }
   }
 
   const rawDeclaredType = metadata?.type;

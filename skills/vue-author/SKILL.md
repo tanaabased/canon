@@ -9,6 +9,9 @@ metadata:
     - tanaab
     - coding
     - vue
+  openclaw:
+    emoji: '💚'
+    homepage: https://github.com/tanaabased/canon/tree/main/skills/vue-author
 ---
 
 # Vue Author
