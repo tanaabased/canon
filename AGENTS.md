@@ -29,11 +29,13 @@
 - Avoid umbrella routers and mega-skills as the long-term steady state.
 - Deterministic orchestrators are acceptable only when they call fixed sub-steps and do not act as dynamic routers.
 - Prefer `merge`, `move`, `extract`, or `delete` before `add`.
+- Apply the shared [`references/optimization-operations.md`](./references/optimization-operations.md) lenses to persistent surfaces during optimization, but do not manufacture changes to exercise every operation.
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
 - Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
 - Treat user-facing artifacts such as generated `dist/` outputs and executable example suites as real ownership surfaces during skill design.
 - When skills live inside a larger Codex plugin, keep the owner-prefixed machine id in frontmatter and prompts but omit that owner prefix from the skill folder name under `skills/`.
 - If ownership needs a routing matrix to stay understandable, the skills are still too broad.
+- When optimizing a collection of skills, review both each skill and the portfolio as a whole through Skill Author so overlap, contradictions, fragmented variants, and mega-skill behavior are visible.
 
 ## Canon Design
 

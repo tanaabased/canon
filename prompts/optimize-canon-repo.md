@@ -18,11 +18,13 @@ Operate on this repository only. Keep the first pass read-only and stop after a 
 Follow the Repository Optimizer workflow and its dynamic skill discovery. In addition:
 
 1. Account for every live skill and apply only the installed Tanaab skills whose owned surfaces are observed and whose instructions expose `## Optimization`.
-2. Review top-level Canon ownership and hoisting against the flat-bucket and nearest-owner rules in `../AGENTS.md`.
-3. Check consistency across the plugin manifest, package metadata, README and companion documentation, changelog, workflows, public and internal commands, tests, prompts, references, templates, assets, and lock or lint configuration when present.
-4. Preserve current skill IDs, ownership boundaries, language choices, and user changes unless concrete evidence supports a change.
-5. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
-6. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
+2. Because Canon contains multiple live skills, always select Skill Author and compare the collection as well as each skill for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior.
+3. Review top-level Canon ownership and hoisting against the flat-bucket and nearest-owner rules in `../AGENTS.md`.
+4. Check consistency across the plugin manifest, package metadata, README and companion documentation, changelog, workflows, public and internal commands, tests, prompts, references, templates, assets, and lock or lint configuration when present.
+5. Apply the shared optimization operations to each observed surface where appropriate, but do not manufacture work to exercise every operation.
+6. Preserve current skill IDs, ownership boundaries, language choices, and user changes unless concrete evidence supports a change.
+7. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
+8. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
 
 ## Proposal Requirements
 
@@ -30,7 +32,8 @@ Return one grounded proposal containing:
 
 - a concise inventory of live, cold-path, generated, and not-applicable surfaces
 - grouped aligned findings and specific evidence for every drifted surface
-- one primary owning skill for each recommendation, with companions only for genuine cross-surface work
+- one primary owning skill and one primary optimization operation for each recommendation, with companions only for genuine cross-surface work
+- an individual and portfolio-wide disposition for the live skill collection, including keep, merge, split, move, extract, tighten, rename, or remove only where evidence supports it
 - recommended changes ordered by correctness risk, leverage, and dependency
 - deferred questions only where repository evidence cannot resolve the decision
 - reviewable implementation and commit stages
