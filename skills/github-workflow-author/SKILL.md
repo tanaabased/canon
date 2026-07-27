@@ -82,6 +82,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 - Confirm the task stayed on workflow YAML, triggers, permissions, reusable workflow boundaries, matrix or job topology, or gate placement.
 - Confirm the skill did not absorb a narrower surface's ordinary validation workflow when no trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
 - Confirm independent pull-request gates use separate workflow files when their commands, runners, matrices, failure owners, or required-check identities differ, with any combined exception justified by shared operational ownership.
+- Confirm Windows runners appear only when explicitly requested by the user or repository policy, and use a supported versioned runner label rather than `windows-latest`.
 - Confirm Bun-based workflows use `oven-sh/setup-bun@v2`, `bun-version-file: .bun-version`, and `bun install --frozen-lockfile --ignore-scripts` unless the repo explicitly needs another path.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.

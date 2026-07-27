@@ -47,8 +47,6 @@ $CLI_NAME = if (
 } else {
   'powershell-cli.ps1'
 }
-# Keep a single top-level assignment so release automation can stamp the entrypoint in place.
-$SCRIPT_VERSION = if (-not [string]::IsNullOrWhiteSpace($env:SCRIPT_VERSION)) { $env:SCRIPT_VERSION } else { Get-DefaultScriptVersion }
 $ESCAPE = [char]27
 $USE_COLOR = $false
 $DEBUG_ENABLED = $false
@@ -125,6 +123,9 @@ function Get-DefaultScriptVersion {
     return '0.0.0-unreleased'
   }
 }
+
+# Keep a single top-level assignment so release automation can stamp the entrypoint in place.
+$SCRIPT_VERSION = if (-not [string]::IsNullOrWhiteSpace($env:SCRIPT_VERSION)) { $env:SCRIPT_VERSION } else { Get-DefaultScriptVersion }
 
 function Test-ColorEnabled {
   if (-not [string]::IsNullOrWhiteSpace($env:NO_COLOR)) {

@@ -9,6 +9,7 @@
 - Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Clarified project-management naming boundaries and lowercase domain terminology.
+- Clarified that Windows CI is opt-in, is not implied by PowerShell assets, and requires a versioned runner label.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
 - Fixed synthetic release checks so package, plugin, CLI, and tag identity share the action-resolved version.
 - Split pull-request lint and unit-test gates into independent canonical workflows.

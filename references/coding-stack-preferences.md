@@ -53,7 +53,9 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so each test reads as an expected behavior.
-- For JS/TS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
+- For JS/TS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
+- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone is not sufficient evidence.
+- When Windows CI is explicitly required, use a supported versioned runner label selected for that repository and never `windows-latest`.
 
 ## Operational Scenario Testing
 

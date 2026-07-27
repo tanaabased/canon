@@ -114,7 +114,9 @@ describe('feature/utils/normalize-tags', () => {
 - When this skill's owned JS or TS surface needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
 - Prefer `.github/workflows/pr-unit-tests.yml` for this surface and keep it separate from the repo's linter workflow when both independent gates exist.
 - Keep the workflow generic, Bun-first, and centered on the repo's test command.
-- For developer-machine code, CLIs, and plugin tooling, prefer an Ubuntu plus current macOS runner matrix; add Windows only when Windows is an intended maintained surface.
+- For developer-machine code, CLIs, and plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
+- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone does not imply that support.
+- When Windows CI is explicitly required, use a supported versioned runner label selected for the repository and never `windows-latest`.
 - Treat this as a validation lifecycle for the owned JS or TS surface, not as ownership of workflow YAML as a product surface.
 
 Minimal generic example:

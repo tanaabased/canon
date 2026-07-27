@@ -85,6 +85,7 @@ test -n "$(./dist/my-script.sh --version)"
 
 - Use a Bootbox-style PR examples workflow when the shell CLI needs CI-backed Leia coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
+- Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
 - Treat this as validation of the owned shell CLI surface, not as general workflow-topology ownership.
 
 Minimal generic example:
@@ -146,3 +147,4 @@ jobs:
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
 - Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
 - Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the shell CLI surface rather than drifting into general workflow authoring.
+- Confirm PowerShell coverage remains portable or opportunistic unless Windows CI was explicitly requested; if requested, confirm the workflow uses a versioned Windows runner label rather than `windows-latest`.
