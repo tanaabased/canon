@@ -28,7 +28,8 @@
       "Use $tanaab-javascript-cli-author to build a TypeScript Bun CLI that lists open PRs for tanaabased/canon.",
       "Use $tanaab-github-release-author to prepare a GitHub Release draft from CHANGELOG.md entries.",
       "Use $tanaab-github-repository-author to inspect or synchronize managed repository settings for tanaabased/example.",
-      "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow."
+      "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow.",
+      "Use $tanaab-repository-optimizer to audit a repository against applicable Tanaab optimization facets and produce a staged read-only improvement plan."
     ],
     "brandColor": "#00c88a",
     "composerIcon": "./assets/composer-icon.svg",

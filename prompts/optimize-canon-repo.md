@@ -1,148 +1,53 @@
 # Optimize Canon Repo
 
-Use this prompt to plan a staged optimization pass on this repo so canon practices what it preaches.
+Use `$tanaab-repository-optimizer` to plan a staged optimization pass on this repository so Canon practices what it preaches.
 
-Operate on this repo only. Treat `skills/` as the live skill surface and treat repo-root canon, plugin, package, documentation, automation, and code surfaces as part of the live repo. Treat `guidance/` and `ideas/` as cold-path material: inventory them, but do not optimize them as live runtime canon unless current repo evidence makes them relevant.
+Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean or mostly aligned result is valid.
 
-Use current repo evidence first. Only ask the user when a decision cannot be resolved from the repo's checked-in policy, supported tooling, or live surface shape.
+## Canon Context
 
-## Planning and Proposal Mode
+- Read `../AGENTS.md` first as the ambient repository contract.
+- Treat every directory under `../skills/` containing `SKILL.md` as a live skill surface.
+- Treat the root plugin, package, documentation, automation, executable, test, prompt, reference, template, asset, and validation surfaces as live when current tracked evidence gives them an active consumer.
+- Treat `../guidance/` and `../ideas/` as cold-path canon. Inventory them, but optimize them only when a current live surface or the requested scope makes them relevant.
+- Treat installed or generated plugin-cache state as generated evidence, not as the source of truth. The checked-in repository remains authoritative.
+- Skip GitHub-hosted repository settings unless the user explicitly requests remote coverage and supplies or confirms the slug.
 
-- Start by producing a concrete staged optimization proposal.
-- Do not mutate the repo on the first pass for this prompt.
-- Read-only discovery and validation are allowed when they materially improve the proposal.
-- Stop after the proposal unless the user explicitly asks for implementation in a follow-up turn.
-- Recommend changes only when repo evidence supports them. An aligned surface or a no-change result is valid and should not be turned into cleanup work.
+## Canon-Specific Audit Expectations
 
-## Bootstrap and Dynamic Discovery
+Follow the Repository Optimizer workflow and its dynamic skill discovery. In addition:
 
-Start with the smallest stable bootstrap:
+1. Account for every live skill and apply only the installed Tanaab skills whose owned surfaces are observed and whose instructions expose `## Optimization`.
+2. Review top-level Canon ownership and hoisting against the flat-bucket and nearest-owner rules in `../AGENTS.md`.
+3. Check consistency across the plugin manifest, package metadata, README and companion documentation, changelog, workflows, public and internal commands, tests, prompts, references, templates, assets, and lock or lint configuration when present.
+4. Preserve current skill IDs, ownership boundaries, language choices, and user changes unless concrete evidence supports a change.
+5. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
+6. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
 
-- Read `../AGENTS.md` as the ambient repo contract.
-- Inspect `../package.json` and the plugin manifest to understand the supported package, validation, and distribution surfaces.
-- If live skills exist, load the Skill Author skill and follow its link to the current skill contract.
+## Proposal Requirements
 
-Then discover the rest of the governing context from the repo instead of relying on a fixed filename list:
+Return one grounded proposal containing:
 
-1. Inventory tracked root files and directories, live skill directories containing `SKILL.md`, package or workspace manifests, workflows, executable entrypoints, tests, templates, prompts, references, and bundled skill resources.
-2. Read each live skill's frontmatter, owned-surface description, and bundled-resource links.
-3. Identify code-bearing scopes from actual source files, shebangs, executable modes, package manifests, and build or test configuration. Do not assume every scope is JavaScript-only.
-4. Load the applicable authoring or standardization skills for the surfaces the inventory actually finds. Follow the shared and skill-local references those skills cite rather than maintaining another master list here.
-5. Inspect repo-native validation commands and CI workflows before proposing a validation plan.
+- a concise inventory of live, cold-path, generated, and not-applicable surfaces
+- grouped aligned findings and specific evidence for every drifted surface
+- one primary owning skill for each recommendation, with companions only for genuine cross-surface work
+- recommended changes ordered by correctness risk, leverage, and dependency
+- deferred questions only where repository evidence cannot resolve the decision
+- reviewable implementation and commit stages
+- proportional validation for every proposed stage
 
-Do not load every reference merely because it exists. Use `AGENTS.md`, live skill links, manifests, and the discovered surface type to route into the smallest relevant contract.
+Do not return a generic checklist or restate the selected skills' Optimization sections. Stop before modifying files.
 
-## Governing Rules
+## Canon Validation and Cache Handoff
 
-Apply these repo rules throughout the pass:
+Derive targeted checks from the surfaces in the proposal. For a completed implementation that changes managed plugin or `codexsync` surfaces, the expected final baseline is:
 
-- Prefer `merge`, `move`, `extract`, or `delete` before `add`.
-- Keep support material local by default.
-- Hoist only on proven reuse, repo-wide contract status, or standalone human value.
-- Keep top-level canon buckets flat by default.
-- Keep repo-level `scripts/` code-only and suffix-encoded.
-- Treat plugin, package, README, changelog, automation, and repo-root docs consistency as part of the live surface.
-- Preserve the current language and framework of an owning scope unless repo evidence or the user calls for a migration.
-- Do not force `utils/` extraction when code is tightly coupled.
-- Do not force hoisting just because something can be shared.
-- Do not rewrite for stylistic neatness alone.
-- Prefer existing checks over a new custom validator. Do not encode semantic placement judgments in a brittle structural auditor.
-- Preserve unrelated user changes and report any dirty-tree constraint that affects the proposal.
+```sh
+bun run test
+bun run lint
+bun run codex:validate
+git diff --check
+bun run codex:check
+```
 
-## Coverage Domains
-
-Work through these domains in order. Mark a domain `aligned` or `not applicable` when the inventory supports that conclusion; expand it only when there is evidence of drift.
-
-### 1. Inventory and Classify the Live Repo
-
-- Establish the current root surfaces, live skill count, code-bearing scopes, package or workspace boundaries, public and internal commands, tests, generated artifacts, and supported validation commands.
-- Separate live runtime or distribution surfaces from cold-path guidance, ideas, historical material, and generated cache state.
-- Record any missing ownership, ambiguous source of truth, or stale link that affects later decisions.
-
-### 2. Audit Skill Ownership and Discovery
-
-- Account for every live skill under `../skills/`.
-- Prefer one clear owned surface per skill and flag real overlap, routing behavior, or surfaces that should consolidate.
-- Check discovery descriptions, frontmatter, section shape, and bundled-resource paths against the current Skill Author contract.
-- For coding skills, confirm broad discovery language still funnels into one dominant implementation pattern and that testing and workflow guidance each use one canonical mechanism.
-- Tighten contradictory ownership language or repeated prose only when a concrete boundary or maintenance problem exists.
-
-Report aligned skills as a group. Give individual keep, merge, split, rename, delete, or tighten decisions only for skills with a finding.
-
-### 3. Audit Support Ownership and Hoisting
-
-- Review root and skill-local references, templates, assets, scripts, and test support using the repo's current hoisting rules.
-- Keep material local when it serves one owning surface.
-- Demote hoisted material that no longer earns root placement.
-- Hoist only when current consumers prove shared ownership or the artifact is a true repo-wide contract or standalone human resource.
-- Keep cold-path guidance and ideas out of live skill hot paths unless the repo demonstrates a current need.
-
-### 4. Audit Applicable Code, Package, and Command Surfaces
-
-- Apply the current repo-structure and function-shape guidance to each discovered code-bearing scope where it honestly applies.
-- Preserve nearest-owner `bin/`, `scripts/`, `lib/`, `utils/`, and flat `test/` organization unless an established framework, package, or workspace contract justifies another layout.
-- Apply JavaScript, TypeScript, Bun, shell, CLI, frontend, workspace, or other surface-specific canon only when the corresponding files or manifests exist.
-- Review tests with the same ownership and hoisting rules as source.
-- Review public and internal commands for help, version, option precedence, output, and build behavior using the applicable CLI contract.
-- Follow a skill's linked examples or scenario framework when that skill identifies them as the supported validation path.
-
-Record concrete structure or behavior changes only for drifted scopes. Leave honestly coupled or already aligned code alone.
-
-### 5. Audit Root and Distribution Consistency
-
-- Review every discovered root live surface rather than relying on a fixed root-file checklist.
-- Check consistency across plugin manifests, package metadata, README and companion documentation, changelog, agent guidance, CI workflows, prompts, templates, executable entrypoints, lockfiles, and lint or format configuration when present.
-- Confirm root templates and prompts still have proven shared or cross-task value.
-- Check identity-bearing fields, skill IDs, names, descriptions, paths, and generated or cached manifests for stale references.
-- Treat missing or additional root surfaces according to their actual ownership and distribution role rather than assuming they should exist.
-
-### 6. Build the Staged Proposal and Validation Plan
-
-- Rank findings by leverage, correctness risk, and dependency order.
-- Separate policy or documentation changes, structural moves, behavioral code changes, generated artifacts, and cache synchronization when separate commits would improve reviewability.
-- Derive validation from `../AGENTS.md`, available package scripts, and touched-surface contracts. Prefer supported repo commands over invoking internal validator files directly.
-- Include targeted tests, builds, smoke checks, stale-reference searches, formatting checks, and diff checks only where the proposed changes justify them.
-- If managed plugin or cache surfaces would change, include the repo's supported cache check and synchronization flow and note any required agent restart.
-- Do not propose a new validator unless the rule is deterministic, important, and not already covered by an existing supported check.
-
-## Required Specificity
-
-The final proposal must be decision-complete and grounded in current paths and evidence. Include:
-
-- a concise inventory summary and the surfaces considered live, cold-path, generated, or not applicable
-- grouped confirmation of aligned skills and detailed decisions for every skill with a finding
-- the exact contradiction, overlap, stale reference, ownership problem, or structural drift behind each recommended change
-- specific support files to keep local, keep hoisted, demote, promote, or defer when findings exist
-- specific code-bearing or package scopes to change, along with the intended ownership structure
-- specific root or distribution inconsistencies to correct
-- an implementation sequence ordered by leverage and dependencies
-- the exact repo-native validation appropriate to the proposed changes
-- unresolved decisions that genuinely require user input
-
-Do not return a generic audit checklist or merely restate the coverage domains. Do not invent changes to satisfy the output shape.
-
-## Final Output Shape
-
-End with one concrete optimization proposal grouped by:
-
-- current-state summary
-- aligned or not-applicable surfaces
-- recommended changes, ordered by leverage and risk
-- deferred or user-decided questions
-- implementation and commit sequence
-- validation and cache or restart notes
-
-If the client supports `<proposed_plan>`, wrap the final proposal in that block. Otherwise return the same content as plain Markdown.
-
-## Success Criteria
-
-The planning pass is complete when:
-
-- every live skill and discovered live root surface has been accounted for
-- recommendations are supported by current repo evidence rather than a fixed historical inventory
-- skill ownership and discovery boundaries have no unresolved contradictions
-- local versus hoisted material matches the repo's current ownership rules
-- applicable code, package, test, CLI, and frontend surfaces follow their current canon where it honestly applies
-- root plugin, package, automation, and documentation surfaces are internally consistent
-- aligned and not-applicable domains are reported without manufacturing work
-- the proposal defines proportional validation and stale-reference cleanup for every changed live surface
+If the final cache check reports drift, include `bun run codex:sync`, repeat `bun run codex:check`, and note that Codex should be restarted so updated skills reload. Do not synchronize the cache during the read-only planning pass.

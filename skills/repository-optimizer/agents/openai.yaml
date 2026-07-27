@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Repository Optimizer'
+  short_description: 'Tanaab-based read-only repository optimization'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-repository-optimizer to audit this repository against applicable Tanaab optimization facets and produce a staged read-only improvement plan.'

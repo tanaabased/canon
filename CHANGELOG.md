@@ -7,14 +7,16 @@
 - Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
-- Updated the Canon optimization prompt to discover live skills, code surfaces, validation commands, and release state dynamically.
+- Updated the Canon optimization prompt to delegate dynamic discovery and shared audit behavior to Repository Optimizer.
 - Updated the Canon README with a visual entrypoint and the published release-archive installation path.
 - Updated JavaScript organization guidance for role-based modules and flat scope-local tests.
 
 ### Skills
 
+- Added optional, type-shaped `Optimization` facets to canonical skill scaffolding and applicable live skills.
 - Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
 - Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
+- Added `tanaab-repository-optimizer` for read-only cross-surface audits and staged improvement plans.
 - Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
 - Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
 - Updated GitHub Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
