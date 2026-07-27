@@ -10,18 +10,18 @@ function parsePositiveInteger(rawValue, optionName) {
 }
 
 /**
- * Parses the internal GitHub checks inspection command arguments.
+ * Parses the internal Task completion inspection command arguments.
  *
  * @param {string[]} argv Raw argument tokens.
  * @returns {object} Parsed inspection options.
  */
-export default function parseInspectPrChecksArgs(argv) {
+export default function parseTaskCompletionArgs(argv) {
   const parsed = {
     context: DEFAULT_CONTEXT_LINES,
     json: false,
     maxLines: DEFAULT_MAX_LINES,
-    pr: null,
-    repo: '.',
+    prs: [],
+    task: null,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -35,23 +35,29 @@ export default function parseInspectPrChecksArgs(argv) {
       continue;
     }
     if (!arg.startsWith('--')) {
-      throw new Error(`Positional arguments are not supported: ${arg}`);
+      if (parsed.task) throw new Error(`Unexpected positional argument: ${arg}`);
+      parsed.task = arg;
+      continue;
     }
 
     const [rawKey, inlineValue] = arg.split(/=(.*)/s, 2);
-    const key = rawKey.slice(2).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
     const value = inlineValue ?? argv[index + 1];
     if (value === undefined || value.startsWith('--')) {
       throw new Error(`Missing value for ${rawKey}`);
     }
 
-    if (key === 'repo' || key === 'pr') parsed[key] = value;
-    else if (key === 'maxLines') parsed.maxLines = parsePositiveInteger(value, '--max-lines');
-    else if (key === 'context') parsed.context = parsePositiveInteger(value, '--context');
-    else throw new Error(`Unknown option: ${rawKey}`);
+    if (rawKey === '--pr') parsed.prs.push(value);
+    else if (rawKey === '--max-lines') {
+      parsed.maxLines = parsePositiveInteger(value, '--max-lines');
+    } else if (rawKey === '--context') {
+      parsed.context = parsePositiveInteger(value, '--context');
+    } else throw new Error(`Unknown option: ${rawKey}`);
 
     if (inlineValue === undefined) index += 1;
   }
 
+  if (!parsed.help && !parsed.task) {
+    throw new Error('Task is required as a GitHub Issue URL or OWNER/REPO#NUMBER.');
+  }
   return parsed;
 }

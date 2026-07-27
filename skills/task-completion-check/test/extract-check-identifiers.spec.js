@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import extractCheckIdentifiers from '../utils/extract-check-identifiers.js';
 
-describe('skills/github-checks-triage/utils/extract-check-identifiers', () => {
+describe('skills/task-completion-check/utils/extract-check-identifiers', () => {
   it('should extract run and job ids from GitHub Actions URLs', () => {
     assert.deepEqual(
       extractCheckIdentifiers('https://github.com/acme/repo/actions/runs/123/job/456'),
