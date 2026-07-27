@@ -30,6 +30,7 @@
 - Replaced `tanaab-github-checks-triage` with `tanaab-task-completion-check` for read-only, task-first completion assessment.
 - Updated GitHub Workflow Author and coding guidance with separate pull-request gate boundaries.
 - Updated JavaScript Repo Standardizer and Release Author for Bun workspace structure and safe multi-package release boundaries.
+- Updated Project Optimizer with a convergence gate that suppresses low-value implementation churn.
 - Updated README Author with companion-guide mode, practical extraction thresholds, and stronger visual-entrypoint guidance.
 - Updated Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.
 - Updated Skill Author and Task Completion Check with focused libraries, testable utilities, and thin internal commands.

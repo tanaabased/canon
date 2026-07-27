@@ -38,7 +38,7 @@ The live skills are:
 - [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true JavaScript or TypeScript Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
 - [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript, TypeScript, and Bun repo baselines such as workspace layout, linting, formatting, type-checking, and baseline scripts.
 - [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a project and audits or synchronizes its managed settings against canon.
-- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only and produces a staged, skill-owned improvement plan.
+- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only, reports convergence, and produces a staged, skill-owned improvement plan only when warranted.
 - [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
 - [`tanaab-release-author`](./skills/release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
 - [`tanaab-shell-cli-author`](./skills/shell-cli-author/) owns Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.

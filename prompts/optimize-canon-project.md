@@ -1,6 +1,6 @@
 # Optimize Canon Project
 
-Use `$tanaab-project-optimizer` to plan a staged optimization pass on this project's checked-in repository surfaces so Canon practices what it preaches.
+Use `$tanaab-project-optimizer` to assess this project's checked-in repository surfaces and determine whether a staged optimization pass is warranted so Canon practices what it preaches.
 
 Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean or mostly aligned result is valid.
 
@@ -26,18 +26,23 @@ Follow the Project Optimizer workflow and its dynamic skill discovery. In additi
 7. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
 8. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
 
-## Proposal Requirements
+## Disposition Requirements
 
-Return one grounded proposal containing:
+Return one grounded project-level disposition containing:
 
 - a concise inventory of live, cold-path, generated, and not-applicable surfaces
 - grouped aligned findings and specific evidence for every drifted surface
 - one primary owning skill and one primary optimization operation for each recommendation, with companions only for genuine cross-surface work
 - an individual and portfolio-wide disposition for the live skill collection, including keep, merge, split, move, extract, tighten, rename, or remove only where evidence supports it
-- recommended changes ordered by correctness risk, leverage, and dependency
 - deferred questions only where repository evidence cannot resolve the decision
+
+When action-worthy findings clear the Project Optimizer convergence gate, also include:
+
+- recommended changes ordered by correctness risk, leverage, and dependency
 - reviewable implementation and commit stages
 - proportional validation for every proposed stage
+
+When the project is converged, briefly account for intentionally deferred minor drift, report `converged — no optimization pass recommended`, and omit implementation and commit stages.
 
 Do not return a generic checklist or restate the selected skills' Optimization sections. Stop before modifying files.
 
