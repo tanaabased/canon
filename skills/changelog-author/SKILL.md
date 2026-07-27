@@ -85,6 +85,14 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 - Use `###` subsections only when the unreleased block is large enough that grouping materially improves readability.
 - Make any missing change evidence or unresolved changelog ambiguity explicit before closing.
 
+## Optimization
+
+- **Inspect:** Inventory the changelog, its leading unreleased block, the relevant tag or commit evidence, and the preserved release history.
+- **Compare:** Check the unreleased heading and bullet contract, evidence range, ordering, links, duplication, and low-signal entries against the changelog canon.
+- **Recommend:** Prioritize only evidence-supported corrections to the upcoming release, and report an aligned changelog without manufacturing entries.
+- **Apply:** After explicit authorization, edit the unreleased block only unless historical repair is separately requested; never rewrite released history by default.
+- **Verify:** Recheck heading shape, concise alphabetized bullets, deduplication, links, and the evidence boundary used for every entry.
+
 ## Bundled Resources
 
 - [./references/changelog-format-and-examples.md](./references/changelog-format-and-examples.md): exact `prepare-release-action` unreleased heading line plus canonical bullet-shape examples mined from `prepare-release-action`

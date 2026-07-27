@@ -143,6 +143,14 @@ jobs:
       - run: bun run test
 ```
 
+## Optimization
+
+- **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, documentation, tests, and CI for the requested code surface.
+- **Compare:** Evaluate the surface against repository structure, function-flow canon, and established local patterns; classify absent language or framework layers as not applicable.
+- **Recommend:** Prioritize behavior, maintainability, and testability improvements without forcing utility extraction, style churn, or work onto an aligned surface.
+- **Apply:** After explicit authorization, make the smallest coherent change, preserve the repository's chosen language, and avoid unrelated refactors.
+- **Verify:** Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
+
 ## Bundled Resources
 
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first JavaScript and TypeScript runtime defaults

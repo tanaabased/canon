@@ -145,6 +145,14 @@ jobs:
       - run: bun run build
 ```
 
+## Optimization
+
+- **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
+- **Compare:** Evaluate the component surface against frontend canon and repository-local Vue patterns; classify VitePress site topology as not applicable.
+- **Recommend:** Prioritize API clarity, accessibility, reuse, documentation, and validation without imposing unrelated visual doctrine.
+- **Apply:** After explicit authorization, make the smallest component-owned change while preserving the repository's language and design system.
+- **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
+
 ## Bundled Resources
 
 - [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering

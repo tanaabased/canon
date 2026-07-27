@@ -77,6 +77,14 @@ This skill owns one GitHub repository-policy surface. Creation and synchronizati
 5. Resolve a reported branch action first and only with its dedicated flag and approval. The helper then patches General settings, grants `tanaabot` write access, applies classic protection, disables signature protection when needed, and re-inspects.
 6. Finish only when the fresh report is `aligned`; otherwise return the remaining drift and partial-operation details.
 
+## Optimization
+
+- **Inspect:** Resolve an explicit `OWNER/REPO` and use the bundled read-only inspection path to collect managed repository settings; never infer a remote target.
+- **Compare:** Normalize current state against the checked-in canonical policy and report an exact managed diff while leaving unmanaged settings out of scope.
+- **Recommend:** Prioritize confirmed drift, including removals and any separately authorized default-branch work, without treating unavailable state as aligned.
+- **Apply:** After the user confirms the exact diff, mutate only approved managed fields and obtain separate confirmation for branch renames or other distinct effects.
+- **Verify:** Re-inspect the repository and report aligned, remaining, pending-invitation, or partial-failure state explicitly.
+
 ## Bundled Resources
 
 - [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state captured from `tanaabased/canon`

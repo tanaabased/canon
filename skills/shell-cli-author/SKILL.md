@@ -113,6 +113,14 @@ jobs:
       - run: TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
 ```
 
+## Optimization
+
+- **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, and Leia scenarios.
+- **Compare:** Evaluate the public shell surface against CLI rules, templates, and local platform requirements; classify workflow topology and general JavaScript concerns as not applicable.
+- **Recommend:** Prioritize observable UX, stream correctness, safety, and scenario coverage without proposing broad shell rewrites for style alone.
+- **Apply:** After explicit authorization, make the smallest shell-owned change while preserving quoting, platform support, wrappers, and public behavior.
+- **Verify:** Run available static or parse checks, smoke help and version output, and execute the relevant Leia scenarios.
+
 ## Bundled Resources
 
 - [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI help, color, logging, and `SCRIPT_VERSION` rules

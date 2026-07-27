@@ -126,6 +126,14 @@ jobs:
       - run: bun run build
 ```
 
+## Optimization
+
+- **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
+- **Compare:** Evaluate the site against shared frontend and Markdown canon plus established local patterns; classify README selection and generic Vue component work as not applicable.
+- **Recommend:** Prioritize discoverability, reuse, and site coherence without introducing bespoke local systems where global theme surfaces already exist.
+- **Apply:** After explicit authorization, make the smallest VitePress-owned change and reuse global components, styles, and subtheme extension points where appropriate.
+- **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
+
 ## Bundled Resources
 
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared VitePress, SCSS, and subtheme defaults

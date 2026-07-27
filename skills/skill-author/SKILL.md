@@ -118,6 +118,14 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Review `[warn]` and `[manual]` results explicitly instead of treating them as silent success.
 - Confirm the skill still owns one narrow surface and only references canon it actually needs.
 
+## Optimization
+
+- **Inspect:** Inventory discovery text, scope, type, metadata, section shape, bundled resources, code and test placement, and Optimization applicability.
+- **Compare:** Evaluate the skill against the shared standard and its selected type template while preserving one narrow owned surface.
+- **Recommend:** Prioritize scope, discovery, ownership, and contract consistency without creating routers, duplicate doctrine, or new validators.
+- **Apply:** After explicit authorization, make the smallest contract-aligned change and deliberately retain and tailor or remove the Optimization facet.
+- **Verify:** Run the existing validator, review its manual checks, and confirm the skill and its resources still resolve to one clear owner.
+
 ## Bundled Resources
 
 - [../../references/skill-standard.md](../../references/skill-standard.md): naming, structure, metadata, and validation contract

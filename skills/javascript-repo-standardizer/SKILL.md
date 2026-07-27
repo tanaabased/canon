@@ -123,6 +123,14 @@ jobs:
       - run: bun run lint
 ```
 
+## Optimization
+
+- **Inspect:** Inventory manifests, config files, dev dependencies, scripts, Bun metadata, lockfiles, workspaces, owned TypeScript or Vue surfaces, and scope-local test placement.
+- **Compare:** Evaluate the repository against the baseline and its conditional TypeScript, Vue, and workspace layers, reporting each missing or divergent managed surface exactly.
+- **Recommend:** Prioritize coherent baseline corrections without turning standardization into a runtime-code refactor or overriding justified framework conventions.
+- **Apply:** After explicit authorization, make the smallest complete baseline change while preserving the chosen language, framework, workspace, and documented local exceptions.
+- **Verify:** Run the applicable frozen install, lint, format, type-check, tests, build, and package dry-run checks, then report remaining conditional drift.
+
 ## Bundled Resources
 
 - [./references/lint-format-baseline.md](./references/lint-format-baseline.md): local baseline rules and expected script shape

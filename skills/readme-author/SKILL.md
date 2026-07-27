@@ -44,6 +44,14 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 6. Strongly prefer a centered real visual, a concise row of truthful badges, and a one- or two-sentence description, but do not fabricate missing assets or status claims.
 7. Validate that the final README matches one coherent mode and review VitePress when `README.md`, `ADVANCED.md`, and three or more topical guides are present.
 
+## Optimization
+
+- **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, and primary user entrypoints.
+- **Compare:** Evaluate the chosen README mode, first-screen identity, truthful quickstart, common-path 80/20 split, length pressure, topical guides, and docs-site threshold.
+- **Recommend:** Prioritize user navigation and factual clarity, report aligned documentation honestly, and never fabricate commands, status, or product behavior.
+- **Apply:** After explicit authorization, make the smallest coherent documentation change and move long-tail material only when a companion guide or docs site is justified.
+- **Verify:** Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.
+
 ## Bundled Resources
 
 - [../../references/readme-standards.md](../../references/readme-standards.md): README mode selection, companion-guide boundaries, section expectations, and docs-wrapper escalation rules

@@ -73,6 +73,14 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 - Keep release-time `commands` focused on action-product needs such as rebuilding or stamping committed `dist/` artifacts; hand broader workflow topology back to `tanaab-github-workflow-author`.
 - Minimal example: [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml)
 
+## Optimization
+
+- **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
+- **Compare:** Evaluate those surfaces against local action conventions and shared README and JavaScript canon; classify general workflow topology as not applicable.
+- **Recommend:** Prioritize coherent contract, artifact, documentation, and validation improvements, and report aligned surfaces without creating unrelated workflow work.
+- **Apply:** After explicit authorization, make the smallest action-product change and preserve GitHub Workflow Author ownership of broader workflow graphs.
+- **Verify:** Rebuild and test the action, exercise its smoke path, and confirm committed runtime output remains aligned with source and metadata.
+
 ## Bundled Resources
 
 - [./references/javascript-action-conventions.md](./references/javascript-action-conventions.md): local product-surface rules for Bun-backed actions authored in JavaScript or TypeScript
