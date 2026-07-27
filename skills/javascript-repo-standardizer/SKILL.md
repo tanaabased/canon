@@ -125,10 +125,10 @@ jobs:
 
 ## Optimization
 
-- **Inspect:** Inventory manifests, config files, dev dependencies, scripts, Bun metadata, lockfiles, workspaces, owned TypeScript or Vue surfaces, and scope-local test placement.
-- **Compare:** Evaluate the repository against the baseline and its conditional TypeScript, Vue, and workspace layers, reporting each missing or divergent managed surface exactly.
-- **Recommend:** Prioritize coherent baseline corrections without turning standardization into a runtime-code refactor or overriding justified framework conventions.
-- **Apply:** After explicit authorization, make the smallest complete baseline change while preserving the chosen language, framework, workspace, and documented local exceptions.
+- **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, and conditional TypeScript or Vue surfaces.
+- **Compare:** Reconcile conflicting configs, scripts, dependencies, and lock metadata; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, and source-to-test locality drift against conditional canon.
+- **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; split distinct owning scopes; move files and flat tests to the correct role; tighten baseline dependencies; remove obsolete wiring; and hand embedded runtime extraction to JavaScript Author.
+- **Apply:** After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, and keep behavioral refactoring with JavaScript Author.
 - **Verify:** Run the applicable frozen install, lint, format, type-check, tests, build, and package dry-run checks, then report remaining conditional drift.
 
 ## Bundled Resources

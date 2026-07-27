@@ -46,10 +46,10 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 
 ## Optimization
 
-- **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, and primary user entrypoints.
-- **Compare:** Evaluate the chosen README mode, first-screen identity, truthful quickstart, common-path 80/20 split, length pressure, topical guides, and docs-site threshold.
-- **Recommend:** Prioritize user navigation and factual clarity, report aligned documentation honestly, and never fabricate commands, status, or product behavior.
-- **Apply:** After explicit authorization, make the smallest coherent documentation change and move long-tail material only when a companion guide or docs site is justified.
+- **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, primary entrypoints, supported commands, configuration, and other repository evidence that can confirm or contradict documentation claims.
+- **Compare:** Reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, and the canonical `ADVANCED.md`, topical-guide, or docs-site extraction signals.
+- **Recommend:** Keep the truthful common path; correct contradictions; deduplicate or consolidate repeated guidance; split overloaded sections; extract and move justified long-tail material; tighten prose and ordering; and remove stale claims without fabricating behavior.
+- **Apply:** After explicit authorization, perform those operations around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
 - **Verify:** Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.
 
 ## Bundled Resources

@@ -148,9 +148,9 @@ jobs:
 ## Optimization
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
-- **Compare:** Evaluate the component surface against frontend canon and repository-local Vue patterns; classify VitePress site topology as not applicable.
-- **Recommend:** Prioritize API clarity, accessibility, reuse, documentation, and validation without imposing unrelated visual doctrine.
-- **Apply:** After explicit authorization, make the smallest component-owned change while preserving the repository's language and design system.
+- **Compare:** Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
+- **Recommend:** Keep cohesive components; deduplicate or consolidate repeated logic and styles; split overloaded SFCs; extract composables or child components; move shared code to its owner; tighten public API; and remove stale paths without imposing unrelated visual doctrine.
+- **Apply:** After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
 - **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
 
 ## Bundled Resources

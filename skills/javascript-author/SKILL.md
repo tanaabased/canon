@@ -145,10 +145,10 @@ jobs:
 
 ## Optimization
 
-- **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, documentation, tests, and CI for the requested code surface.
-- **Compare:** Evaluate the surface against repository structure, function-flow canon, and established local patterns; classify absent language or framework layers as not applicable.
-- **Recommend:** Prioritize behavior, maintainability, and testability improvements without forcing utility extraction, style churn, or work onto an aligned surface.
-- **Apply:** After explicit authorization, make the smallest coherent change, preserve the repository's chosen language, and avoid unrelated refactors.
+- **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, and CI; identify independently testable function logic embedded in entrypoints or larger libraries.
+- **Compare:** Reconcile behavior, types, documentation, tests, and CI; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, and flat source-to-test locality against the full canon.
+- **Recommend:** Keep cohesive stateful orchestration in `lib/`; deduplicate or consolidate repeated logic; split overloaded owners; extract honestly separable one-function utilities with narrow specs; move misplaced code; tighten boundaries; and remove proven dead code without forcing decomposition or style churn.
+- **Apply:** After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
 - **Verify:** Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
 
 ## Bundled Resources

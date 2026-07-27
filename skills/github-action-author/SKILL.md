@@ -76,9 +76,9 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## Optimization
 
 - **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
-- **Compare:** Evaluate those surfaces against local action conventions and shared README and JavaScript canon; classify general workflow topology as not applicable.
-- **Recommend:** Prioritize coherent contract, artifact, documentation, and validation improvements, and report aligned surfaces without creating unrelated workflow work.
-- **Apply:** After explicit authorization, make the smallest action-product change and preserve GitHub Workflow Author ownership of broader workflow graphs.
+- **Compare:** Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.
+- **Recommend:** Keep aligned runtime output; deduplicate or consolidate repeated contracts; extract testable units; move misplaced action-owned material; split only genuinely independent actions; and tighten or remove stale surfaces without creating unrelated workflow work.
+- **Apply:** After explicit authorization, make the smallest coherent action-product operations and preserve GitHub Workflow Author ownership of broader workflow graphs.
 - **Verify:** Rebuild and test the action, exercise its smoke path, and confirm committed runtime output remains aligned with source and metadata.
 
 ## Bundled Resources

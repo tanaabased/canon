@@ -80,8 +80,8 @@ This skill owns one GitHub repository-policy surface. Creation and synchronizati
 ## Optimization
 
 - **Inspect:** Resolve an explicit `OWNER/REPO` and use the bundled read-only inspection path to collect managed repository settings; never infer a remote target.
-- **Compare:** Normalize current state against the checked-in canonical policy and report an exact managed diff while leaving unmanaged settings out of scope.
-- **Recommend:** Prioritize confirmed drift, including removals and any separately authorized default-branch work, without treating unavailable state as aligned.
+- **Compare:** Reconcile normalized current state with the checked-in canonical policy and report an exact managed diff, including contradictory or extra managed values, while leaving unmanaged settings out of scope.
+- **Recommend:** Keep aligned and unmanaged state; correct confirmed managed drift; remove extra managed configuration where canonical exactness requires it; and treat content deduplication, consolidation, splitting, and extraction as not applicable to this remote policy surface.
 - **Apply:** After the user confirms the exact diff, mutate only approved managed fields and obtain separate confirmation for branch renames or other distinct effects.
 - **Verify:** Re-inspect the repository and report aligned, remaining, pending-invitation, or partial-failure state explicitly.
 

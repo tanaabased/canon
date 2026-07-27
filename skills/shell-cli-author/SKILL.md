@@ -116,9 +116,9 @@ jobs:
 ## Optimization
 
 - **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, and Leia scenarios.
-- **Compare:** Evaluate the public shell surface against CLI rules, templates, and local platform requirements; classify workflow topology and general JavaScript concerns as not applicable.
-- **Recommend:** Prioritize observable UX, stream correctness, safety, and scenario coverage without proposing broad shell rewrites for style alone.
-- **Apply:** After explicit authorization, make the smallest shell-owned change while preserving quoting, platform support, wrappers, and public behavior.
+- **Compare:** Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, and stale paths against CLI and platform rules.
+- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
+- **Apply:** After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
 - **Verify:** Run available static or parse checks, smoke help and version output, and execute the relevant Leia scenarios.
 
 ## Bundled Resources

@@ -67,9 +67,9 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 ## Optimization
 
 - **Inspect:** Inventory workflow triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, and validation gates.
-- **Compare:** Evaluate the workflow graph against the workflow contract and repository-native requirements; classify action-product and local source concerns as not applicable.
-- **Recommend:** Prioritize correctness, security, current dependency wiring, and useful deduplication, and report valid aligned workflows without manufacturing edits.
-- **Apply:** After explicit authorization, make the smallest graph change while preserving the boundaries of runtime code and GitHub Action product surfaces.
+- **Compare:** Reconcile triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, overloaded jobs, misplaced responsibilities, and stale wiring.
+- **Recommend:** Keep valid workflows; deduplicate repeated steps; consolidate reusable paths; split overloaded jobs; move product logic to its owner; tighten permissions and gates; and remove stale paths without manufacturing edits.
+- **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
 - **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
 
 ## Bundled Resources

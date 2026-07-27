@@ -4,6 +4,7 @@
 
 - Added a Bun workspace baseline for private monorepo roots, publishable package boundaries, aggregate packages, and filtered commands.
 - Added ESLint and Prettier as the enforced JavaScript lint and format baseline.
+- Added shared optimization operations for contradiction resolution, deduplication, consolidation, extraction, placement, tightening, and removal.
 - Aligned release-time version stamping across `package.json`, `.codex-plugin/plugin.json`, and `codexsync`.
 - Clarified lowercase prose expectations for Leia `# should ...` test descriptions.
 - Extended shared JavaScript guidance and the role-based repo layout to TypeScript without introducing a default `src/` boundary.
@@ -17,6 +18,7 @@
 - Added required OpenClaw display metadata and deliberate load-time dependency gates to canonical skill scaffolding and validation.
 - Added `tanaab-github-repository-author` for canonical repository creation, audits, and confirmed synchronization.
 - Added `tanaab-repository-optimizer` for read-only cross-surface audits and staged improvement plans.
+- Expanded `tanaab-skill-author` and `tanaab-repository-optimizer` with individual and portfolio-wide skill optimization.
 - Opened the JavaScript Author, JavaScript CLI Author, and JavaScript Repo Standardizer skills to TypeScript, with conditional type-check and lint guidance.
 - Refreshed coding-skill workflow examples and shared starters to use `actions/checkout@v7`.
 - Updated GitHub Release Author to create new release tags from the repository's default branch and verify existing tags before reuse.

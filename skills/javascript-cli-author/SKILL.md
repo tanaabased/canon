@@ -123,9 +123,9 @@ jobs:
 ## Optimization
 
 - **Inspect:** Inventory the package entrypoint, parser, help, version, environment precedence, build output, packaging metadata, examples, and observable CLI tests.
-- **Compare:** Evaluate the public command against CLI style, repository structure, and Leia conventions; classify internal maintainer scripts as not applicable.
-- **Recommend:** Prioritize public behavior, packaging integrity, help clarity, and scenario coverage without widening the task into general JavaScript cleanup.
-- **Apply:** After explicit authorization, make the smallest public CLI change and preserve documented command behavior and package boundaries.
+- **Compare:** Reconcile parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, and stale public claims against CLI and Leia canon.
+- **Recommend:** Keep aligned behavior; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.
+- **Apply:** After explicit authorization, make the smallest coherent CLI operations and preserve documented command behavior and package boundaries.
 - **Verify:** Build the entrypoint, smoke help and version output, run Leia-backed scenarios, and type-check when the repository owns TypeScript.
 
 ## Bundled Resources

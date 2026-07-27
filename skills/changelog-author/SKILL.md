@@ -88,9 +88,9 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 ## Optimization
 
 - **Inspect:** Inventory the changelog, its leading unreleased block, the relevant tag or commit evidence, and the preserved release history.
-- **Compare:** Check the unreleased heading and bullet contract, evidence range, ordering, links, duplication, and low-signal entries against the changelog canon.
-- **Recommend:** Prioritize only evidence-supported corrections to the upcoming release, and report an aligned changelog without manufacturing entries.
-- **Apply:** After explicit authorization, edit the unreleased block only unless historical repair is separately requested; never rewrite released history by default.
+- **Compare:** Reconcile the unreleased heading and bullets with tag or commit evidence, then identify contradictions, duplicate or fragmented entries, weak ordering, missing links, and low-signal content against the changelog canon.
+- **Recommend:** Keep evidence-backed entries; correct contradictions; deduplicate or consolidate related bullets; split overloaded bullets; move entries into justified subsections; and tighten or remove low-signal wording without manufacturing changes.
+- **Apply:** After explicit authorization, make those operations in the unreleased block only unless historical repair is separately requested; never rewrite released history by default.
 - **Verify:** Recheck heading shape, concise alphabetized bullets, deduplication, links, and the evidence boundary used for every entry.
 
 ## Bundled Resources
