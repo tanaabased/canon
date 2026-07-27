@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.5.0 - [July 27, 2026](https://github.com/tanaabased/canon/releases/tag/v0.5.0)
+
 ### Breaking Changes
 
 - Changed `bun run lint` to enforce ESLint and Prettier; Canon validation remains available through `bun run codex:validate`. [#7](https://github.com/tanaabased/canon/pull/7)
