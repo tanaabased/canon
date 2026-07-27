@@ -26,7 +26,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - `type` is the only variable identity input for new or standardized skills.
 - Choose the narrowest type that fits; keep `generic` as the fallback.
 - Treat project management as a domain and category rather than a separate skill type. Use `integration` for one provider-backed object or mutation boundary and `workflow` for a fixed multi-object lifecycle.
-- Prefer domain-led names for Project, Task, Project Milestone, and Release surfaces; retain provider-led names when provider mechanics are the actual product surface.
+- Prefer domain-led names for project, task, project milestone, and release surfaces; treat those concepts as lowercase ordinary nouns in prose. Retain provider-led names when provider mechanics are the actual product surface, and retain repository or repo when the technical container or baseline is the exact owned surface.
 - Validation is a first-class workflow phase and a valid standalone mode.
 - Treat a workflow facet as a reusable path through one owned surface; keep domain-appropriate mode, lifecycle, and variant language instead of forcing one label onto every skill.
 - Retain and tailor the optional `Optimization` facet when the skill can audit an existing persistent surface against durable canon; remove it for incident-specific, event-specific, or execution-only workflows.
@@ -56,7 +56,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 ## When Not to Use
 
 - Do not use this skill for ordinary work that merely happens inside an existing skill.
-- Do not use this skill for a whole-Project audit outside skill surfaces; use Project Optimizer and let it select Skill Author when a skill collection is present.
+- Do not use this skill for a whole-project audit outside skill surfaces; use Project Optimizer and let it select Skill Author when a skill collection is present.
 - Do not treat shared references or helper CLIs as optional when they already cover the requested change.
 - Do not force a live skill when the real reusable artifact is a whole starter repo that users should adopt directly.
 

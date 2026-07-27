@@ -21,7 +21,8 @@ Use this file as the source of truth for canon skill validation.
 - `[error]` Inside a larger Codex plugin, the skill folder name must equal the generated machine id with the leading `tanaab-` owner prefix removed.
 - `[error]` Strip an accidental duplicate `tanaab-` prefix before writing the final machine id.
 - `[manual]` Treat project management as a domain or category, not an additional skill type.
-- `[manual]` Prefer domain-led names for skills that own Projects, Tasks, Project Milestones, or Releases. Prefer provider-led names only when provider-specific mechanics are the owned surface.
+- `[manual]` Prefer domain-led names for skills that own projects, tasks, project milestones, or releases. Treat those concepts as lowercase ordinary nouns in prose; retain capitalization only in proper skill, product, or document names.
+- `[manual]` Prefer provider-led names when provider-specific mechanics are the owned surface, and retain repository or repo when a technical container, layout, configuration, or tooling baseline is the exact owned surface.
 - `[manual]` For project-management surfaces, prefer `integration` for one provider-backed object or mutation boundary and `workflow` for a fixed lifecycle spanning multiple objects.
 
 ## Required Files
