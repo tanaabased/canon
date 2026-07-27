@@ -467,7 +467,6 @@ function Invoke-RunCli {
     'none'
   }
 
-  debug 'raw args {0} {1}' $script:CLI_NAME, (Join-Arguments -Values $script:OriginalArgs)
   debug 'raw Debug={0}' $Invocation.Options.Debug
   debug 'raw Force={0}' $Invocation.Options.Force
   debug 'raw Item={0}' (Get-CsvDisplay $Invocation.Options.Item)
@@ -483,7 +482,6 @@ function Invoke-RunCli {
 }
 
 $script:USE_COLOR = Test-ColorEnabled
-$script:OriginalArgs = @($args)
 
 $script:Resolved = Resolve-Invocation
 
