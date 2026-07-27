@@ -1,6 +1,6 @@
 ---
 name: tanaab-release-author
-description: Tanaab-based Release drafting and readiness workflow implemented through GitHub Releases. Use when a user wants to prepare a changelog-backed Release draft, verify the next tag, or review release readiness.
+description: Tanaab-based release drafting and readiness workflow implemented through GitHub Releases. Use when a user wants to prepare a changelog-backed release draft, verify the next tag, or review release readiness.
 license: MIT
 metadata:
   type: integration
@@ -22,7 +22,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based Release drafting and readiness workflow implemented through GitHub Releases for Tanaab and allied Projects.
+Tanaab-based release drafting and readiness workflow implemented through GitHub Releases for Tanaab and allied projects.
 
 Use this skill to prepare a release from the repository's current changelog contract, choose or verify the next release tag, and create a GitHub Release draft that a human can review and publish.
 

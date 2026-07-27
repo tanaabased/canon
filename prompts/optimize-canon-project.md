@@ -1,6 +1,6 @@
-# Optimize Canon Repo
+# Optimize Canon Project
 
-Use `$tanaab-project-optimizer` to plan a staged optimization pass on this repository-backed Project so Canon practices what it preaches.
+Use `$tanaab-project-optimizer` to plan a staged optimization pass on this project's checked-in repository surfaces so Canon practices what it preaches.
 
 Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean or mostly aligned result is valid.
 

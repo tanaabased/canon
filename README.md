@@ -5,7 +5,7 @@
 <h1 align="center">Tanaab Canon</h1>
 
 <p align="center">
-  This repo is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+  This project is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
 </p>
 
 <p align="center">
@@ -21,7 +21,7 @@ Outside the Codex plugin surface, the main Markdown canon lives in a small set o
 - [`guidance/`](./guidance/) holds durable policy, architecture, and design-shaping docs that should influence decisions but do not need to trigger as skills.
 - [`ideas/`](./ideas/) holds proposals, deferred designs, and revisit notes that are not adopted canon yet.
 - [`references/`](./references/) holds stable lookup material such as standards, contracts, naming rules, repo-structure rules, and testing doctrine.
-- [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as repo maintenance and optimization workflows.
+- [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as project maintenance and optimization workflows.
 - [`templates/`](./templates/) holds canonical copy/adapt starters, shared scaffolds, and reusable workflow templates that have proven human or cross-skill value.
 
 ## Usage
@@ -36,13 +36,13 @@ The live skills are:
 - [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript, TypeScript, and Bun implementation work, especially low-coupling helpers and utility logic.
 - [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true JavaScript or TypeScript Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
 - [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript, TypeScript, and Bun repo baselines such as workspace layout, linting, formatting, type-checking, and baseline scripts.
-- [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a Project and audits or synchronizes its managed settings against canon.
-- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable Project surfaces read-only and produces a staged, skill-owned improvement plan.
+- [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a project and audits or synchronizes its managed settings against canon.
+- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only and produces a staged, skill-owned improvement plan.
 - [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
 - [`tanaab-release-author`](./skills/release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
 - [`tanaab-shell-cli-author`](./skills/shell-cli-author/) owns Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.
 - [`tanaab-skill-author`](./skills/skill-author/) scaffolds, standardizes, and validates canon skills.
-- [`tanaab-task-completion-check`](./skills/task-completion-check/) assesses whether a GitHub-backed Task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.
+- [`tanaab-task-completion-check`](./skills/task-completion-check/) assesses whether a GitHub-backed task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.
 - [`tanaab-vitepress-author`](./skills/vitepress-author/) owns VitePress docs and static-site surfaces.
 - [`tanaab-vue-author`](./skills/vue-author/) owns Vue 3 frontend implementation surfaces such as components and Composition API flows.
 
@@ -109,8 +109,8 @@ bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/javascript-
 
 ## Issues, Questions and Support
 
-- Open a GitHub issue in [tanaabased/canon](https://github.com/tanaabased/canon) when the repo has canon drift, broken skill behavior, stale references, or missing guidance.
-- Route implementation work to the owning repo or skill surface instead of overloading this repo with unrelated product fixes.
+- Open a task as a GitHub issue in [tanaabased/canon](https://github.com/tanaabased/canon) when the project has canon drift, broken skill behavior, stale references, or missing guidance.
+- Route implementation work to the owning project or skill surface instead of overloading this repository with unrelated product fixes.
 
 ## Changelog
 

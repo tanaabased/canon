@@ -15,7 +15,7 @@ function classify(overrides = {}) {
 }
 
 describe('skills/task-completion-check/utils/classify-task-completion', () => {
-  it('should classify closed Issues as complete', () => {
+  it('should classify closed issues as complete', () => {
     assert.equal(classify({ criteria: [], task: { state: 'CLOSED' } }).status, 'complete');
   });
 

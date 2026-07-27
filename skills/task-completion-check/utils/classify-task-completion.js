@@ -1,16 +1,16 @@
 /**
- * Classifies Task completion from acceptance, query, and pull request evidence.
+ * Classifies task completion from acceptance, query, and pull request evidence.
  *
- * @param {object} evidence Normalized Task evidence.
+ * @param {object} evidence Normalized task evidence.
  * @returns {{reason: string, status: 'blocked'|'complete'|'pending'|'ready'|'uncertain'}} Result.
  */
 export default function classifyTaskCompletion({ criteria, errors, pullRequests, task }) {
   if (String(task?.state ?? '').toUpperCase() === 'CLOSED') {
-    return { reason: 'The GitHub Issue is already closed.', status: 'complete' };
+    return { reason: 'The GitHub issue is already closed.', status: 'complete' };
   }
   if (criteria.length === 0) {
     return {
-      reason: 'The Task has no structured acceptance-criteria checkboxes.',
+      reason: 'The task has no structured acceptance-criteria checkboxes.',
       status: 'uncertain',
     };
   }
@@ -52,7 +52,7 @@ export default function classifyTaskCompletion({ criteria, errors, pullRequests,
   }
 
   return {
-    reason: 'Linked pull requests were closed without delivering the Task.',
+    reason: 'Linked pull requests were closed without delivering the task.',
     status: 'blocked',
   };
 }

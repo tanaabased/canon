@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import renderTaskCompletion from '../utils/render-task-completion.js';
 
 describe('skills/task-completion-check/utils/render-task-completion', () => {
-  it('should render Task, acceptance, pull request, and failure evidence', () => {
+  it('should render task, acceptance, pull request, and failure evidence', () => {
     const output = renderTaskCompletion({
       criteria: [{ complete: true, text: 'tests pass' }],
       errors: [],
@@ -30,10 +30,10 @@ describe('skills/task-completion-check/utils/render-task-completion', () => {
       task: { comments: [{ body: 'context' }], title: 'Task title' },
     });
 
-    assert.match(output, /Task tanaabased\/canon#7: BLOCKED/);
+    assert.match(output, /task tanaabased\/canon#7: BLOCKED/);
     assert.match(output, /- \[x\] tests pass/);
     assert.match(output, /tanaabased\/canon#8: blocked/);
     assert.match(output, / {4}Error: failed/);
-    assert.match(output, /Task comments inspected: 1/);
+    assert.match(output, /task comments inspected: 1/);
   });
 });

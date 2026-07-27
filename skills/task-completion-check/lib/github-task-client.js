@@ -85,7 +85,7 @@ function isPendingLogMessage(message) {
  *
  * @param {object} [options] Client dependencies.
  * @param {Function} [options.runner=defaultCommandRunner] Command execution boundary.
- * @returns {object} GitHub Task, pull request, check, and log inspection operations.
+ * @returns {object} GitHub task, pull request, check, and log inspection operations.
  */
 export function createGitHubTaskClient({ runner = defaultCommandRunner } = {}) {
   const runGh = (args, options) => runner('gh', args, options);
@@ -115,13 +115,13 @@ export function createGitHubTaskClient({ runner = defaultCommandRunner } = {}) {
     ]);
     if (result.returncode !== 0) {
       throw new Error(
-        errorMessage(result, `unable to inspect Task ${target.slug}#${target.number}.`),
+        errorMessage(result, `unable to inspect task ${target.slug}#${target.number}.`),
       );
     }
     return parseJson(
       result,
-      'unable to parse Task JSON.',
-      'unexpected Task JSON shape.',
+      'unable to parse task JSON.',
+      'unexpected task JSON shape.',
       (data) => data && typeof data === 'object' && !Array.isArray(data),
     );
   }

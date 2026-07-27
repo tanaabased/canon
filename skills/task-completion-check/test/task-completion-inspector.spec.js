@@ -39,7 +39,7 @@ const options = {
 };
 
 describe('skills/task-completion-check/lib/task-completion-inspector', () => {
-  it('should classify a closed Issue as complete without requiring PR evidence', () => {
+  it('should classify a closed issue as complete without requiring PR evidence', () => {
     const client = createClient({
       fetchLinkedPullRequests: () => {
         throw new Error('should not query links');
@@ -50,7 +50,7 @@ describe('skills/task-completion-check/lib/task-completion-inspector', () => {
     assert.equal(inspectTaskCompletion(options, client).status, 'complete');
   });
 
-  it('should classify a non-code Task with complete criteria as ready', () => {
+  it('should classify a non-code task with complete criteria as ready', () => {
     const report = inspectTaskCompletion(options, createClient());
 
     assert.equal(report.status, 'ready');
@@ -131,10 +131,10 @@ describe('skills/task-completion-check/lib/task-completion-inspector', () => {
     assert.equal(report.status, 'ready');
   });
 
-  it('should return uncertain when Task or related evidence cannot be queried', () => {
+  it('should return uncertain when task or related evidence cannot be queried', () => {
     const taskFailure = createClient({
       fetchTask: () => {
-        throw new Error('Task unavailable');
+        throw new Error('task unavailable');
       },
     });
     assert.equal(inspectTaskCompletion(options, taskFailure).status, 'uncertain');

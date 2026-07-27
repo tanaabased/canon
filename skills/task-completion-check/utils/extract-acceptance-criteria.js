@@ -3,7 +3,7 @@ const TASK_LIST_ITEM_PATTERN = /^\s*(?:[-*+]|\d+[.)])\s+\[([ xX])\]\s+(.+?)\s*$/
 /**
  * Extracts structured acceptance criteria from Markdown task-list items.
  *
- * @param {string} body GitHub Issue body.
+ * @param {string} body GitHub issue body.
  * @returns {{complete: boolean, text: string}[]} Acceptance criteria in source order.
  */
 export default function extractAcceptanceCriteria(body) {

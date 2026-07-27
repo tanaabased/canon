@@ -1,6 +1,6 @@
 ---
 name: tanaab-project-optimizer
-description: Tanaab-based read-only Project optimization planning. Use when a user wants to audit a repository-backed Project against applicable Tanaab skill optimization facets and produce a staged improvement plan before implementation.
+description: Tanaab-based read-only project optimization planning. Use when a user wants to audit a project's checked-in repository surfaces against applicable Tanaab skill optimization facets and produce a staged improvement plan before implementation.
 license: MIT
 metadata:
   type: workflow
@@ -21,11 +21,11 @@ metadata:
 
 ## Overview
 
-Audit a repository-backed Project against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed surface is classified without modifying the Project.
+Audit a project's checked-in repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed surface is classified without modifying the project.
 
 ## When to Use
 
-- Run a repeatable, Project-wide alignment and maintainability audit before an optimization pass.
+- Run a repeatable, project-wide alignment and maintainability audit before an optimization pass.
 - Reconcile documentation, code, package, workflow, skill, and other observed surfaces through their existing Tanaab owners.
 - Turn evidence-backed findings into a staged implementation and validation plan before any changes are made.
 - Include GitHub-hosted repository settings only when the user explicitly requests remote coverage and supplies or confirms the repository slug.

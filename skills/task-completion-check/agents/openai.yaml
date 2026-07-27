@@ -1,7 +1,7 @@
 interface:
   display_name: 'Task Completion Check'
-  short_description: 'Tanaab-based read-only Task completion assessment.'
+  short_description: 'Tanaab-based read-only task completion assessment.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-task-completion-check to assess whether an explicit GitHub-backed Task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.'
+  default_prompt: 'Use $tanaab-task-completion-check to assess whether an explicit GitHub-backed task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.'

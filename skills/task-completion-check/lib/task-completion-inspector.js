@@ -85,7 +85,7 @@ function uncertainReport(target, message) {
     criteria: [],
     errors: [message],
     pullRequests: [],
-    reason: 'The Task could not be inspected.',
+    reason: 'The task could not be inspected.',
     status: 'uncertain',
     target,
     task: null,
@@ -93,12 +93,12 @@ function uncertainReport(target, message) {
 }
 
 /**
- * Inspects one GitHub-backed Task and classifies its completion evidence through
+ * Inspects one GitHub-backed task and classifies its completion evidence through
  * an injected read-only GitHub client.
  *
- * @param {object} options Task identity, explicit PR evidence, and log bounds.
+ * @param {object} options Options containing task identity, explicit PR evidence, and log bounds.
  * @param {object} client GitHub command client.
- * @returns {object} Normalized Task completion report.
+ * @returns {object} Normalized task completion report.
  */
 export function inspectTaskCompletion(options, client) {
   const target = normalizeTaskTarget(options.task);

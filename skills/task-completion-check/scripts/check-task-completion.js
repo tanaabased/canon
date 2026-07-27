@@ -17,7 +17,7 @@ function renderUsage(stream = process.stdout) {
         stream,
       )}`,
       summary:
-        'Inspect a GitHub-backed Task, its acceptance criteria, linked pull requests, and validation evidence without mutating GitHub.',
+        'Inspect a GitHub-backed task, its acceptance criteria, linked pull requests, and validation evidence without mutating GitHub.',
       options: [
         '  --pr <value>            additional PR number, URL, or OWNER/REPO#NUMBER; repeatable',
         `  --max-lines <count>     maximum failure snippet size ${dim(`[default: ${DEFAULT_MAX_LINES}]`, stream)}`,

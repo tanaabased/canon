@@ -18,7 +18,7 @@ function isPendingCheck(check) {
  * Normalizes one pull request and its checks into task-completion evidence.
  *
  * @param {object} pullRequest Raw `gh pr view` response.
- * @param {object} options Related Project and check state.
+ * @param {object} options Related project and check state.
  * @returns {object} Stable pull request evidence with one outcome.
  */
 export default function normalizePrEvidence(pullRequest, { checks = [], defaultBranch, slug }) {

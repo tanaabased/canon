@@ -3,10 +3,10 @@ const PULL_REQUEST_URL_PATTERN =
   /^https:\/\/github\.com\/([^/\s]+)\/([^/\s]+)\/pull\/([1-9]\d*)(?:[/?#].*)?$/i;
 
 /**
- * Normalizes explicit pull request evidence relative to a Task's Project.
+ * Normalizes explicit pull request evidence relative to a task's project.
  *
  * @param {string | number} value Pull request number, URL, or OWNER/REPO#NUMBER.
- * @param {string} defaultSlug Project slug used for number-only values.
+ * @param {string} defaultSlug Slug for the project used with number-only values.
  * @returns {{number: string, slug: string, url: string}} Pull request target.
  * @throws {Error} When the supplied evidence target is invalid.
  */

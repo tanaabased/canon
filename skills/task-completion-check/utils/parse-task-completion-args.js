@@ -10,7 +10,7 @@ function parsePositiveInteger(rawValue, optionName) {
 }
 
 /**
- * Parses the internal Task completion inspection command arguments.
+ * Parses the internal task completion inspection command arguments.
  *
  * @param {string[]} argv Raw argument tokens.
  * @returns {object} Parsed inspection options.
@@ -57,7 +57,7 @@ export default function parseTaskCompletionArgs(argv) {
   }
 
   if (!parsed.help && !parsed.task) {
-    throw new Error('Task is required as a GitHub Issue URL or OWNER/REPO#NUMBER.');
+    throw new Error('A task is required as a GitHub issue URL or OWNER/REPO#NUMBER.');
   }
   return parsed;
 }

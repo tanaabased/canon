@@ -25,14 +25,14 @@ function renderPullRequest(pullRequest) {
 }
 
 /**
- * Renders a Task completion assessment without writing to process streams.
+ * Renders a task completion assessment without writing to process streams.
  *
- * @param {object} report Normalized Task completion report.
+ * @param {object} report Normalized task completion report.
  * @returns {string} Human-readable assessment.
  */
 export default function renderTaskCompletion(report) {
   const lines = [
-    `Task ${report.target.slug}#${report.target.number}: ${report.status.toUpperCase()}`,
+    `task ${report.target.slug}#${report.target.number}: ${report.status.toUpperCase()}`,
   ];
   if (report.task?.title) lines.push(report.task.title);
   lines.push('', `Reason: ${report.reason}`);
@@ -48,7 +48,7 @@ export default function renderTaskCompletion(report) {
   }
 
   if (report.task?.comments?.length > 0) {
-    lines.push('', `Task comments inspected: ${report.task.comments.length}`);
+    lines.push('', `task comments inspected: ${report.task.comments.length}`);
   }
   if (report.errors.length > 0) {
     lines.push('', 'Evidence errors:', ...report.errors.map((error) => `- ${error}`));

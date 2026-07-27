@@ -25,7 +25,7 @@ describe('skills/task-completion-check/lib/github-task-client', () => {
     assert.deepEqual(unauthenticated.ensureAvailable(), { message: 'no auth', ok: false });
   });
 
-  it('should inspect an explicit Task through the Issue API surface', () => {
+  it('should inspect an explicit task through the issue API surface', () => {
     const calls = [];
     const client = createGitHubTaskClient({
       runner: (command, args) => {

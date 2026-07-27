@@ -27,9 +27,9 @@
       "Use $tanaab-skill-author to create a skill for sending AgentMail email through cURL.",
       "Use $tanaab-javascript-cli-author to build a TypeScript Bun CLI that lists open PRs for tanaabased/canon.",
       "Use $tanaab-release-author to prepare a GitHub Release draft from CHANGELOG.md entries.",
-      "Use $tanaab-project-author to inspect or synchronize the managed repository settings for the tanaabased/example Project.",
+      "Use $tanaab-project-author to inspect or synchronize the managed repository settings for the tanaabased/example project.",
       "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow.",
-      "Use $tanaab-project-optimizer to audit a repository-backed Project against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
+      "Use $tanaab-project-optimizer to audit a project's checked-in repository surfaces against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
       "Use $tanaab-task-completion-check to assess whether tanaabased/example#12 is complete or ready from its acceptance criteria, linked pull requests, reviews, and checks."
     ],
     "brandColor": "#00c88a",

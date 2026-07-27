@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import normalizeTaskTarget from '../utils/normalize-task-target.js';
 
 describe('skills/task-completion-check/utils/normalize-task-target', () => {
-  it('should normalize slug and GitHub Issue URL targets', () => {
+  it('should normalize slug and GitHub issue URL targets', () => {
     const expected = {
       number: '12',
       owner: 'tanaabased',
@@ -19,11 +19,11 @@ describe('skills/task-completion-check/utils/normalize-task-target', () => {
     );
   });
 
-  it('should reject ambiguous and non-Issue targets', () => {
-    assert.throws(() => normalizeTaskTarget('12'), /GitHub Issue URL/);
+  it('should reject ambiguous and non-issue targets', () => {
+    assert.throws(() => normalizeTaskTarget('12'), /GitHub issue URL/);
     assert.throws(
       () => normalizeTaskTarget('https://github.com/tanaabased/canon/pull/12'),
-      /GitHub Issue URL/,
+      /GitHub issue URL/,
     );
   });
 });

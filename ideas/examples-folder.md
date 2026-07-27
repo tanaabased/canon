@@ -57,4 +57,4 @@ Create `examples/` only if the answer is `yes` to all of these:
 - Keep `examples/` flat by default.
 - Use it for file- or fragment-level completed references, not whole repositories.
 - Keep template repositories as the owner for full adopt-wholesale start states.
-- Update `AGENTS.md`, repo optimization guidance, and any affected skills at the same time so the new bucket has one clear contract.
+- Update `AGENTS.md`, project optimization guidance, and any affected skills at the same time so the new bucket has one clear contract.
