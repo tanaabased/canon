@@ -4,15 +4,15 @@ Use this reference for Tanaab project-management terminology and lifecycle owner
 
 ## Canonical Mapping
 
-| Canon concept | GitHub representation | Contract |
-|---|---|---|
-| Project | Repository (`OWNER/REPO`) | Canonical project container and source of project identity |
-| Task | Issue | Atomic, independently trackable unit of work and authority for task state |
-| Project milestone | Milestone | Bounded project outcome or timebox that groups Tasks |
-| Change | Pull request | Delivery and review vehicle that may provide evidence for one or more Tasks |
-| Validation | Check run or GitHub Actions result | Automated evidence about a Change or repository state |
-| Release | Git tag plus GitHub Release | Packaged project delivery and its published metadata |
-| GitHub Projects board | Optional planning view | Visualization of project work, never the Project's identity or source of truth |
+| Canon concept         | GitHub representation              | Contract                                                                       |
+| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------ |
+| Project               | Repository (`OWNER/REPO`)          | Canonical project container and source of project identity                     |
+| Task                  | Issue                              | Atomic, independently trackable unit of work and authority for task state      |
+| Project milestone     | Milestone                          | Bounded project outcome or timebox that groups Tasks                           |
+| Change                | Pull request                       | Delivery and review vehicle that may provide evidence for one or more Tasks    |
+| Validation            | Check run or GitHub Actions result | Automated evidence about a Change or repository state                          |
+| Release               | Git tag plus GitHub Release        | Packaged project delivery and its published metadata                           |
+| GitHub Projects board | Optional planning view             | Visualization of project work, never the Project's identity or source of truth |
 
 Use **Project** and **Task** in provider-neutral Canon guidance. Use **repository**, **issue**, **pull request**, and other GitHub terms when describing exact provider inputs, API fields, or failure modes. Always qualify **GitHub Projects board** so it is not confused with the repository-backed Project.
 
