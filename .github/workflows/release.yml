@@ -39,7 +39,7 @@ jobs:
         uses: tanaabased/prepare-release-action@v1
         with:
           commands: |
-            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            version-injector .codex-plugin/plugin.json --style json --version "${{ github.event.release.tag_name }}"
           sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}
           sync-email: tanaabot@tanaab.dev
           sync-username: tanaabot

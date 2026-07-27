@@ -33,7 +33,7 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
           sync: false
           commands: |
-            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
       - name: Verify stamped versions
         shell: bash
         run: |
