@@ -1,6 +1,6 @@
 ---
 name: tanaab-vue-author
-description: Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+description: Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -18,7 +18,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
 
 - Keep this skill on Vue component and SFC implementation surfaces.
 - Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
@@ -73,6 +73,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - Default to Vue single-file components with blocks in this order: `<template>`, `<script setup>`, `<style scoped lang="scss">`.
 - Keep the first block declarative and HTML-led. Reach for render functions or JSX only when the repo already uses them or the task clearly requires them.
 - Use `<script setup>` for component logic by default. Keep props, emits, computed state, and local helpers there.
+- When the repo uses TypeScript, preserve or adopt `<script setup lang="ts">`, use typed props and emits, and mark type-only dependencies with `import type`; do not migrate unrelated components solely for consistency.
 - Put styling in the final block and write it in SCSS whenever a style block exists.
 - Prefer `scoped` styles for component-owned styling unless the repo or task clearly requires a shared or global surface.
 - In a larger VitePress site, prefer existing site components or already-styled semantic elements before introducing new wrapper markup.

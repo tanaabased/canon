@@ -1,8 +1,8 @@
-# JavaScript Repo Structure
+# JavaScript and TypeScript Repo Structure
 
-Use this reference for Bun- or Node-based JavaScript repositories and for skill-local JavaScript code in Tanaab-managed repos.
+Use this reference for Bun- or Node-based JavaScript and TypeScript repositories and for skill-local JS/TS code in Tanaab-managed repos.
 
-- This is a JS-first default, not a cross-language law.
+- This is a JS/TS default, not a cross-language law.
 - It applies to code-bearing surfaces, not to the flat top-level canon buckets in this repo.
 - Pair this reference with [coding-stack-preferences.md](./coding-stack-preferences.md) for runtime, framework, and tooling defaults.
 - Pair it with [javascript-function-data-flow.md](./javascript-function-data-flow.md) for function shape, mutation discipline, and import grouping.
@@ -16,6 +16,7 @@ Use this reference for Bun- or Node-based JavaScript repositories and for skill-
 - A skill, package, app, plugin, or independent product surface should normally own its code beneath its own directory.
 - Code shared by multiple sibling scopes may move to their nearest common owner only after it passes the hoisting test.
 - Do not hide structured code beneath an extra generic directory when the owner is already clear.
+- Do not introduce a generic `src/` directory merely because a scope uses TypeScript. Preserve `src/` when an existing framework, external contract, package tool, or established repo convention requires it.
 
 ## Standard Layout Inside a Scope
 
@@ -42,7 +43,7 @@ scope/
 - Declare package-level CLIs in `package.json` when package metadata is in scope.
 - Keep public entrypoints friendly to `bun build` when built artifacts are part of the product surface.
 - Prefer static imports for repo-authored and package dependencies when the built CLI artifact is the product.
-- Commit directly executable JavaScript entrypoints with a shebang and executable mode.
+- Commit directly executable JavaScript or TypeScript entrypoints with a shebang and executable mode.
 - If a command is intended only for a skill, agent, machine workflow, or repository maintainer, place it in `scripts/` instead.
 
 ## `scripts/` Boundary
@@ -50,8 +51,8 @@ scope/
 - Use `scripts/` for internal command entrypoints used by skills, agents, automation, builds, validation, or maintainers.
 - Internal scripts may expose CLI-like arguments, help, output, and exit codes, but they are not a supported public interface.
 - Keep scripts thin over `lib/` and `utils/`; do not use `scripts/` as a blanket container for libraries or testable units.
-- Use role-encoded suffixes for repo-root scripts: `-cli.js` for human-invoked internal commands and `-task.js` for automation entrypoints. Move import-only modules to `lib/`.
-- Commit directly executable scripts with a shebang and executable mode. Do not mark non-shebang JavaScript executable.
+- Use role-encoded suffixes for repo-root scripts: `-cli.js` or `-cli.ts` for human-invoked internal commands and `-task.js` or `-task.ts` for automation entrypoints. Move import-only modules to `lib/`.
+- Commit directly executable scripts with a shebang and executable mode. Do not mark non-shebang JavaScript or TypeScript executable.
 
 ## `lib/` Boundary
 
@@ -74,14 +75,14 @@ scope/
 
 - Keep tests inside the same owning scope as the code they validate by default.
 - Keep the scope's `test/` directory flat by default; do not mirror `bin/`, `lib/`, `scripts/`, `utils/`, `support/`, or `unit/` beneath it.
-- Put specs, fixtures, fakes, and test-support JavaScript directly beneath the scoped `test/` directory and use descriptive filenames to communicate ownership.
+- Put specs, fixtures, fakes, and test-support code directly beneath the scoped `test/` directory and use descriptive filenames to communicate ownership.
 - Hoist tests only when the tested implementation is itself owned at that higher scope or the test intentionally spans multiple sibling scopes.
 - Do not treat a repository-root `test/` directory as a special collection point for tests owned by nested skills, packages, apps, or plugins.
 - Move tests with their source whenever ownership changes.
 
 ## Naming
 
-- Prefer kebab-case for repo-authored JavaScript filenames unless an ecosystem requires a fixed name.
+- Prefer kebab-case for repo-authored JavaScript and TypeScript filenames unless an ecosystem requires a fixed name.
 - Use the shortest accurate filename that still describes the file's purpose.
 - Utility filenames may be slightly longer when needed to keep the exported function name honest.
 
@@ -96,4 +97,5 @@ scope/
 ## Exceptions
 
 - Framework, generated-output, published-artifact, and external-tool contracts may require fixed filenames or directories that take precedence over this reference.
+- A repo may keep an established `src/` boundary when it is part of one of those contracts; do not add or remove that boundary solely to distinguish TypeScript from JavaScript.
 - Code embedded in `templates/` remains owned by the template artifact and should model the target layout rather than being moved into the live scope's role folders.

@@ -1,6 +1,6 @@
 ---
 name: tanaab-github-action-author
-description: Tanaab-based authoring and standardization of GitHub Action product surfaces. Use when a user wants to shape action.yml, committed runtime artifacts, JavaScript action runtime layout, action README contract, or workflow-driven smoke patterns for a GitHub Action repo.
+description: Tanaab-based authoring and standardization of GitHub Action product surfaces. Use when a user wants to shape action.yml, committed runtime artifacts, JavaScript or TypeScript action source, action README contract, or workflow-driven smoke patterns for a GitHub Action repo.
 license: MIT
 metadata:
   type: integration
@@ -18,7 +18,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based authoring and standardization of GitHub Action product surfaces. Use when a user wants to shape action.yml, committed runtime artifacts, JavaScript action runtime layout, action README contract, or workflow-driven smoke patterns for a GitHub Action repo.
+Tanaab-based authoring and standardization of GitHub Action product surfaces. Use when a user wants to shape action.yml, committed runtime artifacts, JavaScript or TypeScript action source, action README contract, or workflow-driven smoke patterns for a GitHub Action repo.
 
 - Keep this skill on the action product surface: `action.yml`, runtime layout, committed artifact, README contract, and action-local validation.
 - Let `tanaab-github-workflow-author` own workflow graphs when triggers, permissions, matrices, or reusable topology are the main artifact.
@@ -26,7 +26,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## When to Use
 
 - Shape `action.yml`, committed runtime artifacts, or the repo-local contract of a GitHub Action.
-- Standardize composite-wrapper JavaScript actions that install Bun and execute a committed `dist/index.js` runtime.
+- Standardize composite-wrapper actions authored in JavaScript or TypeScript that install Bun and execute a committed `dist/index.js` runtime.
 - Add or standardize GitHub Action input-helper tests when the action relies on `@actions/core` getter methods or fallback environment behavior.
 - Keep a GitHub Action README aligned with the action contract, inputs, outputs, caveats, and usage.
 - Add or update action-local smoke or validation workflows only when they exist to validate the action product surface itself.
@@ -35,13 +35,13 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## When Not to Use
 
 - Do not use this skill for general GitHub Actions workflow YAML work when the main task is triggers, permissions, matrices, reusable workflows, or job topology.
-- Do not use this skill for generic JavaScript runtime work that is not action-led.
+- Do not use this skill for generic JavaScript or TypeScript runtime work that is not action-led.
 - Do not use this skill for CI-triage-only work.
 
 ## Prerequisites
 
 - Confirm the repo is actually a GitHub Action or is intentionally becoming one.
-- Confirm whether the action is composite-only or JavaScript-backed with a committed runtime artifact.
+- Confirm whether the action is composite-only or JavaScript-backed with JavaScript or TypeScript source and a committed runtime artifact.
 
 ## Inputs
 
@@ -60,8 +60,8 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 
 ## Workflow
 
-1. Confirm the request is action-product-led rather than workflow-led or general-JS-led.
-2. Load the local action conventions plus only the shared README, stack, JS, inline-doc, and input-helper canon needed for the touched surface.
+1. Confirm the request is action-product-led rather than workflow-led or general-JS/TS-led.
+2. Load the local action conventions plus only the shared README, stack, JS/TS, inline-doc, and input-helper canon needed for the touched surface.
 3. Keep the action contract coherent across `action.yml`, runtime entrypoint, committed artifact, README, and any dedicated input-normalization helper.
 4. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
 
@@ -75,7 +75,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 
 ## Bundled Resources
 
-- [./references/javascript-action-conventions.md](./references/javascript-action-conventions.md): local product-surface rules for Bun-backed JavaScript actions
+- [./references/javascript-action-conventions.md](./references/javascript-action-conventions.md): local product-surface rules for Bun-backed actions authored in JavaScript or TypeScript
 - [./references/action-input-helper-tests.md](./references/action-input-helper-tests.md): local pattern for focused GitHub Action input-helper tests
 - [./templates/bun-javascript-action-smoke-workflow.yml](./templates/bun-javascript-action-smoke-workflow.yml): starter workflow for `uses: ./` smoke coverage
 - [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml): starter `release.yml` for release-published action repos that sync `CHANGELOG.md` or committed artifacts through `prepare-release-action`
@@ -88,7 +88,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## Validation
 
 - Confirm the task stayed on the GitHub Action product surface rather than drifting into workflow-graph authoring or workflow-only validation design.
-- Confirm JavaScript-backed actions use composite wrappers intentionally, keep a stable runtime artifact path such as `dist/index.js`, and keep source and committed artifacts aligned.
+- Confirm JavaScript-backed actions use composite wrappers intentionally, keep a stable runtime artifact path such as `dist/index.js`, and keep JavaScript or TypeScript source aligned with the committed JavaScript artifact.
 - Confirm input-helper tests cover both local-default and explicit GitHub Actions runtime behavior when that surface changed.
 - Confirm the README matches the GitHub Action README mode when the action contract changed.
 - Confirm action-local validation uses `uses: ./` and checks observable postconditions when that surface changed.

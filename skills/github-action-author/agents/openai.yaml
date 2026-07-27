@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-action-author when the task is primarily about a GitHub Action product surface such as action.yml, committed runtime artifacts, action README contract, or action smoke patterns.'
+  default_prompt: 'Use $tanaab-github-action-author when the task is primarily about a GitHub Action product surface such as action.yml, JavaScript or TypeScript source, committed runtime artifacts, action README contract, or action smoke patterns.'

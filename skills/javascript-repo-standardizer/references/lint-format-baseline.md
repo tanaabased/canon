@@ -1,6 +1,6 @@
-# JavaScript Lint and Format Baseline
+# JavaScript and TypeScript Lint and Format Baseline
 
-Use this baseline when standardizing a repository around one Bun-first lint and format shape for JavaScript and Bun repos.
+Use this baseline when standardizing a repository around one Bun-first lint and format shape for JavaScript, TypeScript, and Bun repos.
 
 ## Files
 
@@ -8,9 +8,10 @@ Use this baseline when standardizing a repository around one Bun-first lint and 
 - `prettier.config.js`: canonical standalone Prettier config used by editor, CI, and CLI formatting
 - `.prettierignore`: canonical generated-file ignore list for `prettier . --check` or `--write`
 - `snippets/typescript-eslint-layer.js`: optional TypeScript ESLint layer
+- `tsconfig.json`: conditional Bun-compatible TypeScript baseline
 - `snippets/vue-eslint-layer.js`: optional Vue ESLint layer
 
-Copy these files together when standardizing a repo. If a repo already has lint or format config, align it to these files rather than inventing a separate local formatting baseline.
+Copy the ESLint, Prettier, and ignore base files together when standardizing a repo. Add the TypeScript or Vue files only when that layer applies. If a repo already has lint or format config, align it to these files rather than inventing a separate local formatting baseline.
 
 ## Baseline Drift Checklist
 
@@ -21,14 +22,23 @@ Report each missing item as baseline drift instead of treating this reference as
 - development dependencies: `@eslint/js`, `eslint`, `eslint-config-prettier`, `globals`, and `prettier`
 - Bun metadata: `packageManager`, `.bun-version`, and a committed `bun.lock`
 
-When a selected layer imports more packages, report those packages too. The Vue layer requires `eslint-plugin-vue` and `vue-eslint-parser`; the TypeScript layer requires the dependencies imported by its snippet.
+When a selected layer imports more packages, report those packages too. The Vue layer requires `eslint-plugin-vue` and `vue-eslint-parser`.
+
+When the repo owns `.ts` or `.tsx` source, excluding generated output, vendored code, and documentation templates, also report these missing items as drift:
+
+- file: `tsconfig.json`
+- script: `typecheck` using `tsc --noEmit`
+- development dependencies: `typescript`, `typescript-eslint`, and `@types/bun`
+- the TypeScript ESLint layer for `.ts` and `.tsx`
+- test discovery that includes `.spec.ts` when the repo owns TypeScript tests
 
 ## Baseline Rules
 
 - Use flat ESLint config at the repo root.
 - Keep ESLint and Prettier ownership separate: ESLint handles code-quality and static-analysis rules, while Prettier handles formatting.
 - Run Prettier with `prettier --check` or `prettier --write` instead of routing formatting through ESLint.
-- Use one shared JS/Bun base, then add narrow overrides for CJS, tests, templates, TS, or Vue only when the repo actually needs them.
+- Use one shared JS/TS/Bun base, then add narrow overrides for CJS, tests, templates, TS, or Vue only when the repo actually needs them.
+- Keep `typecheck` separate from `lint`; a successful Bun execution or build does not replace static type validation.
 - Prefer `eslint-config-prettier` over `eslint-plugin-prettier` for shared repo defaults.
 - Prefer `.js` config filenames in ESM repos; only fall back to `.mjs` when the repo cannot mark itself as ESM.
 - Keep `node:` protocol usage and ESM defaults consistent across Bun repos.
@@ -53,9 +63,20 @@ When a selected layer imports more packages, report those packages too. The Vue 
 
 Use this shape by default when standardizing a repo. If an existing repo already exposes equivalent scripts, keep the names aligned unless there is a strong repo-specific reason not to.
 
+When the repo owns TypeScript source, add this separate script without composing it into `lint`:
+
+```json
+{
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}
+```
+
 ## Optional Layers
 
-- Add the TypeScript layer only when the repo actually lints `.ts` or `.tsx`.
+- Add the TypeScript layer and [the bundled `tsconfig.json`](../templates/tsconfig.json) when the repo owns `.ts` or `.tsx` source.
+- Keep the initial TypeScript ESLint layer on the non-type-aware recommended rules. Defer type-aware presets until a repo deliberately accepts their additional analysis cost.
 - Add the Vue layer only when the repo lints `.vue` files.
 - Keep `eslint-config-prettier` after the Vue recommended layer so Vue formatting rules do not override the standalone Prettier contract.
 - Keep docs-site or VitePress repos on the same ESLint base and only append the Vue layer where `.vue` files are present.

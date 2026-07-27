@@ -1,6 +1,6 @@
 ---
 name: tanaab-javascript-repo-standardizer
-description: Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, or baseline JS/Bun scripts in a Tanaab-managed repo.
+description: Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, type-checking, or baseline JS/TS/Bun scripts in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -9,31 +9,33 @@ metadata:
     - tanaab
     - coding
     - javascript
+    - typescript
   openclaw:
     emoji: '📐'
     homepage: https://github.com/tanaabased/canon/tree/main/skills/javascript-repo-standardizer
 ---
 
-# JavaScript Repo Standardizer
+# JavaScript and TypeScript Repo Standardizer
 
 ## Overview
 
-Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, or baseline JS/Bun scripts in a Tanaab-managed repo.
+Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, lint and format defaults, type-checking, or baseline JS/TS/Bun scripts in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
-- Use it to bring a JS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, and related baseline scripts while leaving runtime authorship to the broader JavaScript implementation skill.
+- Use it to bring a JS/TS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, type-checking when applicable, and related baseline scripts while leaving runtime authorship to the broader implementation skill.
 
 ## When to Use
 
 - Align a repo to the shared ESLint and standalone Prettier baseline.
-- Normalize JS repo structure around owning scopes plus public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and flat scope-local `test/` surfaces.
+- Normalize JavaScript and TypeScript repo structure around owning scopes plus public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and flat scope-local `test/` surfaces.
 - Review test placement with the same ownership and hoisting rules as implementation code, using human or agent judgment rather than a structural validator.
-- Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`.
+- Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`, plus a separate `typecheck` script when owned TypeScript source is present.
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
-- Add or standardize the TypeScript or Vue lint layer only when the repo actually needs it.
-- Apply the bundled baseline starter files when the task is specifically about bringing a repo onto the shared JS/Bun baseline.
+- Add or standardize the TypeScript baseline only when the repo owns TypeScript source, excluding generated output, vendored code, and documentation templates.
+- Add or standardize the Vue lint layer only when the repo actually needs it.
+- Apply the bundled baseline starter files when the task is specifically about bringing a repo onto the shared JS/TS/Bun baseline.
 - Audit required config files, package scripts, development dependencies, Bun metadata, and the lockfile as concrete baseline signals; report every missing signal as drift.
-- Add or refresh repo-local `AGENTS.md` lines when the repo wants the JS/Bun baseline to be durable ambient policy.
+- Add or refresh repo-local `AGENTS.md` lines when the repo wants the JS/TS/Bun baseline to be durable ambient policy.
 
 ## When Not to Use
 
@@ -55,13 +57,13 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 - Use [./references/lint-format-baseline.md](./references/lint-format-baseline.md) as the local source of truth for the lint and format baseline.
 - Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline defaults rather than re-deciding the tool stack locally.
-- Apply the bundled starter files together when standardizing a repo instead of inventing a partial local baseline.
+- Apply the bundled base files together when standardizing a repo, then add the complete TypeScript or Vue layer only when that layer is needed.
 
 ## Workflow
 
-1. Confirm the request is specifically about JS/Bun repo baseline standardization rather than implementation authorship.
+1. Confirm the request is specifically about JS/TS/Bun repo baseline standardization rather than implementation authorship.
 2. Load the local lint baseline reference plus the shared repo-structure canon needed for the target repo surface.
-3. Keep lint, format, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
+3. Keep lint, format, type-check, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
 4. Compare the target against the complete baseline checklist and report missing files, scripts, dependencies, or Bun metadata explicitly.
 5. Validate the resulting repo baseline with the narrowest reliable local checks.
 
@@ -74,9 +76,9 @@ Tanaab-based standardization of JavaScript and Bun repo baselines. Use when a us
 
 ## Testing
 
-- Treat direct lint and format commands as the canonical validation mechanism for this surface.
+- Treat direct lint, format, and applicable type-check commands as the canonical validation mechanism for this surface.
 - When repo structure changed, inspect owning scopes, role folders, flat source-to-test locality, entrypoints, and baseline files instead of widening into runtime smoke tests.
-- Keep the validation path explicit: ESLint for lint rules, Prettier for format checks, and `lint` only when it intentionally composes those commands.
+- Keep the validation path explicit: ESLint for lint rules, Prettier for format checks, `lint` only when it intentionally composes those commands, and `typecheck` as a separate TypeScript command.
 - Do not add unrelated smoke or scenario layers unless the task clearly expands beyond repo baseline standardization.
 
 Minimal generic example:
@@ -87,10 +89,13 @@ test -f eslint.config.js
 test -f prettier.config.js
 ```
 
+For a repo with owned TypeScript source, also run `bun run typecheck`.
+
 ## GitHub Actions Workflow
 
 - Use a Bun-first GitHub Actions workflow that installs dependencies once and runs the repo's lint and format checks.
 - Keep the workflow generic and centered on the repo baseline scripts rather than inventing repo-specific CI topology in the skill.
+- Add a separate `bun run typecheck` step when the repo owns TypeScript source.
 - Treat this as validation of the repo baseline, not ownership of general workflow authoring.
 
 Minimal generic example:
@@ -116,10 +121,11 @@ jobs:
 ## Bundled Resources
 
 - [./references/lint-format-baseline.md](./references/lint-format-baseline.md): local baseline rules and expected script shape
-- [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable JS/Bun baseline policy
-- [./templates/eslint.config.js](./templates/eslint.config.js): shared JS/Bun ESLint base
+- [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable JS/TS/Bun baseline policy
+- [./templates/eslint.config.js](./templates/eslint.config.js): shared JS/TS/Bun ESLint base
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
 - [./templates/.prettierignore](./templates/.prettierignore): shared Prettier ignore baseline
+- [./templates/tsconfig.json](./templates/tsconfig.json): conditional Bun-compatible TypeScript baseline
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
@@ -127,13 +133,14 @@ jobs:
 
 ## Validation
 
-- Confirm the task stayed on repo baseline standardization rather than drifting into general JS runtime work or implementation refactors.
+- Confirm the task stayed on repo baseline standardization rather than drifting into general JS or TS runtime work or implementation refactors.
 - Confirm repo-structure normalization followed [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md), including flat scope-local tests and equal hoisting rules for source and tests, without turning this skill into general code authorship.
 - Confirm ESLint and Prettier ownership remain separate.
 - Confirm durable baseline documentation stayed limited to repo policy notes, package scripts, config comments, or README notes that directly explain the standardized baseline.
 - Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
 - Confirm `packageManager`, `.bun-version`, and the committed `bun.lock` are present in Bun-managed repositories.
 - Confirm all dependencies imported by the selected ESLint and Prettier layers are declared as development dependencies.
+- Confirm repositories with owned TypeScript source expose `tsconfig.json`, `typecheck`, the TypeScript ESLint layer, TypeScript-capable test discovery, and the required development dependencies.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
 - Confirm any GitHub Actions workflow example remains a repo-baseline validation path rather than a general workflow-topology pattern.
 - Run the narrowest repo-native lint, format, or baseline checks available for the touched surface.

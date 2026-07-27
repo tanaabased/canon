@@ -41,12 +41,12 @@
 - Use hyphenated filenames with scoped prefixes when needed, such as `skill-standard.md`.
 - Add nested folders inside the flat canon buckets only after repeated pressure shows flat naming is no longer the simpler model.
 - Shared coding-stack defaults for runtime, frameworks, and tooling live in `references/coding-stack-preferences.md`.
-- Shared JS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
-- Shared JS function-shape guidance lives in `references/javascript-function-data-flow.md`.
+- Shared JS/TS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
+- Shared JS/TS function-shape guidance lives in `references/javascript-function-data-flow.md`.
 - Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
 - That repo-structure guidance applies inside every code-bearing owning scope, including individual skills, and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
 - Inside a code-bearing scope, use `bin/` for public human-facing commands, `scripts/` for internal machine- or agent-facing commands, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.
-- Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support JavaScript directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
+- Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support code directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
 - Apply the same hoisting test to tests as to source; root `test/` is only for root-owned or intentionally cross-scope coverage.
 - Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
 - Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.

@@ -1,6 +1,6 @@
 # Action Input Helper Tests
 
-Use this starter pattern when a JavaScript GitHub Action has a dedicated input-normalization helper such as `utils/get-inputs.js`.
+Use this starter pattern when a GitHub Action authored in JavaScript or TypeScript has a dedicated input-normalization helper such as `utils/get-inputs.js` or `utils/get-inputs.ts`.
 
 ## What This Pattern Covers
 
@@ -21,4 +21,4 @@ Use workflow smoke tests for those broader surfaces.
 
 - [`../templates/get-inputs.spec.js`](../templates/get-inputs.spec.js): Mocha starter for a focused input-helper spec
 
-Rename the example input keys, helper path, and expected result fields to match the action you are testing.
+Rename the example input keys, helper path, and expected result fields to match the action you are testing. Preserve the observable test contract when adapting the JavaScript starter to TypeScript.

@@ -1,27 +1,28 @@
-# JavaScript Action Conventions
+# JavaScript and TypeScript Action Conventions
 
-Use these rules when a GitHub Action repository's product surface is a JavaScript-backed action executed with Bun.
+Use these rules when a GitHub Action repository's product surface is a JavaScript-backed action authored in JavaScript or TypeScript and executed with Bun.
 
-This file is local to `tanaab-github-action-author` because it is action-product doctrine, not a shared rule for every workflow or JavaScript task.
+This file is local to `tanaab-github-action-author` because it is action-product doctrine, not a shared rule for every workflow or JavaScript or TypeScript task.
 
 ## Runtime Shape
 
 - Prefer `runs.using: "composite"` even for JavaScript-backed actions so the wrapper can install Bun and execute the built runtime artifact explicitly.
-- Keep the real runtime logic in ESM JavaScript files and keep `action.yml` focused on inputs, setup, and invoking the built artifact.
+- Keep the real runtime logic in ESM JavaScript or TypeScript source and keep `action.yml` focused on inputs, setup, and invoking the built JavaScript artifact.
 - Export action inputs into `INPUT_*` env vars explicitly in the composite step when the runtime code relies on `@actions/core` getters.
 - Keep the entrypoint path stable, usually `${{ github.action_path }}/dist/index.js`.
 
 ## Build and Distribution
 
-- Compile the runtime with `bun build` to `dist/index.js`.
-- Prefer a build script such as `bun build ./entry.js --target=bun --format=esm --sourcemap=linked --outdir dist --entry-naming index.js`.
+- Compile JavaScript or TypeScript source with `bun build` to `dist/index.js`.
+- Prefer a build script such as `bun build ./entry.ts --target=bun --format=esm --sourcemap=linked --outdir dist --entry-naming index.js` when the action source is TypeScript.
+- Run the repo's separate type-check command before treating a successful TypeScript build as complete validation.
 - Commit `dist/index.js` and related sourcemaps when action consumers load the action directly from repository refs or Marketplace tags.
 - Keep `package.json` `main` and `exports` aligned to the built artifact when the repo is also published as a package.
 - Use `prepare` or equivalent release plumbing so committed action artifacts do not drift from source.
 
 ## Tests and Workflows
 
-- Keep input parsing in a dedicated helper such as `utils/get-inputs.js`.
+- Keep input parsing in a dedicated helper such as `utils/get-inputs.js` or `utils/get-inputs.ts`.
 - Unit test that helper by stubbing `@actions/core` getter methods and toggling `process.env.GITHUB_ACTIONS` so local-default and real Actions-runtime behavior are both covered.
 - Use `uses: ./` in workflow-driven smoke tests for end-to-end action behavior, permissions, sync flows, or OS matrix coverage.
 - Split PR workflows by surface when the repo benefits from separate lint, unit, options, and sync validation.

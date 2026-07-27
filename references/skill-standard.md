@@ -105,7 +105,7 @@ skill-folder/
 - `[warn]` Keep the default scaffold minimal.
 - `[warn]` Keep skill-owned code beneath the skill directory and organize it by role: public human-facing commands in `bin/`, internal agent- or machine-facing commands in `scripts/`, orchestration in `lib/`, and independently testable units in `utils/`.
 - `[warn]` Keep a skill's tests in its own `test/` directory unless the tested implementation genuinely belongs to a higher shared scope.
-- `[warn]` Keep a skill's `test/` directory flat by default, with specs, fixtures, fakes, and support JavaScript as siblings rather than mirrored source-role folders.
+- `[warn]` Keep a skill's `test/` directory flat by default, with specs, fixtures, fakes, and support code as siblings rather than mirrored source-role folders.
 - `[warn]` Do not use `scripts/` as a blanket container for skill libraries, utilities, or tests.
 - `[warn]` Shebang-bearing skill-local `bin/` and `scripts/` entrypoints plus executable starter templates should be committed executable.
 - `[warn]` Do not mark repo-authored files executable unless they actually start with a shebang.

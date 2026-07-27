@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-vue-author when the task is primarily about creating or updating Vue 3 single-file components, especially when the surface needs template-first markup, script setup, and SCSS styling.'
+  default_prompt: 'Use $tanaab-vue-author when the task is primarily about creating or updating typed or untyped Vue 3 single-file components, especially when the surface needs template-first markup, script setup, and SCSS styling.'
