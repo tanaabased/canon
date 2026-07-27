@@ -34,7 +34,7 @@ This file is local to `tanaab-github-action-author` because it is action-product
 ## Release Workflow
 
 - For JavaScript-backed action repos that maintain committed `dist/` artifacts or sync `CHANGELOG.md`, prefer a release-published workflow that checks out full history, installs Bun, exports `RELEASE_DATE`, and calls `tanaabased/prepare-release-action@v1`.
-- Keep `actions/checkout@v6` at `fetch-depth: 0` when the release flow needs tags, history, or sync behavior.
+- Keep `actions/checkout@v7` at `fetch-depth: 0` when the release flow needs tags, history, or sync behavior.
 - Keep the `Export formatted release date` step because `prepare-release-action` uses `RELEASE_DATE` when stamping the changelog.
 - Treat `Install deps and prep` as optional. Keep it only when a final lint, test, build, or smoke pass materially validates or regenerates the shipped action surface.
 - Keep `sync-tags` on the moving major alias that corresponds to the incoming release tag. For example, a published tag such as `v1.2.3` should sync `v1`.
