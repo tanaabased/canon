@@ -12,7 +12,7 @@ jobs:
   release:
     runs-on: ${{ matrix.os }}
     env:
-      term: xterm
+      TERM: xterm
     strategy:
       fail-fast: false
       matrix:
