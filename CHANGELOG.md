@@ -1,5 +1,27 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Breaking Changes
+
+- Changed the coding-skill contract from `GitHub Actions Workflow` to the required `GitHub Actions` automation map. [#9](https://github.com/tanaabased/canon/pull/9)
+- Renamed the Canon package from `@tanaabased/canon` to `@tanaab/canon` under the canonical npm-scope policy. [#9](https://github.com/tanaabased/canon/pull/9)
+
+### New Features
+
+- Added an optional `Deployment` lifecycle for coding skills with one canonical delivery mechanism. [#9](https://github.com/tanaabased/canon/pull/9)
+- Added canonical Bun workflow templates for unit tests, linting, frontend builds, and trusted npm publishing. [#9](https://github.com/tanaabased/canon/pull/9)
+- Added tokenless npm trusted-publishing guidance for release channels, package dry runs, and conditional builds. [#9](https://github.com/tanaabased/canon/pull/9)
+
+### Policy and Guidance
+
+- Added durable JavaScript testing guidance for assertion strength, version metadata, injected time, and integration boundaries. [#9](https://github.com/tanaabased/canon/pull/9)
+- Standardized Tanaab-owned npm package identities on `@tanaab` while preserving GitHub and plugin-native identifiers. [#9](https://github.com/tanaabased/canon/pull/9)
+- Updated Leia scenarios to omit runner-local cleanup on ephemeral CI and use conditional built-in `Cleanup` sections. [#10](https://github.com/tanaabased/canon/pull/10)
+
+### Bug Fixes
+
+- Fixed Canon's Leia guidance for ESM repositories by treating generated CommonJS harnesses as package-boundary consumers. [#10](https://github.com/tanaabased/canon/pull/10)
+- Fixed release workflows to format and validate version-stamped files before syncing generated mutations. [#9](https://github.com/tanaabased/canon/pull/9)
+
 ## v0.5.0 - [July 27, 2026](https://github.com/tanaabased/canon/releases/tag/v0.5.0)
 
 ### Breaking Changes
