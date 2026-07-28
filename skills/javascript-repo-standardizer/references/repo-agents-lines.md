@@ -11,3 +11,6 @@ Use these lines only when the target repo wants the JS/TS/Bun baseline as durabl
 - In Bun monorepos, keep the root private with one lockfile, treat each workspace package as an owning scope, and import sibling packages through declared workspace dependencies and public exports.
 - When the repo owns TypeScript source, keep `typecheck` separate from lint and use the shared strict, no-emit TypeScript baseline.
 - Treat baseline normalization as separate from ordinary runtime authorship and feature refactors.
+- Assert exact values only for stable public, protocol, configuration, serialization, and safety contracts; test incidental diagnostics through their owned semantic signals.
+- Derive version expectations from canonical metadata and use clearly synthetic fixture versions.
+- Keep wall-clock waits and environment-sensitive filesystem, process, or network behavior out of unit tests; use injected boundaries or separately invoked integration checks.

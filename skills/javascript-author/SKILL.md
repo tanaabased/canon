@@ -94,6 +94,11 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
 - Add `c8` only when coverage reporting or enforcement is explicitly part of the task.
 - Do not merge GitHub Action input-helper testing into this skill's default path; keep that with the narrower GitHub Action surface.
+- Match assertion strictness to contract strength: keep public, protocol, schema, and safety contracts exact, but avoid making incidental prose, ordering, timing, or third-party formatting contractual.
+- Keep complete message-format assertions with the formatter that owns them; callers should assert semantic context or structured failure identity.
+- Derive real version expectations from canonical package metadata and use synthetic versions for fixtures.
+- Prefer injected clocks and boundaries in unit tests; place genuine filesystem, process, network, or platform timing in explicitly invoked integration checks.
+- Apply [the function-test contract durability guidance](./references/javascript-function-tests.md#contract-durability) when choosing assertion strength or testing a runtime boundary.
 
 Minimal generic example:
 
