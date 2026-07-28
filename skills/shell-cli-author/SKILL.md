@@ -68,7 +68,9 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 - Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
-- When standardizing a Leia-backed `examples/` suite, consider adding `examples/package.json` for CommonJS helper boundaries and `examples/AGENTS.md` for durable examples-local editing rules.
+- When the governing repository package is ESM and Leia writes its generated CommonJS `.js` harness beneath `examples/` through a repo-local `TMPDIR`, require `examples/package.json` with `"type": "commonjs"` using the shared starter. This applies even when the repository owns no example-local JavaScript helpers or fixtures.
+- Do not require the examples-level package boundary when Leia's generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary.
+- Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for maintained shell CLI surfaces, with `shellcheck` and PowerShell parse checks as narrow supporting validators rather than separate testing patterns.
 
 Minimal generic example:
@@ -90,11 +92,11 @@ test -n "$(./dist/my-script.sh --version)"
 
 ## Optimization
 
-- **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, and Leia scenarios.
-- **Compare:** Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, and stale paths against CLI and platform rules.
-- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
+- **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, root package type, Leia `TMPDIR`, examples-level package boundary, and Leia scenarios.
+- **Compare:** Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, stale paths, and an ESM package scope that captures Leia-generated CommonJS harnesses without a nearer CommonJS boundary.
+- **Recommend:** Keep aligned platform behavior; require the shared `examples/package.json` boundary when a repo-local examples `TMPDIR` puts Leia's harness beneath an ESM root; avoid adding it when the harness is outside that scope; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
 - **Apply:** After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
-- **Verify:** Run available static or parse checks, smoke help and version output, and execute the relevant Leia scenarios.
+- **Verify:** Run available static or parse checks, smoke help and version output, confirm the conditional Leia package boundary, and execute the relevant Leia scenarios.
 
 ## Bundled Resources
 
@@ -108,7 +110,7 @@ test -n "$(./dist/my-script.sh --version)"
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
-- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` starter for CommonJS example-local helpers
+- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` boundary for repository-authored helpers and Leia-generated CommonJS harnesses beneath an ESM package scope
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
@@ -119,6 +121,7 @@ test -n "$(./dist/my-script.sh --version)"
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
-- Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
+- Confirm an ESM suite that writes Leia's generated CommonJS harness beneath `examples/` through a repo-local `TMPDIR` commits `examples/package.json` with `"type": "commonjs"`, even when it has no repository-authored JavaScript helpers.
+- Confirm the examples-level boundary is not required when the generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary; treat `examples/AGENTS.md` as a separate conditional choice.
 - Confirm `GitHub Actions` maps the shell CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.
 - Confirm PowerShell coverage remains portable or opportunistic unless Windows CI was explicitly requested; if requested, confirm the workflow uses a versioned Windows runner label rather than `windows-latest`.

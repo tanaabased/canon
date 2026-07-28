@@ -74,7 +74,9 @@ Tanaab-based authoring and standardization of true JavaScript or TypeScript Bun 
 
 - Prefer Leia-backed example scenarios when the main risk is observable CLI behavior such as help output, exit status, file effects, or release-shaped entrypoint behavior.
 - Keep one example flow per `examples/<scenario>/README.md` and assert the user-facing CLI contract rather than internal parser details.
-- When standardizing a Leia-backed `examples/` suite, consider adding `examples/package.json` for CommonJS helper boundaries and `examples/AGENTS.md` for durable examples-local editing rules.
+- When the governing repository package is ESM and Leia writes its generated CommonJS `.js` harness beneath `examples/` through a repo-local `TMPDIR`, require `examples/package.json` with `"type": "commonjs"` using the shared starter. This applies even when the repository owns no example-local JavaScript helpers or fixtures.
+- Do not require the examples-level package boundary when Leia's generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary.
+- Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for true CLI product surfaces rather than layering multiple unrelated local test styles by default.
 - When the CLI ships as a built artifact, run Leia against the built CLI rather than the source entrypoint.
 
@@ -96,11 +98,11 @@ test -n "$(my-cli --version)"
 
 ## Optimization
 
-- **Inspect:** Inventory the package entrypoint, parser, help, version, environment precedence, build output, packaging metadata, examples, and observable CLI tests.
-- **Compare:** Reconcile parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, and stale public claims against CLI and Leia canon.
-- **Recommend:** Keep aligned behavior; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.
+- **Inspect:** Inventory the package entrypoint, parser, help, version, environment precedence, build output, packaging metadata, root package type, Leia `TMPDIR`, examples-level package boundary, scenarios, and observable CLI tests.
+- **Compare:** Reconcile parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and an ESM package scope that captures Leia-generated CommonJS harnesses without a nearer CommonJS boundary.
+- **Recommend:** Keep aligned behavior; require the shared `examples/package.json` boundary when a repo-local examples `TMPDIR` puts Leia's harness beneath an ESM root; avoid adding it when the harness is outside that scope; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.
 - **Apply:** After explicit authorization, make the smallest coherent CLI operations and preserve documented command behavior and package boundaries.
-- **Verify:** Build the entrypoint, smoke help and version output, run Leia-backed scenarios, and type-check when the repository owns TypeScript.
+- **Verify:** Build the entrypoint, smoke help and version output, confirm the conditional Leia package boundary, run Leia-backed scenarios, and type-check when the repository owns TypeScript.
 
 ## Bundled Resources
 
@@ -114,7 +116,7 @@ test -n "$(my-cli --version)"
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
-- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` starter for CommonJS example-local helpers
+- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` boundary for repository-authored helpers and Leia-generated CommonJS harnesses beneath an ESM package scope
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
@@ -126,5 +128,6 @@ test -n "$(my-cli --version)"
 - Confirm help output, version output, and maintained examples remain the primary documentation surface for user-facing CLI behavior.
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
-- Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
+- Confirm an ESM suite that writes Leia's generated CommonJS harness beneath `examples/` through a repo-local `TMPDIR` commits `examples/package.json` with `"type": "commonjs"`, even when it has no repository-authored JavaScript helpers.
+- Confirm the examples-level boundary is not required when the generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary; treat `examples/AGENTS.md` as a separate conditional choice.
 - Confirm `GitHub Actions` maps the CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.

@@ -19,7 +19,9 @@ This file applies when editing `examples/**/README.md`. These README files are e
 
 ## Runtime Boundary
 
-- Keep `examples/package.json` in place when example-local JavaScript helpers or generated scripts must run as CommonJS.
+- Treat Leia's generated `.js` test harness as CommonJS runtime code because it uses `require`, even when the repository owns no example-local JavaScript helpers.
+- In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` in place whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
+- Do not require this examples-level boundary when the generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary.
 - Do not move example-only helper modules to the repo root just to inherit the root package type.
 - Keep fixtures beside the scenario that owns them unless two or more scenarios already share the same fixture contract.
 
