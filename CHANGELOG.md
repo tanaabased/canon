@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.6.0 - [July 28, 2026](https://github.com/tanaabased/canon/releases/tag/v0.6.0)
+
 ### Breaking Changes
 
 - Changed the coding-skill contract from `GitHub Actions Workflow` to the required `GitHub Actions` automation map. [#9](https://github.com/tanaabased/canon/pull/9)
