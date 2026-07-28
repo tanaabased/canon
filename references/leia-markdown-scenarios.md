@@ -6,7 +6,7 @@ Use this pattern when shell, bootstrap, or other operational repos need scenario
 
 - The main risk is end-to-end behavior, machine mutation, CLI contract, file layout, permissions, or log output.
 - The repo already explains supported flows through example directories and those examples can double as runnable coverage.
-- The suite may need fresh runners, secrets, or destructive setup and cleanup that do not fit a normal local `bun run test` path.
+- The suite may need fresh runners, secrets, destructive setup, or conditional cleanup of persistent resources that do not fit a normal local `bun run test` path.
 
 ## Example Shape
 
@@ -19,24 +19,29 @@ Use this pattern when shell, bootstrap, or other operational repos need scenario
 ## Examples Directory Contract
 
 - Treat `examples/` as a scoped runtime boundary when the suite includes executable README scenarios plus example-local support files.
-- Add `examples/package.json` with `{ "type": "commonjs" }` when example-local JavaScript helpers, fixtures, or generated scripts must run as CommonJS inside a package that may otherwise be ESM.
+- Leia's generated `.js` test harness uses CommonJS `require`; treat that harness as a generated CommonJS script even when the repository authors no JavaScript helpers or fixtures of its own.
+- In a repository whose governing `package.json` declares `"type": "module"`, require a nearer `{ "type": "commonjs" }` package boundary whenever Leia writes its generated harness beneath that ESM package scope.
+- For the shared workflow's repo-local `TMPDIR` under `examples/.tmp`, commit `examples/package.json` from `templates/leia-examples-package.json`; it is a required companion file in an ESM repository, not an optional helper convention.
+- If a custom `TMPDIR` is elsewhere beneath an ESM package scope, put the equivalent CommonJS package boundary at or above that generated harness and below the governing ESM package. `examples/package.json` does not cover sibling directories.
+- Do not require an examples-level package boundary when Leia's generated files live outside an ESM package scope or already inherit a nearer CommonJS package boundary.
 - Add `examples/AGENTS.md` when executable examples need durable editing rules beyond the repo root guidance, especially for Leia block shape, CI locality, fresh-runner assumptions, or fixture handling.
 - Keep examples-level `AGENTS.md` files short, ambient, and scoped to `examples/**`; put scenario-specific behavior in the scenario README instead.
 - Use the shared starters in `templates/leia-examples-package.json` and `templates/leia-examples-agents.md` when bootstrapping this boundary.
 
 ## README Structure
 
-Recommended sections:
+Default sections:
 
 1. Title and one-paragraph summary of the scenario
 2. `## Setup`
 3. `## Testing`
-4. `## Destroy tests`
+
+Add `## Cleanup` only when teardown is part of the behavior under test, the scenario creates resources that can survive or interfere beyond the runner, or later scenarios in the same environment require explicit isolation.
 
 ## Scenario Rules
 
 - Keep one scenario per README instead of combining many unrelated flows.
-- Use example-local scratch paths such as `.tmp/` so setup and cleanup stay scoped, but prefer additive prep like `mkdir -p` over clearing shared example-local temp roots by default.
+- Use example-local scratch paths such as `.tmp/` so runner-local artifacts stay isolated, but prefer additive prep like `mkdir -p` over clearing shared example-local temp roots by default.
 - Prefer shell-native assertions against observable behavior such as installed files, symlinks, permissions, derived key material, exit status, real target directories, and installed tools.
 - Assert the user-facing contract, not internal implementation details.
 - Prefer real script execution over fake `curl` or bootstrap stubs when the scenario is meant to validate runtime behavior and CI can safely exercise the real product surface.
@@ -60,7 +65,10 @@ Recommended sections:
 - Separate one `# should ...` test from the next with a blank line.
 - Do not place another `# should ...` line directly after commands without a separating blank line.
 - Do not leave stray commands after a blank line without a new `# should ...` header.
-- Always include cleanup in `Destroy tests`, even when CI runners are ephemeral, and remove only the artifacts created by that scenario.
+- Omit cleanup that only deletes files, directories, processes, or state owned by an ephemeral GitHub Actions runner.
+- Add cleanup when teardown behavior is itself part of the product contract, when the scenario creates external, persistent, or shared resources that outlive the runner, or when later scenarios in the same environment require explicit isolation.
+- When cleanup is needed, use Leia's built-in `## Cleanup` header and keep it narrowly scoped to resources created by the scenario.
+- Existing projects may retain cleanup sections when one of those conditions applies; do not remove meaningful teardown-contract coverage merely to match the default starter shape.
 
 ## Generator Safety
 
@@ -87,6 +95,9 @@ Leia-recognized setup, test, and cleanup sections:
 - When the distributed artifact is the real product surface, run Leia against the prepared `dist/` entrypoint rather than the raw source file.
 - When a Bun CLI ships as a built or compiled artifact, run Leia against that built CLI rather than `bun run` or a source-tree entrypoint.
 - Prefer a repo-local `TMPDIR` for Leia runs when sandbox or runner temp behavior is unreliable.
+- When the workflow sets `TMPDIR` beneath `examples/`, commit the required `examples/package.json` CommonJS boundary in ESM repositories rather than generating it during CI. A generated boundary can hide a missing repository contract from other Leia entrypoints.
+- Treat this as compatibility scaffolding while the supported Leia version emits CommonJS harnesses; remove it only after that version is verified to emit ESM-compatible harnesses beneath the repository package scope.
+- Treat runner-local artifacts as disposable when each matrix job uses a fresh ephemeral runner; do not add workflow-wide cleanup customization solely to delete that state.
 
 ## Boundaries
 

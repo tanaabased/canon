@@ -28,17 +28,11 @@ test -x .tmp/home/bin/script-under-test.sh
 test -f .tmp/home/etc/script-under-test.conf
 ```
 
-## Destroy tests
-
-```bash
-# should remove only the artifacts created by this scenario
-rm -rf .tmp/home
-```
-
 ## Notes
 
 - Keep assertions shell-native and focused on observable behavior, not internals.
-- Use example-local `.tmp/` paths so cleanup is deterministic, but avoid deleting shared example-local temp roots by default.
+- Use example-local `.tmp/` paths to isolate runner-local artifacts; do not add cleanup solely to delete them on an ephemeral GitHub Actions runner.
+- Add an optional `## Cleanup` section only when teardown is part of the product contract, resources can persist or interfere beyond the runner, or later scenarios share the environment. Keep it limited to resources created by this scenario.
 - Keep Leia tests inside fenced code blocks, start each test with lowercase `# should ...` prose, avoid camelCase or PascalCase prose, and use blank lines only between tests rather than inside a single test body.
 - Preserve uppercase or mixed-case terms in `# should ...` descriptions only when they are exact literals or conventional identifiers, such as environment variables, command names, flags, paths, file formats, acronyms, HTTP methods, status or error codes, or expected output strings.
 - Inside executable Leia blocks, do not use literal backticks or braced shell expansions such as `${VAR}`; use `$(command)` and `$VAR` instead.
@@ -51,6 +45,6 @@ rm -rf .tmp/home
 - Capture output to files only when the output itself is the contract, a failure-path assertion needs full stdout/stderr, a secret non-leak assertion needs complete output, or one expensive command output must be reused across multiple assertions.
 - Do not capture setup output just to assert internal argv assembly when state or user-facing command behavior can be checked directly.
 - If the real product surface is a generated `dist/` entrypoint, make the workflow put `dist/` on `PATH` before Leia runs.
-- If example-local JavaScript helpers or generated scripts must run as CommonJS inside an ESM repo, use the shared `examples/package.json` starter.
+- Leia's generated `.js` harness uses CommonJS `require`. When the repository is ESM and `TMPDIR` is beneath `examples/`, commit the shared `examples/package.json` starter with `"type": "commonjs"` even if the repository owns no JavaScript helpers; omit it when the generated harness is outside the ESM package scope or already has a nearer CommonJS boundary.
 - If the real script can safely run in CI, prefer that over fake bootstrap stubs.
 - If the scenario mutates machine state, installs packages, or uses secrets, prefer CI-only execution on fresh runners.

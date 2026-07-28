@@ -39,4 +39,5 @@ jobs:
         shell: bash
         run: |
           mkdir -p examples/.tmp
-          TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
+          # ESM repos need examples/package.json as a CommonJS boundary while Leia emits CommonJS harnesses here.
+          TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" --stdin
