@@ -1,6 +1,6 @@
 ---
 name: tanaab-javascript-author
-description: Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a user wants to modify JavaScript or TypeScript code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
+description: Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package deployment work. Use when a user wants to modify JS or TS code or standardize npm publication in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -19,7 +19,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a user wants to modify JavaScript or TypeScript code, especially low-coupling ESM helpers and utility functions, in a Tanaab-managed repo.
+Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package deployment work. Use when a user wants to modify JS or TS code or standardize npm publication in a Tanaab-managed repo.
 
 - Keep the broad JavaScript and TypeScript entrypoint for discovery, including library-shaped modules as well as helper extraction.
 - Keep public `bin/` and internal `scripts/` entrypoints thin over surface-specific `lib/` modules and lower-coupling `utils/` units.
@@ -35,13 +35,14 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Update `package.json`, `packageManager`, `engines`, `main`, or `exports` when those changes directly support the owned JS or TS surface.
 - Migrate repo-owned JS tooling from Node or npm assumptions toward Bun when the repo actually has meaningful JS surfaces.
 - Change JS or TS bundling or artifact generation when the main owned surface still remains general implementation work.
+- Add or standardize the default npm package deployment lifecycle for a publishable JavaScript, TypeScript, or Bun package.
 
 ## When Not to Use
 
 - Do not use this skill for true package-level CLI product work; reserve that for the narrower CLI surface.
-- Do not use this skill for GitHub Actions workflow topology, triggers, permissions, reusable workflows, or general workflow authoring; keep the GitHub Actions section limited to validating the owned JS or TS surface.
+- Do not use this skill for independent GitHub Actions topology or general workflow authoring beyond the canonical JS validation and npm package deployment lifecycles; hand graph-led trigger, permission, job, matrix, or reusable-workflow changes to GitHub Workflow Author.
 - Do not use this skill for GitHub Action product-surface work once that narrower skill exists.
-- Do not widen this skill into broad testing strategy, operational scenario design, or release gating when the task is no longer about validating the owned JS or TS surface.
+- Do not widen this skill into broad testing strategy, operational scenario design, release systems unrelated to npm package publication, or broader operational deployment.
 - Do not treat ordinary JavaScript cleanup as permission to migrate to TypeScript. Preserve the scope's current language unless the repo or user selects TypeScript.
 
 ## Constraints
@@ -64,12 +65,12 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
 - Apply [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first and incremental TypeScript defaults instead of re-deciding the stack locally.
+- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
 
 ## Workflow
 
-1. Confirm the request is primarily JS- or TS-runtime-led rather than CLI-, workflow-, or release-led.
-2. Load only the relevant JavaScript or TypeScript files plus the shared references that directly shape the change.
+1. Confirm the request is primarily JS- or TS-runtime-led or uses the canonical npm package deployment lifecycle rather than being CLI-, workflow-graph-, or broader release-system-led.
+2. Load only the relevant JavaScript or TypeScript files, or the package manifest and release workflow for npm deployment, plus the shared references that directly shape the change.
 3. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.
 4. Keep any required package, module, or artifact edits coherent with that owned JS or TS surface.
 5. Validate the changed JS or TS surface with the repo's narrowest reliable checks, including the repo's type-check command when TypeScript changed.
@@ -94,6 +95,11 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation work. Use when a use
 - Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
 - Add `c8` only when coverage reporting or enforcement is explicitly part of the task.
 - Do not merge GitHub Action input-helper testing into this skill's default path; keep that with the narrower GitHub Action surface.
+- Match assertion strictness to contract strength: keep public, protocol, schema, and safety contracts exact, but avoid making incidental prose, ordering, timing, or third-party formatting contractual.
+- Keep complete message-format assertions with the formatter that owns them; callers should assert semantic context or structured failure identity.
+- Derive real version expectations from canonical package metadata and use synthetic versions for fixtures.
+- Prefer injected clocks and boundaries in unit tests; place genuine filesystem, process, network, or platform timing in explicitly invoked integration checks.
+- Apply [the function-test contract durability guidance](./references/javascript-function-tests.md#contract-durability) when choosing assertion strength or testing a runtime boundary.
 
 Minimal generic example:
 
@@ -109,47 +115,37 @@ describe('feature/utils/normalize-tags', () => {
 });
 ```
 
-## GitHub Actions Workflow
+## Deployment
 
-- When this skill's owned JS or TS surface needs CI confirmation, use a narrow GitHub Actions workflow that validates the same direct-test surface instead of widening into workflow-topology work.
-- Prefer `.github/workflows/pr-unit-tests.yml` for this surface and keep it separate from the repo's linter workflow when both independent gates exist.
-- Keep the workflow generic, Bun-first, and centered on the repo's test command.
-- For developer-machine code, CLIs, and plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
-- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone does not imply that support.
-- When Windows CI is explicitly required, use a supported versioned runner label selected for the repository and never `windows-latest`.
-- Treat this as a validation lifecycle for the owned JS or TS surface, not as ownership of workflow YAML as a product surface.
+- Canonical mechanism: for a single publishable JS, TS, or Bun package, use `.github/workflows/release.yml` on `release.published`, prepare the package with `tanaabased/prepare-release-action@v1`, and publish with the npm CLI through npm trusted publishing.
+- Configure npm's trusted publisher for the exact GitHub organization, repository, and workflow filename. Use a GitHub-hosted Ubuntu runner, Node 24, npm `>=11.5.1`, and `id-token: write`; keep Bun as the runtime and package manager, but do not substitute `bun publish` for the documented npm OIDC path.
+- Grant `contents: write` only because the canonical lifecycle syncs release-time version or changelog mutations. Prefer `${{ github.token }}` for ordinary sync; use a separate repository credential only when branch protection or another repo rule requires it.
+- Run lint and tests before preparation. Build after version stamping only when `package.json#files`, `main`, `bin`, or `exports` points at generated output; a docs-site `build` script alone is not evidence that the npm package needs a release build.
+- Put formatter writes after command-owned stamping or artifact generation and before `prepare-release-action` syncs those mutations. With `prepare-release-action@v1`, `commands` run before the action's own package and changelog mutations, so also run `format:check` afterward and do not claim the action exposes a post-mutation, pre-sync hook.
+- Run an npm publish dry run against the prepared package before live publication. Publish stable releases to `latest` and prereleases to `edge`.
+- Keep trusted publication tokenless. If stable releases must also move `edge`, isolate a granular npm token to the separate `npm dist-tag` step; remove that step when the alias is unnecessary.
+- Minimal example: [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml)
 
-Minimal generic example:
+## GitHub Actions
 
-```yaml
-name: Unit Tests
+Use this section as a reference map from the owned testing and deployment lifecycles to their GitHub Actions projections. Keep the lifecycle rules in their owning sections and independent workflow topology with GitHub Workflow Author.
 
-on:
-  pull_request:
+### Pull Request Validation
 
-jobs:
-  unit-tests:
-    name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-24.04
-          - macos-26
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-      - run: bun install --frozen-lockfile --ignore-scripts
-      - run: bun run test
-```
+- For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow template](./templates/bun-unit-tests-workflow.yml).
+- Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](../javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow template](../javascript-repo-standardizer/templates/bun-pr-linter-workflow.yml).
+- For developer-machine code, CLIs, and plugin tooling, prefer the template's Ubuntu plus current macOS runner matrix.
+- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; when required, use a supported versioned runner label and never `windows-latest`.
+
+### Release Publication
+
+- When `## Deployment` applies, use that lifecycle and its linked npm release workflow template at the canonical `.github/workflows/release.yml` path rather than repeating authentication, build, formatting, or channel rules here.
+- Hand independent trigger, permission, job, matrix, reusable-workflow, or gate-placement changes to GitHub Workflow Author.
 
 ## Optimization
 
-- **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, and CI; identify independently testable function logic embedded in entrypoints or larger libraries.
-- **Compare:** Reconcile behavior, types, documentation, tests, and CI; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, and flat source-to-test locality against the full canon.
+- **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, CI, and npm package deployment wiring; identify independently testable function logic embedded in entrypoints or larger libraries.
+- **Compare:** Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon.
 - **Recommend:** Keep cohesive stateful orchestration in `lib/`; deduplicate or consolidate repeated logic; split overloaded owners; extract honestly separable one-function utilities with narrow specs; move misplaced code; tighten boundaries; and remove proven dead code without forcing decomposition or style churn.
 - **Apply:** After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
 - **Verify:** Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
@@ -163,6 +159,8 @@ jobs:
 - [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JavaScript and TypeScript code
 - [./templates/transform-unit.js](./templates/transform-unit.js): starter shape for pure or mostly pure transformation helpers
 - [./templates/async-boundary-unit.js](./templates/async-boundary-unit.js): starter shape for narrow boundary-reading helpers
+- [./templates/bun-unit-tests-workflow.yml](./templates/bun-unit-tests-workflow.yml): starter `.github/workflows/pr-unit-tests.yml` for the canonical direct-test path
+- [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml): starter `release.yml` for trusted npm publication from a Bun-managed package
 
 ## Validation
 
@@ -173,6 +171,8 @@ jobs:
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
 - Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
-- Confirm any GitHub Actions workflow example or wiring remains a standalone unit-test validation path for the owned JS or TS surface rather than absorbing linting or drifting into workflow-topology ownership.
+- Confirm `GitHub Actions` maps pull-request validation to `Testing`, linting to Repo Standardizer, and release publication to `Deployment` without duplicating their doctrine or absorbing independent workflow-topology ownership.
+- Confirm any npm deployment uses the canonical release-published lifecycle, `@tanaab` package identity, npm trusted publishing, conditional package builds, post-stamping format validation, an npm dry run, and the `latest` or `edge` channel contract.
+- Confirm npm publication receives no long-lived npm token and that any granular npm credential is isolated to an explicitly retained dist-tag step.
 - Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface.
-- Confirm the change did not widen into CLI product, workflow YAML, or release-contract work.
+- Confirm the change did not widen into CLI product, independent workflow-graph work, non-npm release systems, or broader operational deployment.

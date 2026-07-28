@@ -14,6 +14,24 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
 
+## npm Package Identity
+
+- Use `@tanaab` as the canonical npm scope for every Tanaab-owned package, including libraries, CLIs, workspaces, npm-published GitHub Actions, and npm-distributed Codex or OpenClaw plugins.
+- Put that identity in `package.json#name` and use `@tanaab/<package>` consistently in internal dependency declarations, package-manager configuration, publish automation, and package examples.
+- Treat `@tanaabased/*` as a noncanonical npm identity. Keep GitHub repositories and their metadata under `github.com/tanaabased`; the GitHub organization name does not define the npm scope.
+- Keep platform-native plugin identifiers separate from npm package identity. For example, an npm-distributed plugin may use `@tanaab/openclaw-devguard` in `package.json` while its `openclaw.plugin.json#id` remains `devguard`; Codex plugin manifest names likewise follow the Codex contract.
+- Preserve third-party scopes such as `@types`, `@actions`, and `@eslint`; the Tanaab scope rule applies only to Tanaab-owned package identities.
+- Treat lockfiles as generated projections of package manifests. Change the owning manifests first, then refresh and validate their lockfiles with the package manager; never treat a lockfile-only identity edit as the source of truth.
+
+## npm Package Publishing
+
+- For a single publishable JS, TS, or Bun package, prefer a `.github/workflows/release.yml` workflow triggered by `release.published`; let JavaScript Author own the surface-local package lifecycle and use GitHub Workflow Author when the workflow graph itself is the primary artifact.
+- Prefer npm trusted publishing from a GitHub-hosted runner. Configure the npm trusted publisher for the exact GitHub organization, repository, and workflow filename; install Node 24 plus an npm CLI version at or above `11.5.1`; grant `id-token: write`; and publish with the npm CLI even when Bun remains the repo runtime and package manager.
+- Grant `contents: write` only when the release lifecycle syncs version, changelog, or generated artifacts back to the repository. Prefer the workflow's GitHub token for ordinary sync and use a separate credential only when branch protection or another repository rule requires it.
+- Publish stable releases to npm's default `latest` tag and prereleases to `edge`. Because npm trusted publishing does not authorize `npm dist-tag`, moving `edge` to a stable version requires a separately scoped granular npm token; isolate that token to the dist-tag step and omit the step when the alias is unnecessary.
+- Build only when the npm package ships generated output. Format command-owned release mutations before they are synced, then run format validation and an npm pack or publish dry run against the final prepared package before live publication; surface any release tool that cannot validate its own mutations before sync as a tooling limitation.
+- Do not add `--provenance` solely for public-package trusted publishing; npm supplies provenance for that supported path.
+
 ## TypeScript
 
 - Support JavaScript and TypeScript as first-class implementation languages under the same ownership and folder rules.
@@ -76,10 +94,12 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
 - Replace `actions/setup-node` with `oven-sh/setup-bun` when migrating a workflow to Bun.
+- Retain `actions/setup-node` alongside Bun when npm trusted publishing needs the supported Node and npm CLI path.
 - Prefer `bun-version-file: .bun-version` over repeated Bun version literals in workflow jobs.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
-- Add separate files such as `pr-examples-tests.yml`, `pr-options-tests.yml`, or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
+- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed CLI scenarios, `.github/workflows/pr-build-checks.yml` for the shared frontend lint-and-build path, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
+- Add separate files such as `pr-options-tests.yml` or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
 - Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
 - For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.
 - Keep the action contract in `README.md` when the repository's primary product is a GitHub Action.

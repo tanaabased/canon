@@ -33,7 +33,7 @@ Minimal root package shape:
 
 ```json
 {
-  "name": "@scope/project-workspace",
+  "name": "@tanaab/project-workspace",
   "private": true,
   "packageManager": "bun@<pinned-version>",
   "workspaces": ["packages/*"]
@@ -43,6 +43,7 @@ Minimal root package shape:
 ## Package Boundaries
 
 - Give every publishable workspace its own `package.json`, package name, version, ESM type, public `exports`, `files` allowlist, repository metadata, and `publishConfig.access`.
+- Use `@tanaab` for Tanaab-owned root and workspace package names and internal package references while preserving third-party package scopes.
 - Point `exports` and `files` at the package's real publish artifacts. Do not assume the development `noEmit` TypeScript config defines those artifacts.
 - Import sibling workspaces through their declared package names and public exports. Do not reach across package boundaries with paths such as `../another-package/utils/x.ts`.
 - Declare sibling workspace dependencies with a workspace range such as `workspace:^`; Bun resolves the local package during development and replaces the workspace protocol when packing or publishing.
@@ -52,7 +53,7 @@ Minimal root package shape:
 ## Aggregate and Leaf Packages
 
 - Keep the aggregate package as another publishable workspace instead of making the monorepo root publishable.
-- For a Tanaab utilities repo, let `packages/utils/` own the aggregate `@tanaabased/utils` package while each utility remains a separate sibling workspace.
+- For a Tanaab utilities repo, let `packages/utils/` own the aggregate `@tanaab/utils` package while each utility remains a separate sibling workspace.
 - Keep each utility's implementation in its leaf package so that package remains independently installable and testable.
 - Have the aggregate package depend on leaf packages through declared workspace dependencies and re-export their public APIs.
 - Do not duplicate leaf implementations inside the aggregate package or import their private source paths.
@@ -68,7 +69,7 @@ Minimal root package shape:
 bun run --workspaces --if-present lint
 bun run --workspaces --if-present typecheck
 bun run --workspaces --if-present test
-bun run --filter '@scope/one-utility' test
+bun run --filter '@tanaab/one-utility' test
 ```
 
 - Keep the root's own lint and format checks explicit; workspace execution should not hide validation owned by the coordinator package.

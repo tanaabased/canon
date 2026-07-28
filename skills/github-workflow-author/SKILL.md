@@ -22,7 +22,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 - Keep this skill focused on workflow topology, reusable boundaries, trigger shape, permissions, and gate placement.
 - Treat workflow-file boundaries and resulting status-check identities as part of the topology, not as incidental file organization.
-- Let coding and integration skills own their own surface-local validation workflows when the workflow only exists to validate that narrower surface and no workflow-graph decision is in scope.
+- Let coding and integration skills own their canonical surface-local validation or deployment workflows when the workflow only serves that narrower lifecycle and no independent workflow-graph decision is in scope.
 
 ## When to Use
 
@@ -35,7 +35,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 - Do not use this skill for GitHub-hosted CI triage of failing checks; keep that separate from authoring.
 - Do not use this skill for GitHub Action product code, `action.yml`, or committed runtime artifacts.
-- Do not use this skill for a coding or integration skill's normal validation workflow when the request is just a surface-local test path without topology, permissions, trigger, matrix, or reusable-workflow decisions.
+- Do not use this skill for a coding or integration skill's canonical surface-local validation or deployment lifecycle when the request does not introduce independent topology, permission, trigger, matrix, or reusable-workflow decisions.
 - Do not use this skill for shell-step internals or application runtime changes unless the workflow surface still clearly owns the task.
 
 ## Prerequisites
@@ -62,13 +62,14 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 1. Confirm the request is workflow-authoring-led rather than triage- or runtime-led.
 2. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters.
-3. Keep workflow ownership on triggers, permissions, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Apply the shared pull-request gate defaults when multiple validation surfaces are present.
-4. Validate the changed workflow files and surface any unverified remote behavior explicitly.
+3. Keep workflow ownership on independent trigger or permission design, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Preserve canonical workflow filenames named by narrower skills, apply the shared pull-request gate defaults when multiple validation surfaces are present, and preserve those skills' surface-local lifecycles.
+4. Require workflows that generate or rewrite tracked files to run the applicable formatter and validation after the mutation and before committing, syncing, or pushing the result.
+5. Validate the changed workflow files and surface any unverified remote behavior explicitly.
 
 ## Optimization
 
-- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, and validation gates.
-- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, and stale wiring.
+- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
+- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, and tracked-file mutations that lack post-mutation formatting or validation.
 - **Recommend:** Keep valid workflows; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.
 - **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
 - **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
@@ -80,7 +81,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 ## Validation
 
 - Confirm the task stayed on workflow YAML, triggers, permissions, reusable workflow boundaries, matrix or job topology, or gate placement.
-- Confirm the skill did not absorb a narrower surface's ordinary validation workflow when no trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
+- Confirm the skill did not absorb a narrower surface's canonical validation or deployment lifecycle when no independent trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
 - Confirm independent pull-request gates use separate workflow files when their commands, runners, matrices, failure owners, or required-check identities differ, with any combined exception justified by shared operational ownership.
 - Confirm Windows runners appear only when explicitly requested by the user or repository policy, and use a supported versioned runner label rather than `windows-latest`.
 - Confirm Bun-based workflows use `oven-sh/setup-bun@v2`, `bun-version-file: .bun-version`, and `bun install --frozen-lockfile --ignore-scripts` unless the repo explicitly needs another path.
