@@ -1,6 +1,6 @@
 ---
 name: tanaab-javascript-repo-standardizer
-description: Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
+description: Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, npm package identity, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
 license: MIT
 metadata:
   type: coding
@@ -20,7 +20,7 @@ metadata:
 
 ## Overview
 
-Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
+Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, npm package identity, Bun workspaces, lint and format defaults, type-checking, or baseline scripts in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
 - Use it to bring a JS/TS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, type-checking when applicable, and related baseline scripts while leaving runtime authorship to the broader implementation skill.
@@ -31,6 +31,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Normalize JavaScript and TypeScript repo structure around owning scopes plus public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and flat scope-local `test/` surfaces.
 - Review test placement with the same ownership and hoisting rules as implementation code, using human or agent judgment rather than a structural validator.
 - Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`, plus a separate `typecheck` script when owned TypeScript source is present.
+- Normalize Tanaab-owned npm package identities to the canonical `@tanaab` scope across manifests, internal references, package-manager projections, release wiring, and package examples.
 - Standardize Bun-first baseline package wiring when that work is part of repo normalization rather than feature implementation.
 - Standardize a Bun workspace monorepo around a private coordinator root, package-local ownership, workspace dependencies, and root-filtered commands.
 - Add or standardize the TypeScript baseline only when the repo owns TypeScript source, excluding generated output, vendored code, and documentation templates.
@@ -59,15 +60,15 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Use [./references/lint-format-baseline.md](./references/lint-format-baseline.md) as the local source of truth for the lint and format baseline.
 - Use [./references/bun-workspace-baseline.md](./references/bun-workspace-baseline.md) when a repo contains multiple workspace packages or aggregate and leaf package surfaces.
 - Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline defaults rather than re-deciding the tool stack locally.
+- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline and npm package identity defaults rather than re-deciding them locally.
 - Apply the bundled base files together when standardizing a repo, then add the complete TypeScript or Vue layer only when that layer is needed.
 
 ## Workflow
 
 1. Confirm the request is specifically about JS/TS/Bun repo baseline standardization rather than implementation authorship.
-2. Load the local lint baseline reference, the workspace baseline when applicable, and the shared repo-structure canon needed for the target repo surface.
-3. Keep lint, format, type-check, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
-4. Compare the target against the complete baseline checklist and report missing files, scripts, dependencies, or Bun metadata explicitly.
+2. Load the local lint baseline reference, the workspace baseline when applicable, and the shared repo-structure and coding-stack canon needed for the target repo surface.
+3. Keep lint, format, type-check, npm package identity, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.
+4. Compare the target against the complete baseline checklist and report missing files, scripts, dependencies, package identity drift, or Bun metadata explicitly.
 5. Validate the resulting repo baseline with the narrowest reliable local checks.
 
 ## Documentation
@@ -83,6 +84,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Treat direct lint, format, and applicable type-check commands as the canonical validation mechanism for this surface.
 - When repo structure changed, inspect owning scopes, role folders, flat source-to-test locality, entrypoints, and baseline files instead of widening into runtime smoke tests.
 - For a workspace repo, inspect package manifests, declared workspace dependencies, exports, package contents, and root command delegation without publishing anything.
+- When npm package identity changed, update the owning manifests first, refresh and validate affected lockfiles with the package manager, and inspect package-manager configuration, publish wiring, and examples instead of treating generated projections as the source of truth.
 - Keep the validation path explicit: ESLint for lint rules, Prettier for format checks, `lint` only when it intentionally composes those commands, and `typecheck` as a separate TypeScript command.
 - Do not add unrelated smoke or scenario layers unless the task clearly expands beyond repo baseline standardization.
 
@@ -127,11 +129,11 @@ jobs:
 
 ## Optimization
 
-- **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, and conditional TypeScript or Vue surfaces.
-- **Compare:** Reconcile conflicting configs, scripts, dependencies, and lock metadata; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, and source-to-test locality drift against conditional canon.
-- **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; split distinct owning scopes; move files and flat tests to the correct role; tighten baseline dependencies; remove obsolete wiring; and hand embedded runtime extraction to JavaScript Author.
-- **Apply:** After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, and keep behavioral refactoring with JavaScript Author.
-- **Verify:** Run the applicable frozen install, lint, format, type-check, tests, build, and package dry-run checks, then report remaining conditional drift.
+- **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, and conditional TypeScript or Vue surfaces. For npm identity, inspect root and workspace `package.json` names, internal dependency keys and `npm:` aliases, workspace references, overrides, `.npmrc`, Bun/npm/pnpm/Yarn lockfiles, publish or release workflows, docs, templates, fixtures, and npm-distributed plugin package roots.
+- **Compare:** Reconcile conflicting configs, scripts, dependencies, and lock metadata; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, and source-to-test locality drift against conditional canon. Flag Tanaab-owned npm identities outside `@tanaab`, including legacy `@tanaabased/*` names and generic scope placeholders used as Tanaab examples, while preserving third-party scopes, GitHub URLs, and platform-native plugin identifiers.
+- **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; split distinct owning scopes; move files and flat tests to the correct role; tighten baseline dependencies; remove obsolete wiring; normalize Tanaab-owned npm identities at their manifest sources before generated projections and consumers; and hand embedded runtime extraction to JavaScript Author.
+- **Apply:** After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, update package manifests before refreshing and validating lockfiles, and keep behavioral refactoring with JavaScript Author.
+- **Verify:** Run the applicable frozen install, lint, format, type-check, tests, build, package dry-run, and targeted npm identity searches, then report remaining conditional drift.
 
 ## Bundled Resources
 
@@ -156,6 +158,9 @@ jobs:
 - Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
 - Confirm `packageManager`, `.bun-version`, and the committed `bun.lock` are present in Bun-managed repositories.
 - Confirm all dependencies imported by the selected ESLint and Prettier layers are declared as development dependencies.
+- Confirm every Tanaab-owned npm package name, internal package reference, and package example uses `@tanaab`, including `package.json#name` for npm-distributed Codex and OpenClaw plugins.
+- Confirm third-party scopes, `github.com/tanaabased` repository metadata, and platform-native plugin identifiers were not rewritten as npm identities.
+- Confirm npm identity changes were made in owning manifests first and affected lockfiles were refreshed and validated rather than treated as standalone sources of truth.
 - Confirm repositories with owned TypeScript source expose `tsconfig.json`, `typecheck`, the TypeScript ESLint layer, TypeScript-capable test discovery, and the required development dependencies.
 - Confirm Bun workspace roots are private, use one lockfile, treat each package as an owning scope, and keep cross-package imports on declared package exports.
 - Confirm aggregate packages re-export leaf packages through declared workspace dependencies instead of duplicating or reaching into leaf implementations.

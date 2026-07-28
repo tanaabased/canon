@@ -9,7 +9,7 @@ import Debug from 'debug';
 import parser from 'yargs-parser';
 
 const CLI_NAME = path.basename(process.argv[1] ?? 'bun-cli');
-const DEBUG_NAMESPACE = '@scope/bun-cli';
+const DEBUG_NAMESPACE = '@tanaab/bun-cli';
 const color = ansis.extend({
   tp: '#00c88a',
   ts: '#db2777',

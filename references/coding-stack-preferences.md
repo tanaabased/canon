@@ -14,6 +14,15 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
 
+## npm Package Identity
+
+- Use `@tanaab` as the canonical npm scope for every Tanaab-owned package, including libraries, CLIs, workspaces, npm-published GitHub Actions, and npm-distributed Codex or OpenClaw plugins.
+- Put that identity in `package.json#name` and use `@tanaab/<package>` consistently in internal dependency declarations, package-manager configuration, publish automation, and package examples.
+- Treat `@tanaabased/*` as a noncanonical npm identity. Keep GitHub repositories and their metadata under `github.com/tanaabased`; the GitHub organization name does not define the npm scope.
+- Keep platform-native plugin identifiers separate from npm package identity. For example, an npm-distributed plugin may use `@tanaab/openclaw-devguard` in `package.json` while its `openclaw.plugin.json#id` remains `devguard`; Codex plugin manifest names likewise follow the Codex contract.
+- Preserve third-party scopes such as `@types`, `@actions`, and `@eslint`; the Tanaab scope rule applies only to Tanaab-owned package identities.
+- Treat lockfiles as generated projections of package manifests. Change the owning manifests first, then refresh and validate their lockfiles with the package manager; never treat a lockfile-only identity edit as the source of truth.
+
 ## TypeScript
 
 - Support JavaScript and TypeScript as first-class implementation languages under the same ownership and folder rules.
