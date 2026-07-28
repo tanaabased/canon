@@ -63,12 +63,13 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 1. Confirm the request is workflow-authoring-led rather than triage- or runtime-led.
 2. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters.
 3. Keep workflow ownership on triggers, permissions, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Apply the shared pull-request gate defaults when multiple validation surfaces are present.
-4. Validate the changed workflow files and surface any unverified remote behavior explicitly.
+4. Require workflows that generate or rewrite tracked files to run the applicable formatter and validation after the mutation and before committing, syncing, or pushing the result.
+5. Validate the changed workflow files and surface any unverified remote behavior explicitly.
 
 ## Optimization
 
-- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, and validation gates.
-- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, and stale wiring.
+- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
+- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, and tracked-file mutations that lack post-mutation formatting or validation.
 - **Recommend:** Keep valid workflows; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.
 - **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
 - **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.

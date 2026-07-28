@@ -102,6 +102,7 @@ For a repo with owned TypeScript source, also run `bun run typecheck`.
 - Keep that linter workflow separate from `.github/workflows/pr-unit-tests.yml` when the repo owns both independent surfaces; hand broader topology exceptions to GitHub Workflow Author.
 - Keep the workflow generic and centered on the repo baseline scripts rather than inventing repo-specific CI topology in the skill.
 - Add a separate `bun run typecheck` step when the repo owns TypeScript source.
+- Flag automation that rewrites tracked files without applying the repository formatter afterward, and hand workflow correction to GitHub Workflow Author.
 - Treat this as validation of the repo baseline, not ownership of general workflow authoring.
 
 Minimal generic example:
