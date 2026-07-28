@@ -88,37 +88,11 @@ my-cli --help | grep -F 'Usage: my-cli'
 test -n "$(my-cli --version)"
 ```
 
-## GitHub Actions Workflow
+## GitHub Actions
 
-- Use a Bootbox-style PR examples workflow when the CLI needs CI-backed Leia coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](../../templates/leia-pr-examples-tests.yml) when the CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the built CLI artifact, placing it on `PATH`, and running one Leia README per matrix entry.
-- Treat this as validation of the package-level CLI contract, not as general workflow-topology ownership.
-
-Minimal generic example:
-
-```yaml
-name: Example Tests
-
-on:
-  pull_request:
-
-jobs:
-  examples:
-    runs-on: macos-26
-    strategy:
-      matrix:
-        example:
-          - example-name
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-      - run: bun install --frozen-lockfile --ignore-scripts
-      - run: bun run build
-      - run: echo "$PWD/dist" >> "$GITHUB_PATH"
-      - run: TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
-```
+- Keep this as an automation projection of the package-level CLI test contract, not as general workflow-topology ownership.
 
 ## Optimization
 
@@ -153,4 +127,4 @@ jobs:
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
 - Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
-- Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the CLI surface rather than drifting into general workflow authoring.
+- Confirm `GitHub Actions` maps the CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.

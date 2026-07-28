@@ -34,7 +34,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - When multiple skills share a repository, review both each skill and the portfolio so overlap, fragmented variants, duplicated doctrine, and mega-skill behavior are visible.
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon, and apply that same ownership test to skill-local tests.
-- For `coding` skills, define one owned code surface plus three lifecycle sections: `Documentation`, `Testing`, and `GitHub Actions Workflow`.
+- For `coding` skills, define one owned code surface plus the required `Documentation` and `Testing` lifecycles; add optional `Deployment` when one canonical delivery mechanism materially shapes that surface, then map those lifecycles through the required `GitHub Actions` reference section.
 - In plugin-contained skill trees, keep the owner-prefixed machine id in frontmatter and prompts while omitting that owner prefix from the skill folder name.
 - Give every skill a skill-specific `metadata.openclaw.emoji` and an HTTPS source homepage; add load-time gates only for hard runtime dependencies.
 - If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
@@ -51,6 +51,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Review whether a proposed skill surface is better expressed as a repo template than as a live skill.
 - Review whether a skill should bundle short repo `AGENTS.md` lines because its surface implies durable ambient repo policy.
 - Decide whether a new or standardized skill should retain and tailor the full template's optional `Optimization` facet.
+- Decide whether a coding skill should retain the optional `Deployment` lifecycle because it owns one canonical delivery or publication mechanism.
 - Optimize a repository-local collection of skills individually and collectively, including keep, merge, split, move, extract, tighten, rename, or remove recommendations.
 
 ## When Not to Use
@@ -69,6 +70,9 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
 - For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
+- For `coding` skills that retain `Deployment`, keep package, build, artifact, and delivery decisions surface-local and route independent workflow-graph work to the workflow owner.
+- For `coding` skills, keep `GitHub Actions` as a thin reference map to owned lifecycle sections and complete workflow templates rather than another doctrine owner.
+- Name canonical `.github/workflows/*.yml` targets in that reference map so workflow boundaries and check identities remain stable.
 - Prefer a repo template when the reusable contract is a committed starter repository with structure, scripts, examples, and docs that users adopt as a whole; keep a live skill only for cross-repo decision-making that remains after the template choice.
 - Bundle repo `AGENTS.md` lines only for durable always-on repo rules, not for conditional workflow steps that belong in the skill itself.
 - Keep `Optimization` only when the skill owns persistent alignment, and make its read-only inspection, comparison, recommendation, authorized application, and verification boundaries specific to that surface.
@@ -83,7 +87,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Do not add a project-management type or a provider-neutral umbrella skill when existing integration and workflow types already express the owned boundary.
 - Do not duplicate contract rules in skill prose when the standard or CLI already enforces them.
 - Do not hoist a file to repo root just because it might be reused later.
-- Do not let a `coding` skill accumulate multiple materially different documentation, testing, or GitHub Actions validation mechanisms unless the variations are minor flavors of one pattern.
+- Do not let a `coding` skill accumulate multiple materially different documentation, testing, or deployment mechanisms unless the variations are minor flavors of one pattern; do not use `GitHub Actions` to conceal that split.
+- Do not embed complete copyable GitHub Actions YAML in a coding skill when it belongs in an owning template.
 - Do not keep a live skill whose main job is to restate one repo template's structure, scripts, examples, and docs.
 - Do not use repo `AGENTS.md` guidance as a dumping ground for task-triggered workflow detail.
 - Do not require `Optimization` for incident-specific or event-specific skills, and do not leave a generic template section untailored.
@@ -95,7 +100,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Scaffold or patch the skill, then validate immediately.
 - Run validation first when the request is validation-only.
 - Tighten scope before adding new sections, resources, or hoisted canon.
-- For `coding` skills, challenge the scope before adding a second materially different documentation, direct-test, or GitHub Actions workflow pattern.
+- For `coding` skills, challenge the scope before adding a second materially different documentation, direct-test, or deployment pattern, and use GitHub Actions H3 headings only when mapping multiple justified workflow paths.
 - Challenge skill-vs-template ownership before adding doctrine for a surface that already looks like a reusable starter repo.
 - Review optimization applicability before finalizing a new or standardized skill; retain and tailor the full-template section or remove it deliberately.
 - When optimizing a collection, inventory every skill before proposing portfolio changes and prefer clarification, movement, or extraction before adding another skill.
@@ -166,7 +171,10 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Confirm project-management surfaces use domain-led names unless provider-specific mechanics are the owned product, without introducing another skill type.
 - Confirm the selected type order is correct.
 - Confirm `metadata.openclaw` has a skill-specific emoji and correct HTTPS homepage, with dependency gates only for hard runtime requirements.
-- Confirm `coding` skills include `Documentation`, `Testing`, and `GitHub Actions Workflow` as the canonical lifecycle sections.
+- Confirm `coding` skills include `Documentation` and `Testing` as canonical lifecycle sections plus `GitHub Actions` as their automation projection.
+- Confirm a retained coding-skill `Deployment` lifecycle owns one canonical delivery mechanism, remains surface-local, and hands independent workflow topology to the workflow owner.
+- Confirm `GitHub Actions` references the applicable lifecycle sections and owning templates without duplicating doctrine or embedding complete workflow YAML.
+- Confirm every mapped automation path names its canonical `.github/workflows/*.yml` target.
 - Confirm validation-only requests are handled by the same surface rather than a separate validator skill.
 - Confirm the surface is not better expressed as a repo template with the skill kept only as a thin discovery or adaptation layer, if needed.
 - Confirm any bundled repo `AGENTS.md` lines stay short, ambient, and worth copying into a project repo.

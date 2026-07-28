@@ -10,6 +10,18 @@ const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.resolve(TEST_DIR, '..', 'templates');
 
 describe('skills/skill-author/templates', () => {
+  it('should expose Deployment as an optional coding facet before GitHub Actions', async () => {
+    const templateContent = await readFile(path.join(TEMPLATE_DIR, 'coding.md'), 'utf8');
+    const { body, frontmatter } = splitLeadingSkillFrontmatter(templateContent);
+    const sectionOrder = extractTopLevelSkillHeadings(body);
+    const deploymentIndex = sectionOrder.indexOf('## Deployment');
+    const githubActionsIndex = sectionOrder.indexOf('## GitHub Actions');
+
+    assert.ok(frontmatter.optional_top_level_headings.includes('## Deployment'));
+    assert.ok(deploymentIndex >= 0);
+    assert.equal(deploymentIndex + 1, githubActionsIndex);
+  });
+
   it('should expose Optimization as an optional facet before bundled resources', async () => {
     const templateNames = (await readdir(TEMPLATE_DIR)).filter((name) => name.endsWith('.md'));
 

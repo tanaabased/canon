@@ -99,32 +99,10 @@ bun run lint
 bun run build
 ```
 
-## GitHub Actions Workflow
+## GitHub Actions
 
-- Use a PR build workflow that installs Bun dependencies and validates the touched VitePress surface with the repo's build- and lint-first commands.
-- Keep the workflow generic and centered on the same direct validation path rather than expanding into broader CI topology.
-- Treat this as validation of the VitePress implementation surface, not as ownership of workflow authoring.
-
-Minimal generic example:
-
-```yaml
-name: Site Build
-
-on:
-  pull_request:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-      - run: bun install --frozen-lockfile --ignore-scripts
-      - run: bun run lint
-      - run: bun run build
-```
+- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the shared Bun PR build-checks workflow template](../../templates/bun-pr-build-checks.yml).
+- Keep this as an automation projection of the VitePress build- and lint-first validation path rather than expanding into broader CI topology.
 
 ## Optimization
 
@@ -140,6 +118,7 @@ jobs:
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared VitePress Markdown page UI, global component reuse, and page-local glue rules
 - [../../references/readme-standards.md](../../references/readme-standards.md): boundary between README-only docs and a VitePress docs site
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend and docs-stack defaults
+- [../../templates/bun-pr-build-checks.yml](../../templates/bun-pr-build-checks.yml): shared Bun workflow starter for lint- and build-first pull-request validation
 
 ## Validation
 
@@ -152,5 +131,5 @@ jobs:
 - Confirm Markdown page work inspected globally available theme and subtheme components before adding markup, styles, or new Vue.
 - Confirm repeated or brand-significant Markdown page patterns were promoted or explicitly called out rather than silently embedded in one page.
 - Confirm direct validation stays on build- and lint-first site checks rather than drifting into a separate frontend test doctrine.
-- Confirm any GitHub Actions workflow example remains a VitePress validation path rather than a general workflow-topology pattern.
+- Confirm `GitHub Actions` maps VitePress validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
 - Run the narrowest relevant lint, build, or smoke checks for the touched VitePress surface.

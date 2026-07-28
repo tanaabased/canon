@@ -118,32 +118,10 @@ bun run lint
 bun run build
 ```
 
-## GitHub Actions Workflow
+## GitHub Actions
 
-- Use a PR build or lint workflow that installs Bun dependencies and validates the touched Vue surface with the repo's build- and lint-first commands.
-- Keep the workflow generic and centered on the same direct validation path rather than expanding into broader CI topology.
-- Treat this as validation of the Vue component surface, not as ownership of workflow authoring.
-
-Minimal generic example:
-
-```yaml
-name: Frontend Checks
-
-on:
-  pull_request:
-
-jobs:
-  frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-      - run: bun install --frozen-lockfile --ignore-scripts
-      - run: bun run lint
-      - run: bun run build
-```
+- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the shared Bun PR build-checks workflow template](../../templates/bun-pr-build-checks.yml).
+- Keep this as an automation projection of the Vue build- and lint-first validation path rather than expanding into broader CI topology.
 
 ## Optimization
 
@@ -163,6 +141,7 @@ jobs:
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
+- [../../templates/bun-pr-build-checks.yml](../../templates/bun-pr-build-checks.yml): shared Bun workflow starter for lint- and build-first pull-request validation
 
 ## Validation
 
@@ -184,5 +163,5 @@ jobs:
 - Confirm the SFC block order stayed `template` then `script setup` then `style`.
 - Confirm SCSS remains the styling default when a preprocessor is in play.
 - Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.
-- Confirm any GitHub Actions workflow example remains a Vue validation path rather than a general workflow-topology pattern.
+- Confirm `GitHub Actions` maps Vue validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
 - Run the narrowest relevant lint, test, build, or smoke checks for the touched Vue surface.

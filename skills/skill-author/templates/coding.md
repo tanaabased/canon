@@ -2,6 +2,7 @@
 template_type: coding
 default_category_tag: implementation
 optional_top_level_headings:
+  - '## Deployment'
   - '## Optimization'
 ---
 
@@ -72,11 +73,19 @@ metadata:
 - Include one canonical mechanism and one minimal example only when that test pattern materially shapes the skill.
 - Keep specialized or surface-coupled test patterns in narrower companion skills.
 
-## GitHub Actions Workflow
+## Deployment
 
-- Describe the default GitHub Actions validation path for the owned code surface when GHA is the standard CI mechanism.
-- Include one canonical mechanism and one minimal example only when it materially shapes the skill.
-- Do not widen this section into full workflow-topology ownership.
+- Describe the default deployment or publication lifecycle only when one canonical delivery mechanism materially shapes the owned code surface.
+- Include one canonical mechanism and one minimal example only when that deployment pattern materially shapes the skill.
+- Keep surface-local build, package, artifact, and delivery decisions here; hand independent workflow-graph changes to the workflow owner.
+
+## GitHub Actions
+
+- Treat this as the automation projection of the skill's owned lifecycle sections, not as a separate owner of testing, linting, deployment, or release doctrine.
+- Reference the applicable lifecycle section and its canonical workflow template instead of repeating their rules or embedding complete workflow YAML.
+- Name each canonical target path under `.github/workflows/` so workflow boundaries and resulting check identities remain stable across repositories.
+- Use descriptive H3 headings only when the skill maps two or more materially different workflow paths; omit them for one-path sections.
+- Keep complete copyable workflow artifacts in `templates/`, surface-specific mechanics with their lifecycle owner, and independent workflow topology with the workflow owner.
 
 ## Optimization
 
@@ -97,5 +106,6 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 
 - Run the narrowest relevant tests, lint, build, or smoke checks for the owned code path.
 - Confirm broad discovery language still funnels toward one dominant implementation pattern when present.
+- Confirm `GitHub Actions` maps the owned lifecycle sections without duplicating their doctrine or embedding a complete copyable workflow artifact.
 - Confirm the lifecycle sections do not introduce multiple materially different validation mechanisms without a clear split decision.
 - Confirm the change did not widen scope or introduce unrelated drift.

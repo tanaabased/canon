@@ -81,38 +81,12 @@ Minimal generic example:
 test -n "$(./dist/my-script.sh --version)"
 ```
 
-## GitHub Actions Workflow
+## GitHub Actions
 
-- Use a Bootbox-style PR examples workflow when the shell CLI needs CI-backed Leia coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](../../templates/leia-pr-examples-tests.yml) when the shell CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
 - Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
-- Treat this as validation of the owned shell CLI surface, not as general workflow-topology ownership.
-
-Minimal generic example:
-
-```yaml
-name: Example Tests
-
-on:
-  pull_request:
-
-jobs:
-  examples:
-    runs-on: macos-26
-    strategy:
-      matrix:
-        example:
-          - example-name
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-      - run: bun install --frozen-lockfile --ignore-scripts
-      - run: bun run build
-      - run: echo "$PWD/dist" >> "$GITHUB_PATH"
-      - run: TMPDIR="$PWD/examples/.tmp" ./node_modules/.bin/leia "examples/${{ matrix.example }}/README.md" -c "Destroy tests" --stdin
-```
+- Keep this as an automation projection of the shell CLI test contract, not as general workflow-topology ownership.
 
 ## Optimization
 
@@ -146,5 +120,5 @@ jobs:
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
 - Confirm examples-level CommonJS and `AGENTS.md` guidance is present when the suite needs example-local helpers or durable examples-local editing rules.
-- Confirm any GitHub Actions workflow example remains a Leia-backed validation path for the shell CLI surface rather than drifting into general workflow authoring.
+- Confirm `GitHub Actions` maps the shell CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.
 - Confirm PowerShell coverage remains portable or opportunistic unless Windows CI was explicitly requested; if requested, confirm the workflow uses a versioned Windows runner label rather than `windows-latest`.
