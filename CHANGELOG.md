@@ -1,5 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added GitHub Actions guidance for explicit Homebrew update policy and freshness checks before dependency installation.
 - Expanded Leia guidance for fixture ownership, semantic assertions, helpers, process lifecycles, cost-conscious model-backed scenarios, and release-shaped CI.
 - Updated README guidance to prefer concise code-block comments over surrounding prose when they explain commands clearly.
 

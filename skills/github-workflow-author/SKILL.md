@@ -28,6 +28,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 - Create or update GitHub Actions workflow YAML, reusable workflows, permissions, triggers, or job structure.
 - Standardize Bun-based workflow wiring such as `oven-sh/setup-bun`, `bun-version-file`, and `bun install --frozen-lockfile --ignore-scripts` when the workflow graph still owns the change.
+- Standardize Homebrew-backed dependency installation on GitHub-hosted runners when the workflow controls automatic update behavior or runner freshness.
 - Add or reshape CI gates, smoke workflows, release workflows, matrices, or reusable-workflow boundaries when the primary owned surface is the workflow graph itself.
 - Update repository-local GitHub Actions workflow conventions without taking ownership of runtime code or CI triage.
 
@@ -61,15 +62,15 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 ## Workflow
 
 1. Confirm the request is workflow-authoring-led rather than triage- or runtime-led.
-2. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters.
+2. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters. Load [Homebrew Freshness in GitHub Actions](references/homebrew-ci-freshness.md) when Homebrew-backed dependency installation is in scope.
 3. Keep workflow ownership on independent trigger or permission design, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Preserve canonical workflow filenames named by narrower skills, apply the shared pull-request gate defaults when multiple validation surfaces are present, and preserve those skills' surface-local lifecycles.
 4. Require workflows that generate or rewrite tracked files to run the applicable formatter and validation after the mutation and before committing, syncing, or pushing the result.
 5. Validate the changed workflow files and surface any unverified remote behavior explicitly.
 
 ## Optimization
 
-- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, Bun installation, job topology, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
-- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, and tracked-file mutations that lack post-mutation formatting or validation.
+- **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, runtime and package-manager freshness, job topology, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
+- **Compare:** Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, implicit Homebrew update behavior or disabled automatic updates without an explicit freshness check, and tracked-file mutations that lack post-mutation formatting or validation.
 - **Recommend:** Keep valid workflows; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.
 - **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
 - **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
@@ -77,6 +78,7 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 ## Bundled Resources
 
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first workflow defaults and GitHub Action repo defaults
+- [Homebrew Freshness in GitHub Actions](references/homebrew-ci-freshness.md): Homebrew client and metadata freshness when automatic updates are disabled in CI
 
 ## Validation
 
@@ -85,5 +87,6 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 - Confirm independent pull-request gates use separate workflow files when their commands, runners, matrices, failure owners, or required-check identities differ, with any combined exception justified by shared operational ownership.
 - Confirm Windows runners appear only when explicitly requested by the user or repository policy, and use a supported versioned runner label rather than `windows-latest`.
 - Confirm Bun-based workflows use `oven-sh/setup-bun@v2`, `bun-version-file: .bun-version`, and `bun install --frozen-lockfile --ignore-scripts` unless the repo explicitly needs another path.
+- Confirm workflows that install through Homebrew set `HOMEBREW_NO_AUTO_UPDATE` to `1` at workflow or job scope and run `brew update-if-needed` with an empty command-scoped value on every Homebrew-using runner, unless Homebrew is separately pinned or refreshed.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.
