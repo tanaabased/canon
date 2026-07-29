@@ -27,7 +27,10 @@ Show the fastest path to a successful first run. Delete this section when the re
 
 ```sh
 # install or clone
+INSTALL_COMMAND
+
 # run the main command
+RUN_COMMAND
 ```
 
 ## Usage
@@ -35,7 +38,8 @@ Show the fastest path to a successful first run. Delete this section when the re
 Explain the workflows most readers need first.
 
 ```sh
-# primary example
+# run the primary workflow
+PRIMARY_COMMAND
 ```
 
 Document only common inputs and configuration here. Link the complete reference from the paragraph where readers first need it:
@@ -56,7 +60,10 @@ Show the shortest supported check that confirms the primary workflow succeeded. 
 Keep this section contributor-focused and repo-specific.
 
 ```sh
+# install dependencies
 INSTALL_COMMAND
+
+# validate the project
 LINT_COMMAND
 TEST_COMMAND
 ```

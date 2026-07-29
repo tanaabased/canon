@@ -32,6 +32,15 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Put support, changelog, maintainers, contributors, license, or policy links near the end unless the repository is itself a support or policy surface.
 - When a README includes a `Contributors` section, use the standard `contrib.rocks` embed with the real repo slug instead of prose placeholders or manual contributor lists.
 
+### Code and Command Examples
+
+- When one command or code line needs a short explanation, prefer a concise language-appropriate comment immediately above it inside the fenced block.
+- Use surrounding prose when readers need prerequisites, concepts, safety implications, tradeoffs, expected behavior across several steps, or other context that a short comment cannot communicate clearly.
+- Keep critical warnings and prerequisites visible in prose before readers copy a block; an in-block comment may reinforce them but should not be the only notice.
+- Do not explain the same behavior in both surrounding prose and an in-block comment. Keep the representation that is clearest at the point of use.
+- Do not comment obvious syntax or narrate every line. Comments should make runnable examples easier to scan and copy, not turn the block into another prose section.
+- Use the fenced language's real comment syntax and place comments above the command or code they qualify rather than inventing placeholder annotation syntax.
+
 ## README Modes
 
 ### Full README

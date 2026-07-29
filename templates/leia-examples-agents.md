@@ -5,36 +5,47 @@ This file applies when editing `examples/**/README.md`. These README files are e
 ## General Style
 
 - Prefer behavior-focused `# should` labels over scenario labels.
-- Keep each `# should` block focused on one observable contract. Split blocks whose title needs `and` or `or`, mixes unrelated domains, or grows past roughly 12-15 command lines unless the block is one coherent multiline command.
-- Treat each blank-line-separated Leia block as a separate script. Do not rely on shell variables, functions, or working-directory changes persisting across `should` blocks.
-- Prefer direct command pipelines, command substitutions, and deterministic inline values over writing files just to inspect them later.
-- Do not capture command output into shell variables just to grep it later. If capture is needed to preserve a failing command's status, print the captured output before assertions.
-- For report-style assertions, print and match targeted output before running the final gate so CI logs show the mismatch that caused the failure.
+- Keep each `# should` block focused on one observable contract. Split blocks whose title needs `and` or `or`, mixes unrelated domains, or grows past roughly 12 to 15 command lines unless the block is one coherent multiline command.
+- Treat each blank-line-separated Leia block as a separate script. Do not rely on shell variables, functions, or working-directory changes persisting across blocks.
+- Keep commands directly beneath their `# should ...` line and separate tests with one blank line.
 
-## Example Placement
+## Scenario and Fixture Ownership
 
-- Add coverage to the narrowest existing example that owns the behavior.
-- Add a new example only when the behavior needs incompatible setup inputs, crosses enough domains to blur an existing example, or intentionally needs another successful product run.
-- Keep scenario-specific setup, assertions, and cleanup in the scenario README rather than in this file.
+- Add coverage to the narrowest existing scenario that owns the behavior. Add a scenario only for incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
+- Keep scenario-specific setup, assertions, and cleanup in its README.
+- Prefer checked-in static inputs over commands or helpers that synthesize the same constant files on every run.
+- Keep scenario-owned fixture files and named input directories directly beside the README without a generic scenario-local `fixtures/` wrapper.
+- Hoist fixtures to root `fixtures/` only when two or more live scenarios share the same contract. Reuse repository-owned product assets directly when they are the intended input.
+- Avoid `examples/fixtures` and `examples/support` when immediate children of `examples/` are CI matrix identities.
 
-## Runtime Boundary
+## Assertions and Helpers
 
-- Treat Leia's generated `.js` test harness as CommonJS runtime code because it uses `require`, even when the repository owns no example-local JavaScript helpers.
-- In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` in place whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
-- Do not require this examples-level boundary when the generated harness lives outside the ESM package scope or already inherits a nearer CommonJS boundary.
-- Do not move example-only helper modules to the repo root just to inherit the root package type.
-- Keep fixtures beside the scenario that owns them unless two or more scenarios already share the same fixture contract.
+- Prefer direct fixed-string pipelines for one invocation with one output assertion.
+- Capture output only when one stateful invocation supports multiple assertions, complete failure or non-leak output is required, background output must be inspected later, or the output artifact is itself the contract.
+- Inspect existing product logs directly when they are the observable lifecycle or safety record.
+- Prefer semantic tokens over terminal spacing, color escapes, or complete human prose unless exact rendering is the supported contract.
+- Use ordinary shell for straightforward assertions. Keep scenario-specific helpers beside their scenario and hoist only helpers shared by multiple scenarios or owning substantial semantic parsing or process coordination.
+- Unit-test reusable helper decisions, not thin shell composition or third-party behavior.
 
-## Mutating Examples
+## Runtime and Process Boundaries
 
-- Mutating examples should run the prepared product entrypoint once unless the example is explicitly about rerun or idempotency behavior.
-- Use fixed, readable local resource names for resources that exist only on ephemeral runners. Keep externally registered or shared resources unique per scenario and run.
-- Do not add preemptive cleanup or destroy blocks just to reset hosted runner state; each matrix job should start on a fresh runner.
-- Do not add expected-failure probes to mutating bootstrap examples when the failure can occur after machine state changes. Keep failure-contract checks in non-mutating CLI examples or make them fail during input validation before bootstrap side effects.
+- Store runtime-derived paths, process IDs, snapshots, and stateful results under the scenario's `TMPDIR`; do not treat that evidence as fixture material.
+- Prefer bounded readiness and shutdown polling against meaningful product signals over fixed sleeps.
+- Run the real prepared product surface when CI can do so safely. Fixtures may prepare inputs but must not bypass public registration, onboarding, migration, or mutation behavior under test.
+- Keep externally registered or shared resources unique per scenario and run.
+- Omit cleanup that only erases ephemeral runner state. Add `## Cleanup` only for product teardown behavior, persistent resources, or shared-environment isolation.
 
-## Shell Fixtures
+## Model-Backed Scenarios
 
-- Use `TMPDIR` for durable fixtures, unavoidable logs, and helper internals only.
-- Keep generated key, token, or credential-shaped fixtures in `TMPDIR`; they are real test inputs, not scratch assertion files.
-- Do not give setup fixture commands standalone `# should` blocks unless the fixture state itself is the contract. Put `mkdir -p "$TMPDIR"` beside the first fixture that writes into `TMPDIR`.
-- Avoid braced shell variable expansions such as `${VAR}` when plain `$VAR` works.
+- Avoid a live AI model when static configuration, fixtures, or deterministic assertions can prove the contract without model execution.
+- When a live model is required and its identity or quality is not under test, use the lowest-cost generally available model that supports the required provider and capabilities.
+- Keep one CI-configurable model default, minimize model calls, tokens, and retries, and document any need for a larger, specialized, or exact model.
+- Scope model credentials and model-specific environment to model-backed scenarios only.
+
+## Generator and Package Boundaries
+
+- Do not use literal backticks or braced shell expansions inside executable Leia blocks.
+- Treat Leia's generated `.js` test harness as CommonJS runtime code when it uses `require`.
+- In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
+- Do not require this boundary when the harness is outside the ESM package scope or already inherits a nearer CommonJS boundary.
+- Run mutating, secret-backed, or platform-dependent scenarios in fresh CI by default; do not run them locally unless the user explicitly requests operational validation.

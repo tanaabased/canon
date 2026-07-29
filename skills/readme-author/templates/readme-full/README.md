@@ -25,7 +25,10 @@ Show the fastest path to a successful first run. Delete this section when the re
 
 ```sh
 # install or clone
+INSTALL_COMMAND
+
 # run the main command
+RUN_COMMAND
 ```
 
 ## Installation
@@ -41,7 +44,8 @@ Explain the supported installation or setup path.
 Explain the most important user flows first.
 
 ```sh
-# primary example
+# run the primary workflow
+PRIMARY_COMMAND
 ```
 
 Add one or two follow-up examples only if they materially expand understanding.
@@ -64,9 +68,14 @@ Use this section only when the repo has meaningful secondary flows that still fi
 Keep this section contributor-focused and repo-specific.
 
 ```sh
+# install dependencies
 INSTALL_COMMAND
+
+# validate the project
 LINT_COMMAND
 TEST_COMMAND
+
+# build the distributable artifact when the repository owns one
 BUILD_COMMAND
 ```
 

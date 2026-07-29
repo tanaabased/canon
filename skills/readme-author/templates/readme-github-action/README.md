@@ -67,9 +67,14 @@ If the action also has a VitePress docs site, add a short `Documentation` sectio
 Keep this section contributor-focused and repo-specific.
 
 ```sh
+# install dependencies
 INSTALL_COMMAND
+
+# validate the action
 LINT_COMMAND
 TEST_COMMAND
+
+# build the committed runtime artifact when the action owns one
 BUILD_COMMAND
 ```
 

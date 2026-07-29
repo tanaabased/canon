@@ -25,7 +25,10 @@ Show the shortest path to a successful first run. Delete this section when the r
 
 ```sh
 # install or clone
+INSTALL_COMMAND
+
 # run the main command
+RUN_COMMAND
 ```
 
 Keep this section short. The README should prove the first step works, not reproduce the full docs site.
@@ -48,9 +51,14 @@ Add only the key routes readers actually need. Do not mirror the entire VitePres
 Keep this section for repo contributors and maintainers.
 
 ```sh
+# install dependencies
 INSTALL_COMMAND
+
+# validate the project
 LINT_COMMAND
 TEST_COMMAND
+
+# build the distributable artifact when the repository owns one
 BUILD_COMMAND
 ```
 
