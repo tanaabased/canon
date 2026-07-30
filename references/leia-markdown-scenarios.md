@@ -127,6 +127,7 @@ Leia may embed parsed command text inside a JavaScript template literal while ge
 
 - Do not use literal backticks. Use `$(command)` for command substitution.
 - Do not use braced shell expansions such as `${VAR}`. Use `$VAR`, or quote it as `"$VAR"suffix` when text follows.
+- Do not use numeric backreferences `\0` through `\9`. JavaScript consumes or rejects those escapes before the shell receives them; rewrite the command without numeric backreferences or move it into a checked-in helper.
 - Move shell logic that genuinely requires braced parameter expansion into a checked-in helper and call that helper from the README.
 - Do not rely on escaping content through both JavaScript-template and shell layers.
 

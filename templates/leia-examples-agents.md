@@ -49,6 +49,7 @@ This file applies when editing `examples/**`. Scenario README files are executab
 ## Generator and Package Boundaries
 
 - Do not use literal backticks or braced shell expansions inside executable Leia blocks.
+- Do not use numeric backreferences `\0` through `\9` inside executable Leia blocks. Leia embeds each block in a JavaScript template literal, so JavaScript consumes or rejects those escapes before the shell receives them; rewrite the command without numeric backreferences or move it to a checked-in script.
 - Treat Leia's generated `.js` test harness as CommonJS runtime code when it uses `require`.
 - In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
 - Do not require this boundary when the harness is outside the ESM package scope or already inherits a nearer CommonJS boundary.
