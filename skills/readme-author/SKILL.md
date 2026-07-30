@@ -40,7 +40,7 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 2. Load [`../../references/readme-standards.md`](../../references/readme-standards.md) and use it to choose the README mode intentionally.
 3. Inventory the repository's existing README, root-level guides, docs site, real entrypoints, visual assets, and meaningful status signals before choosing a structure.
 4. Keep the common path and roughly 80 percent of reader needs in the README. Treat 250 and 400 source lines as review signals, not validation limits.
-5. For code and command examples, prefer concise language-appropriate comments immediately above the lines they explain; reserve surrounding prose for prerequisites, concepts, safety, tradeoffs, or multi-step behavior that a short comment cannot carry.
+5. For code and command examples, prefer concise language-appropriate comments immediately above the lines they explain; reserve surrounding prose for prerequisites, concepts, safety, tradeoffs, or multi-step behavior that a short comment cannot carry, and tailor or remove starter-template comments when the final commands are self-explanatory.
 6. When drafting from scratch or standardizing a weak README, use the local template that matches the chosen mode instead of inventing section shape ad hoc.
 7. Strongly prefer a centered real visual, a concise row of truthful badges, and a one- or two-sentence description, but do not fabricate missing assets or status claims.
 8. Validate that the final README matches one coherent mode and review VitePress when `README.md`, `ADVANCED.md`, and three or more topical guides are present.
@@ -69,7 +69,7 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 
 - Confirm the final README clearly fits one mode: full README, companion guides, GitHub Action README, or docs wrapper.
 - Confirm any quickstart is truthful and the primary usage path appears before deeper reference material.
-- Confirm code and command examples prefer concise comments above the relevant lines when that is sufficient, keep broader context in prose, and do not duplicate the same explanation in both places.
+- Confirm code and command examples prefer concise comments above the relevant lines when that is sufficient, keep broader context in prose, do not duplicate the same explanation in both places, and do not retain starter-template comments that merely narrate self-explanatory commands.
 - Confirm companion guides declare their purpose, link back to the README, and avoid duplicating the common path.
 - Confirm the visual identity and badges use real assets and truthful signals, or are omitted without blocking the README.
 - Confirm the docs-site threshold was reviewed when `README.md`, `ADVANCED.md`, and three or more topical guides are present.

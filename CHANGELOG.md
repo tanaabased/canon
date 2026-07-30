@@ -1,8 +1,8 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Added GitHub Actions guidance for explicit Homebrew update policy and freshness checks before dependency installation.
-- Expanded Leia guidance for fixture ownership, semantic assertions, helpers, process lifecycles, cost-conscious model-backed scenarios, and release-shaped CI.
-- Updated README guidance to prefer concise code-block comments over surrounding prose when they explain commands clearly.
+- Expanded and consolidated Leia guidance for fixtures, assertions, helpers, process lifecycles, model-backed scenarios, and runnable starters.
+- Updated README guidance to prefer concise, non-obvious code-block comments and treat template comments as removable scaffolding.
 
 ## v0.6.0 - [July 28, 2026](https://github.com/tanaabased/canon/releases/tag/v0.6.0)
 

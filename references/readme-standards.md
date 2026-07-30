@@ -39,6 +39,7 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Keep critical warnings and prerequisites visible in prose before readers copy a block; an in-block comment may reinforce them but should not be the only notice.
 - Do not explain the same behavior in both surrounding prose and an in-block comment. Keep the representation that is clearest at the point of use.
 - Do not comment obvious syntax or narrate every line. Comments should make runnable examples easier to scan and copy, not turn the block into another prose section.
+- Treat comments in starter templates as scaffolding. Tailor or remove them after replacing placeholders when the real commands make the grouping or behavior obvious.
 - Use the fenced language's real comment syntax and place comments above the command or code they qualify rather than inventing placeholder annotation syntax.
 
 ## README Modes

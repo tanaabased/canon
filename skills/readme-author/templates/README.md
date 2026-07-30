@@ -11,4 +11,4 @@ Use these templates when standardizing repository `README.md` files under the Ta
 
 For the decision rule, section expectations, and shared `Contributors` embed standard, see [`../../../references/readme-standards.md`](../../../references/readme-standards.md).
 
-When adapting examples, prefer short language-appropriate comments immediately above the commands they explain. Keep surrounding prose for context that cannot fit clearly in a comment.
+When adapting examples, prefer short language-appropriate comments immediately above the commands they explain. Keep surrounding prose for context that cannot fit clearly in a comment, and tailor or remove scaffold comments when the final commands are self-explanatory.
