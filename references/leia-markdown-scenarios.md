@@ -67,6 +67,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Chain fixed-string greps when stable tokens must occur on the same line. Do not assert terminal padding, alignment whitespace, color escape sequences, or complete human prose unless those are explicitly stable contracts.
 - Grep a product-generated log directly when that log is the observable lifecycle, audit, or safety record.
+- Keep product behavior assertions and scenario-specific expected values visible in the owning README or fixture; do not hide them in shared helpers.
 - Do not redirect command output to a temporary file solely so the next command can grep it.
 - Capture output once when:
 
@@ -82,7 +83,8 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Helpers
 
-- Use shell-native `test`, `cmp`, `grep -F`, command substitution, and exit-status checks for straightforward assertions.
+- Use shell-native `test`, `cmp`, `grep -F`, command substitution, and exit-status checks for straightforward assertions and scenario-local process coordination. Use JavaScript only when structured semantics, portability, or coordination complexity would be materially worse in shell.
+- Do not add preflight existence checks when the immediately following product command validates the same prerequisite clearly. Retain them when the state itself is under test or the check materially improves failure diagnostics.
 - Do not introduce generic wrappers such as `assert-line`, `wait-line`, or fixture-builder commands when ordinary shell clearly expresses the contract.
 - A semantic checker is justified for structured JSON or JSONL, multi-record correlation, redaction and non-leak rules, bounded diagnostic summaries, or another contract that would become brittle or unreadable in shell.
 - A process helper is justified for readiness polling, bounded shutdown, child-process failure detection, or cross-platform coordination that shell cannot express reliably.
@@ -94,6 +96,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Store runtime-derived paths, process IDs, snapshots, and stateful command results under the scenario's `TMPDIR` when later Leia blocks need them.
 - Do not treat those runtime artifacts as fixtures; they are evidence produced by the flow.
+- When product behavior mutates a checked-in input tree, copy it under the scenario's `TMPDIR` first and run against the copy; keep the checked-in source deterministic.
 - Prefer readiness polling against a meaningful product signal over fixed sleeps.
 - Bound every readiness and shutdown wait. Allow enough time for cold CI startup and report the relevant process or log state when the bound expires.
 - Keep long waits in operational scenarios rather than unit tests. Unit tests should inject deterministic time and process boundaries.
@@ -155,6 +158,8 @@ Markdown fence markers, inline-code backticks outside executable blocks, `$(...)
 - Is every constant input checked in beside its sole owning scenario or hoisted only after proven sharing?
 - Are public product commands retained where their behavior is part of the contract?
 - Are generated files limited to runtime-derived state and evidence?
+- Are behavior assertions and scenario-specific expected values visible in the README or fixture rather than a shared helper?
+- Are checked-in inputs copied under `TMPDIR` before product behavior mutates them?
 - Are simple assertions direct and semantic rather than whitespace-sensitive?
 - Is captured output reused for a real reason?
 - Are existing product logs inspected directly instead of duplicated?

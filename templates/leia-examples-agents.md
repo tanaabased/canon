@@ -1,6 +1,6 @@
 # Leia Example Guidance
 
-This file applies when editing `examples/**/README.md`. These README files are executable Leia specs that may be consumed in CI, and some scenarios may mutate hosted runners.
+This file applies when editing `examples/**`. Scenario README files are executable Leia specs that may be consumed in CI, and some scenarios may mutate hosted runners.
 
 ## General Style
 
@@ -23,13 +23,17 @@ This file applies when editing `examples/**/README.md`. These README files are e
 - Prefer direct fixed-string pipelines for one invocation with one output assertion.
 - Capture output only when one stateful invocation supports multiple assertions, complete failure or non-leak output is required, background output must be inspected later, or the output artifact is itself the contract.
 - Inspect existing product logs directly when they are the observable lifecycle or safety record.
+- Keep product behavior assertions and scenario-specific expected values visible in the owning README or fixture; do not hide them in shared helpers.
 - Prefer semantic tokens over terminal spacing, color escapes, or complete human prose unless exact rendering is the supported contract.
-- Use ordinary shell for straightforward assertions. Keep scenario-specific helpers beside their scenario and hoist only helpers shared by multiple scenarios or owning substantial semantic parsing or process coordination.
+- Use ordinary shell for straightforward assertions and scenario-local process coordination. Use JavaScript only when structured semantics, portability, or coordination complexity would be materially worse in shell.
+- Do not add preflight existence checks when the immediately following product command validates the same prerequisite clearly. Retain them when the state itself is under test or the check materially improves failure diagnostics.
+- Keep scenario-specific helpers beside their scenario and hoist only helpers shared by multiple scenarios or owning substantial semantic parsing or process coordination.
 - Unit-test reusable helper decisions, not thin shell composition or third-party behavior.
 
 ## Runtime and Process Boundaries
 
 - Store runtime-derived paths, process IDs, snapshots, and stateful results under the scenario's `TMPDIR`; do not treat that evidence as fixture material.
+- When product behavior mutates a checked-in input tree, copy it under the scenario's `TMPDIR` first and run against the copy; keep the checked-in source deterministic.
 - Prefer bounded readiness and shutdown polling against meaningful product signals over fixed sleeps.
 - Run the real prepared product surface when CI can do so safely. Fixtures may prepare inputs but must not bypass public registration, onboarding, migration, or mutation behavior under test.
 - Keep externally registered or shared resources unique per scenario and run.
