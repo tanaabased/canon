@@ -1,6 +1,6 @@
 # Leia Example Guidance
 
-This file applies when editing `examples/**`. Scenario README files are executable Leia specs that may be consumed in CI, and some scenarios may mutate hosted runners.
+This file is the compact ambient projection of the shared Leia scenario contract. It applies when editing `examples/**`; scenario README files are executable specs that may be consumed in CI, and some scenarios may mutate hosted runners.
 
 ## General Style
 

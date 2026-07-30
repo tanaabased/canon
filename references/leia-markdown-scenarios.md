@@ -2,6 +2,8 @@
 
 Use this pattern when a repository needs end-to-end or operational coverage that is clearer as executable shell steps than as unit tests. A Leia scenario is both maintained example documentation and runnable contract coverage.
 
+Treat this reference as the authoritative Leia scenario contract. `templates/leia-examples-agents.md` is its compact ambient projection for repositories that need durable `examples/**` editing rules, while `templates/leia-markdown-example-readme.md` should remain a runnable scenario starter instead of restating the editing contract.
+
 ## When to Use
 
 - Use Leia when the main risk is observable CLI behavior, file layout, permissions, process lifecycle, service readiness, machine mutation, logs, or integration through a public product surface.
