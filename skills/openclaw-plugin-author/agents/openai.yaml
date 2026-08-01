@@ -1,0 +1,7 @@
+interface:
+  display_name: 'OpenClaw Plugin Author'
+  short_description: 'Tanaab-based OpenClaw code-plugin authoring and publication.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-openclaw-plugin-author when the task is primarily about creating, modifying, validating, packaging, or publishing a native OpenClaw code plugin.'
