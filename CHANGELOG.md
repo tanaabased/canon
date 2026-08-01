@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.7.0 - [August 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.7.0)
+
 - Added GitHub Actions guidance for explicit Homebrew update policy and freshness checks before dependency installation.
 - Added `tanaab-openclaw-plugin-author` for native manifests, SDK entrypoints, package validation, and npm/ClawHub delivery. [#11](https://github.com/tanaabased/canon/pull/11)
 - Expanded and consolidated Leia guidance for fixtures, assertions, helpers, process lifecycles, model-backed scenarios, and runnable starters.
