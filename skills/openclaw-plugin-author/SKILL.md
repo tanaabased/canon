@@ -104,6 +104,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Prefer injected or faked SDK contexts for direct tests and assert manifest/runtime agreement, registered contract identity, and error behavior where those are stable public contracts.
 - Keep build and plugin metadata checks in the validation path rather than inventing another direct-test framework.
 - Use [Leia Markdown scenarios](../../references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary.
+- When a fresh unattended CI scenario must exercise an OpenClaw tool call, synchronize no-approval exec policy inside the scenario setup with `openclaw exec-policy preset yolo`. Restrict this to isolated ephemeral state; CI or a missing TTY does not itself bypass approvals, and routine local validation must not apply the preset to a developer's normal profile.
 - Keep unit tests and Leia scenarios in separate commands and CI checks; do not require machine-mutating Leia or live OpenClaw flows for routine local validation.
 
 ## Deployment
