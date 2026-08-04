@@ -8,6 +8,7 @@ This file is the compact ambient projection of the shared Leia scenario contract
 - Keep each `# should` block focused on one observable contract. Split blocks whose title needs `and` or `or`, mixes unrelated domains, or grows past roughly 12 to 15 command lines unless the block is one coherent multiline command.
 - Treat each blank-line-separated Leia block as a separate script. Do not rely on shell variables, functions, or working-directory changes persisting across blocks.
 - Keep commands directly beneath their `# should ...` line and separate tests with one blank line.
+- Prefer one command per line. Avoid `command && next-command` when newline sequencing preserves the selected shell's fail-fast behavior.
 
 ## Scenario and Fixture Ownership
 

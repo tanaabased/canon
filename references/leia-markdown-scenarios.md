@@ -53,6 +53,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Put the commands immediately below the `# should ...` line with no blank line inside the block.
 - Separate tests with one blank line. Do not leave commands after a blank line without a new `# should ...` header.
 - Treat every blank-line-separated block as a new shell script. Variables, functions, shell options, and working-directory changes do not persist across blocks.
+- Prefer one command per line. Avoid `command && next-command` when the selected shell's fail-fast mode makes ordinary newline sequencing equivalent; retain conditional chaining when it is the behavior being expressed.
 - Preserve exact casing only for literals and conventional identifiers such as commands, flags, paths, environment variables, formats, product names, acronyms, HTTP methods, status codes, and expected output.
 - Split a block when it mixes unrelated contracts, needs `and` or `or` to describe its purpose, or grows beyond roughly 12 to 15 command lines without being one coherent multiline command.
 
