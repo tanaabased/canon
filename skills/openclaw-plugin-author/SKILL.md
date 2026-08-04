@@ -23,7 +23,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Keep this skill on native OpenClaw code-plugin surfaces: the plugin manifest, package metadata, SDK entry and registration, runtime behavior, package proof, and publication.
 - Compose shared JavaScript and repository canon at the lifecycle that owns it instead of restating that doctrine here.
 - Treat the npm package name, OpenClaw plugin id, ClawHub owner/listing, and source repository as related but distinct identities.
-- Treat one prepared npm-pack tarball as the canonical release artifact for npm and ClawHub.
+- Keep npm and ClawHub as independently operable publication pipelines while aligning their release source, version, build, package contents, and compatibility metadata.
 
 ## When to Use
 
@@ -87,7 +87,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 3. Load only the relevant shared canon, local plugin files, installed SDK types, and current official OpenClaw references for that surface.
 4. Reconcile the manifest, package metadata, runtime entry, documentation, tests, and built artifact before adding another representation.
 5. Make the smallest coherent plugin-owned change and run the narrowest repo-native lint, format, type-check, unit-test, build, and plugin-contract checks that apply.
-6. When package contents or delivery changed, create and inspect the npm-pack artifact, then run registry dry runs against that exact artifact.
+6. When package contents or delivery changed, create and inspect each pipeline's npm-pack artifact, then run that registry's dry run against the artifact its pipeline produced.
 7. Run installed-package, Gateway, model, or agent scenarios only when task scope explicitly requires operational proof.
 
 ## Documentation
@@ -110,7 +110,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 ## Deployment
 
 - Apply [JavaScript Author's npm deployment lifecycle](../javascript-author/SKILL.md#deployment) for release preparation, build ordering, npm trusted publishing, dry runs, and stable or prerelease channels instead of duplicating that doctrine here.
-- Treat publication as one plugin-package lifecycle with two destinations: prepare versions once, build once, create one npm-pack tarball, validate it, and deliver those exact bytes to npm and ClawHub.
+- Treat publication as one plugin-package contract with two independently operable destinations. npm and ClawHub may prepare, build, and pack in separate pipelines; require both to derive from the same release source and version and to validate the same manifest, built runtime entries, package-file contract, and compatibility metadata.
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
 - Pack with lifecycle scripts disabled, inspect required and excluded files, and prove runtime dependencies and built entries from the artifact rather than from the source checkout alone.
@@ -131,12 +131,12 @@ Use this section as a reference map from the owned testing and deployment lifecy
 ### Release Package Validation
 
 - Use `.github/workflows/release-tests.yml` for synthetic version preparation, prepared-state format checks, package build and inspection, ClawHub validation, and npm plus ClawHub publish dry runs.
-- Keep publication disabled in pull-request validation and pass the actual packed tarball through both registry simulations.
+- Keep publication disabled in pull-request validation. Each registry simulation may pack independently, but it must validate and dry-run the exact tarball produced by its own path against the shared plugin-package contract.
 - Add a reusable workflow template only after another plugin proves the same Tanaab lifecycle, inputs, authentication, and failure boundaries.
 
 ### Release Publication
 
-- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) and adding ClawHub delivery of the same prepared artifact.
+- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
 - Inspect the current official ClawHub reusable workflow when choosing publication topology, but let GitHub Workflow Author own whether a repository uses that workflow or a repo-local job and how it is pinned.
 
 ## Optimization
@@ -169,7 +169,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Confirm current supported SDK entrypoints and narrow public subpaths were preferred over private or copied bundled-plugin internals.
 - Confirm Mocha remains the canonical direct-test mechanism and Leia appears only for justified installed or runtime scenarios with a separate check identity.
 - Confirm documentation distinguishes source-checkout development from npm-pack, npm, and ClawHub install proof and states meaningful permissions or safety limits.
-- Confirm the canonical npm-pack artifact contains its runtime dependencies, manifest, built entries, and public docs while excluding development-only or private material.
-- Confirm npm and ClawHub dry runs receive the same prepared artifact and no live installation, Gateway mutation, credential exposure, or publication occurred without authorization.
+- Confirm each registry pipeline's npm-pack artifact contains its runtime dependencies, manifest, built entries, and public docs while excluding development-only or private material.
+- Confirm the npm and ClawHub pipelines use aligned release inputs and package contracts, each dry-runs the artifact it produced, and no live installation, Gateway mutation, credential exposure, or publication occurred without authorization.
 - Confirm `GitHub Actions` maps each lifecycle to a stable `.github/workflows/*.yml` path without duplicating doctrine or embedding complete workflow YAML.
 - Run the narrowest applicable lint, format, type-check, unit tests, build, plugin checks, package inspection, and registry dry runs for the touched plugin surface.
