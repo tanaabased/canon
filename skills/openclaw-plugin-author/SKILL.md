@@ -60,7 +60,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Apply [JavaScript function data flow](../../references/javascript-function-data-flow.md) when plugin logic can honestly be separated from SDK registration or runtime state.
 - Inspect project-local plugin patterns and current OpenClaw guidance before using a fallback structure; do not turn DevGuard-specific supervision, policy, or scenario design into a universal plugin baseline.
 - Keep the root manifest and declared package entries platform-correct, registration thin, stateful orchestration in `lib/`, independently testable logic in `utils/`, internal development tasks in `scripts/`, and flat owned tests in `test/`.
-- Keep plugin-owned OpenClaw commands in a clear plugin-local command scope and registration layer; they are extensions of the host CLI rather than package-level `bin/` entrypoints.
+- Put each non-trivial plugin-owned OpenClaw subcommand in a focused `cli/<command>.js` or `cli/<command>.ts` module. Keep host registration and shared command orchestration in `lib/`; these commands extend the OpenClaw CLI and are not package-level `bin/` entrypoints.
 
 ### Identity and Manifest
 
@@ -74,11 +74,16 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Select the narrowest current entry helper and SDK subpaths that fit the plugin capability, following the official [plugin entrypoint contract](https://docs.openclaw.ai/plugins/sdk-entrypoints).
 - Keep heavy SDKs, long-lived services, CLI registration, and other runtime-only work out of setup-safe or static manifest surfaces.
 - Keep source entries usable for source-checkout development and installed runtime entries pointed at built JavaScript when the package ships generated output; preserve the required positional pairing between source and runtime entries.
+- Route diagnostics through the closest host-injected `PluginLogger`, such as `api.logger` or a CLI or service context logger. Do not construct a private OpenClaw subsystem logger or use `console.*` for routine plugin diagnostics; a plugin-local adapter must delegate to the injected logger and preserve its levels and routing.
+- Derive the diagnostic namespace from the resolved `api.id`, removing one leading `openclaw-` because the platform context is already implied; for example, `openclaw-devguard` becomes `devguard`. Do not derive it from the npm package name, display name, or CLI command. When the current host logger does not visibly attribute records by plugin, prefix message text exactly once as `[<plugin-namespace>] ...`; when the host already exposes that attribution, do not repeat it. Centralize this choice in one adapter so host logger changes do not require call-site rewrites.
+- Put optional stable lowercase component or operation context inside that namespace, such as `[devguard] watcher: ...`. Keep diagnostics free of ANSI styling, credentials, primary CLI output, and machine-readable command results.
 
 ### Plugin-Owned Commands
 
-- Follow [shared CLI style rules](../../references/cli-style-rules.md) for observable help, streams, color, errors, and version behavior where the host command surface permits them.
-- Keep command registration thin over plugin-owned modules and test observable host-command behavior without inventing a separate package CLI.
+- Register commands beneath one plugin-owned command namespace through the current public OpenClaw CLI API and its discovery metadata. Let OpenClaw own top-level parsing, help, and version behavior unless the plugin command has a distinct documented contract.
+- Keep command registration thin over the `cli/` modules. Parse host arguments and options at that boundary, then pass typed values and injected dependencies into the owning command implementation.
+- Follow [shared CLI style rules](../../references/cli-style-rules.md) for human summaries, streams, machine-readable output, color, and errors. Use the public OpenClaw runtime output surface for primary output and the `PluginLogger` injected into the CLI registrar for diagnostics. Prefer those API surfaces directly; add a small plugin-local adapter only to apply shared styling to primary output or add diagnostic context, redaction, or test injection without changing stream, log-level, or machine-output semantics.
+- Keep JSON and JSONL modes free of human decoration and ANSI styling, derive them from the same command result as human output, and preserve child or command exit status across every output mode.
 
 ## Workflow
 
@@ -102,6 +107,8 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 - Apply [JavaScript Author's direct-test contract](../javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
 - Prefer injected or faked SDK contexts for direct tests and assert manifest/runtime agreement, registered contract identity, and error behavior where those are stable public contracts.
+- For a plugin-local logger adapter, fake the host logger and assert one call at the original level, one plugin-id-derived namespace without a leading `openclaw-` when host attribution is absent, no repeated namespace when attribution is present, and no direct console fallback.
+- For plugin-owned commands, fake the narrow host command interface and inject output, logger, and style dependencies. Assert the command namespace, subcommands, descriptions, options, human and no-color summaries, machine-output purity, diagnostic separation, and exit behavior that the plugin owns.
 - Keep build and plugin metadata checks in the validation path rather than inventing another direct-test framework.
 - Use [Leia Markdown scenarios](../../references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary.
 - When a fresh unattended CI scenario must exercise an OpenClaw tool call, synchronize no-approval exec policy inside the scenario setup with `openclaw exec-policy preset yolo`. Restrict this to isolated ephemeral state; CI or a missing TTY does not itself bypass approvals, and routine local validation must not apply the preset to a developer's normal profile.
@@ -143,11 +150,11 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 
-- **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports, source/runtime entries, registration, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery.
-- **Compare:** Reconcile manifest, package, runtime, docs, tests, built output, and registry metadata; identify unsupported SDK paths, duplicated registration, overloaded entrypoints, stale compatibility, missing artifact proof, and divergent publication artifacts.
-- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated contracts; split overloaded runtime owners; extract testable logic; move misplaced static or package metadata; tighten compatibility and package boundaries; and remove proven stale paths while routing generic baseline work to its owner.
+- **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery.
+- **Compare:** Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata; identify unsupported SDK paths, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
+- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated contracts; split overloaded runtime owners; extract testable logic; move misplaced command modules, static metadata, or package metadata; tighten compatibility and package boundaries; and remove proven stale paths while routing generic baseline work to its owner.
 - **Apply:** After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
-- **Verify:** Run the applicable repo checks, direct tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inspect identity and artifact agreement.
+- **Verify:** Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inspect command, identity, and artifact agreement.
 
 ## Bundled Resources
 
@@ -167,6 +174,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Confirm npm package name, OpenClaw plugin id, ClawHub owner/listing, and source repository identity remain intentionally distinct and correctly used.
 - Confirm `openclaw.plugin.json`, `package.json#openclaw`, runtime entry identity, compatibility fields, source/runtime entries, declared capabilities, documentation, and built output agree.
 - Confirm current supported SDK entrypoints and narrow public subpaths were preferred over private or copied bundled-plugin internals.
+- Confirm plugin diagnostics use the closest host-injected `PluginLogger`, preserve host routing and levels, and use the plugin-id-derived namespace without a leading `openclaw-` exactly once when host attribution is absent without leaking credentials, primary output, or machine-readable results.
+- Confirm every non-trivial plugin-owned OpenClaw subcommand has a focused `cli/` module, registration remains thin, primary and diagnostic output use the correct host surfaces, machine modes remain undecorated, and exit behavior is preserved.
 - Confirm Mocha remains the canonical direct-test mechanism and Leia appears only for justified installed or runtime scenarios with a separate check identity.
 - Confirm documentation distinguishes source-checkout development from npm-pack, npm, and ClawHub install proof and states meaningful permissions or safety limits.
 - Confirm each registry pipeline's npm-pack artifact contains its runtime dependencies, manifest, built entries, and public docs while excluding development-only or private material.

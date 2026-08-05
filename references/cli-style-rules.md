@@ -1,9 +1,9 @@
 # CLI Style Rules
 
-Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLIs in Tanaab-managed repos.
+Use these rules when shaping human or machine-readable CLI output in Tanaab-managed repos.
 
 - Treat this file as the shared CLI contract layer. Runtime- or shell-specific skills should add only local deltas instead of restating the whole surface.
-- Pair this reference with [coding-stack-preferences.md](./coding-stack-preferences.md) for runtime defaults and with the owning CLI skill for implementation details.
+- Pair this reference with [coding-stack-preferences.md](./coding-stack-preferences.md) for runtime defaults and with the owning surface skill for implementation details.
 
 ## Goals
 
@@ -21,6 +21,12 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - `red`: semantic failure state such as `error`
 - `tp`: Tanaab green `#00c88a` for section headers and key verbs such as `install`, `write`, `stow`, or `backup`
 - `ts`: Tanaab pink `#db2777` for important targets, focal nouns, or resolved destinations such as filenames, package groups, directories, or tool names
+
+## Human Output
+
+- Prefer concise lowercase action, status, and field labels in command-owned summaries.
+- For multi-line summaries, align labels within that output block and pair each label with its focal target or value. Keep the width local to the command instead of imposing one repository-wide column width.
+- Keep every summary understandable without color; styling should reinforce the owned action, status, target, or field rather than carry meaning by itself.
 
 ## Help Output
 
@@ -49,6 +55,13 @@ Use these rules when shaping CLI output for Bash, PowerShell, and Bun-backed CLI
 - Use `tp` on the key verb in an action message and `ts` on the key target or destination.
 - Avoid coloring entire sentences unless the message is itself a compact status label.
 - Prefer a small shared helper surface such as `log`, `note`, `success`, `warn`, `fail`, or their shell equivalents over ad hoc inline formatting.
+
+## Machine-Readable Output
+
+- When a command offers a JSON mode, emit only the requested JSON value plus a trailing newline to `stdout`. For streamed events, use JSONL with one complete JSON value per line.
+- Do not mix human headings, status lines, hints, or ANSI styling into machine-readable `stdout`; send diagnostics to `stderr` or the owning platform's diagnostic logger.
+- Derive human and machine renderers from the same normalized result so fields, ordering, and success or failure state do not drift between modes.
+- Preserve the command's exit-status contract independently of output mode; machine-readable output must not turn failures into success or hide a child command's exit status.
 
 ## Implementation Notes
 
