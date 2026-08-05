@@ -1,5 +1,12 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added isolated unattended OpenClaw tool-call scenario guidance using `openclaw exec-policy preset yolo`.
+- Added shared release destination guidance for Codex archives, GitHub Actions, npm packages, and OpenClaw registries.
+- Updated Canon's package metadata to prevent npm publication.
+- Updated Leia scenario guidance to prefer fail-fast newline command sequencing over equivalent `&&` chains.
+- Updated OpenClaw plugin CLI guidance for `cli/` placement, host output and logging APIs, machine modes, and diagnostic namespaces.
+- Updated OpenClaw plugin publication guidance so npm and ClawHub pipelines remain independently operable under one aligned package contract.
+
 ## v0.7.0 - [August 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.7.0)
 
 - Added GitHub Actions guidance for explicit Homebrew update policy and freshness checks before dependency installation.

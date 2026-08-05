@@ -37,6 +37,7 @@ The live skills are:
 - [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript, TypeScript, and Bun implementation work, especially low-coupling helpers and utility logic.
 - [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true JavaScript or TypeScript Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
 - [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript, TypeScript, and Bun repo baselines such as workspace layout, linting, formatting, type-checking, and baseline scripts.
+- [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/) authors, validates, packages, and deploys native OpenClaw code plugins.
 - [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a project and audits or synchronizes its managed settings against canon.
 - [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only, reports convergence, and produces a staged, skill-owned improvement plan only when warranted.
 - [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.

@@ -62,6 +62,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Use [./references/bun-workspace-baseline.md](./references/bun-workspace-baseline.md) when a repo contains multiple workspace packages or aggregate and leaf package surfaces.
 - Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first baseline and npm package identity defaults rather than re-deciding them locally.
+- Use [../../references/release-destinations.md](../../references/release-destinations.md) to derive package privacy from each scope's intended release destination instead of treating every package manifest as npm-publishable.
 - Apply the bundled base files together when standardizing a repo, then add the complete TypeScript or Vue layer only when that layer is needed.
 
 ## Workflow
@@ -136,6 +137,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
+- [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination and package-privacy routing
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared linting and formatting defaults
 
 ## Validation
@@ -154,6 +156,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 - Confirm Bun workspace roots are private, use one lockfile, treat each package as an owning scope, and keep cross-package imports on declared package exports.
 - Confirm aggregate packages re-export leaf packages through declared workspace dependencies instead of duplicating or reaching into leaf implementations.
 - Confirm package inspection uses pack or publish dry runs and that repo standardization performs no live package publication.
+- Confirm each package scope's `private` setting follows its explicit release destination rather than its name or the mere presence of `package.json`.
 - Confirm publishable npm packages are checked for the canonical release-published lifecycle, trusted npm publication, conditional package builds, post-stamping format validation, package dry runs, and the `latest` or `edge` channel contract, with no long-lived token exposed to `npm publish`.
 - Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
 - Confirm the canonical linter workflow remains separate from an independently owned unit-test workflow unless a repo-specific shared runner, matrix, ownership, and status boundary justifies combining them.

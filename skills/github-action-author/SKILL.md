@@ -67,6 +67,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 
 ## Release Workflow
 
+- Use [release destinations](../../references/release-destinations.md) to keep repository refs and Marketplace delivery distinct from any separately declared npm package publication.
 - Canonical mechanism: for JavaScript-backed action repos that ship committed artifacts or sync `CHANGELOG.md`, use a `.github/workflows/release.yml` workflow triggered by `release.published`, check out full history, install Bun, export formatted `RELEASE_DATE`, and call `tanaabased/prepare-release-action@v1`.
 - Keep `Install deps and prep` only when the repo needs a final release-time lint, test, build, or smoke pass before syncing release artifacts.
 - Keep `sync-tags` aligned with the incoming release tag's major version line. For example, when `${{ github.event.release.tag_name }}` is `v1.2.3`, the workflow should sync the moving alias `v1`.
@@ -88,6 +89,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 - [./templates/bun-javascript-action-smoke-workflow.yml](./templates/bun-javascript-action-smoke-workflow.yml): starter workflow for `uses: ./` smoke coverage
 - [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml): starter `release.yml` for release-published action repos that sync `CHANGELOG.md` or committed artifacts through `prepare-release-action`
 - [./templates/get-inputs.spec.js](./templates/get-inputs.spec.js): starter Mocha spec for a focused action input helper
+- [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination routing
 - [../../references/readme-standards.md](../../references/readme-standards.md): GitHub Action README mode rules
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first runtime and action repo defaults
 - [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for action runtime code

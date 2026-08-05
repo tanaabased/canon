@@ -121,6 +121,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Pairing
 
+- Pair this reference with [release-destinations.md](./release-destinations.md) when deciding whether a package is npm-published, registry-delivered, or private in support of another release artifact.
 - Pair this reference with [javascript-repo-structure.md](./javascript-repo-structure.md) for JS/TS/Bun code layout and hoisting decisions.
 - Pair it with [javascript-function-data-flow.md](./javascript-function-data-flow.md) when the task is about JavaScript or TypeScript helper shape, mutation discipline, type flow, or import grouping.
 - Pair it with [readme-standards.md](./readme-standards.md) when the task is about repository README mode or docs-wrapper decisions.

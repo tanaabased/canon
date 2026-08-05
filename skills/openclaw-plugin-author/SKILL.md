@@ -116,6 +116,7 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 ## Deployment
 
+- Use [release destinations](../../references/release-destinations.md) for the shared product-surface routing while keeping this section authoritative for native OpenClaw plugin packaging and publication.
 - Apply [JavaScript Author's npm deployment lifecycle](../javascript-author/SKILL.md#deployment) for release preparation, build ordering, npm trusted publishing, dry runs, and stable or prerelease channels instead of duplicating that doctrine here.
 - Treat publication as one plugin-package contract with two independently operable destinations. npm and ClawHub may prepare, build, and pack in separate pipelines; require both to derive from the same release source and version and to validate the same manifest, built runtime entries, package-file contract, and compatibility metadata.
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
@@ -162,6 +163,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - [JavaScript Repo Standardizer](../javascript-repo-standardizer/SKILL.md): Bun, TypeScript, lint, format, package identity, and repository baseline
 - [GitHub Workflow Author](../github-workflow-author/SKILL.md): independent workflow graph, permission, job, matrix, and reusable-workflow ownership
 - [README Author](../readme-author/SKILL.md): repository entry-surface selection and authoring
+- [Release destinations](../../references/release-destinations.md): shared product-surface-to-release-destination routing
 - [JavaScript repo structure](../../references/javascript-repo-structure.md): owning scopes, role directories, test placement, and hoisting
 - [Coding stack preferences](../../references/coding-stack-preferences.md): Bun-first runtime and npm identity defaults
 - [JavaScript function data flow](../../references/javascript-function-data-flow.md): function shape and mutation boundaries

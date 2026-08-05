@@ -117,6 +117,7 @@ describe('feature/utils/normalize-tags', () => {
 
 ## Deployment
 
+- Use [release destinations](../../references/release-destinations.md) to confirm that npm is an intended destination for the package scope before applying this lifecycle.
 - Canonical mechanism: for a single publishable JS, TS, or Bun package, use `.github/workflows/release.yml` on `release.published`, prepare the package with `tanaabased/prepare-release-action@v1`, and publish with the npm CLI through npm trusted publishing.
 - Configure npm's trusted publisher for the exact GitHub organization, repository, and workflow filename. Use a GitHub-hosted Ubuntu runner, Node 24, npm `>=11.5.1`, and `id-token: write`; keep Bun as the runtime and package manager, but do not substitute `bun publish` for the documented npm OIDC path.
 - Grant `contents: write` only because the canonical lifecycle syncs release-time version or changelog mutations. Prefer `${{ github.token }}` for ordinary sync; use a separate repository credential only when branch protection or another repo rule requires it.
@@ -152,6 +153,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ## Bundled Resources
 
+- [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination routing
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first JavaScript and TypeScript runtime defaults
 - [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): owning scopes plus `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
