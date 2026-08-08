@@ -62,4 +62,56 @@ describe('skills/skill-author/lib/skill-scaffolder', () => {
       await rm(outputDir, { force: true, recursive: true });
     }
   });
+
+  it('should preserve product identity in an explicit OpenClaw plugin container', async () => {
+    const outputDir = await mkdtemp(path.join(os.tmpdir(), 'canon-skill-scaffolder-'));
+
+    try {
+      const result = spawnSync(
+        'bun',
+        [
+          SCAFFOLDER_PATH,
+          '--type',
+          'integration',
+          '--namespace',
+          'agent-system',
+          '--container',
+          'openclaw-plugin',
+          '--slug',
+          'github-cli',
+          '--display-name',
+          'Agent System GitHub CLI',
+          '--description',
+          'Agent System GitHub CLI guidance for agent-scoped operations.',
+          '--brand-color',
+          '#123456',
+          '--openclaw-emoji',
+          '🐙',
+          '--openclaw-homepage',
+          'https://example.com/skills/github-cli',
+          '--output-dir',
+          outputDir,
+        ],
+        { encoding: 'utf8' },
+      );
+      const skillDir = path.join(outputDir, 'github-cli');
+
+      assert.equal(result.status, 0, result.stderr);
+      const skillContent = await readFile(path.join(skillDir, 'SKILL.md'), 'utf8');
+      const openAiContent = await readFile(path.join(skillDir, 'agents', 'openai.yaml'), 'utf8');
+      const frontmatter = parseSkillFrontmatter(skillContent);
+
+      assert.equal(frontmatter.name, 'agent-system-github-cli');
+      assert.equal(
+        frontmatter.description,
+        'Agent System GitHub CLI guidance for agent-scoped operations.',
+      );
+      assert.equal(frontmatter.metadata.owner, 'tanaab');
+      assert.match(openAiContent, /brand_color: "#123456"/);
+      assert.match(openAiContent, /\$agent-system-github-cli/);
+      assert.doesNotMatch(openAiContent, /Tanaab-based/);
+    } finally {
+      await rm(outputDir, { force: true, recursive: true });
+    }
+  });
 });
