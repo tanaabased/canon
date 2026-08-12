@@ -46,11 +46,12 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 ## Constraints
 
 - Prefer the smallest change that solves the plugin-owned task and preserve established local patterns when they satisfy the current platform contract.
-- Inspect the installed OpenClaw SDK types, supported `openclaw/plugin-sdk/*` entrypoints, and current official plugin documentation before adding an SDK abstraction or copying a bundled-plugin import.
+- Inspect the pinned installed OpenClaw SDK types, supported `openclaw/plugin-sdk/*` entrypoints, and current official plugin documentation before adding an SDK abstraction or copying a bundled-plugin import.
+- Treat an exported symbol or type declaration as discovery evidence, not proof that every plugin may call it. Verify the surface's intended plugin audience, installation or trust requirements, and lifecycle semantics before using it from an external plugin.
 - Keep static discovery and configuration metadata in `openclaw.plugin.json`; keep npm metadata, dependencies, install gates, and source/runtime entries in `package.json`; keep runtime registration in plugin code.
 - Every native plugin must ship a valid root `openclaw.plugin.json`, including a strict `configSchema` even when the plugin owns no configuration.
 - Keep manifest id, runtime entry id, declared capabilities, compatibility metadata, package files, and source/runtime entry pairs coherent.
-- Prefer narrow public SDK subpaths and injected runtime contexts over private OpenClaw internals or process-global behavior.
+- Prefer narrow public SDK subpaths, injected runtime contexts, and host-owned lifecycle primitives over private OpenClaw internals, process-global behavior, or repository-owned copies. When no equivalent surface is available to the plugin's trust class, keep the product-specific behavior local and document that ownership boundary.
 - Treat repository checks as distinct from plugin installation, Gateway startup, model invocation, and other machine-mutating operational validation; run the latter only when explicitly requested.
 - Keep credentials out of tracked files, logs, examples, and durable skill prose, and re-check time-sensitive registry authentication before changing release wiring.
 
@@ -151,11 +152,11 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 
-- **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery.
-- **Compare:** Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata; identify unsupported SDK paths, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
-- **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated contracts; split overloaded runtime owners; extract testable logic; move misplaced command modules, static metadata, or package metadata; tighten compatibility and package boundaries; and remove proven stale paths while routing generic baseline work to its owner.
+- **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports and injected runtime calls, plugin trust and installation class, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery.
+- **Compare:** Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata. Check each SDK or runtime surface against the pinned installed contract and current official guidance for stability, intended audience, trust requirements, and lifecycle semantics; type visibility alone is insufficient. Identify protected or private calls, repository-owned duplicates of available host primitives, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
+- **Recommend:** Prefer the narrowest compatible host-owned surface and remove repository-owned duplication when behavior and trust boundaries match. Keep documented product-specific ownership when the only apparent host equivalent is private, bundled-only, trusted-official-only, or behaviorally incompatible; otherwise keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner.
 - **Apply:** After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
-- **Verify:** Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inspect command, identity, and artifact agreement.
+- **Verify:** Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inventory SDK imports and runtime calls and confirm every retained custom owner or protected-surface exclusion remains intentional.
 
 ## Bundled Resources
 
@@ -175,7 +176,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Confirm the task remained on a native OpenClaw code-plugin surface and did not absorb bundle-plugin, generic JavaScript, repo-baseline, workflow-topology, or host-operations ownership.
 - Confirm npm package name, OpenClaw plugin id, ClawHub owner/listing, and source repository identity remain intentionally distinct and correctly used.
 - Confirm `openclaw.plugin.json`, `package.json#openclaw`, runtime entry identity, compatibility fields, source/runtime entries, declared capabilities, documentation, and built output agree.
-- Confirm current supported SDK entrypoints and narrow public subpaths were preferred over private or copied bundled-plugin internals.
+- Confirm current supported SDK entrypoints and narrow public subpaths were preferred over private or copied bundled-plugin internals, and that every selected surface is available to the plugin's actual installation and trust class rather than merely exported or type-visible.
+- Confirm repository-owned runtime behavior duplicates no compatible host-owned primitive, and that retained custom ownership is documented when the host equivalent is unavailable or behaviorally incompatible.
 - Confirm plugin diagnostics use the closest host-injected `PluginLogger`, preserve host routing and levels, and use the plugin-id-derived namespace without a leading `openclaw-` exactly once when host attribution is absent without leaking credentials, primary output, or machine-readable results.
 - Confirm every non-trivial plugin-owned OpenClaw subcommand has a focused `cli/` module, registration remains thin, primary and diagnostic output use the correct host surfaces, machine modes remain undecorated, and exit behavior is preserved.
 - Confirm Mocha remains the canonical direct-test mechanism and Leia appears only for justified installed or runtime scenarios with a separate check identity.
