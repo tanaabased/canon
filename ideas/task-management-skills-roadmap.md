@@ -17,7 +17,7 @@ This roadmap focuses first on skill boundaries, task metadata, templates, and im
 Build six narrowly owned skills over time:
 
 1. **Task Author** for drafting, creating, revising, and normalizing one task.
-2. **GitHub Issue Schema Author** for organization-level issue types and issue fields.
+2. **GitHub Issue Schema Author** for organization-level issue types and fields plus canonical repository labels.
 3. **GitHub Issue Form Author** for checked-in Task, Bug, and Feature issue forms.
 4. **Task Decomposer** for splitting one task into a parent and sub-issues.
 5. **Project Milestone Author** for one milestone and its task membership.
@@ -26,7 +26,7 @@ Build six narrowly owned skills over time:
 The first three skills form a convergence loop without becoming one umbrella skill:
 
 - Task Author owns one task and its field values.
-- GitHub Issue Schema Author owns organization-level type and field definitions.
+- GitHub Issue Schema Author owns organization-level type and field definitions plus canonical repository label definitions.
 - GitHub Issue Form Author owns checked-in repository forms and chooser configuration.
 - The shared task contract owns the semantics all three must implement.
 
@@ -69,6 +69,7 @@ A read-only probe on 2026-08-13 found:
 - Effort has High, Medium, and Low options.
 - Start date and Target date are available.
 - All four issue fields currently use organization-members-only visibility.
+- Canon still has GitHub's nine default repository labels plus the automation-created `dependencies`, `javascript`, and `github_actions` labels; the canonical task-label migration has not been applied.
 - Canon has no repository-local issue forms, and no usable organization-default issue-form directory was found.
 
 This means Task Author can exercise native types and fields in the Tanaab organization immediately, while its fallback path still needs first-class tests for personal repositories and other organizations.
@@ -216,22 +217,22 @@ Source: [REST API endpoints for issues](https://docs.github.com/en/rest/issues/i
 
 Start with GitHub's existing concepts plus the minimum new fields needed for task estimation, routing, and ranking.
 
-| Canonical concept          | Primary GitHub representation            | Body fallback | Initial rule                                                                |
-| -------------------------- | ---------------------------------------- | ------------- | --------------------------------------------------------------------------- |
-| Task kind                  | Issue type: Task, Bug, or Feature        | `type`        | Required                                                                    |
-| Priority                   | Priority single-select issue field       | `priority`    | Optional human or policy override; excluded from Task score                 |
-| Work size                  | Renamed Effort single-select issue field | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                            |
-| Complexity                 | Complexity single-select issue field     | `complexity`  | Optional until calibrated; stable downstream execution-tier input           |
-| Impact                     | Impact single-select issue field         | `impact`      | Optional until calibrated; local value independent of Work size             |
-| Task score                 | Task score number issue field            | `task-score`  | Derived `0` through `100`; unset when evidence is insufficient              |
-| Planned start              | Start date issue field                   | `start-date`  | Optional ISO date                                                           |
-| Target completion          | Target date issue field                  | `target-date` | Optional ISO date and urgency evidence                                      |
-| Work state                 | Issue open/closed state and state reason | None          | Never duplicate as a custom Status field initially                          |
-| Responsibility             | Assignees                                | None          | Never duplicate as Owner or DRI initially                                   |
-| Project outcome or timebox | Milestone                                | None          | Use for grouping and ranking context, not as an initial score input         |
-| Hierarchy                  | Parent issue and sub-issues              | None          | Use native relationships                                                    |
-| Blocking                   | Issue dependencies                       | None          | Use native relationships and treat unblocking as score evidence             |
-| Topical classification     | Labels                                   | None          | Keep labels for filterable tags, not type, workflow state, or score factors |
+| Canonical concept          | Primary GitHub representation            | Body fallback | Initial rule                                                                                                |
+| -------------------------- | ---------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------- |
+| Task kind                  | Issue type: Task, Bug, or Feature        | `type`        | Required                                                                                                    |
+| Priority                   | Priority single-select issue field       | `priority`    | Optional human or policy override; excluded from Task score                                                 |
+| Work size                  | Renamed Effort single-select issue field | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                                                            |
+| Complexity                 | Complexity single-select issue field     | `complexity`  | Optional until calibrated; stable downstream execution-tier input                                           |
+| Impact                     | Impact single-select issue field         | `impact`      | Optional until calibrated; local value independent of Work size                                             |
+| Task score                 | Task score number issue field            | `task-score`  | Derived `0` through `100`; unset when evidence is insufficient                                              |
+| Planned start              | Start date issue field                   | `start-date`  | Optional ISO date                                                                                           |
+| Target completion          | Target date issue field                  | `target-date` | Optional ISO date and urgency evidence                                                                      |
+| Work state                 | Issue open/closed state and state reason | None          | Never duplicate as a custom Status field initially                                                          |
+| Responsibility             | Assignees                                | None          | Never duplicate as Owner or DRI initially                                                                   |
+| Project outcome or timebox | Milestone                                | None          | Use for grouping and ranking context, not as an initial score input                                         |
+| Hierarchy                  | Parent issue and sub-issues              | None          | Use native relationships                                                                                    |
+| Blocking                   | Issue dependencies plus `blocked` label  | None          | Native dependencies are authoritative for task blockers; use the label for documented external blockers too |
+| Classification and intake  | Canonical repository labels              | None          | Use only the approved task-label vocabulary; do not duplicate type, fields, or score factors                |
 
 Before renaming Effort or changing its options, GitHub Issue Schema Author must inspect existing field values and present an exact migration. If the field is unused, rename it and replace its options directly. If it contains values, map every existing value to a proposed Work size value, obtain explicit authorization, apply the migration, and verify that no task lost its estimate.
 
@@ -292,13 +293,14 @@ Responsibilities:
 - Revise an existing task after reviewing its body, comments, linked work, and newly discovered constraints.
 - Normalize an externally submitted issue without inventing missing facts or discarding useful evidence.
 - Recognize legacy Effort evidence and report its proposed Work size mapping without mutating the organization schema.
+- Apply and remove existing canonical labels according to their lifecycle rules without creating or altering repository label definitions.
 - Show an exact semantic diff before revising or normalizing.
 - Preserve discussion history. Significant requirement changes should be summarized in a comment or a clearly maintained change-history section rather than erased from the record.
 - Re-read and verify every managed value after mutation.
 
 Non-responsibilities:
 
-- Organization issue-type or issue-field schema changes
+- Organization issue-type or issue-field schema changes and repository label-definition changes
 - Checked-in GitHub issue forms or chooser configuration
 - Creating multiple sub-issues
 - Arbitrary dependency graph editing
@@ -310,23 +312,41 @@ Non-responsibilities:
 
 - **Type:** `integration`
 - **Priority:** core phase 1 and phase 2 convergence loop
-- **Owned surface:** one organization's GitHub issue-type and issue-field schema
+- **Owned surface:** one organization's GitHub issue-type and issue-field schema plus the canonical label projection for one repository
 - **Modes:** inspect and synchronize
 
 Responsibilities:
 
-- Require an explicit organization target and organization-owner capability.
-- Inspect Task, Bug, and Feature availability, issue fields, current values, options, visibility, and type pinning.
+- Require an explicit organization target and organization-owner capability for type, field, or organization-default-label changes; require an explicit repository target and sufficient repository access for label synchronization.
+- Inspect Task, Bug, and Feature availability, issue fields, current values, options, visibility, type pinning, organization default labels, repository labels, and current label use.
 - Compare current state with a checked-in desired policy.
 - Show an exact managed diff and require explicit authorization before writing.
 - Add missing managed fields or options without replacing unrelated organization configuration.
 - Plan and verify the Effort-to-Work-size rename and value migration.
 - Manage the Work size, Complexity, Impact, and Task score field definitions required by the adopted contract.
+- Manage canonical label names, purposes, descriptions, and colors without silently deleting unmanaged or automation-owned labels.
 - Keep Complexity option semantics model-neutral and preserve Task score as a derived number field.
-- Treat deletion, renaming, visibility changes, and option removal as separately highlighted high-risk changes.
+- Treat deletion, renaming, visibility changes, option removal, and label migration as separately highlighted high-risk changes.
 - Re-inspect after synchronization and report remaining drift.
 
-This is provider-led because organization issue schema is a GitHub-specific administrative product surface, not the task itself.
+#### Canonical repository labels
+
+| Label                | Purpose                                                    | Color     |
+| -------------------- | ---------------------------------------------------------- | --------- |
+| `documentation`      | Documentation additions or improvements                    | `#2f81f7` |
+| `breaking change`    | Requires consumer migration or coordination                | `#db2777` |
+| `regression`         | Previously working behavior has degraded                   | `#e5484d` |
+| `blocked`            | Cannot proceed because of a documented blocker             | `#7f1d1d` |
+| `needs triage`       | Submitted but not yet normalized against the task contract | `#f59e0b` |
+| `needs reproduction` | A Bug needs reproducible evidence before work can proceed  | `#f97316` |
+| `good first issue`   | Well-bounded work suitable for a first contribution        | `#86e7c4` |
+| `help wanted`        | Maintainers welcome outside contribution                   | `#00c88a` |
+
+`blocked`, `needs triage`, and `needs reproduction` are bounded lifecycle signals rather than a general label-based Status system. A blocker must be identified through a native issue dependency, the task body, or a comment. Task Author should remove each lifecycle label when its condition clears, and should apply `good first issue` or `help wanted` only after triage. `regression` and `needs reproduction` apply only to Bugs.
+
+The eight labels above are the canonical human-task vocabulary. A repository may declare at most two project-specific extensions before the shared contract should be reconsidered. Automation-owned labels such as Dependabot's `dependencies` may coexist but are not canonical task labels and should not be applied by Task Author. Schema inspection should report canonical, project-specific, automation-owned, and unmanaged labels separately. Label deletion must never be automatic because it removes the label from every associated issue and pull request.
+
+This is provider-led because organization issue schema and its repository label projection are GitHub-specific administrative product surfaces, not the task itself. Keep their targets, authorization checks, diffs, and verification separate within the fixed inspect and synchronize modes.
 
 ### 3. `tanaab-github-issue-form-author`
 
@@ -434,17 +454,19 @@ flowchart LR
 
 1. Turn the settled parts of this idea into a durable task contract under `references/`.
 2. Finalize the metadata authority rules and `tanaab/task-metadata/v1` fallback schema.
-3. Record the initial Work size, Complexity, Impact, and `task-score/v1` hypotheses without treating their scales or weights as proven.
-4. Define the starting headings and evidence prompts for Task, Bug, and Feature.
-5. Build a representative fixture corpus before implementing remote writes.
-6. Define target resolution, mutation previews, permission handling, and post-write verification as shared behavior.
-7. Decide how significant revisions record their history.
+3. Adopt the canonical label names, purposes, colors, lifecycle rules, extension limit, and automation-owned-label boundary.
+4. Record the initial Work size, Complexity, Impact, and `task-score/v1` hypotheses without treating their scales or weights as proven.
+5. Define the starting headings and evidence prompts for Task, Bug, and Feature.
+6. Build a representative fixture corpus before implementing remote writes.
+7. Define target resolution, mutation previews, permission handling, and post-write verification as shared behavior.
+8. Decide how significant revisions record their history.
 
 Exit criteria:
 
 - One source of truth exists for task body and metadata semantics.
 - Personal-repository fallback behavior is unambiguous.
 - Native-versus-fallback migration rules are testable.
+- Canonical label definitions and lifecycle transitions are testable without turning labels into a duplicate Status system.
 - The fixture corpus covers each type, estimation extremes, score extremes, uncertain submissions, and both native and fallback repositories.
 - Every unresolved scale or formula decision is explicitly marked as a hypothesis for phase 1 and phase 2 calibration.
 
@@ -472,9 +494,9 @@ Exit criteria:
 ### Phase 2: build schema management and calibrate scoring
 
 1. Scaffold `github-issue-schema-author` as an `integration` skill through Skill Author.
-2. Implement read-only inspection of issue types, field definitions, options, visibility, type pinning, and existing Effort values.
-3. Capture a checked-in desired schema covering Task, Bug, Feature, Priority, Work size, Complexity, Impact, Task score, Start date, and Target date.
-4. Produce an exact Effort-to-Work-size migration plan and preserve every existing value.
+2. Implement read-only inspection of issue types, field definitions, options, visibility, type pinning, existing Effort values, organization default labels, repository labels, and label use.
+3. Capture a checked-in desired schema covering Task, Bug, Feature, Priority, Work size, Complexity, Impact, Task score, Start date, Target date, and the canonical repository labels.
+4. Produce exact Effort-to-Work-size and legacy-label migration plans that preserve every field value and label association.
 5. Implement stable schema diffing and narrowly authorized synchronization with high-risk changes separated.
 6. Pin native fields to the relevant issue types so organization forms do not duplicate them in the body.
 7. Score the phase 1 fixtures with the current Impact, urgency, enablement, confidence, and sublinear Work size mappings.
@@ -484,9 +506,9 @@ Exit criteria:
 
 Exit criteria:
 
-- An organization owner can inspect alignment without writing.
-- Missing managed schema can be added and existing estimates migrated without touching unmanaged fields or losing values.
-- Deletion or destructive migration cannot occur accidentally.
+- An authorized operator can inspect organization and repository alignment without writing.
+- Missing managed schema can be added and existing estimates or labels migrated without touching unmanaged fields, automation-owned labels, or losing values and associations.
+- Field or label deletion and destructive migration cannot occur accidentally.
 - Scores are reproducible from a named formula version and visible factor evidence.
 - Complexity remains a stable model-neutral interface whose downstream mapping can change independently.
 - The phase produces concrete authoring and template feedback rather than declaring the schema final by itself.
@@ -498,8 +520,8 @@ Repeat phase 1 and phase 2 as one product loop:
 1. Adjust the shared task, metadata, and scoring contract.
 2. Render representative Task, Bug, and Feature fixtures through Task Author.
 3. Render the equivalent GitHub issue forms and normalize their output.
-4. Inspect and diff the organization schema.
-5. Exercise native organization fields and personal-repository fallback metadata.
+4. Inspect and diff the organization schema and repository label projection.
+5. Exercise native organization fields, canonical label transitions, and personal-repository fallback metadata.
 6. Calculate Task scores and review their factor explanations.
 7. Compare ranking and Complexity routing with human judgment.
 8. Reconcile template, form, schema, rubric, scoring, and migration findings in their owning surfaces.
@@ -513,6 +535,7 @@ Use fixtures that include:
 - high-impact expensive work and low-impact inexpensive work;
 - urgent defects and time-insensitive maintenance;
 - work that enables or blocks several other tasks;
+- untriaged submissions, Bugs missing reproduction evidence, regressions, and documented external blockers;
 - uncertain or underspecified submissions;
 - organization-native and personal-repository fallback targets.
 
@@ -522,6 +545,7 @@ The convergence gate passes only when:
 - Agent-created, form-created, and externally normalized tasks converge on the same body and metadata contract.
 - Work size, Complexity, and Impact each have a concrete, non-overlapping rubric.
 - The Effort-to-Work-size migration is safe, reviewable, and verified without data loss.
+- Canonical labels have the approved names, purposes, and colors; lifecycle labels transition predictably without disturbing project-specific or automation-owned labels.
 - Fixture ranking broadly matches human judgment and every score is reproducible and explainable.
 - Complexity classifications support sensible downstream execution-tier selection without naming a model.
 - Task score remains goal-independent and missing evidence remains unset rather than falsely precise.
@@ -609,8 +633,8 @@ The next implementation should begin the complete phase 0 through phase 2 conver
 2. Build the representative fixture corpus.
 3. Scaffold Task Author and implement read-only capability discovery and fixture rendering.
 4. Scaffold GitHub Issue Form Author and normalize equivalent form output.
-5. Scaffold GitHub Issue Schema Author and implement read-only schema and Effort-usage inspection.
-6. Iterate templates, forms, fields, rubrics, fallback behavior, and `task-score/v1` against the fixtures.
+5. Scaffold GitHub Issue Schema Author and implement read-only organization schema, repository label, and Effort-usage inspection.
+6. Iterate templates, forms, fields, labels, rubrics, fallback behavior, and `task-score/v1` against the fixtures.
 7. Add authorized writes only after the corresponding read-only diff and fake-client paths are reliable.
 8. Continue until the convergence gate passes, then begin decomposition and project milestone skills.
 
