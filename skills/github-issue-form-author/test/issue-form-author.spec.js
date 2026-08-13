@@ -16,8 +16,12 @@ function parsedByBun(content) {
   return JSON.parse(result.stdout);
 }
 
+function submittedElements(document) {
+  return document.body.filter(({ type }) => type !== 'markdown');
+}
+
 describe('skills/github-issue-form-author/lib/issue-form-author', () => {
-  it('should render organization forms with native issue types and no mirrored native metadata', () => {
+  it('should render low-friction organization intake with native issue types', () => {
     const report = authorIssueFormSet('organization');
     const forms = report.files.filter(({ kind }) => kind !== null);
 
@@ -31,36 +35,42 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
       forms.map(({ document }) => document.name),
       ['Task', 'Bug report', 'Feature'],
     );
+    assert.deepEqual(
+      forms.map(({ document }) => submittedElements(document).length),
+      [3, 4, 3],
+    );
+    assert.deepEqual(
+      forms.map(
+        ({ document }) =>
+          submittedElements(document).filter(({ validations }) => validations.required).length,
+      ),
+      [2, 3, 2],
+    );
+
     for (const { content, document } of forms) {
-      const ids = document.body.map(({ id }) => id).filter(Boolean);
-      assert.ok(ids.includes('urgency'));
-      assert.ok(ids.includes('enablement'));
-      assert.ok(ids.includes('confidence'));
+      const ids = submittedElements(document).map(({ id }) => id);
+      assert.ok(!ids.includes('priority'));
       assert.ok(!ids.includes('work-size'));
-      assert.ok(!ids.includes('task-score'));
+      assert.ok(!ids.includes('complexity'));
+      assert.ok(!ids.includes('impact'));
+      assert.ok(!ids.includes('urgency'));
+      assert.ok(!ids.includes('confidence'));
+      assert.ok(!ids.includes('task-signals'));
       assert.equal(Object.hasOwn(document, 'labels'), false);
-      assert.ok(
-        document.body
-          .filter(({ type }) => type === 'dropdown')
-          .every(({ attributes }) => !attributes.options.includes('None')),
-      );
+      assert.ok(submittedElements(document).every(({ type }) => type === 'textarea'));
       assert.deepEqual(parsedByBun(content), document);
     }
   });
 
-  it('should render personal forms with portable metadata but never ask for Task score', () => {
-    const report = authorIssueFormSet('personal');
-    const forms = report.files.filter(({ kind }) => kind !== null);
+  it('should use the same evidence questions for personal repositories without native type', () => {
+    const organization = authorIssueFormSet('organization').files.filter(
+      ({ kind }) => kind !== null,
+    );
+    const personal = authorIssueFormSet('personal').files.filter(({ kind }) => kind !== null);
 
-    for (const { content, document } of forms) {
-      const ids = document.body.map(({ id }) => id).filter(Boolean);
+    for (const [index, { content, document }] of personal.entries()) {
       assert.equal(Object.hasOwn(document, 'type'), false);
-      assert.ok(ids.includes('task-kind'));
-      assert.ok(ids.includes('priority'));
-      assert.ok(ids.includes('work-size'));
-      assert.ok(ids.includes('complexity'));
-      assert.ok(ids.includes('impact'));
-      assert.ok(!ids.includes('task-score'));
+      assert.deepEqual(document.body, organization[index].document.body);
       assert.deepEqual(parsedByBun(content), document);
     }
   });

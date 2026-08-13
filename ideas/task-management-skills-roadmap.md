@@ -10,7 +10,7 @@ Build a small, coherent set of skills for GitHub-backed task management without 
 
 In Canon terminology, a **task** is implemented as a GitHub issue, a **project** as a GitHub repository, and a **project milestone** as a GitHub milestone. GitHub-specific terms should remain in API, permission, and configuration guidance, while user-facing skill names should prefer the domain terms.
 
-This roadmap focuses first on skill boundaries, task metadata, templates, and implementation order. The first product milestone is a converged task-authoring system: Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author iterate against one shared contract until Task, Bug, and Feature creation is mature across agent-authored, form-authored, normalized, organization-native, and personal-repository fallback paths.
+This roadmap focuses first on skill boundaries, task metadata, templates, and implementation order. The first product milestone is a converged task-authoring system: Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author iterate against one shared contract until low-friction human intake can be normalized into mature Task, Bug, and Feature work across agent-authored, organization-native, and personal-repository fallback paths.
 
 ## Executive Recommendation
 
@@ -27,7 +27,7 @@ The first three skills form a convergence loop without becoming one umbrella ski
 
 - Task Author owns one task and its field values.
 - GitHub Issue Schema Author owns organization-level type and field definitions plus canonical repository label definitions.
-- GitHub Issue Form Author owns checked-in repository forms and chooser configuration.
+- GitHub Issue Form Author owns checked-in low-friction evidence forms, lossless intake extraction, and chooser configuration.
 - The shared task contract owns the semantics all three must implement.
 
 Phase 1 and phase 2 repeat until the three surfaces agree. Their combined exit is a fully fledged ability to create, revise, and normalize Task, Bug, and Feature work with accepted templates, native metadata where available, portable fallbacks where required, and explainable goal-independent scoring.
@@ -40,20 +40,20 @@ Do not create separate Task Creator, Task Reworker, and Task Normalizer skills. 
 
 Last reviewed: 2026-08-13
 
-| Surface                          | Current state                                                                                                                                                                                                                                                           | Remaining work                                                                                                        |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Shared contract and fixtures     | Human contract, machine-readable schema, descriptive fixtures, shared executable fixtures, and root-owned cross-skill equivalence coverage are checked in. Skill projections derive canonical options from the schema.                                                  | Continue calibration when cross-surface fixtures reveal material ambiguity.                                           |
-| Task Author                      | Capability discovery, deterministic drafting, digest-gated create, fallback rendering, scoring, T01-T15 drafts, T01-T06 fake creates, exact verification, and live hybrid Task/Bug/Feature evidence exist.                                                              | Add revise, normalize, fallback migration, T16, and R01; complete full-native live creation after schema alignment.   |
-| GitHub Issue Schema Author       | Read-only inspection, digest-gated additive field creation, retained-option color synchronization, and separately authorized field pinning exist with fake-client and live `tanaabased` verification. Fresh field, color, and pinning plans are aligned and idempotent. | Add separately authorized visibility, label, and high-risk migration paths.                                           |
-| GitHub Issue Form Author         | Task, Bug, and Feature rendering, organization and personal variants, F01, T01-T06 equivalence, repository inspection, deterministic managed diffs, digest-authorized writes, exact verification, and live disposable-repository evidence exist.                        | Calibrate and finalize the three templates through the convergence loop; add organization-default distribution later. |
-| Phase 1 and phase 2 convergence  | In progress.                                                                                                                                                                                                                                                            | Exercise all three surfaces together until one full fixture pass produces no material contract changes.               |
-| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                               | Begin only after the three-skill convergence gate passes.                                                             |
+| Surface                          | Current state                                                                                                                                                                                                                                                           | Remaining work                                                                                                                                                                                   |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Shared contract and fixtures     | Human contract, machine-readable schema, descriptive fixtures, shared executable fixtures, and root-owned cross-skill intake-preservation coverage are checked in. The contract distinguishes human intake from canonical tasks and defines assessment ownership.       | Continue calibration when cross-surface fixtures reveal material ambiguity.                                                                                                                      |
+| Task Author                      | Capability discovery, deterministic drafting, assessment provenance and rationale validation, digest-gated create, fallback rendering, scoring, T01-T15 drafts, T01-T06 fake creates, exact verification, and live hybrid Task/Bug/Feature evidence exist.              | Add revise, semantic normalize, fallback migration, T16, and R01; complete full-native live creation after schema alignment.                                                                     |
+| GitHub Issue Schema Author       | Read-only inspection, digest-gated additive field creation, retained-option color synchronization, and separately authorized field pinning exist with fake-client and live `tanaabased` verification. Fresh field, color, and pinning plans are aligned and idempotent. | Add separately authorized visibility, label, and high-risk migration paths.                                                                                                                      |
+| GitHub Issue Form Author         | Task, Bug, and Feature rendering, shared low-friction organization/personal evidence questions, lossless intake handoff, repository inspection, deterministic managed diffs, digest-authorized writes, exact verification, and earlier live scaffolding evidence exist. | Calibrate and finalize the three intake templates through the convergence loop; align the disposable repository only after exact template approval; add organization-default distribution later. |
+| Phase 1 and phase 2 convergence  | In progress.                                                                                                                                                                                                                                                            | Exercise all three surfaces together until one full fixture pass produces no material contract changes.                                                                                          |
+| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                               | Begin only after the three-skill convergence gate passes.                                                                                                                                        |
 
 Keep the initial Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author implementation on one integration branch until they form a discrete usable task-authoring system. After that core loop merges, implement decomposition and milestone surfaces as separately reviewable branches.
 
 The installed Task Author created and exactly verified a synthetic [Task](https://github.com/tanaabased/agent-system-test/issues/50), [Bug](https://github.com/tanaabased/agent-system-test/issues/51), and [Feature](https://github.com/tanaabased/agent-system-test/issues/52) in the disposable `tanaabased/agent-system-test` repository on 2026-08-13. The live repository initially exercised native type and Priority, existing canonical labels, fallback Work size, Complexity, Impact, and Task score, plus versioned scoring comments. The installed Schema Author then created those four missing organization fields from an exact four-POST plan with no updates or deletions. A separate three-PATCH plan recolored only retained Work size, Complexity, and Impact options, preserving every option ID, name, description, priority, and order. The installed field-pinning path subsequently aligned Priority, Effort, Work size, Complexity, Impact, Task score, Start date, and Target date across Task, Bug, and Feature without changing field visibility or values; the pinned fields were confirmed visible on a live issue. All three schema paths verified and returned aligned idempotent plans on fresh reads.
 
-The installed Issue Form Author then created `.github/ISSUE_TEMPLATE/task.yml`, `bug.yml`, `feature.yml`, and `config.yml` on the disposable repository's exact `main` branch from a digest-authorized four-create plan with no updates or deletions. Live preview exposed GitHub's reserved `None` dropdown-option constraint; the provider forms now display `Not time-sensitive` and `No enabling effect` while normalization maps both back to canonical `none`. A fresh three-update correction plan verified exactly, and the GitHub chooser plus direct Task, Bug report, and Feature routes all rendered with their native issue types and organization fields. The next fresh plan was aligned with zero writes.
+The installed Issue Form Author then created `.github/ISSUE_TEMPLATE/task.yml`, `bug.yml`, `feature.yml`, and `config.yml` on the disposable repository's exact `main` branch from a digest-authorized four-create plan with no updates or deletions. Live preview exposed GitHub's reserved `None` dropdown-option constraint, and a fresh correction plan verified exactly. That first live projection served its scaffolding purpose but is now superseded locally by the intake/canonical split: reporters no longer classify scoring diagnostics or fallback metadata, and the disposable repository remains unchanged until the final questions are reviewed and an exact new form plan is authorized.
 
 The first optimization pass derived repeated field options from the machine schema, moved shared fixtures and equivalence coverage to the repo-owned test surface, and consolidated Schema Author's field transport, mutation parsing, and test fakes. These changes reduced parallel implementation without crossing the three skills' distinct mutation boundaries.
 
@@ -116,7 +116,7 @@ The roadmap owns sequencing, skill boundaries, and convergence status. It does n
 - [`task-management-fixtures.md`](../references/task-management-fixtures.md) owns descriptive golden scenarios.
 - [`task-management-fixtures.js`](../test/task-management-fixtures.js) and [`task-management-equivalence.spec.js`](../test/task-management-equivalence.spec.js) own shared executable evidence and cross-skill equivalence.
 
-The durable architectural decisions are: prefer native GitHub metadata with partial visible fallbacks, preserve Effort separately from Work size, keep Complexity model-neutral, keep `task-score/v1` goal-independent, resolve targets conservatively, require exact mutation previews, and verify every remote write. Change those decisions in the contract and shared fixtures first, then update each skill projection.
+The durable architectural decisions are: distinguish low-friction intake evidence from canonical tasks; make Task Author the semantic normalization and assessment owner; keep Priority and scheduling human- or policy-controlled; require source and rationale for agent estimates; derive Task score deterministically; prefer native GitHub metadata with partial visible fallbacks; preserve Effort separately from Work size; keep Complexity model-neutral; keep `task-score/v1` goal-independent; resolve targets conservatively; require exact mutation previews; and verify every remote write. Change those decisions in the contract and shared fixtures first, then update each skill projection.
 
 ## Proposed Skill Portfolio
 
@@ -145,7 +145,7 @@ Own GitHub-specific organization type and field definitions, field pinning, and 
 - **Owned surface:** checked-in GitHub issue forms and template-chooser configuration
 - **Variants:** Task, Bug, and Feature
 
-Own the four checked-in repository form files, organization and personal variants, deterministic normalization, safe managed merges, digest-authorized writes, and exact verification. Keep it separate because repository files have different permissions and failure modes from task and organization-schema mutation. The remaining work is template calibration and later organization-default distribution.
+Own the four checked-in repository form files, organization and personal variants, lossless evidence extraction, safe managed merges, digest-authorized writes, and exact verification. Forms are intake adapters, not canonical task renderers: Task and Feature use two required responses, Bug uses three, and each has one optional context response. Keep the skill separate because repository files have different permissions and failure modes from task and organization-schema mutation. Task Author owns semantic normalization, metadata assessment, and canonical rewriting. The remaining work is exact prompt calibration, disposable-repository realignment after approval, and later organization-default distribution.
 
 ### 4. `tanaab-task-decomposer`
 
@@ -234,7 +234,7 @@ Status: complete. The adopted contract, schema, descriptive fixtures, and shared
 
 ### Phase 1: build task authoring and form surfaces
 
-Completed: capability discovery; deterministic Task, Bug, and Feature drafting; digest-gated create; exact verification; organization and personal issue-form variants; managed repository form alignment; and cross-skill equivalence coverage.
+Completed: capability discovery; deterministic Task, Bug, and Feature drafting; metadata assessment provenance; digest-gated create; exact verification; low-friction organization and personal issue-form variants; managed repository form alignment machinery; and cross-skill intake-preservation coverage.
 
 Remaining: implement Task Author revise, normalize, and fallback migration; add T16 and R01; then calibrate and accept the three templates through the convergence gate.
 
@@ -250,7 +250,7 @@ Repeat phase 1 and phase 2 as one product loop:
 
 1. Adjust the shared task, metadata, and scoring contract.
 2. Render representative Task, Bug, and Feature fixtures through Task Author.
-3. Render the equivalent GitHub issue forms and normalize their output.
+3. Render low-friction GitHub issue forms, preserve their evidence losslessly, and normalize that evidence into the canonical task shape.
 4. Inspect and diff the organization schema and repository label projection.
 5. Exercise native organization fields, canonical label transitions, and personal-repository fallback metadata.
 6. Calculate Task scores and review their factor explanations.
@@ -273,7 +273,9 @@ Use fixtures that include:
 The convergence gate passes only when:
 
 - Task, Bug, and Feature templates are accepted as fully fledged authoring surfaces.
-- Agent-created, form-created, and externally normalized tasks converge on the same body and metadata contract.
+- Agent-created tasks and semantically normalized form or external submissions converge on the same canonical body and metadata contract without requiring intake headings to mirror canonical headings.
+- Task and Feature intake require only two evidence responses, Bug requires three, and no public form asks reporters to estimate metadata, scoring diagnostics, labels, or scheduling commitments.
+- Every accepted estimate exposes provenance and rationale; Priority and dates remain human- or policy-controlled, while Task score remains derived.
 - Work size, Complexity, and Impact each have a concrete, non-overlapping rubric.
 - Work size is independently managed while Effort remains preserved and unused by canonical task workflows.
 - Canonical labels have the approved names, purposes, and colors; lifecycle labels transition predictably without disturbing project-specific or automation-owned labels.
@@ -364,8 +366,8 @@ Complete the first usable phase 1 and phase 2 convergence loop on the shared cor
 
 1. Complete Task Author revise, normalize, and fallback-migration paths with T16, R01, exact managed diffs, publication safety, and post-write verification; create mode already has the digest-gated and verified foundation.
 2. Continue GitHub Issue Schema Author synchronization in bounded steps by adding separately authorized visibility, label, and high-risk migration paths; additive field creation, retained-option color synchronization, and field pinning are live-verified.
-3. Calibrate the installed Task, Bug, and Feature forms against real submissions and the full fixture corpus; finalize their headings, questions, required fields, generated Markdown, and metadata projections only at the convergence gate.
+3. Calibrate the low-friction Task, Bug, and Feature forms against representative submissions and the full fixture corpus; finalize their wording and required evidence only at the convergence gate, then align the disposable repository through a fresh exact plan.
 4. Run the complete fixture corpus across all three skills, revise the contract and schema when evidence warrants it, and repeat until the convergence gate passes.
 5. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
 
-The scaffolding decisions are settled. The remaining core work is both behavioral and calibrational: Task Author still needs revise, normalize, and fallback migration; Schema Author still needs visibility, labels, and migrations; and the shared fixtures still need to establish whether the prompts, scoring order, Complexity classifications, and native/fallback equivalence match human judgment.
+The ownership and intake architecture are settled. The remaining core work is both behavioral and calibrational: Task Author still needs revise, semantic normalize, and fallback migration; Schema Author still needs visibility, labels, and migrations; and the shared fixtures still need to establish whether the prompts, scoring order, Complexity classifications, and native/fallback convergence match human judgment.

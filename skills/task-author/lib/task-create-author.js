@@ -33,6 +33,7 @@ function baseReport(draft, plan, publication) {
     taskKind: draft.taskKind,
     body: draft.body,
     metadata: draft.metadata,
+    assessment: draft.assessment,
     labels: draft.labels,
     scoring: draft.scoring,
     comments: draft.comments,

@@ -1,85 +1,94 @@
 import assert from 'node:assert/strict';
 
 import { authorIssueForm } from '../skills/github-issue-form-author/lib/issue-form-author.js';
-import {
-  BODY_SHAPES,
-  PERSONAL_METADATA_FIELDS,
-  SIGNAL_OPTIONS,
-  displayValue,
-  formId,
-  scoringFormOption,
-} from '../skills/github-issue-form-author/lib/issue-form-contract.js';
 import { normalizeIssueFormSubmission } from '../skills/github-issue-form-author/lib/issue-form-normalizer.js';
 import { renderFormSubmission } from '../skills/github-issue-form-author/utils/render-form-submission.js';
-import { authorTaskDraft } from '../skills/task-author/lib/task-draft-author.js';
-import fixtures, { fakeClient } from './task-management-fixtures.js';
+import fixtures from './task-management-fixtures.js';
 
-function answersFor(input, repositoryMode) {
-  const kind = input.kind.toLowerCase();
-  const answers = Object.fromEntries(
-    BODY_SHAPES[kind]
-      .filter(({ key }) => key !== null && input.sections[key] !== undefined)
-      .map(({ key }) => [formId(key), input.sections[key]]),
-  );
-  if (input.sections.environment) answers.environment = input.sections.environment;
-
-  if (repositoryMode === 'personal') {
-    answers['task-kind'] = displayValue(kind);
-    for (const { id, key } of PERSONAL_METADATA_FIELDS) {
-      if (input.metadata[key] !== undefined) answers[id] = displayValue(input.metadata[key]);
-    }
-  }
-  for (const key of ['urgency', 'enablement', 'confidence']) {
-    if (input.scoring[key] !== undefined) {
-      answers[key] = scoringFormOption(key, input.scoring[key]);
-    }
-  }
-
-  answers['task-signals'] = SIGNAL_OPTIONS.filter(
-    ({ kinds, signal, relationship }) =>
-      kinds.includes(kind) &&
-      ((signal && input.signals?.[signal] === true) ||
-        (relationship && input.relationships?.[relationship] === true)),
-  ).map(({ label }) => label);
-  return answers;
+function text(value) {
+  return Array.isArray(value) ? value.join('\n') : String(value ?? '');
 }
 
-describe('task-management cross-skill equivalence', () => {
+function intakeAnswers({ kind, sections }) {
+  const normalizedKind = kind.toLowerCase();
+  if (normalizedKind === 'task') {
+    return {
+      change: [sections.context, ...sections.inScope].map(text).join('\n'),
+      success: [sections.objective, ...sections.acceptanceCriteria].map(text).join('\n'),
+      'additional-context': [sections.constraints, ...sections.outOfScope]
+        .filter(Boolean)
+        .map(text)
+        .join('\n'),
+    };
+  }
+  if (normalizedKind === 'bug') {
+    return {
+      observed: sections.observedBehavior,
+      expected: sections.expectedBehavior,
+      investigation: [sections.reproduction, sections.environment]
+        .filter(Boolean)
+        .map(text)
+        .join('\n'),
+      'additional-context': [sections.impactSummary, ...sections.acceptanceCriteria]
+        .map(text)
+        .join('\n'),
+    };
+  }
+  return {
+    problem: sections.problem,
+    outcome: sections.desiredOutcome,
+    'additional-context': [
+      ...sections.inScope,
+      ...sections.outOfScope,
+      ...sections.acceptanceCriteria,
+      sections.alternatives,
+    ]
+      .filter(Boolean)
+      .map(text)
+      .join('\n'),
+  };
+}
+
+function sourceEvidence(sections) {
+  return Object.values(sections)
+    .flatMap((value) => (Array.isArray(value) ? value : [value]))
+    .filter(Boolean)
+    .map(text);
+}
+
+describe('task-management cross-skill intake boundary', () => {
   for (const fixture of fixtures.filter(({ id }) => /^T0[1-6]$/.test(id))) {
-    it(`should normalize ${fixture.id} to the exact Task Author semantics`, () => {
+    it(`should preserve ${fixture.id} evidence without treating intake as canonical`, () => {
       const repositoryMode =
         fixture.capabilities.repository.ownerType === 'User' ? 'personal' : 'organization';
       const kind = fixture.input.kind.toLowerCase();
       const form = authorIssueForm(kind, repositoryMode);
-      const markdown = renderFormSubmission(form, answersFor(fixture.input, repositoryMode));
+      const markdown = renderFormSubmission(form, intakeAnswers(fixture.input));
       const normalized = normalizeIssueFormSubmission(markdown, {
         form,
         repositoryMode,
         nativeMetadata: repositoryMode === 'organization' ? fixture.input.metadata : {},
         title: fixture.input.title,
       });
-      const fromForm = authorTaskDraft(
-        { ...normalized, target: fixture.input.target },
-        { githubClient: fakeClient(fixture.capabilities) },
-      );
-      const direct = authorTaskDraft(fixture.input, {
-        githubClient: fakeClient(fixture.capabilities),
-      });
 
-      assert.equal(fromForm.body, direct.body);
-      assert.deepEqual(fromForm.metadata.values, direct.metadata.values);
-      assert.deepEqual(fromForm.metadata.native, direct.metadata.native);
-      assert.deepEqual(fromForm.metadata.fallback, direct.metadata.fallback);
-      assert.deepEqual(fromForm.labels.apply, direct.labels.apply);
-      assert.equal(fromForm.scoring.score, direct.scoring.score);
-      assert.equal(fromForm.scoring.auditComment, direct.scoring.auditComment);
-      assert.deepEqual(fromForm.bodyEvidence, direct.bodyEvidence);
-
+      assert.equal(normalized.normalizationRequired, true);
+      assert.equal(normalized.kind, kind);
+      assert.equal(normalized.title, fixture.input.title);
+      assert.equal(normalized.originalBody, markdown.trim());
+      for (const evidence of sourceEvidence(fixture.input.sections)) {
+        assert.match(normalized.intakeEvidence.rawMarkdown, new RegExp(escapeRegex(evidence)));
+      }
+      assert.deepEqual(normalized.scoring, {});
+      assert.deepEqual(normalized.signals, {});
       if (repositoryMode === 'organization') {
-        assert.doesNotMatch(markdown, /^### (Priority|Work size|Complexity) estimate$/m);
+        assert.deepEqual(normalized.metadata, fixture.input.metadata);
       } else {
-        assert.match(markdown, /^### Work size estimate$/m);
+        assert.deepEqual(normalized.metadata, {});
       }
     });
   }
 });
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}

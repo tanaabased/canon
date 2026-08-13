@@ -1,7 +1,7 @@
 interface:
   display_name: 'GitHub Issue Form Author'
-  short_description: 'Tanaab-based canonical GitHub issue form authoring.'
+  short_description: 'Tanaab-based low-friction GitHub intake forms.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-issue-form-author to render, inspect, or safely align canonical Task, Bug, and Feature issue forms for an explicit GitHub repository.'
+  default_prompt: 'Use $tanaab-github-issue-form-author to render, inspect, or safely align low-friction Task, Bug, and Feature intake forms for an explicit GitHub repository.'

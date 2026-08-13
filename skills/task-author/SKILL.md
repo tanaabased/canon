@@ -1,6 +1,6 @@
 ---
 name: tanaab-task-author
-description: Tanaab-based GitHub-backed task drafting and authorized creation. Use when a user wants to preview or create one canonical Task, Bug, or Feature with native metadata, portable fallbacks, labels, explainable scoring, and exact post-write verification.
+description: Tanaab-based GitHub-backed task assessment, drafting, and authorized creation. Use when a user wants to turn supported evidence into one canonical Task, Bug, or Feature with provenance-aware estimates, native metadata, portable fallbacks, explainable scoring, and exact post-write verification.
 license: MIT
 metadata:
   type: integration
@@ -22,7 +22,7 @@ metadata:
 
 ## Overview
 
-Draft or create one canonical GitHub-backed Task, Bug, or Feature. Inspect the target repository's issue types, organization issue fields, and labels; use native values where available; render fallback metadata only where needed; and verify every managed value after creation.
+Assess, draft, or create one canonical GitHub-backed Task, Bug, or Feature. Inspect the target repository's issue types, organization issue fields, and labels; show the source and rationale for accepted estimates; use native values where available; render fallback metadata only where needed; and verify every managed value after creation.
 
 Create mode owns one issue plus its initial canonical labels, field values, and scoring or Priority audit comments. It does not own schema definitions, relationships, revision, normalization, or fallback migration yet.
 
@@ -31,6 +31,7 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 - Draft a new Task, Bug, or Feature against one explicit GitHub repository.
 - Create one fully evidenced Task, Bug, or Feature after the exact publication plan is displayed and authorized.
 - Normalize supplied evidence into the canonical body headings without inventing missing facts.
+- Assess Work size, Complexity, Impact, Urgency, Enablement, and Confidence from supported evidence before invoking the deterministic helper.
 - Preview native issue type and issue-field values, fallback metadata, existing labels, relationships, score evidence, and comments.
 - Inspect whether an organization-backed repository provides the canonical native metadata surfaces.
 - Identify missing evidence or incomplete capabilities before creation.
@@ -56,8 +57,10 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 ## Inputs
 
 - Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, evidence for every required body section, and checkable acceptance criteria.
-- Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date.
+- Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
 - A Task score additionally requires Impact, Work size, Urgency, Enablement, and Confidence evidence. Unknown factors remain unset.
+- Every accepted metadata value and scoring diagnostic requires an `assessment` entry with `source` equal to `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based `rationale`; Task score provenance is generated as `derived`.
+- A GitHub issue-form handoff is intake evidence, not deterministic draft input. Semantically normalize its responses into supported canonical sections and assessment records first; preserve missing evidence as questions.
 - Optional label signals must be explicit. `regression`, `needs reproduction`, `good first issue`, and `help wanted` still pass their canonical eligibility checks.
 - Run `bun <skill-path>/scripts/draft-task.js --input <json-path>` for a read-only draft.
 - Run `bun <skill-path>/scripts/create-task.js --input <json-path>` first without publication approval to obtain the exact plan and digest. After the displayed plan is authorized, rerun with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`.
@@ -67,7 +70,7 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 
 - Draft mode returns `ready`, `partial`, or `needs_input` and always sets `mutatesGitHub: false`.
 - Create mode returns `blocked`, `publication_blocked`, or `approval_required` without mutation; `created` only after exact read-back verification; `partial` when an issue exists but any write or managed value failed verification; and `failed` when no issue is known to have been created.
-- Show the resolved target, normalized title and body, effective metadata values, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, scoring calculation, planned audit comments, capability evidence, and warnings.
+- Show the resolved target, normalized title and body, effective metadata values, assessment provenance and rationale, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, scoring calculation, planned audit comments, capability evidence, and warnings.
 - Show the complete creation payload, comments, publication digest, write results, created issue URL, and per-value verification checks.
 - Treat `partial` as an honest discovery result, not permission to guess whether unavailable fields or labels exist.
 - A missing canonical field in a successfully inspected organization schema may use fallback metadata. An unavailable inspection remains unresolved because absence was not proven.
@@ -86,13 +89,14 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 1. Resolve and display one exact target. Stop if it remains ambiguous.
 2. Run the bundled draft or create command. Both check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
 3. Review missing body evidence and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
-4. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
-5. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.
-6. Review `task-score/v1`, its required factors, and its previewed audit comment. Keep Priority and Complexity out of the formula.
-7. For draft mode, return the complete read-only preview and stop.
-8. For create mode, first return the complete payload, comments, exact target, and digest without mutation. Screen every GitHub-facing string for publication safety and obtain authorization for that displayed plan.
-9. Rerun create mode with the exact safety attestation, target, and digest. Create one issue with native type, existing labels, native field values, and fallback metadata, then post only the planned audit comments.
-10. Re-read the issue, issue-field values, labels, and comments. Return `created` only when every managed value verifies; otherwise preserve the issue URL and return `partial` with exact mismatches.
+4. Review assessment provenance and rationales. Keep agent estimates evidence-based, keep human-controlled values out of agent ownership, and leave uncertain values unset.
+5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
+6. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.
+7. Review `task-score/v1`, its required factors, and its previewed audit comment. Keep Priority and Complexity out of the formula.
+8. For draft mode, return the complete read-only preview and stop.
+9. For create mode, first return the complete payload, comments, exact target, and digest without mutation. Screen every GitHub-facing string for publication safety and obtain authorization for that displayed plan.
+10. Rerun create mode with the exact safety attestation, target, and digest. Create one issue with native type, existing labels, native field values, and fallback metadata, then post only the planned audit comments.
+11. Re-read the issue, issue-field values, labels, and comments. Return `created` only when every managed value verifies; otherwise preserve the issue URL and return `partial` with exact mismatches.
 
 ## Bundled Resources
 
@@ -104,7 +108,7 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 - [./lib/task-create-author.js](./lib/task-create-author.js): publication, mutation, and verification orchestration over an injected GitHub client
 - [./lib/github-capability-client.js](./lib/github-capability-client.js): read-only `gh` discovery boundary
 - [./lib/github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
-- [./utils/](./utils/): focused normalization, rendering, metadata, labeling, and scoring units
+- [./utils/](./utils/): focused assessment, normalization, rendering, metadata, labeling, and scoring units
 - [./test/](./test/): flat utility, client-boundary, T01–T15 draft, and T01–T06 create coverage
 - [../../test/task-management-fixtures.js](../../test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 

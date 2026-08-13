@@ -1,6 +1,7 @@
 import { GitHubCapabilityClient } from './github-capability-client.js';
 import { TASK_KINDS } from './task-author-contract.js';
 import { calculateTaskScore } from '../utils/calculate-task-score.js';
+import { buildTaskAssessment } from '../utils/build-task-assessment.js';
 import { classifyTaskLabels } from '../utils/classify-task-labels.js';
 import { normalizeTaskKind } from '../utils/normalize-task-kind.js';
 import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
@@ -41,6 +42,7 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
   }
   const scoring = calculateTaskScore(scoreInput);
   if (scoring.score !== null) metadataResult.values.taskScore = scoring.score;
+  const assessment = buildTaskAssessment(metadataResult.values, scoring, input.assessment);
 
   const renderedBody = kind
     ? renderTaskBody(kind, input.sections)
@@ -76,7 +78,12 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
   }
 
   const comments = [];
-  const scoreComment = renderTaskScoreComment(scoring, input.scoringRationales);
+  const assessmentRationales = Object.fromEntries(
+    Object.entries(assessment.values).flatMap(([key, record]) =>
+      record.rationale ? [[key, record.rationale]] : [],
+    ),
+  );
+  const scoreComment = renderTaskScoreComment(scoring, assessmentRationales);
   if (scoreComment) comments.push({ kind: 'task-score', body: scoreComment });
   const priorityComment = renderPriorityOverrideComment(
     metadataResult.values.priority,
@@ -91,6 +98,7 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
     renderedBody.missing.length > 0 ||
     metadataResult.errors.length > 0 ||
     scoring.errors.length > 0 ||
+    assessment.errors.length > 0 ||
     !actionable;
   const incompleteCapabilities =
     warnings.length > 0 ||
@@ -115,6 +123,7 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
       errors: metadataResult.errors,
       warnings: metadataPlan.warnings,
     },
+    assessment,
     labels,
     relationships: input.relationships ?? {},
     scoring: { ...scoring, auditComment: scoreComment },

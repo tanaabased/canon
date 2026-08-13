@@ -9,9 +9,49 @@ const FORM_TOP_LEVEL_KEYS = Object.freeze(
 );
 const PRESERVED_FORM_KEYS = Object.freeze(['title', 'assignees', 'projects']);
 const CONFIG_KEYS = Object.freeze(new Set(['blank_issues_enabled', 'contact_links']));
+const RETIRED_MANAGED_INPUTS = Object.freeze({
+  'task-kind': { type: 'dropdown', label: 'Task kind' },
+  context: { type: 'textarea', label: 'Context' },
+  objective: { type: 'textarea', label: 'Objective' },
+  'in-scope': { type: 'textarea', label: 'In scope' },
+  'out-of-scope': { type: 'textarea', label: 'Out of scope' },
+  'acceptance-criteria': { type: 'textarea', label: 'Acceptance criteria' },
+  constraints: { type: 'textarea', label: 'Constraints and notes' },
+  'observed-behavior': { type: 'textarea', label: 'Observed behavior' },
+  'expected-behavior': { type: 'textarea', label: 'Expected behavior' },
+  reproduction: { type: 'textarea', label: 'Reproduction or evidence' },
+  environment: { type: 'textarea', label: 'Environment' },
+  'impact-summary': { type: 'textarea', label: 'Impact' },
+  'desired-outcome': { type: 'textarea', label: 'Desired outcome' },
+  alternatives: { type: 'textarea', label: 'Alternatives and constraints' },
+  priority: { type: 'dropdown', label: 'Priority estimate' },
+  'work-size': { type: 'dropdown', label: 'Work size estimate' },
+  complexity: { type: 'dropdown', label: 'Complexity estimate' },
+  impact: { type: 'dropdown', label: 'Impact estimate' },
+  'start-date': { type: 'input', label: 'Start date' },
+  'target-date': { type: 'input', label: 'Target date' },
+  urgency: { type: 'dropdown', label: 'Urgency assessment' },
+  enablement: { type: 'dropdown', label: 'Enablement assessment' },
+  confidence: { type: 'dropdown', label: 'Confidence assessment' },
+  'task-signals': { type: 'checkboxes', label: 'Task signals' },
+});
+const RETIRED_MANAGED_MARKDOWN = Object.freeze(
+  new Set([
+    'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.',
+  ]),
+);
 
 function contentDigest(content) {
   return `sha256:${createHash('sha256').update(content).digest('hex')}`;
+}
+
+function isRetiredManagedInput(element) {
+  const expected = RETIRED_MANAGED_INPUTS[element.id];
+  return (
+    expected !== undefined &&
+    element.type === expected.type &&
+    element.attributes?.label === expected.label
+  );
 }
 
 function parseYaml(content, path) {
@@ -73,7 +113,7 @@ function mergeForm(desired, current, path) {
     }
     if (element.type === 'markdown') {
       const value = String(element.attributes?.value ?? '');
-      if (!desiredMarkdown.has(value)) {
+      if (!desiredMarkdown.has(value) && !RETIRED_MANAGED_MARKDOWN.has(value)) {
         extraMarkdown.push(element);
         preserved.push('additional markdown guidance');
       }
@@ -89,7 +129,7 @@ function mergeForm(desired, current, path) {
       continue;
     }
     seenIds.add(id);
-    if (!managedIds.has(id)) {
+    if (!managedIds.has(id) && !isRetiredManagedInput(element)) {
       blockers.push(
         `${path} contains unmanaged submitted input ${id}; automatic alignment would lose its normalization semantics.`,
       );

@@ -148,6 +148,42 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     );
   });
 
+  it('should retire only inputs owned by the previous canonical form projection', () => {
+    const files = renderedFiles('organization');
+    const task = parsedByBun(files['.github/ISSUE_TEMPLATE/task.yml']);
+    task.body[0].attributes.value =
+      'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.';
+    task.body.push(
+      {
+        type: 'textarea',
+        id: 'acceptance-criteria',
+        attributes: { label: 'Acceptance criteria' },
+      },
+      {
+        type: 'dropdown',
+        id: 'urgency',
+        attributes: { label: 'Urgency assessment', options: ['Moderate', 'High'] },
+      },
+    );
+    files['.github/ISSUE_TEMPLATE/task.yml'] = serializeYaml(task);
+    const client = fakeIssueFormClient({ files });
+
+    const preview = alignGitHubIssueForms(TARGET, { client });
+    assert.equal(preview.status, 'approval_required');
+    assert.equal(preview.blockers.length, 0);
+    const report = alignGitHubIssueForms(TARGET, {
+      client,
+      authorization: authorize(preview),
+    });
+    const updated = parsedByBun(client.state.files.get('.github/ISSUE_TEMPLATE/task.yml').content);
+
+    assert.equal(report.status, 'aligned_after_write');
+    assert.deepEqual(
+      updated.body.filter(({ type }) => type !== 'markdown').map(({ id }) => id),
+      ['change', 'success', 'additional-context'],
+    );
+  });
+
   it('should block incompatible custom inputs, auto-applied labels, invalid YAML, and unsupported keys', () => {
     const desiredTask = authorIssueFormSet('organization').files.find(
       ({ kind }) => kind === 'task',
@@ -165,6 +201,17 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
         ],
       }),
       serializeYaml({ ...desiredTask, labels: ['needs-triage'] }),
+      serializeYaml({
+        ...desiredTask,
+        body: [
+          ...desiredTask.body,
+          {
+            type: 'dropdown',
+            id: 'priority',
+            attributes: { label: 'Customer priority', options: ['High', 'Low'] },
+          },
+        ],
+      }),
       'name: [invalid\n',
       serializeYaml({ ...desiredTask, unsupported: true }),
     ];
@@ -233,6 +280,9 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
 
     assert.equal(report.repositoryMode, 'personal');
     assert.equal(Object.hasOwn(task, 'type'), false);
-    assert.ok(task.body.some(({ id }) => id === 'work-size'));
+    assert.deepEqual(
+      task.body.filter(({ type }) => type !== 'markdown').map(({ id }) => id),
+      ['change', 'success', 'additional-context'],
+    );
   });
 });

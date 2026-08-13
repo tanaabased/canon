@@ -16,7 +16,7 @@ export function renderTaskScoreComment(scoring, rationales = {}) {
     line('impact', 'Impact'),
     line('urgency', 'Urgency'),
     line('enablement', 'Enablement'),
-    `- Work size: \`${factors.workSize.value}\``,
+    `- Work size: \`${factors.workSize.value}\`${rationales.workSize ? ` — ${rationales.workSize}` : ''}`,
     line('confidence', 'Confidence'),
     '',
   ].join('\n');

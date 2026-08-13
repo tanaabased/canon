@@ -1,15 +1,8 @@
 import {
-  BODY_SHAPES,
-  PERSONAL_METADATA_FIELDS,
+  INTAKE_FORMS,
   REPOSITORY_MODES,
-  SCORING_DIAGNOSTICS,
-  SIGNAL_OPTIONS,
   TASK_KINDS,
-  displayValue,
-  formId,
   issueFormName,
-  scoringFormOption,
-  sectionPrompt,
 } from './issue-form-contract.js';
 import { serializeYaml } from '../utils/serialize-yaml.js';
 
@@ -19,93 +12,13 @@ function validateRepositoryMode(repositoryMode) {
   }
 }
 
-function sectionElements(kind) {
-  const elements = BODY_SHAPES[kind]
-    .filter(({ key }) => key !== null)
-    .map(({ heading, key, required }) => ({
-      type: 'textarea',
-      id: formId(key),
-      attributes: {
-        label: heading,
-        description: sectionPrompt(key),
-        ...(key === 'acceptanceCriteria' || key === 'inScope' || key === 'outOfScope'
-          ? { placeholder: 'One item per line' }
-          : {}),
-      },
-      validations: { required },
-    }));
-
-  if (kind === 'bug') {
-    const reproductionIndex = elements.findIndex(({ id }) => id === 'reproduction');
-    elements.splice(reproductionIndex + 1, 0, {
-      type: 'textarea',
-      id: 'environment',
-      attributes: {
-        label: 'Environment',
-        description: 'Record relevant versions, operating systems, runtimes, or configuration.',
-      },
-      validations: { required: false },
-    });
-  }
-  return elements;
-}
-
-function personalMetadataElements(kind) {
-  const taskKind = {
-    type: 'dropdown',
-    id: 'task-kind',
-    attributes: {
-      label: 'Task kind',
-      description: 'Portable task kind because personal repositories do not support issue types.',
-      options: [TASK_KINDS[kind].name],
-      default: 0,
-    },
-    validations: { required: true },
-  };
-  const metadata = PERSONAL_METADATA_FIELDS.map((field) => ({
-    type: field.type,
-    id: field.id,
-    attributes: {
-      label: field.label,
-      description:
-        field.type === 'input'
-          ? 'Optional ISO YYYY-MM-DD value; leave blank when unknown.'
-          : 'Select only when the submitted evidence supports an estimate; otherwise leave unset.',
-      ...(field.options ? { options: field.options } : {}),
-    },
-    validations: { required: false },
+function intakeElements(kind) {
+  return INTAKE_FORMS[kind].map(({ id, label, description, required }) => ({
+    type: 'textarea',
+    id,
+    attributes: { label, description },
+    validations: { required },
   }));
-  return [taskKind, ...metadata];
-}
-
-function scoringElements() {
-  return Object.entries(SCORING_DIAGNOSTICS).map(([key, options]) => ({
-    type: 'dropdown',
-    id: key,
-    attributes: {
-      label: `${displayValue(key)} assessment`,
-      description:
-        'Select only when the task evidence supports this assessment; otherwise leave unset.',
-      options: options.map((option) => scoringFormOption(key, option)),
-    },
-    validations: { required: false },
-  }));
-}
-
-function signalElement(kind) {
-  return {
-    type: 'checkboxes',
-    id: 'task-signals',
-    attributes: {
-      label: 'Task signals',
-      description:
-        'Select only statements directly supported by the submission. Canonical labels are applied later only when their repository definitions exist.',
-      options: SIGNAL_OPTIONS.filter(({ kinds }) => kinds.includes(kind)).map(({ label }) => ({
-        label,
-      })),
-    },
-    validations: { required: false },
-  };
 }
 
 function validateElements(body) {
@@ -127,7 +40,7 @@ function validateElements(body) {
   if (inputCount === 0) throw new Error('GitHub issue forms require at least one submitted input.');
 }
 
-/** Build one canonical GitHub issue form without writing files or publishing to GitHub. */
+/** Build one low-friction GitHub intake form without writing files or publishing to GitHub. */
 export function authorIssueForm(kind, repositoryMode) {
   validateRepositoryMode(repositoryMode);
   const taskKind = TASK_KINDS[kind];
@@ -138,13 +51,10 @@ export function authorIssueForm(kind, repositoryMode) {
       type: 'markdown',
       attributes: {
         value:
-          'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.',
+          'Share the evidence you have. A maintainer or agent will normalize the report, estimate task metadata, and ask focused follow-up questions when needed.',
       },
     },
-    ...(repositoryMode === 'personal' ? personalMetadataElements(kind) : []),
-    ...sectionElements(kind),
-    ...scoringElements(),
-    signalElement(kind),
+    ...intakeElements(kind),
   ];
   validateElements(body);
 
@@ -154,7 +64,7 @@ export function authorIssueForm(kind, repositoryMode) {
 
   return {
     name,
-    description: `Propose a canonical ${taskKind.name.toLowerCase()} with enough evidence for triage and estimation.`,
+    description: `Share a ${taskKind.name.toLowerCase()} for triage and normalization.`,
     ...(repositoryMode === 'organization' ? { type: kind } : {}),
     body,
   };
@@ -192,7 +102,7 @@ export function authorIssueFormSet(repositoryMode) {
       'GitHub issue forms remain in public preview and must be revalidated against the current form schema before publication.',
       ...(repositoryMode === 'personal'
         ? [
-            'Personal repositories lack issue types and issue fields; canonical metadata is rendered for later fallback normalization.',
+            'Personal repositories lack issue types and issue fields; Task Author adds supported fallback metadata after semantic normalization.',
           ]
         : []),
     ],

@@ -17,7 +17,8 @@ Fixture prose is illustrative. The expected task kind, body shape, metadata auth
 Every applicable fixture must satisfy these assertions:
 
 - Resolve and display one exact `OWNER/REPO` target or stop without mutation.
-- Produce the same normalized task semantics whether input comes from Task Author, a GitHub issue form, or an external submission.
+- Preserve form and external-submission evidence losslessly, then produce the same canonical task semantics after Task Author normalization.
+- Show source and rationale for accepted estimates; keep Priority human- or policy-controlled and Task score derived.
 - Use native metadata when available and include only unavailable canonical values in fallback metadata.
 - Omit unknown values instead of inventing defaults or sentinels.
 - Use only existing canonical labels; never create label definitions during task authoring.
@@ -48,7 +49,7 @@ Every applicable fixture must satisfy these assertions:
 | T15 | Task Author   | Task      | Organization    | Score boundaries and insufficient evidence   | Varies         |
 | T16 | Task Author   | Task      | Organization    | Fallback-to-native migration                 | Unchanged      |
 | S01 | Schema Author | All       | Organization    | Current-schema and legacy-label inspection   | Not applicable |
-| F01 | Form Author   | All       | Both            | Organization and personal form equivalence   | Fixture-owned  |
+| F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff        | Fixture-owned  |
 | R01 | Task Author   | Feature   | Organization    | Material revision history                    | Recomputed     |
 
 ## Task Author Fixtures
@@ -482,29 +483,28 @@ Expected mutation boundary:
 
 ## GitHub Issue Form Author Fixture
 
-### F01: Equivalent Organization and Personal Forms
+### F01: Low-Friction Organization and Personal Intake
 
 Generate Task, Bug, and Feature variants for both repository modes.
 
 Organization form assertions:
 
 - The form sets the matching top-level issue `type`.
-- The resulting Markdown uses the canonical body headings.
-- Prompts collect enough evidence for Work size, Complexity, Impact, urgency, enablement, and confidence without asking the submitter to calculate Task score.
-- Native fields pinned to the issue type remain native and are not mirrored into the body.
-- Labels are applied only when their conditions are known from form evidence and their definitions already exist.
+- Task and Feature each expose two required evidence responses and one optional context response.
+- Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response.
+- The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
+- Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.
 
 Personal form assertions:
 
-- The resulting Markdown uses the same canonical body headings.
-- Stable labeled inputs expose unavailable task kind and estimation evidence for deterministic Task Author normalization.
-- Task Author converts supported values into `tanaab/task-metadata/v1` fallback metadata.
-- The submitter is not asked to calculate Task score.
-- Labels, assignees, milestone, and relationships remain native rather than entering the capsule.
+- The form uses the same evidence questions and required-response rules as the organization variant.
+- The selected form identifies Task, Bug, or Feature without asking the reporter to repeat task kind in a dropdown.
+- The form does not expose unavailable issue fields as fallback controls.
+- Task Author assesses supported metadata after normalization and then renders `tanaab/task-metadata/v1` fallback values where native representations are unavailable.
 
-Equivalence assertion:
+Handoff and convergence assertions:
 
-For each of T01 through T06, Task Author draft output, normalized issue-form output, and normalized external input must produce the same semantic body, effective metadata values, labels, and score explanation for the same evidence. Native and fallback storage may differ, but meaning may not.
+For each of T01 through T06, the form handoff preserves every submitted response plus the complete original Markdown and marks semantic normalization as required. It must not claim that intake is already canonical or invent metadata, scoring diagnostics, labels, relationships, or missing evidence. After Task Author performs the semantic assessment, agent-authored, form-authored, and externally submitted evidence must converge on the same canonical body and accepted metadata semantics. Native and fallback storage may differ, but meaning may not.
 
 ## Revision Fixture
 

@@ -11,113 +11,68 @@ export function issueFormName(kind) {
   return kind === 'bug' ? 'Bug report' : TASK_KINDS[kind].name;
 }
 
-export const BODY_SHAPES = Object.freeze(taskManagementSchema.bodyShapes);
-export const SCORING_DIAGNOSTICS = Object.freeze(taskManagementSchema.scoringDiagnostics);
-
-export const LIST_SECTION_KEYS = Object.freeze(
-  new Set(['inScope', 'outOfScope', 'acceptanceCriteria']),
-);
-
-const PERSONAL_METADATA_KEYS = Object.freeze([
-  'priority',
-  'workSize',
-  'complexity',
-  'impact',
-  'startDate',
-  'targetDate',
-]);
-
-export const PERSONAL_METADATA_FIELDS = Object.freeze(
-  PERSONAL_METADATA_KEYS.map((key) => {
-    const field = taskManagementSchema.issueFields.find((candidate) => candidate.key === key);
-    const type = field.dataType === 'date' ? 'input' : 'dropdown';
-    return {
-      id: field.fallbackKey,
-      key,
-      label: `${field.name}${type === 'dropdown' ? ' estimate' : ''}`,
-      type,
-      ...(field.options ? { options: field.options } : {}),
-    };
-  }),
-);
-
-const RESERVED_SCORING_OPTION_REPLACEMENTS = Object.freeze({
-  urgency: Object.freeze({ none: 'Not time-sensitive' }),
-  enablement: Object.freeze({ none: 'No enabling effect' }),
+const ADDITIONAL_CONTEXT = Object.freeze({
+  id: 'additional-context',
+  label: 'Additional context',
+  description:
+    'Share relevant constraints, dependencies, deadlines, logs, screenshots, or other evidence.',
+  required: false,
 });
 
-function normalizedChoice(value) {
-  return String(value).trim().toLowerCase().replaceAll(' ', '-');
-}
-
-export function scoringFormOption(key, value) {
-  const canonical = normalizedChoice(value);
-  return RESERVED_SCORING_OPTION_REPLACEMENTS[key]?.[canonical] ?? displayValue(canonical);
-}
-
-export function scoringCanonicalValue(key, value) {
-  const submitted = normalizedChoice(value);
-  const replacement = Object.entries(RESERVED_SCORING_OPTION_REPLACEMENTS[key] ?? {}).find(
-    ([, display]) => normalizedChoice(display) === submitted,
-  );
-  return replacement?.[0] ?? submitted;
-}
-
-export const SIGNAL_OPTIONS = Object.freeze([
-  { kinds: ['task'], label: 'Documentation work', signal: 'documentation' },
-  { kinds: ['feature'], label: 'Breaking change', signal: 'breakingChange' },
-  { kinds: ['bug'], label: 'Regression from previously working behavior', signal: 'regression' },
-  {
-    kinds: ['task', 'bug', 'feature'],
-    label: 'Maintainers welcome outside contributions',
-    signal: 'helpWanted',
-  },
-  {
-    kinds: ['task', 'feature'],
-    label: 'Suitable for a first contribution',
-    signal: 'goodFirstIssue',
-  },
-  {
-    kinds: ['task', 'bug', 'feature'],
-    label: 'Blocked by an external dependency',
-    relationship: 'externalBlocker',
-  },
-]);
-
-const SECTION_PROMPTS = Object.freeze({
-  context:
-    'Describe the current situation, who is affected, recurring value or cost, urgency, work enabled, and meaningful uncertainty.',
-  objective: 'State one observable outcome this task should produce.',
-  inScope: 'List the concrete behavior or surfaces this task includes, one item per line.',
-  outOfScope: 'List adjacent work this task deliberately excludes, one item per line.',
-  acceptanceCriteria: 'List observable completion conditions, one item per line.',
-  constraints: 'Record known constraints, dependencies, evidence, or implementation notes.',
-  observedBehavior:
-    'Describe what happens now, including affected versions, frequency, and blast radius when known.',
-  expectedBehavior: 'Describe the behavior that should occur instead.',
-  reproduction:
-    'Provide reproducible steps or other direct evidence. Include commands, versions, and outputs when useful.',
-  impactSummary:
-    'Explain affected users or workflows, frequency, severity, urgency, and whether other work is blocked.',
-  problem:
-    'Describe the capability gap or opportunity, affected users, recurring value, urgency, and work this could enable.',
-  desiredOutcome:
-    'Describe the supported outcome without prescribing unnecessary implementation detail.',
-  alternatives:
-    'Record meaningful alternatives, compatibility requirements, and other constraints.',
+/** Human-oriented evidence prompts; canonical task headings are produced during normalization. */
+export const INTAKE_FORMS = Object.freeze({
+  task: Object.freeze([
+    Object.freeze({
+      id: 'change',
+      label: 'What needs to change, and why?',
+      description:
+        'Describe the current situation, the affected workflow, and the change you need.',
+      required: true,
+    }),
+    Object.freeze({
+      id: 'success',
+      label: 'What would a successful result look like?',
+      description: 'Describe the observable outcome. Formal acceptance criteria are not required.',
+      required: true,
+    }),
+    ADDITIONAL_CONTEXT,
+  ]),
+  bug: Object.freeze([
+    Object.freeze({
+      id: 'observed',
+      label: 'What happened?',
+      description: 'Describe the behavior you observed and when it occurred.',
+      required: true,
+    }),
+    Object.freeze({
+      id: 'expected',
+      label: 'What did you expect?',
+      description: 'Describe the behavior that should have occurred instead.',
+      required: true,
+    }),
+    Object.freeze({
+      id: 'investigation',
+      label: 'How can we reproduce or investigate it?',
+      description:
+        'Provide steps when reproducible. Otherwise share occurrence details, environment, versions, logs, or other direct evidence.',
+      required: true,
+    }),
+    ADDITIONAL_CONTEXT,
+  ]),
+  feature: Object.freeze([
+    Object.freeze({
+      id: 'problem',
+      label: 'What problem or opportunity are you seeing?',
+      description: 'Describe the capability gap, affected users or workflows, and why it matters.',
+      required: true,
+    }),
+    Object.freeze({
+      id: 'outcome',
+      label: 'What outcome would help?',
+      description:
+        'Describe the useful result without prescribing unnecessary implementation detail.',
+      required: true,
+    }),
+    ADDITIONAL_CONTEXT,
+  ]),
 });
-
-export function sectionPrompt(key) {
-  return SECTION_PROMPTS[key] ?? 'Provide the evidence needed for this section.';
-}
-
-export function formId(key) {
-  return String(key).replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-}
-
-export function displayValue(value) {
-  return String(value)
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}

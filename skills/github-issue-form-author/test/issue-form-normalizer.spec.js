@@ -7,7 +7,7 @@ import { renderFormSubmission } from '../utils/render-form-submission.js';
 describe('skills/github-issue-form-author/lib/issue-form-normalizer', () => {
   it('should preserve unknown Markdown headings inside a known response', () => {
     const form = authorIssueForm('task', 'organization');
-    const markdown = `### Context
+    const markdown = `### What needs to change, and why?
 
 Current behavior.
 
@@ -15,7 +15,7 @@ Current behavior.
 
 Supporting detail.
 
-### Objective
+### What would a successful result look like?
 
 Desired behavior.
 `;
@@ -25,93 +25,68 @@ Desired behavior.
       repositoryMode: 'organization',
     });
 
-    assert.match(normalized.sections.context, /### User-provided heading/);
-    assert.equal(normalized.sections.objective, 'Desired behavior.');
+    assert.match(normalized.intakeEvidence.responses.change.value, /### User-provided heading/);
+    assert.equal(normalized.intakeEvidence.responses.success.value, 'Desired behavior.');
+    assert.equal(normalized.intakeEvidence.rawMarkdown, markdown.trim());
   });
 
   it('should reject duplicate known headings instead of losing submitted evidence', () => {
     const form = authorIssueForm('task', 'organization');
-    const markdown = `### Context
+    const markdown = `### What needs to change, and why?
 
 Current behavior.
 
-### Objective
+### What would a successful result look like?
 
-An objective embedded by the submitter.
+An embedded outcome.
 
-### Objective
+### What would a successful result look like?
 
 The projected form response.
 `;
 
     assert.throws(
-      () =>
-        normalizeIssueFormSubmission(markdown, {
-          form,
-          repositoryMode: 'organization',
-        }),
-      /duplicate form heading: Objective/,
+      () => normalizeIssueFormSubmission(markdown, { form, repositoryMode: 'organization' }),
+      /duplicate form heading: What would a successful result look like\?/,
     );
   });
 
-  it('should leave unanswered personal estimates unset', () => {
+  it('should hand personal submissions to semantic normalization without estimates', () => {
     const form = authorIssueForm('task', 'personal');
     const markdown = renderFormSubmission(form, {
-      'task-kind': 'Task',
-      context: 'Current context',
-      objective: 'Desired outcome',
-      'in-scope': ['One supported behavior'],
-      'out-of-scope': ['Unrelated behavior'],
-      'acceptance-criteria': ['Observable evidence'],
+      change: 'Release checks are repeated manually.',
+      success: 'One consolidated health summary is available.',
     });
 
     const normalized = normalizeIssueFormSubmission(markdown, {
       form,
       repositoryMode: 'personal',
+      title: 'add a health summary',
     });
 
+    assert.equal(normalized.kind, 'task');
+    assert.equal(normalized.title, 'add a health summary');
+    assert.equal(normalized.normalizationRequired, true);
     assert.deepEqual(normalized.metadata, {});
     assert.deepEqual(normalized.scoring, {});
-    assert.deepEqual(normalized.sections.acceptanceCriteria, ['Observable evidence']);
+    assert.deepEqual(Object.keys(normalized.intakeEvidence.responses), ['change', 'success']);
   });
 
-  it('should translate only checked task signals into canonical intent', () => {
-    const form = authorIssueForm('feature', 'personal');
+  it('should retain observed organization metadata without asking for it in the form', () => {
+    const form = authorIssueForm('feature', 'organization');
     const markdown = renderFormSubmission(form, {
-      'task-kind': 'Feature',
-      'task-signals': [
-        'Breaking change',
-        'Maintainers welcome outside contributions',
-        'Blocked by an external dependency',
-      ],
-    });
-
-    const normalized = normalizeIssueFormSubmission(markdown, {
-      form,
-      repositoryMode: 'personal',
-    });
-
-    assert.deepEqual(normalized.signals, { breakingChange: true, helpWanted: true });
-    assert.deepEqual(normalized.relationships, { externalBlocker: true });
-  });
-
-  it('should normalize provider-safe scoring labels to canonical none values', () => {
-    const form = authorIssueForm('bug', 'organization');
-    const markdown = renderFormSubmission(form, {
-      urgency: 'Not time-sensitive',
-      enablement: 'No enabling effect',
-      confidence: 'High',
+      problem: 'Automation lacks a stable inspection surface.',
+      outcome: 'Expose a supported JSON contract.',
     });
     const normalized = normalizeIssueFormSubmission(markdown, {
       form,
       repositoryMode: 'organization',
+      nativeMetadata: { priority: 'high' },
     });
 
-    assert.equal(normalized.kind, 'bug');
-    assert.deepEqual(normalized.scoring, {
-      urgency: 'none',
-      enablement: 'none',
-      confidence: 'high',
-    });
+    assert.equal(normalized.kind, 'feature');
+    assert.deepEqual(normalized.metadata, { priority: 'high' });
+    assert.deepEqual(normalized.signals, {});
+    assert.deepEqual(normalized.relationships, {});
   });
 });

@@ -15,6 +15,8 @@ describe('Task Author T01-T15 draft fixtures', () => {
 
       assert.equal(report.mutatesGitHub, false);
       assert.equal(report.scoring.score, fixture.expected.score);
+      assert.equal(report.assessment.errors.length, 0);
+      assert.equal(report.assessment.values.taskScore.source, 'derived');
       assert.equal(report.metadata.native.fields.length, fixture.expected.nativeFields);
       assert.deepEqual(report.labels.apply, fixture.expected.labels);
       if (fixture.expected.fallback) {
@@ -87,6 +89,7 @@ describe('Task Author T01-T15 draft fixtures', () => {
     assert.equal(report.metadata.values.workSize, undefined);
     assert.equal(report.metadata.values.complexity, undefined);
     assert.equal(report.scoring.score, null);
+    assert.ok(report.assessment.errors.some((error) => error.includes('assessment.impact')));
     assert.deepEqual(report.labels.apply, ['needs triage', 'needs reproduction']);
     assert.match(report.body, /## Reproduction or evidence\n\n## Impact/);
   });

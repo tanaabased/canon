@@ -133,13 +133,44 @@ Use these headings in order:
 
 `Alternatives and constraints` is optional when no material alternative or constraint is known. Establish who or what gains the capability, the recurring value, boundaries, urgency, enablement, and any compatibility implications.
 
+### Intake Evidence and Canonical Tasks
+
+Human intake and canonical task authoring are different representations of the same work:
+
+- A **submission** is a low-friction evidence package. Its questions use ordinary reporter language and do not need to mirror canonical headings.
+- A **canonical task** is the normalized working artifact. It uses the Task, Bug, or Feature body shape above, accepted metadata, and checkable acceptance criteria.
+- GitHub Issue Form Author extracts submitted responses and the original Markdown without semantic invention. Task Author owns the later evidence assessment and canonical rewrite.
+
+The initial Task and Feature forms use two required evidence responses plus one optional context response. The Bug form uses three required evidence responses plus one optional context response. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
+
+Required form questions establish minimum useful evidence rather than demanding a fully planned task. A Bug's investigation response may provide reproducible steps or other direct occurrence evidence because intermittent failures can be valuable even when deterministic reproduction is unavailable.
+
 ### Normalization Rules
 
-- Normalize Task Author drafts, issue-form output, and external submissions to the same headings and metadata contract.
-- Do not invent missing facts, acceptance criteria, reproduction steps, dates, estimates, or scoring evidence.
-- Preserve useful original evidence and discussion history.
+- Preserve the complete submitted Markdown and every useful response before reshaping evidence.
+- Normalize Task Author drafts, form submissions, and external submissions to the same canonical body and metadata contract, but do not require their intake headings to match it.
+- Move evidence into the canonical shape without inventing missing facts, acceptance criteria, reproduction steps, dates, estimates, or scoring evidence.
+- Surface unresolved canonical sections as focused follow-up questions. Do not turn a short submission into generic filler merely to satisfy the shape.
 - If the task kind or minimum actionable shape remains unknown, retain the evidence, apply `needs triage` when available, and request the missing information instead of guessing.
+- Preserve discussion history and preview the exact body diff before normalizing an existing task.
 - A parent task or project milestone owns broad hierarchical work. Do not introduce an Epic type initially.
+
+### Assessment Ownership and Collaboration
+
+Task Author performs a semantic assessment before its deterministic helper validates, scores, renders, and gates publication. The helper does not contain an LLM estimator.
+
+| Value                                           | Default authority                    | Collaboration rule                                                                                                                       |
+| ----------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Task kind, title, body, and acceptance criteria | Human and agent                      | The agent drafts from evidence; the human authorizes the complete publication or revision plan.                                          |
+| Priority                                        | Human or explicit policy             | The agent may discuss a recommendation but must not persist it as an agent estimate. Leave it unset until a human or policy supplies it. |
+| Work size                                       | Agent estimate                       | Apply the delivery-scope rubric, show rationale and provenance, and permit a human override.                                             |
+| Complexity                                      | Agent estimate                       | Apply the model-neutral reasoning rubric, show rationale and provenance, and permit a human override.                                    |
+| Impact                                          | Agent estimate with human correction | Assess local value only when evidence is sufficient; otherwise leave it unset.                                                           |
+| Task score                                      | Derived                              | Calculate only through the versioned formula from accepted inputs. Never accept a directly supplied score.                               |
+| Start date and Target date                      | Human or explicit policy             | Preserve explicitly supplied commitments; do not invent scheduling dates from urgency evidence.                                          |
+| Urgency, Enablement, and Confidence             | Agent-assessed diagnostics           | Show rationale and provenance, use them for Task score, and do not persist them as separate issue fields.                                |
+
+Every accepted metadata value and scoring diagnostic must show its source as `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based rationale. A derived Task score identifies its formula version. Exact-plan authorization accepts the displayed values; changing one value requires a fresh plan. During revision, preserve existing native values by default unless the user requests reassessment or changed evidence makes a displayed recomputation necessary.
 
 ## Metadata Authority
 
@@ -384,7 +415,8 @@ Minor wording, formatting, or typo corrections do not require a history comment.
 ### Normalize
 
 - Preserve useful original evidence.
-- Move evidence into the canonical shape without manufacturing missing facts.
+- Treat form responses and arbitrary external headings as intake evidence rather than a pre-normalized task.
+- Move evidence into the canonical shape without manufacturing missing facts or requiring one-to-one heading correspondence.
 - Propose metadata and labels only when supported.
 - Apply `needs triage` when essential classification or actionability remains unresolved.
 - Remove `needs triage` only after the normalized task has a supported kind, actionable scope, and checkable acceptance criteria.

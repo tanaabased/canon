@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { calculateTaskScore } from '../utils/calculate-task-score.js';
+import { buildTaskAssessment } from '../utils/build-task-assessment.js';
 import { classifyTaskLabels } from '../utils/classify-task-labels.js';
 import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
@@ -89,5 +90,42 @@ describe('Task Author deterministic utilities', () => {
       }).score,
       null,
     );
+  });
+
+  it('should require provenance for estimates and reserve Priority for humans or policy', () => {
+    const scoring = calculateTaskScore({
+      impact: 'high',
+      urgency: 'moderate',
+      enablement: 'some',
+      confidence: 'high',
+      workSize: 3,
+    });
+    const accepted = buildTaskAssessment(
+      { priority: 'high', workSize: 3, complexity: 'medium', impact: 'high' },
+      scoring,
+      {
+        priority: { source: 'human', rationale: 'A maintainer selected this override.' },
+        workSize: { source: 'agent', rationale: 'The change is bounded and multi-step.' },
+        complexity: { source: 'agent', rationale: 'Several concerns interact.' },
+        impact: { source: 'agent', rationale: 'A major workflow becomes more reliable.' },
+        urgency: { source: 'agent', rationale: 'The cost recurs during releases.' },
+        enablement: { source: 'agent', rationale: 'One follow-up becomes possible.' },
+        confidence: { source: 'agent', rationale: 'The evidence is directly reproducible.' },
+      },
+    );
+
+    assert.deepEqual(accepted.errors, []);
+    assert.equal(accepted.values.priority.source, 'human');
+    assert.equal(accepted.values.complexity.source, 'agent');
+    assert.equal(accepted.values.taskScore.source, 'derived');
+
+    const rejected = buildTaskAssessment(
+      { priority: 'high' },
+      { score: null, factors: {} },
+      {
+        priority: { source: 'agent', rationale: 'The agent prefers this order.' },
+      },
+    );
+    assert.ok(rejected.errors.some((error) => error.includes('human- or policy-controlled')));
   });
 });
