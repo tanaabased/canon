@@ -36,16 +36,16 @@ function singleSelect(id, name, options) {
 
 export function organizationCapabilities({ partial = false } = {}) {
   const fields = [
-    singleSelect('priority', 'Priority', ['Urgent', 'High', 'Medium', 'Low']),
-    singleSelect('work-size', 'Work size', ['1', '2', '3', '5', '8', '13', '21']),
-    { id: 'start-date', name: 'Start date', data_type: 'date' },
-    { id: 'target-date', name: 'Target date', data_type: 'date' },
+    singleSelect(101, 'Priority', ['Urgent', 'High', 'Medium', 'Low']),
+    singleSelect(102, 'Work size', ['1', '2', '3', '5', '8', '13', '21']),
+    { id: 103, name: 'Start date', data_type: 'date' },
+    { id: 104, name: 'Target date', data_type: 'date' },
   ];
   if (!partial) {
     fields.push(
-      singleSelect('complexity', 'Complexity', ['Low', 'Medium', 'High']),
-      singleSelect('impact', 'Impact', ['Low', 'Medium', 'High', 'Very high']),
-      { id: 'task-score', name: 'Task score', data_type: 'number' },
+      singleSelect(105, 'Complexity', ['Low', 'Medium', 'High']),
+      singleSelect(106, 'Impact', ['Low', 'Medium', 'High', 'Very high']),
+      { id: 107, name: 'Task score', data_type: 'number' },
     );
   }
 

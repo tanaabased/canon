@@ -1,7 +1,7 @@
 interface:
   display_name: 'Task Author'
-  short_description: 'Tanaab-based read-only GitHub task drafting'
+  short_description: 'Tanaab-based GitHub task drafting and creation'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-task-author to inspect an explicit GitHub repository and draft a canonical Task, Bug, or Feature without mutating GitHub.'
+  default_prompt: 'Use $tanaab-task-author to inspect an explicit GitHub repository and draft or digest-gate the authorized creation of one canonical Task, Bug, or Feature with exact post-write verification.'
