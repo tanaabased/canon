@@ -7,17 +7,21 @@ import {
   CANON_SKILL_BRAND_COLOR,
   CANON_SKILL_LICENSE,
   CANON_SKILL_OWNER,
-  CANON_SKILL_PREFIX_WITH_HYPHEN,
+  CANON_SKILL_PREFIX,
   formatSkillTypeIds,
+  getSkillNamespacePrefix,
   getSkillType,
+  isPluginSkillContainer,
   isKnownSkillType,
-  stripOwnerPrefix,
+  stripSkillNamespace,
 } from './skill-contract.js';
 import extractRelativeMarkdownLinks from '../utils/extract-relative-markdown-links.js';
 import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
+import normalizeSkillNamespace from '../utils/normalize-skill-namespace.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
 import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
+import resolveSkillContainer from '../utils/resolve-skill-container.js';
 import validateOpenClawMetadata from '../utils/validate-openclaw-metadata.js';
 const AUXILIARY_DOCS = [
   'README.md',
@@ -37,6 +41,7 @@ const OPTIONAL_RESOURCE_NAMES = [
   'utils',
 ];
 const KEBAB_CASE_HELPER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*(\.[a-z0-9]+)?$/;
+const HEX_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 const RELATIONSHIP_SECTION_HEADING = '## Relationship to Other Skills';
 
 const REQUIRED_FRONTMATTER_FIELDS = [
@@ -160,7 +165,7 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
   }
 }
 
-function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
+function validateFrontmatter({ errors, frontmatter, namespace, requestedType, warnings }) {
   pushMissingFieldErrors(frontmatter, REQUIRED_FRONTMATTER_FIELDS, errors);
   pushForbiddenFieldErrors(frontmatter, FORBIDDEN_TOP_LEVEL_FIELDS, errors);
 
@@ -181,6 +186,7 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   const declaredOwner = normalizeLowercaseString(rawDeclaredOwner);
   const actualType = declaredType ?? requestedType ?? 'generic';
   const actualOwner = declaredOwner ?? CANON_SKILL_OWNER;
+  const namespacePrefix = getSkillNamespacePrefix(namespace);
 
   if (rawDeclaredType && typeof rawDeclaredType !== 'string') {
     errors.push('SKILL.md frontmatter metadata.type must be a string.');
@@ -200,7 +206,11 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   if (declaredType && !isKnownSkillType(declaredType)) {
     errors.push(`SKILL.md metadata.type must be one of: ${formatSkillTypeIds()}`);
   }
-  if (frontmatter.description && !hasTanaabBasedPrefix(frontmatter.description)) {
+  if (
+    namespace === CANON_SKILL_PREFIX &&
+    frontmatter.description &&
+    !hasTanaabBasedPrefix(frontmatter.description)
+  ) {
     errors.push(`Frontmatter description must start with \`${CANON_DESCRIPTION_PREFIX.trim()}\`.`);
   }
   if (frontmatter.license && frontmatter.license !== CANON_SKILL_LICENSE) {
@@ -209,8 +219,8 @@ function validateFrontmatter({ frontmatter, requestedType, errors, warnings }) {
   if (frontmatter.name && !isKebabCaseId(frontmatter.name)) {
     errors.push('Frontmatter name must use lowercase letters, digits, and single hyphens only.');
   }
-  if (frontmatter.name && !frontmatter.name.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
-    errors.push(`Frontmatter name must start with \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`.`);
+  if (frontmatter.name && !frontmatter.name.startsWith(namespacePrefix)) {
+    errors.push(`Frontmatter name must start with \`${namespacePrefix}\`.`);
   }
 
   if (declaredTags && !Array.isArray(declaredTags)) {
@@ -258,47 +268,33 @@ async function validateSkillMarkdown({ actualType, errors, skillContent, skillPa
   }
 }
 
-async function findContainingPluginRoot(startPath) {
-  let currentPath = path.resolve(startPath);
-  let previousPath = null;
+function validateFolderName({ container, errors, folderName, frontmatterName, namespace }) {
+  const namespacePrefix = getSkillNamespacePrefix(namespace);
+  const pluginContained = isPluginSkillContainer(container);
 
-  while (currentPath && currentPath !== previousPath) {
-    if (await pathExists(path.join(currentPath, '.codex-plugin', 'plugin.json'))) {
-      return currentPath;
-    }
-
-    previousPath = currentPath;
-    currentPath = path.dirname(currentPath);
-  }
-
-  return null;
-}
-
-async function validateFolderName({ folderName, frontmatterName, skillPath, errors }) {
-  const pluginRoot = await findContainingPluginRoot(skillPath);
-
-  if (pluginRoot) {
-    if (folderName.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
+  if (pluginContained) {
+    if (folderName.startsWith(namespacePrefix)) {
       errors.push(
-        `Plugin-contained skill folders must omit the owner prefix \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`: expected \`${stripOwnerPrefix(frontmatterName || folderName)}\`.`,
+        `Plugin-contained skill folders must omit the public namespace prefix \`${namespacePrefix}\`: expected \`${stripSkillNamespace(frontmatterName || folderName, namespace)}\`.`,
       );
     }
-  } else if (!folderName.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)) {
-    errors.push(`Skill folder must use the owner prefix \`${CANON_SKILL_PREFIX_WITH_HYPHEN}\`.`);
+  } else if (!folderName.startsWith(namespacePrefix)) {
+    errors.push(
+      `Standalone skill folders must use the public namespace prefix \`${namespacePrefix}\`.`,
+    );
   }
 
-  if (folderName.startsWith(`${CANON_SKILL_PREFIX_WITH_HYPHEN}${CANON_SKILL_PREFIX_WITH_HYPHEN}`)) {
-    errors.push(`Skill folder repeats the owner prefix: ${folderName}`);
+  if (folderName.startsWith(`${namespacePrefix}${namespacePrefix}`)) {
+    errors.push(`Skill folder repeats the public namespace prefix: ${folderName}`);
   }
-  if (
-    frontmatterName &&
-    frontmatterName.startsWith(`${CANON_SKILL_PREFIX_WITH_HYPHEN}${CANON_SKILL_PREFIX_WITH_HYPHEN}`)
-  ) {
-    errors.push(`Frontmatter name repeats the owner prefix: ${frontmatterName}`);
+  if (frontmatterName && frontmatterName.startsWith(`${namespacePrefix}${namespacePrefix}`)) {
+    errors.push(`Frontmatter name repeats the public namespace prefix: ${frontmatterName}`);
   }
 
   if (frontmatterName) {
-    const expectedFolderName = pluginRoot ? stripOwnerPrefix(frontmatterName) : frontmatterName;
+    const expectedFolderName = pluginContained
+      ? stripSkillNamespace(frontmatterName, namespace)
+      : frontmatterName;
     if (folderName !== expectedFolderName) {
       errors.push(
         `Skill folder name must match the expected folder id: expected \`${expectedFolderName}\`.`,
@@ -311,6 +307,7 @@ async function validateOpenAiMetadata({
   actualOwner,
   errors,
   frontmatterName,
+  namespace,
   openAiContent,
   skillPath,
   warnings,
@@ -330,8 +327,14 @@ async function validateOpenAiMetadata({
     }
   }
 
-  if (interfaceValues.brand_color && interfaceValues.brand_color !== CANON_SKILL_BRAND_COLOR) {
+  if (
+    namespace === CANON_SKILL_PREFIX &&
+    interfaceValues.brand_color &&
+    interfaceValues.brand_color !== CANON_SKILL_BRAND_COLOR
+  ) {
     errors.push(`interface.brand_color must equal \`${CANON_SKILL_BRAND_COLOR}\`.`);
+  } else if (interfaceValues.brand_color && !HEX_COLOR_PATTERN.test(interfaceValues.brand_color)) {
+    errors.push('interface.brand_color must be a six-digit hexadecimal color.');
   }
 
   for (const key of ['icon_small', 'icon_large']) {
@@ -361,6 +364,7 @@ async function validateOpenAiMetadata({
   }
 
   if (
+    namespace === CANON_SKILL_PREFIX &&
     interfaceValues.short_description &&
     !hasTanaabBasedPrefix(interfaceValues.short_description)
   ) {
@@ -460,7 +464,9 @@ function buildManualChecks({ expectedType }) {
  *
  * @param {string} skillDir Skill directory to validate.
  * @param {object} [options]
+ * @param {'standalone'|'codex-plugin'|'openclaw-plugin'} [options.container] Optional folder-policy context; containing plugin manifests are detected when omitted.
  * @param {string} [options.expectedType] Optional type requested by the caller.
+ * @param {string} [options.namespace='tanaab'] Public machine-id namespace declared by the owning project.
  * @returns {Promise<{errors: string[], manualChecks: string[], skillDir: string, warnings: string[]}>} Validation report.
  */
 export async function validateSkillDir(skillDir, options = {}) {
@@ -471,6 +477,21 @@ export async function validateSkillDir(skillDir, options = {}) {
   const warnings = [];
   let actualType = requestedType ?? 'generic';
   let actualOwner = CANON_SKILL_OWNER;
+  let namespace = CANON_SKILL_PREFIX;
+
+  try {
+    namespace = normalizeSkillNamespace(options.namespace);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+  }
+
+  let container;
+  try {
+    container = await resolveSkillContainer(skillPath, options.container);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+    container = await resolveSkillContainer(skillPath);
+  }
 
   if (requestedType && !isKnownSkillType(requestedType)) {
     errors.push(`Requested type must be one of: ${formatSkillTypeIds()}`);
@@ -504,6 +525,7 @@ export async function validateSkillDir(skillDir, options = {}) {
       ({ actualOwner, actualType } = validateFrontmatter({
         errors,
         frontmatter,
+        namespace,
         requestedType,
         warnings,
       }));
@@ -518,11 +540,12 @@ export async function validateSkillDir(skillDir, options = {}) {
     });
   }
 
-  await validateFolderName({
+  validateFolderName({
+    container,
     errors,
     folderName,
     frontmatterName: frontmatter?.name,
-    skillPath,
+    namespace,
   });
 
   if (openAiYamlExists) {
@@ -531,6 +554,7 @@ export async function validateSkillDir(skillDir, options = {}) {
       actualOwner,
       errors,
       frontmatterName: frontmatter?.name,
+      namespace,
       openAiContent,
       skillPath,
       warnings,

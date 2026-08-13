@@ -12,14 +12,16 @@ Use this file as the source of truth for canon skill validation.
 
 - `[error]` Canonical type-specific authoring and validation behavior comes from the full templates owned by `tanaab-skill-author`.
 - `[error]` Frontmatter `metadata.owner` must exist and must equal `tanaab`.
+- `[error]` Treat `metadata.owner` as Canon provenance, not as the public skill namespace. The public namespace defaults to `tanaab` and may be explicitly overridden by the owning project's ambient guidance.
 - `[error]` Frontmatter `metadata.type` must be one of the type ids defined by those canonical templates.
 - `[error]` Frontmatter `metadata.type` must equal the selected or asserted type id when one is provided.
 - `[error]` The generated machine id must use lowercase letters, digits, and hyphens only.
 - `[error]` Frontmatter `name` must equal the generated machine id exactly.
-- `[error]` Frontmatter `name` must start with `tanaab-`.
-- `[error]` Outside a larger Codex plugin, the skill folder name must equal the generated machine id.
-- `[error]` Inside a larger Codex plugin, the skill folder name must equal the generated machine id with the leading `tanaab-` owner prefix removed.
-- `[error]` Strip an accidental duplicate `tanaab-` prefix before writing the final machine id.
+- `[error]` Frontmatter `name` must start with the configured public namespace plus `-`; the namespace defaults to `tanaab`.
+- `[error]` In a `standalone` container, the skill folder name must equal the generated machine id.
+- `[error]` In a `codex-plugin` or `openclaw-plugin` container, the skill folder name must equal the generated machine id with its configured public namespace prefix removed.
+- `[error]` Strip an accidental duplicate configured namespace prefix before writing the final machine id.
+- `[manual]` A repository may declare durable `namespace` and `container` overrides in `AGENTS.md`, but deterministic scaffolding and validation must also receive them explicitly through `--namespace` and `--container`.
 - `[manual]` Treat project management as a domain or category, not an additional skill type.
 - `[manual]` Prefer domain-led names for skills that own projects, tasks, project milestones, or releases. Treat those concepts as lowercase ordinary nouns in prose; retain capitalization only in proper skill, product, or document names.
 - `[manual]` Prefer provider-led names when provider-specific mechanics are the owned surface, and retain repository or repo when a technical container, layout, configuration, or tooling baseline is the exact owned surface.
@@ -42,7 +44,7 @@ skill-folder/
 └── references/    # optional, only when unique to this skill
 ```
 
-- In plugin-contained skill trees, `skill-folder/` is the unprefixed surface id while frontmatter `name` remains the full owner-prefixed machine id.
+- In plugin-contained skill trees, `skill-folder/` is the unprefixed surface id while frontmatter `name` retains the configured public namespace.
 
 - `[error]` `SKILL.md` must exist.
 - `[error]` `agents/openai.yaml` must exist.
@@ -56,7 +58,8 @@ skill-folder/
 - `[error]` Frontmatter `license` must equal `MIT`.
 - `[error]` Frontmatter `metadata` must contain `type`, `owner`, `tags`, and `openclaw`.
 - `[error]` Do not use top-level `type`, `owner`, or `tags`; Codex warns on unsupported top-level skill attributes.
-- `[error]` Frontmatter `description` must start with `Tanaab-based`.
+- `[error]` Under the default `tanaab` namespace, frontmatter `description` must start with `Tanaab-based`.
+- `[error]` Under a custom public namespace, preserve product-oriented description prose without injecting the Tanaab description prefix.
 - `[error]` `metadata.tags` must be a list of strings.
 - `[error]` `metadata.tags` must include the selected `owner` and `type`.
 - `[error]` `metadata.tags` must include at least one additional kebab-case category tag beyond `owner` and `type`.
@@ -100,14 +103,15 @@ skill-folder/
 
 - `[error]` `agents/openai.yaml` must contain `interface.display_name`, `interface.short_description`, `interface.default_prompt`, and `interface.brand_color`.
 - `[error]` `agents/openai.yaml` must contain `interface.icon_small` and `interface.icon_large`.
-- `[error]` `interface.short_description` must start with `Tanaab-based`.
+- `[error]` Under the default `tanaab` namespace, `interface.short_description` must start with `Tanaab-based`.
+- `[error]` Under a custom public namespace, preserve product-oriented short-description prose without injecting the Tanaab description prefix.
 - `[error]` `interface.icon_small` and `interface.icon_large` must point to existing relative skill asset paths.
 - `[error]` `interface.default_prompt` should explicitly mention the skill by `$<machine-id>`.
-- `[error]` `interface.brand_color` must equal `#00c88a`.
+- `[error]` Under the default `tanaab` namespace, `interface.brand_color` must equal `#00c88a`; under a custom namespace it must be a six-digit hexadecimal product brand color.
 - `[error]` Optional `policy.allow_implicit_invocation` must be a boolean when present.
 - `[error]` Optional `dependencies.tools` entries must declare at least `type` and `value` when present.
 - `[warn]` `display_name` should be unprefixed by default unless the user explicitly wants `Tanaab` in the human-facing title.
-- `[manual]` After the `Tanaab-based` prefix, `short_description` should describe the skill outcome.
+- `[manual]` After any applicable owner-profile prefix, `short_description` should describe the skill outcome.
 - `[manual]` Use `policy.allow_implicit_invocation: false` only when a skill should require explicit `$<machine-id>` invocation.
 - `[manual]` Use `dependencies.tools` only for real tool dependencies that improve execution, such as an MCP server the skill directly needs.
 

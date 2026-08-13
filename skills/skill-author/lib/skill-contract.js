@@ -10,6 +10,14 @@ import integrationTemplateText from '../templates/integration.md' with { type: '
 import metaTemplateText from '../templates/meta.md' with { type: 'text' };
 import workflowTemplateText from '../templates/workflow.md' with { type: 'text' };
 import { splitLeadingSkillFrontmatter } from '../utils/parse-skill-frontmatter.js';
+import {
+  DEFAULT_SKILL_NAMESPACE,
+  SKILL_CONTAINER_IDS,
+  formatSkillContainerIds,
+  getSkillNamespacePrefix,
+  isPluginSkillContainer,
+  stripSkillNamespace,
+} from '../utils/skill-identity.js';
 
 const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_TEXT_IMPORTS = [
@@ -21,13 +29,20 @@ const TEMPLATE_TEXT_IMPORTS = [
 ];
 
 export const CANON_SKILL_OWNER = 'tanaab';
-export const CANON_SKILL_PREFIX = 'tanaab';
-export const CANON_SKILL_PREFIX_WITH_HYPHEN = `${CANON_SKILL_PREFIX}-`;
+export const CANON_SKILL_PREFIX = DEFAULT_SKILL_NAMESPACE;
 export const CANON_SKILL_LICENSE = 'MIT';
 export const CANON_SKILL_BRAND_COLOR = '#00c88a';
 export const CANON_SKILL_HOMEPAGE_BASE = 'https://github.com/tanaabased/canon/tree/main/skills';
 export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
 export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
+
+export {
+  SKILL_CONTAINER_IDS,
+  formatSkillContainerIds,
+  getSkillNamespacePrefix,
+  isPluginSkillContainer,
+  stripSkillNamespace,
+};
 
 function buildTemplateDefinition(templateContent) {
   const { body, frontmatter } = splitLeadingSkillFrontmatter(templateContent);
@@ -92,13 +107,6 @@ export function getBundledLargeIconPath() {
   return path.isAbsolute(bundledLargeIconImport)
     ? bundledLargeIconImport
     : path.resolve(LIB_DIR, bundledLargeIconImport);
-}
-
-export function stripOwnerPrefix(value) {
-  const normalized = String(value ?? '').trim();
-  return normalized.startsWith(CANON_SKILL_PREFIX_WITH_HYPHEN)
-    ? normalized.slice(CANON_SKILL_PREFIX_WITH_HYPHEN.length)
-    : normalized;
 }
 
 export function renderMetadataTagsYaml(tags) {
