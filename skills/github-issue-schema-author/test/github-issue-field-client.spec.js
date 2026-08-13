@@ -141,4 +141,25 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
     assert.equal(result.ok, false);
     assert.match(result.error, /POST \/orgs\/tanaabased\/issue-fields.*Forbidden/);
   });
+
+  it('should PATCH only field visibility', () => {
+    const calls = [];
+    const client = new GitHubIssueFieldClient({
+      runner: (command, args, options = {}) => {
+        calls.push({ command, args, input: options.input });
+        return { status: 0, stdout: JSON.stringify({ id: 50, visibility: 'all' }), stderr: '' };
+      },
+    });
+
+    const result = client.updateIssueFieldVisibility('tanaabased', 50, 'all');
+
+    assert.equal(result.ok, true);
+    assert.deepEqual(calls[0].args.slice(0, 4), [
+      'api',
+      '/orgs/tanaabased/issue-fields/50',
+      '--method',
+      'PATCH',
+    ]);
+    assert.deepEqual(JSON.parse(calls[0].input), { visibility: 'all' });
+  });
 });

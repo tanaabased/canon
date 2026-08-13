@@ -15,15 +15,23 @@ function findNamed(values, name) {
 }
 
 /** Plan native versus fallback storage from observed GitHub capabilities. */
-export function planTaskMetadata(kind, values = {}, capabilities = {}) {
+export function planTaskMetadata(
+  kind,
+  values = {},
+  capabilities = {},
+  { forceFallbackKeys = [] } = {},
+) {
   const native = { type: null, fields: [] };
   const fallback = {};
   const unresolved = [];
   const warnings = [];
+  const forced = new Set(forceFallbackKeys);
 
   if (kind) {
     const kindDisplay = TASK_KINDS[kind];
-    if (capabilities.issueTypes?.status === 'ok') {
+    if (forced.has('type')) {
+      fallback.type = kind;
+    } else if (capabilities.issueTypes?.status === 'ok') {
       const issueType = findNamed(capabilities.issueTypes.values ?? [], kindDisplay);
       if (issueType) native.type = { id: issueType.id ?? null, name: issueType.name };
       else fallback.type = kind;
@@ -38,6 +46,11 @@ export function planTaskMetadata(kind, values = {}, capabilities = {}) {
     if (key === 'type' || values[key] === undefined) continue;
     const value = values[key];
     const status = capabilities.issueFields?.status;
+
+    if (forced.has(definition.fallbackKey)) {
+      fallback[definition.fallbackKey] = value;
+      continue;
+    }
 
     if (status === 'not_applicable') {
       fallback[definition.fallbackKey] = value;

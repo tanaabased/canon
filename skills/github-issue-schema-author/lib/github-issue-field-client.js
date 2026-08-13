@@ -98,4 +98,10 @@ export class GitHubIssueFieldClient {
   recolorIssueField(organization, fieldId, options) {
     return this.#request('PATCH', `/orgs/${organization}/issue-fields/${fieldId}`, { options });
   }
+
+  updateIssueFieldVisibility(organization, fieldId, visibility) {
+    return this.#request('PATCH', `/orgs/${organization}/issue-fields/${fieldId}`, {
+      visibility,
+    });
+  }
 }

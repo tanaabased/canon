@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository, digest-gate missing-field creation, safely synchronize retained option colors, or plan and verify browser-backed canonical field pinning without deletion or private endpoint use.'
+  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository and separately digest-gate bounded field, visibility, label, color, or browser-backed pinning synchronization without deletion.'

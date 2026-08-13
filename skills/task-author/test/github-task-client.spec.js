@@ -40,4 +40,28 @@ describe('Task Author GitHub task client', () => {
     assert.equal(result.ok, false);
     assert.match(result.error, /POST \/repos\/acme\/widgets\/issues.*Forbidden/);
   });
+
+  it('should PATCH an existing issue through stdin', () => {
+    const calls = [];
+    const client = new GitHubTaskClient({
+      runner: (args, options = {}) => {
+        calls.push({ args, input: options.input });
+        return success({ number: 41 });
+      },
+    });
+    const payload = {
+      body: 'normalized body',
+      labels: ['needs triage'],
+      issue_field_values: [{ field_id: 50, value: 'High' }],
+    };
+
+    assert.equal(client.updateIssue({ slug: 'acme/widgets' }, 41, payload).ok, true);
+    assert.deepEqual(calls[0].args.slice(0, 4), [
+      'api',
+      '/repos/acme/widgets/issues/41',
+      '--method',
+      'PATCH',
+    ]);
+    assert.deepEqual(JSON.parse(calls[0].input), payload);
+  });
 });

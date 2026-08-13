@@ -4,7 +4,11 @@ function fieldDefinition(capabilities, fieldId) {
 
 export function fakeGitHubTaskClient(capabilities, options = {}) {
   const calls = [];
-  const state = { issue: null, fields: [], comments: [] };
+  const state = {
+    issue: structuredClone(options.initialIssue ?? null),
+    fields: structuredClone(options.initialFields ?? []),
+    comments: structuredClone(options.initialComments ?? []),
+  };
 
   return {
     calls,
@@ -47,6 +51,38 @@ export function fakeGitHubTaskClient(capabilities, options = {}) {
             };
           });
       return { ok: true, value: state.issue };
+    },
+    updateIssue(target, issueNumber, payload) {
+      calls.push({ operation: 'updateIssue', target: target.slug, issueNumber, payload });
+      if (options.updateFailure) return { ok: false, error: options.updateFailure };
+      if (!state.issue) return { ok: false, error: 'Issue does not exist.' };
+      if (payload.title !== undefined) state.issue.title = payload.title;
+      if (payload.body !== undefined) state.issue.body = payload.body;
+      if (payload.type !== undefined && !options.dropType)
+        state.issue.type = { name: payload.type };
+      if (payload.labels !== undefined && !options.dropLabels) {
+        state.issue.labels = payload.labels.map((name) => ({ name }));
+      }
+      if (payload.issue_field_values !== undefined && !options.dropFields) {
+        for (const { field_id: fieldId, value } of payload.issue_field_values) {
+          const definition = fieldDefinition(capabilities, fieldId);
+          const current = state.fields.find(
+            (field) =>
+              Number(field.issue_field_id ?? field.field_id ?? field.id) === Number(fieldId),
+          );
+          const next = {
+            issue_field_id: fieldId,
+            issue_field_name: definition?.name,
+            data_type: definition?.data_type,
+            value: definition?.data_type === 'single_select' ? null : value,
+            single_select_option:
+              definition?.data_type === 'single_select' ? { name: value } : null,
+          };
+          if (current) Object.assign(current, next);
+          else state.fields.push(next);
+        }
+      }
+      return { ok: true, value: structuredClone(state.issue) };
     },
     addComment(target, issueNumber, body) {
       calls.push({ operation: 'addComment', target: target.slug, issueNumber, body });

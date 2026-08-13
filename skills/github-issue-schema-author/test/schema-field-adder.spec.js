@@ -34,7 +34,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-adder', () => {
     );
 
     const workSize = report.plannedMutation.operations[0].body;
-    assert.equal(workSize.visibility, 'all');
+    assert.equal(workSize.visibility, 'organization_members_only');
     assert.deepEqual(
       workSize.options.map(({ name, color, priority }) => ({ name, color, priority })),
       [

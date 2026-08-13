@@ -24,7 +24,7 @@ Every applicable fixture must satisfy these assertions:
 - Use only existing canonical labels; never create label definitions during task authoring.
 - Keep Complexity model-neutral and exclude it from Task score.
 - Keep Priority out of Task score and preserve a material override rationale.
-- Persist a scoring audit comment whenever a score is first written or changes.
+- By default, persist a collapsed advisory scoring-audit comment whenever a score is first written or its displayed inputs change; allow explicit suppression without suppressing the score.
 - Preview every write and re-read every managed value afterward.
 - Report partial success honestly rather than treating an issue URL as complete success.
 
@@ -184,7 +184,7 @@ Expected labels: `documentation` if that definition already exists. If it does n
 
 Score inputs are Impact Low (`0.25`), Urgency None (`0.00`), Enablement Some (`0.33`), Confidence High (`1.00`), and Work size `2`.
 
-Unset dates are omitted. The scoring audit comment remains required even though the numeric score uses the fallback capsule.
+Unset dates are omitted. By default, the collapsed scoring-audit comment remains planned even though the numeric score uses the fallback capsule; `publishScoringAudit: false` suppresses only the comment.
 
 ### T05: Personal-Repository Bug with Regression
 
@@ -464,7 +464,7 @@ Expected read-only report:
 - Work size: missing managed field.
 - Complexity, Impact, and Task score: missing managed fields.
 - Start date and Target date: aligned except for separately reported visibility or type-pinning drift.
-- Managed fields: compare public visibility and Task, Bug, and Feature pinning with the desired contract.
+- Managed fields: compare organization-members-only visibility and Task, Bug, and Feature pinning with the desired contract.
 
 Expected label classification:
 
@@ -521,7 +521,7 @@ Expected behavior:
 - Show a semantic diff covering the desired outcome, scope removal, new acceptance condition, `breaking change` label, Work size change, and recomputed score.
 - After authorization, update the body to the current contract rather than appending an inline changelog.
 - Post a concise comment summarizing what changed and why.
-- Post a new versioned scoring audit comment if the score changes.
+- Post a new collapsed versioned scoring-audit comment if the score or its displayed inputs change, mark it as superseding the earlier assessment, and omit it when explicitly suppressed.
 - Preserve all earlier comments and do not claim earlier implementation satisfied the new acceptance condition.
 - Re-read and verify the body, metadata, label, and both new comments.
 

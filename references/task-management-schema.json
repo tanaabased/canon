@@ -94,7 +94,7 @@
       "dataType": "single_select",
       "fallbackKey": "priority",
       "options": ["Urgent", "High", "Medium", "Low"],
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -113,7 +113,7 @@
         "13": "yellow",
         "21": "red"
       },
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -124,7 +124,7 @@
       "fallbackKey": "complexity",
       "options": ["Low", "Medium", "High"],
       "optionColors": { "Low": "green", "Medium": "yellow", "High": "pink" },
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -140,7 +140,7 @@
         "High": "blue",
         "Very high": "green"
       },
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -149,7 +149,7 @@
       "description": "Derived 0 through 100 goal-independent ranking from task-score/v1.",
       "dataType": "number",
       "fallbackKey": "task-score",
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -157,7 +157,7 @@
       "name": "Start date",
       "dataType": "date",
       "fallbackKey": "start-date",
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
     {
@@ -165,7 +165,7 @@
       "name": "Target date",
       "dataType": "date",
       "fallbackKey": "target-date",
-      "visibility": "all",
+      "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     }
   ],

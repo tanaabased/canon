@@ -172,6 +172,8 @@ Task Author performs a semantic assessment before its deterministic helper valid
 
 Every accepted metadata value and scoring diagnostic must show its source as `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based rationale. A derived Task score identifies its formula version. Exact-plan authorization accepts the displayed values; changing one value requires a fresh plan. During revision, preserve existing native values by default unless the user requests reassessment or changed evidence makes a displayed recomputation necessary.
 
+Task score storage and score explanation are separate decisions. The native Task score field or fallback key owns the numeric value. By default, Task Author also previews a collapsed public scoring-audit comment so future readers can reproduce the calculation. Set `publishScoringAudit: false` to suppress that comment without suppressing the score. Suppression never deletes or conceals an earlier audit.
+
 ## Metadata Authority
 
 Use GitHub's native representation when it exists and is writable. The fallback capsule contains only canonical values that have no available native representation for that repository.
@@ -201,18 +203,18 @@ Task Author may inspect and set available values. It must not create issue types
 
 The initial organization schema is:
 
-| Surface            | Type          | Options or rule                                                |
-| ------------------ | ------------- | -------------------------------------------------------------- |
-| Issue type         | Native type   | Task, Bug, Feature                                             |
-| Priority           | Single-select | Urgent, High, Medium, Low                                      |
-| Work size          | Single-select | `1`, `2`, `3`, `5`, `8`, `13`, `21`                            |
-| Complexity         | Single-select | Low, Medium, High                                              |
-| Impact             | Single-select | Low, Medium, High, Very high                                   |
-| Task score         | Number        | Integer `0` through `100` written by a contract-aware author   |
-| Start date         | Date          | Optional                                                       |
-| Target date        | Date          | Optional                                                       |
-| Field visibility   | Visibility    | Public; private-repository access still protects private tasks |
-| Field type pinning | Type binding  | Pin every managed field to Task, Bug, and Feature              |
+| Surface            | Type          | Options or rule                                                               |
+| ------------------ | ------------- | ----------------------------------------------------------------------------- |
+| Issue type         | Native type   | Task, Bug, Feature                                                            |
+| Priority           | Single-select | Urgent, High, Medium, Low                                                     |
+| Work size          | Single-select | `1`, `2`, `3`, `5`, `8`, `13`, `21`                                           |
+| Complexity         | Single-select | Low, Medium, High                                                             |
+| Impact             | Single-select | Low, Medium, High, Very high                                                  |
+| Task score         | Number        | Integer `0` through `100` written by a contract-aware author                  |
+| Start date         | Date          | Optional                                                                      |
+| Target date        | Date          | Optional                                                                      |
+| Field visibility   | Visibility    | Organization members and repository collaborators with read access or greater |
+| Field type pinning | Type binding  | Pin every managed field to Task, Bug, and Feature                             |
 
 Canonical single-select option colors use GitHub's fixed palette as the closest semantic projection of the Tanaab brand and status colors:
 
@@ -351,19 +353,27 @@ Scoring rules:
 
 ### Scoring Audit Comment
 
-Whenever a score is first persisted or changes, preview and post a concise durable comment:
+By default, whenever a score is first persisted or a scoring input changes, preview and post a concise durable comment collapsed behind a closed disclosure:
 
 ```markdown
-Task score: 37 (`task-score/v1`)
+<details>
+<summary>Automated task assessment — advisory · score 37/100</summary>
 
+This machine-generated assessment reflects the evidence and accepted inputs currently recorded for this task. It is a prioritization aid, not a delivery commitment, schedule, severity determination, or maintainer decision.
+
+- Formula: `task-score/v1`
 - Impact: Medium (`0.50`) — material recurring friction is removed.
 - Urgency: Moderate (`0.33`) — the cost recurs during each release.
 - Enablement: Some (`0.33`) — one follow-up workflow becomes possible.
 - Work size: `3`
 - Confidence: High (`1.00`) — the current behavior and desired outcome are directly verified.
+
+</details>
 ```
 
-The issue field or fallback key owns the numeric score. The comment preserves its versioned calculation evidence and does not replace the source task evidence.
+The disclosure is presentation only, not access control. On a public issue, the comment and its expanded contents are public and must pass the publication-safety gate. The audit must not disclose Priority, Complexity, Start date, Target date, secrets, or private planning context. Set `publishScoringAudit: false` when no public audit is appropriate; the issue field or fallback key remains authoritative.
+
+Do not post a duplicate when the score and displayed calculation evidence are unchanged. When a changed score or input produces a new audit, state that it supersedes the earlier automated assessment while preserving all earlier comments. The comment explains the versioned calculation and does not replace the source task evidence or constitute a maintainer decision.
 
 ## Canonical Repository Labels
 

@@ -63,6 +63,10 @@ export class GitHubTaskClient {
     return this.#request('POST', `/repos/${target.slug}/issues`, payload);
   }
 
+  updateIssue(target, issueNumber, payload) {
+    return this.#request('PATCH', `/repos/${target.slug}/issues/${issueNumber}`, payload);
+  }
+
   addComment(target, issueNumber, body) {
     return this.#request('POST', `/repos/${target.slug}/issues/${issueNumber}/comments`, { body });
   }

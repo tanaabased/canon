@@ -136,6 +136,22 @@ describe('Task Author T01-T15 draft fixtures', () => {
     assert.match(comment.body, /Task score remains 22/);
   });
 
+  it('should allow the scoring audit comment to be suppressed without suppressing the score', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T01');
+    const report = authorTaskDraft(
+      { ...fixture.input, publishScoringAudit: false },
+      { githubClient: fakeClient(fixture.capabilities) },
+    );
+
+    assert.equal(report.scoring.score, fixture.expected.score);
+    assert.equal(report.scoring.auditPublication, 'suppressed');
+    assert.equal(report.scoring.auditComment, '');
+    assert.equal(
+      report.comments.some(({ kind }) => kind === 'task-score'),
+      false,
+    );
+  });
+
   it('should leave fallback eligibility unresolved when field inspection is unavailable', () => {
     const capabilities = organizationCapabilities();
     capabilities.issueFields = { status: 'unavailable', values: [] };

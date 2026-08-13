@@ -7,6 +7,7 @@ import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
 import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
 import { renderTaskBody } from '../utils/render-task-body.js';
+import { renderTaskScoreComment } from '../utils/render-task-comments.js';
 import { completeBugSections } from '../../../test/task-management-fixtures.js';
 
 describe('Task Author deterministic utilities', () => {
@@ -90,6 +91,25 @@ describe('Task Author deterministic utilities', () => {
       }).score,
       null,
     );
+  });
+
+  it('should render a collapsed advisory scoring audit without private planning fields', () => {
+    const scoring = calculateTaskScore({
+      impact: 'high',
+      urgency: 'moderate',
+      enablement: 'substantial',
+      confidence: 'high',
+      workSize: 5,
+    });
+    const comment = renderTaskScoreComment(scoring, {
+      impact: 'A major workflow becomes more reliable.',
+    });
+
+    assert.match(comment, /^<details>\n<summary>Automated task assessment — advisory/);
+    assert.match(comment, /not a delivery commitment/);
+    assert.match(comment, /- Formula: `task-score\/v1`/);
+    assert.match(comment, /<\/details>\n$/);
+    assert.doesNotMatch(comment, /Priority|Complexity|Start date|Target date/);
   });
 
   it('should require provenance for estimates and reserve Priority for humans or policy', () => {

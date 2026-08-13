@@ -3,6 +3,7 @@ import { desiredOptionColor } from '../utils/desired-option-color.js';
 
 const TYPE_NAMES = Object.freeze(['Task', 'Bug', 'Feature']);
 const COLOR_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
+const PUBLIC_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact', 'Task score']);
 
 function unpinnedIssueTypes() {
   return TYPE_NAMES.map((name) => ({ id: `type-${name}`, name, enabled: true, pinnedFields: [] }));
@@ -182,6 +183,94 @@ export function fakeFieldColorClient({
       const field = state.fields.find(({ id }) => id === fieldId);
       field.options = structuredClone(options);
       return { ok: true, value: structuredClone(field) };
+    },
+  };
+}
+
+export function fakeFieldVisibilityClient({ failAt = null, canonical = false } = {}) {
+  const calls = [];
+  const state = {
+    fields: allManagedFields().map((field, index) => ({
+      ...structuredClone(field),
+      id: 700 + index,
+      visibility: canonical || !PUBLIC_FIELD_NAMES.includes(field.name) ? field.visibility : 'all',
+      options: (field.options ?? []).map((option, optionIndex) => ({
+        ...option,
+        id: 7000 + index * 100 + optionIndex,
+        priority: optionIndex + 1,
+      })),
+    })),
+  };
+  let updateCount = 0;
+  return {
+    calls,
+    state,
+    ensureAvailable() {
+      calls.push('ensureAvailable');
+      return [];
+    },
+    inspect(target) {
+      calls.push(`inspect:${target.slug}`);
+      return inspection(target, { fields: state.fields });
+    },
+    listIssueFields(organization) {
+      calls.push({ operation: 'listIssueFields', organization });
+      return { ok: true, value: structuredClone(state.fields) };
+    },
+    updateIssueFieldVisibility(organization, fieldId, visibility) {
+      updateCount += 1;
+      calls.push({ operation: 'updateIssueFieldVisibility', organization, fieldId, visibility });
+      if (failAt === updateCount) {
+        return {
+          ok: false,
+          error: `PATCH /orgs/${organization}/issue-fields/${fieldId}: HTTP 403`,
+        };
+      }
+      const field = state.fields.find(({ id }) => id === fieldId);
+      field.visibility = visibility;
+      return { ok: true, value: structuredClone(field) };
+    },
+  };
+}
+
+export function fakeLabelClient({ labels = [], failAt = null } = {}) {
+  const calls = [];
+  const state = { labels: structuredClone(labels) };
+  let writeCount = 0;
+  return {
+    calls,
+    state,
+    ensureAvailable() {
+      calls.push('ensureAvailable');
+      return [];
+    },
+    inspect(target) {
+      calls.push(`inspect:${target.slug}`);
+      const report = inspection(target, { fields: allManagedFields() });
+      report.repositoryLabels = { status: 'ok', values: structuredClone(state.labels) };
+      return report;
+    },
+    createLabel(target, payload) {
+      writeCount += 1;
+      calls.push({ operation: 'createLabel', target: target.slug, payload });
+      if (failAt === writeCount) return { ok: false, error: 'POST label: HTTP 403' };
+      const label = {
+        id: `label-${payload.name}`,
+        ...structuredClone(payload),
+        default: false,
+        issueCount: 0,
+        pullRequestCount: 0,
+      };
+      state.labels.push(label);
+      return { ok: true, value: label };
+    },
+    updateLabel(target, name, payload) {
+      writeCount += 1;
+      calls.push({ operation: 'updateLabel', target: target.slug, name, payload });
+      if (failAt === writeCount) return { ok: false, error: 'PATCH label: HTTP 403' };
+      const label = state.labels.find((candidate) => candidate.name === name);
+      Object.assign(label, structuredClone(payload));
+      return { ok: true, value: structuredClone(label) };
     },
   };
 }

@@ -42,6 +42,9 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
   }
   const scoring = calculateTaskScore(scoreInput);
   if (scoring.score !== null) metadataResult.values.taskScore = scoring.score;
+  else if (Number.isInteger(input.preservedTaskScore)) {
+    metadataResult.values.taskScore = input.preservedTaskScore;
+  }
   const assessment = buildTaskAssessment(metadataResult.values, scoring, input.assessment);
 
   const renderedBody = kind
@@ -52,7 +55,9 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
     Array.isArray(acceptanceCriteria) && acceptanceCriteria.some((item) => String(item).trim());
   const actionable = input.actionable ?? (kind !== null && renderedBody.missing.length === 0);
 
-  const metadataPlan = planTaskMetadata(kind, metadataResult.values, capabilities);
+  const metadataPlan = planTaskMetadata(kind, metadataResult.values, capabilities, {
+    forceFallbackKeys: input.forceFallbackKeys,
+  });
   const fallbackBlock = renderFallbackMetadata(metadataPlan.fallback);
   const body = appendBlock(renderedBody.body, fallbackBlock);
 
@@ -83,7 +88,10 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
       record.rationale ? [[key, record.rationale]] : [],
     ),
   );
-  const scoreComment = renderTaskScoreComment(scoring, assessmentRationales);
+  const scoreComment =
+    input.publishScoringAudit === false
+      ? ''
+      : renderTaskScoreComment(scoring, assessmentRationales);
   if (scoreComment) comments.push({ kind: 'task-score', body: scoreComment });
   const priorityComment = renderPriorityOverrideComment(
     metadataResult.values.priority,
@@ -126,7 +134,16 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
     assessment,
     labels,
     relationships: input.relationships ?? {},
-    scoring: { ...scoring, auditComment: scoreComment },
+    scoring: {
+      ...scoring,
+      auditComment: scoreComment,
+      auditPublication:
+        input.publishScoringAudit === false
+          ? 'suppressed'
+          : scoreComment
+            ? 'planned'
+            : 'not_applicable',
+    },
     comments,
     capabilities,
     questions: input.questions ?? [],
