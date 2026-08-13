@@ -1,6 +1,6 @@
 # Task Management Skills Roadmap
 
-Status: exploratory planning, not yet adopted canon
+Status: active implementation roadmap; contract hypotheses remain under convergence review
 
 Last researched: 2026-08-13
 
@@ -35,6 +35,21 @@ Phase 1 and phase 2 repeat until the three surfaces agree. Their combined exit i
 Keep the existing **Task Completion Check** as the read-only completion-evidence owner. Do not absorb it into Task Author.
 
 Do not create separate Task Creator, Task Reworker, and Task Normalizer skills. Those operations share the same object, authorization boundary, metadata rules, and remote failure modes, so they should be modes of Task Author. Decomposition is different: it spans multiple issues and creates hierarchy, so it deserves a separate workflow.
+
+## Implementation Checkpoint
+
+Last reviewed: 2026-08-13
+
+| Surface                          | Current state                                                                                                        | Remaining work                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Shared contract and fixtures     | Initial contract, machine-readable schema, label policy, fallback, scoring model, and fixture corpus are checked in. | Continue calibration when cross-surface fixtures reveal material ambiguity.                                 |
+| Task Author                      | Read-only capability discovery, deterministic drafting, fallback rendering, scoring, and T01-T15 coverage exist.     | Add create, revise, normalize, fallback migration, T16, R01, and exact post-write verification.             |
+| GitHub Issue Schema Author       | Read-only type, field, visibility, pinning, label, and association inspection exists and has passed S01 live.        | Add narrowly authorized synchronization, high-risk migration separation, and exact post-write verification. |
+| GitHub Issue Form Author         | Not started.                                                                                                         | Build Task, Bug, and Feature forms plus organization and personal-repository normalization coverage.        |
+| Phase 1 and phase 2 convergence  | In progress.                                                                                                         | Exercise all three surfaces together until one full fixture pass produces no material contract changes.     |
+| Decomposition and milestone work | Deferred.                                                                                                            | Begin only after the three-skill convergence gate passes.                                                   |
+
+Keep the initial Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author implementation on one integration branch until they form a discrete usable task-authoring system. After that core loop merges, implement decomposition and milestone surfaces as separately reviewable branches.
 
 ## GitHub Capability Snapshot
 
@@ -625,26 +640,16 @@ Defer Epic, Chore, Question, Severity, Area, Confidence, and workflow Status fie
 - discussions or support surfaces for open-ended questions when appropriate;
 - native issue state instead of a duplicate Status field.
 
-## First Build Recommendation
+## Current Build Recommendation
 
-The next implementation should begin the complete phase 0 through phase 2 convergence loop rather than treating Task Author as an isolated finished product:
+Complete the first usable phase 1 and phase 2 convergence loop on the shared core branch:
 
-1. Adopt the initial task, metadata, fallback, and scoring contract.
-2. Build the representative fixture corpus.
-3. Scaffold Task Author and implement read-only capability discovery and fixture rendering.
-4. Scaffold GitHub Issue Form Author and normalize equivalent form output.
-5. Scaffold GitHub Issue Schema Author and implement read-only organization schema and repository-label inspection, classifying Effort as preserved unmanaged schema.
-6. Iterate templates, forms, fields, labels, rubrics, fallback behavior, and `task-score/v1` against the fixtures.
-7. Add authorized writes only after the corresponding read-only diff and fake-client paths are reliable.
-8. Continue until the convergence gate passes, then begin decomposition and project milestone skills.
+1. Scaffold GitHub Issue Form Author and generate Task, Bug, and Feature forms from the shared contract and machine-readable schema.
+2. Implement organization and personal-repository variants, then satisfy F01 by normalizing their resulting Markdown through Task Author.
+3. Add cross-surface equivalence coverage for T01-T06 so agent-authored, form-authored, and normalized tasks preserve the same semantics.
+4. Implement Task Author create, revise, normalize, and fallback-migration paths with T16, R01, publication safety, and exact post-write verification.
+5. Add GitHub Issue Schema Author synchronization only after its read-only diff classifies safe additions, high-risk migrations, and unmanaged state deterministically.
+6. Run the complete fixture corpus across all three skills, revise the contract and schema when evidence warrants it, and repeat until the convergence gate passes.
+7. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
 
-Before scaffolding, decide only these remaining questions:
-
-1. Whether significant revisions should append a body section, post a comment, or do both.
-2. The initial stable Complexity and Impact option labels and rubrics to test.
-3. The provisional `task-score/v1` weights, confidence mapping, and sublinear Work size penalty.
-4. Whether a material Priority override records its rationale in the body, a comment, or only the mutation report.
-5. Whether fallback metadata should include explicit `null` keys or omit unset values.
-6. Whether the managed issue fields should remain organization-members-only or become public for public tasks.
-
-These are phase 1 and phase 2 calibration inputs, not reasons to split or merge the three core skills.
+The remaining questions are calibration questions rather than missing scaffolding decisions: whether the prompts elicit reliable Work size, Complexity, Impact, urgency, enablement, and confidence evidence; whether `task-score/v1` ordering matches human judgment; and whether native and fallback forms preserve equivalent meaning without redundant metadata.
