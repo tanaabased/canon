@@ -183,7 +183,7 @@ The initial organization schema is:
 | Field visibility   | Visibility    | Public; private-repository access still protects private tasks |
 | Field type pinning | Type binding  | Pin every managed field to Task, Bug, and Feature              |
 
-Renaming Effort to Work size or changing used options requires an exact value migration. Field deletion, option removal, visibility changes, and value migrations are high-risk schema operations and must be previewed separately.
+Work size is a separate canonical field. GitHub's default Effort field may coexist as unmanaged schema, but this contract does not rename it, map it into Work size, delete it, or use it as Task Author evidence. Changing used Work size options, field deletion, option removal, visibility changes, and value migrations are high-risk schema operations and must be previewed separately.
 
 ## Fallback Metadata
 
@@ -433,6 +433,7 @@ Goal-aware scoring, additional task types, Severity, Area, Confidence, workflow 
 
 ## Related Canon
 
+- [Machine-readable task management schema](./task-management-schema.json)
 - [GitHub-backed project management model](./project-management-model.md)
 - [Task management skills roadmap](../ideas/task-management-skills-roadmap.md)
 - [Task Completion Check](../skills/task-completion-check/SKILL.md)

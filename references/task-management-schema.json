@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "tanaab/task-management-schema/v1",
+  "issueTypes": [
+    { "key": "task", "name": "Task", "enabled": true },
+    { "key": "bug", "name": "Bug", "enabled": true },
+    { "key": "feature", "name": "Feature", "enabled": true }
+  ],
+  "issueFields": [
+    {
+      "key": "priority",
+      "name": "Priority",
+      "dataType": "single_select",
+      "fallbackKey": "priority",
+      "options": ["Urgent", "High", "Medium", "Low"],
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "workSize",
+      "name": "Work size",
+      "dataType": "single_select",
+      "fallbackKey": "work-size",
+      "options": ["1", "2", "3", "5", "8", "13", "21"],
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "complexity",
+      "name": "Complexity",
+      "dataType": "single_select",
+      "fallbackKey": "complexity",
+      "options": ["Low", "Medium", "High"],
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "impact",
+      "name": "Impact",
+      "dataType": "single_select",
+      "fallbackKey": "impact",
+      "options": ["Low", "Medium", "High", "Very high"],
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "taskScore",
+      "name": "Task score",
+      "dataType": "number",
+      "fallbackKey": "task-score",
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "startDate",
+      "name": "Start date",
+      "dataType": "date",
+      "fallbackKey": "start-date",
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "targetDate",
+      "name": "Target date",
+      "dataType": "date",
+      "fallbackKey": "target-date",
+      "visibility": "all",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    }
+  ],
+  "preservedUnmanagedFields": ["Effort"],
+  "labels": [
+    {
+      "name": "documentation",
+      "description": "Documentation additions or improvements",
+      "color": "2f81f7"
+    },
+    {
+      "name": "breaking change",
+      "description": "Requires consumer migration or coordination",
+      "color": "db2777"
+    },
+    {
+      "name": "regression",
+      "description": "Previously working behavior has degraded",
+      "color": "e5484d"
+    },
+    {
+      "name": "blocked",
+      "description": "Cannot proceed because of a documented blocker",
+      "color": "7f1d1d"
+    },
+    {
+      "name": "needs triage",
+      "description": "Submitted but not yet normalized against the task contract",
+      "color": "f59e0b"
+    },
+    {
+      "name": "needs reproduction",
+      "description": "A Bug needs reproducible evidence before work can proceed",
+      "color": "f97316"
+    },
+    {
+      "name": "good first issue",
+      "description": "Well-bounded work suitable for a first contribution",
+      "color": "86e7c4"
+    },
+    {
+      "name": "help wanted",
+      "description": "Maintainers welcome outside contribution",
+      "color": "00c88a"
+    }
+  ],
+  "legacyUnmanagedLabels": ["bug", "enhancement", "duplicate", "invalid", "question", "wontfix"],
+  "automationOwnedLabels": ["dependencies", "javascript", "github_actions"],
+  "projectSpecificLabelLimit": 2
+}

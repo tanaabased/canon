@@ -152,7 +152,7 @@ Task Author should degrade to the fallback capsule when a canonical field is una
 
 These concepts are related but not interchangeable:
 
-- **Work size** estimates the relative amount of delivery work. It renames GitHub's default Effort field and uses the Fibonacci-like sequence `1`, `2`, `3`, `5`, `8`, `13`, and `21`.
+- **Work size** estimates the relative amount of delivery work. It is a separate canonical field using the Fibonacci-like sequence `1`, `2`, `3`, `5`, `8`, `13`, and `21`. GitHub's default Effort field may remain alongside it as unmanaged schema, but Tanaab task workflows do not rename, map, delete, or use Effort.
 - **Complexity** estimates reasoning difficulty, ambiguity, novelty, coordination, and uncertainty. It is a stable interface for downstream execution-tier selection, not a model name and not a work-duration estimate.
 - **Impact** estimates the expected local value of completing the task, independent of Work size. Combining effort into Impact would count cost twice when Task score also considers Work size.
 - **Priority** remains an explicit human or policy override. It is not an input to the base score because using a summary judgment to generate another summary judgment would be circular.
@@ -221,7 +221,7 @@ Start with GitHub's existing concepts plus the minimum new fields needed for tas
 | -------------------------- | ---------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------- |
 | Task kind                  | Issue type: Task, Bug, or Feature        | `type`        | Required                                                                                                    |
 | Priority                   | Priority single-select issue field       | `priority`    | Optional human or policy override; excluded from Task score                                                 |
-| Work size                  | Renamed Effort single-select issue field | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                                                            |
+| Work size                  | Work size single-select issue field      | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                                                            |
 | Complexity                 | Complexity single-select issue field     | `complexity`  | Optional until calibrated; stable downstream execution-tier input                                           |
 | Impact                     | Impact single-select issue field         | `impact`      | Optional until calibrated; local value independent of Work size                                             |
 | Task score                 | Task score number issue field            | `task-score`  | Derived `0` through `100`; unset when evidence is insufficient                                              |
@@ -234,7 +234,7 @@ Start with GitHub's existing concepts plus the minimum new fields needed for tas
 | Blocking                   | Issue dependencies plus `blocked` label  | None          | Native dependencies are authoritative for task blockers; use the label for documented external blockers too |
 | Classification and intake  | Canonical repository labels              | None          | Use only the approved task-label vocabulary; do not duplicate type, fields, or score factors                |
 
-Before renaming Effort or changing its options, GitHub Issue Schema Author must inspect existing field values and present an exact migration. If the field is unused, rename it and replace its options directly. If it contains values, map every existing value to a proposed Work size value, obtain explicit authorization, apply the migration, and verify that no task lost its estimate.
+GitHub Issue Schema Author treats Effort as unmanaged and preserved. It may report that Effort coexists with the canonical Work size field, but it must not propose renaming, deleting, or mapping Effort as part of routine schema alignment. Any later request to retire Effort would be an independently authorized migration outside this initial contract.
 
 Potential future fields such as Severity or Area should be added only after repeated use across at least two repositories proves that the initial contract and labels are insufficient. Goal and goal alignment are intentionally deferred. Status, Owner, Milestone, Parent, and Blocked By are not candidates because GitHub already owns those concepts.
 
@@ -292,7 +292,7 @@ Responsibilities:
 - Preserve explicit Priority overrides without folding them back into the score.
 - Revise an existing task after reviewing its body, comments, linked work, and newly discovered constraints.
 - Normalize an externally submitted issue without inventing missing facts or discarding useful evidence.
-- Recognize legacy Effort evidence and report its proposed Work size mapping without mutating the organization schema.
+- Keep legacy Effort evidence separate from Work size and never infer or propose a Work size value from it.
 - Apply and remove existing canonical labels according to their lifecycle rules without creating or altering repository label definitions.
 - Show an exact semantic diff before revising or normalizing.
 - Preserve discussion history. Significant requirement changes should be summarized in a comment or a clearly maintained change-history section rather than erased from the record.
@@ -322,7 +322,7 @@ Responsibilities:
 - Compare current state with a checked-in desired policy.
 - Show an exact managed diff and require explicit authorization before writing.
 - Add missing managed fields or options without replacing unrelated organization configuration.
-- Plan and verify the Effort-to-Work-size rename and value migration.
+- Preserve GitHub's default Effort field as unmanaged schema while independently managing Work size.
 - Manage the Work size, Complexity, Impact, and Task score field definitions required by the adopted contract.
 - Manage canonical label names, purposes, descriptions, and colors without silently deleting unmanaged or automation-owned labels.
 - Keep Complexity option semantics model-neutral and preserve Task score as a derived number field.
@@ -494,9 +494,9 @@ Exit criteria:
 ### Phase 2: build schema management and calibrate scoring
 
 1. Scaffold `github-issue-schema-author` as an `integration` skill through Skill Author.
-2. Implement read-only inspection of issue types, field definitions, options, visibility, type pinning, existing Effort values, organization default labels, repository labels, and label use.
+2. Implement read-only inspection of issue types, field definitions, options, visibility, type pinning, the unmanaged Effort field, repository labels, and label use. Report organization-default labels as a manual surface until GitHub provides a public listing API.
 3. Capture a checked-in desired schema covering Task, Bug, Feature, Priority, Work size, Complexity, Impact, Task score, Start date, Target date, and the canonical repository labels.
-4. Produce exact Effort-to-Work-size and legacy-label migration plans that preserve every field value and label association.
+4. Preserve Effort independently, and produce exact legacy-label findings that retain every association without proposing automatic deletion.
 5. Implement stable schema diffing and narrowly authorized synchronization with high-risk changes separated.
 6. Pin native fields to the relevant issue types so organization forms do not duplicate them in the body.
 7. Score the phase 1 fixtures with the current Impact, urgency, enablement, confidence, and sublinear Work size mappings.
@@ -544,7 +544,7 @@ The convergence gate passes only when:
 - Task, Bug, and Feature templates are accepted as fully fledged authoring surfaces.
 - Agent-created, form-created, and externally normalized tasks converge on the same body and metadata contract.
 - Work size, Complexity, and Impact each have a concrete, non-overlapping rubric.
-- The Effort-to-Work-size migration is safe, reviewable, and verified without data loss.
+- Work size is independently managed while Effort remains preserved and unused by canonical task workflows.
 - Canonical labels have the approved names, purposes, and colors; lifecycle labels transition predictably without disturbing project-specific or automation-owned labels.
 - Fixture ranking broadly matches human judgment and every score is reproducible and explainable.
 - Complexity classifications support sensible downstream execution-tier selection without naming a model.
@@ -633,7 +633,7 @@ The next implementation should begin the complete phase 0 through phase 2 conver
 2. Build the representative fixture corpus.
 3. Scaffold Task Author and implement read-only capability discovery and fixture rendering.
 4. Scaffold GitHub Issue Form Author and normalize equivalent form output.
-5. Scaffold GitHub Issue Schema Author and implement read-only organization schema, repository label, and Effort-usage inspection.
+5. Scaffold GitHub Issue Schema Author and implement read-only organization schema and repository-label inspection, classifying Effort as preserved unmanaged schema.
 6. Iterate templates, forms, fields, labels, rubrics, fallback behavior, and `task-score/v1` against the fixtures.
 7. Add authorized writes only after the corresponding read-only diff and fake-client paths are reliable.
 8. Continue until the convergence gate passes, then begin decomposition and project milestone skills.

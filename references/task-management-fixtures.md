@@ -459,7 +459,8 @@ Expected read-only report:
 
 - Types: aligned.
 - Priority: aligned.
-- Effort: migration required; inspect every existing value before proposing the Work size rename and option mapping.
+- Effort: unmanaged and preserved; do not rename, delete, map, or treat it as Work size evidence.
+- Work size: missing managed field.
 - Complexity, Impact, and Task score: missing managed fields.
 - Start date and Target date: aligned except for separately reported visibility or type-pinning drift.
 - Managed fields: compare public visibility and Task, Bug, and Feature pinning with the desired contract.
