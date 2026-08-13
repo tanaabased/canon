@@ -240,10 +240,6 @@ export function buildIssueFormRepositoryPlan(inspection, desiredSet) {
   };
 }
 
-export function issueFormRepositoryPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
-}
-
 /** Require exact repository, branch, and digest authorization for only the four owned paths. */
 export function evaluateIssueFormRepositoryAuthorization(plan, digest, authorization = {}) {
   const reasons = [];

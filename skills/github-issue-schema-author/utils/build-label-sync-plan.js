@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 function findNamed(values, name) {
   return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
 }
@@ -88,10 +86,6 @@ export function buildLabelSyncPlan(inspection, policy) {
       preservedLabels,
     },
   };
-}
-
-export function labelSyncPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
 }
 
 /** Require exact repository and digest authorization for definition-only label sync. */

@@ -1,7 +1,7 @@
 import { GitHubTaskClient } from './github-task-client.js';
 import { authorTaskDraft } from './task-draft-author.js';
 import { buildTaskUpdatePlan } from '../utils/build-task-update-plan.js';
-import { taskCreatePlanDigest } from '../utils/build-task-create-plan.js';
+import planDigest from '../../../utils/plan-digest.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
 import { parseFallbackMetadata } from '../utils/parse-fallback-metadata.js';
 import { verifyCreatedTask } from '../utils/verify-created-task.js';
@@ -140,7 +140,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
   const { errors: planErrors, plan } = buildTaskUpdatePlan(draft, current, {
     revisionSummary: input.revisionSummary,
   });
-  const digest = taskCreatePlanDigest(plan);
+  const digest = planDigest(plan);
   const publication = evaluateTaskPublication(plan, digest, input.publication);
   const blockers = [...current.errors, ...parsed.errors, ...planErrors];
   if (draft.metadata.unresolved.length > 0) blockers.push('Metadata placement remains unresolved.');

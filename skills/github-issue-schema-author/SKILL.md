@@ -146,8 +146,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `lib/github-issue-field-client.js`: organization-field REST read, additive POST, color, and visibility PATCH boundary.
 - `lib/github-label-client.js`: repository-label create and definition-only update boundary.
 - `lib/schema-inspector.js`: deterministic comparison orchestration.
-- `lib/schema-field-adder.js`: additive planning, authorization, mutation, and verification orchestration.
-- `lib/schema-field-color-synchronizer.js`: retained-option color planning, authorization, mutation, and verification orchestration.
+- `lib/schema-field-synchronizer.js`: additive, retained-option color, and visibility planning, authorization, mutation, and verification orchestration.
 - `lib/schema-field-pinning-planner.js`: pin-manifest planning and authorization without a private API write.
 - `utils/`: target parsing, comparison, classification, status, and rendering units.
 - `test/`: fake GitHub responses and deterministic schema fixtures.

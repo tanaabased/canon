@@ -1,8 +1,8 @@
 import taskManagementSchema from '../../../references/task-management-schema.json' with { type: 'json' };
+import planDigest from '../../../utils/plan-digest.js';
 import {
   buildFieldPinningPlan,
   evaluateFieldPinningAuthorization,
-  fieldPinningPlanDigest,
 } from '../utils/build-field-pinning-plan.js';
 import { GitHubIssueFieldClient } from './github-issue-field-client.js';
 import { inspectGitHubIssueSchema } from './schema-inspector.js';
@@ -41,7 +41,7 @@ export function planGitHubIssueFieldPinning(
   }
 
   const { blockers, plan } = buildFieldPinningPlan(inspection, current.value, policy);
-  const digest = fieldPinningPlanDigest(plan);
+  const digest = planDigest(plan);
   const approval = evaluateFieldPinningAuthorization(plan, digest, authorization);
   const base = {
     mode: 'synchronize_field_pinning',

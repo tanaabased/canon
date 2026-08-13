@@ -1,6 +1,7 @@
 import { GitHubTaskClient } from './github-task-client.js';
 import { authorTaskDraft } from './task-draft-author.js';
-import { buildTaskCreatePlan, taskCreatePlanDigest } from '../utils/build-task-create-plan.js';
+import planDigest from '../../../utils/plan-digest.js';
+import { buildTaskCreatePlan } from '../utils/build-task-create-plan.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
 import { verifyCreatedTask } from '../utils/verify-created-task.js';
 
@@ -48,7 +49,7 @@ function baseReport(draft, plan, publication) {
 export function createTask(input = {}, { githubClient = new GitHubTaskClient() } = {}) {
   const draft = authorTaskDraft(input, { githubClient });
   const { errors: planErrors, plan } = buildTaskCreatePlan(draft);
-  const digest = taskCreatePlanDigest(plan);
+  const digest = planDigest(plan);
   const publication = evaluateTaskPublication(plan, digest, input.publication);
   const blockers = blockedDraft(draft, input, planErrors);
   const report = baseReport(draft, plan, publication);

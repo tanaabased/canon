@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 import { desiredOptionColor } from './desired-option-color.js';
 
 const ADDITIVE_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact', 'Task score']);
@@ -54,10 +52,6 @@ export function buildFieldAdditionPlan(inspection) {
 }
 
 /** Bind organization-field authorization to the exact additive mutation plan. */
-export function fieldAdditionPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
-}
-
 /** Require exact organization and plan authorization and reject any non-additive operation. */
 export function evaluateFieldAdditionAuthorization(plan, digest, authorization = {}) {
   const reasons = [];

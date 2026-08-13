@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { runFieldPinningCli } from '../scripts/pin-fields.js';
-import { parseFieldPinningArgs } from '../utils/parse-field-pinning-args.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 import { fakeFieldPinningClient } from './fake-issue-field-client.js';
 
 function capture() {
@@ -11,15 +11,21 @@ function capture() {
 
 describe('skills/github-issue-schema-author/scripts/pin-fields', () => {
   it('should parse plan and require exact authorization flags', () => {
-    assert.deepEqual(parseFieldPinningArgs(['plan', 'tanaabased/canon']), {
-      command: 'plan',
-      target: 'tanaabased/canon',
-      json: false,
-      help: false,
-      authorization: { approvedOrganization: null, approvedDigest: null },
-    });
+    assert.deepEqual(
+      parseSchemaMutationArgs(['plan', 'tanaabased/canon'], { mutationCommand: 'authorize' }),
+      {
+        command: 'plan',
+        target: 'tanaabased/canon',
+        json: false,
+        help: false,
+        authorization: { approvedOrganization: null, approvedDigest: null },
+      },
+    );
     assert.throws(
-      () => parseFieldPinningArgs(['authorize', 'tanaabased/canon']),
+      () =>
+        parseSchemaMutationArgs(['authorize', 'tanaabased/canon'], {
+          mutationCommand: 'authorize',
+        }),
       /requires --approved-organization and --approved-digest/,
     );
   });

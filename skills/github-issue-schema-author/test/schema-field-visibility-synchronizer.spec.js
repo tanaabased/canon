@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { synchronizeGitHubIssueFieldVisibility } from '../lib/schema-field-visibility-synchronizer.js';
+import { synchronizeGitHubIssueFieldVisibility } from '../lib/schema-field-synchronizer.js';
 import { fakeFieldVisibilityClient } from './fake-issue-field-client.js';
 
 function approve(preview) {

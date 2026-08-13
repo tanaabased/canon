@@ -1,5 +1,5 @@
 import { GitHubTaskClient } from './github-task-client.js';
-import { taskCreatePlanDigest } from '../utils/build-task-create-plan.js';
+import planDigest from '../../../utils/plan-digest.js';
 import { buildFallbackMigrationPlan } from '../utils/build-fallback-migration-plan.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
@@ -36,7 +36,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
     current,
     parsed,
   );
-  const digest = taskCreatePlanDigest(plan);
+  const digest = planDigest(plan);
   const publication = evaluateTaskPublication(plan, digest, input.publication);
   const blockers = [...current.errors, ...planBlockers];
   if (!parsed.found) blockers.push('The issue body has no recognized fallback capsule.');

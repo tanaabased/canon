@@ -1,8 +1,8 @@
 import {
   buildIssueFormRepositoryPlan,
   evaluateIssueFormRepositoryAuthorization,
-  issueFormRepositoryPlanDigest,
 } from '../utils/build-issue-form-repository-plan.js';
+import planDigest from '../../../utils/plan-digest.js';
 import { parseRepositoryTarget } from '../utils/parse-repository-target.js';
 import { GitHubIssueFormClient } from './github-issue-form-client.js';
 import { authorIssueFormSet } from './issue-form-author.js';
@@ -49,7 +49,7 @@ export function alignGitHubIssueForms(
   const mode = repositoryMode(inspection.ownerType);
   const desiredSet = authorIssueFormSet(mode ?? 'organization');
   const { blockers, plan } = buildIssueFormRepositoryPlan(inspection, desiredSet);
-  const digest = issueFormRepositoryPlanDigest(plan);
+  const digest = planDigest(plan);
   const approval = evaluateIssueFormRepositoryAuthorization(plan, digest, authorization);
   const base = {
     mode: 'align_repository',

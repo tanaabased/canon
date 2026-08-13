@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 
-import { addMissingGitHubIssueFields } from '../lib/schema-field-adder.js';
+import { addMissingGitHubIssueFields } from '../lib/schema-field-synchronizer.js';
 import { runFieldAdditionCli } from '../scripts/add-fields.js';
-import { parseFieldAdditionArgs } from '../utils/parse-field-addition-args.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 import { fakeFieldAdditionClient } from './fake-issue-field-client.js';
 
 function capture() {
@@ -12,7 +12,7 @@ function capture() {
 
 describe('skills/github-issue-schema-author/scripts/add-fields', () => {
   it('should parse plan and require exact apply authorization flags', () => {
-    assert.deepEqual(parseFieldAdditionArgs(['plan', 'tanaabased/canon']), {
+    assert.deepEqual(parseSchemaMutationArgs(['plan', 'tanaabased/canon']), {
       command: 'plan',
       target: 'tanaabased/canon',
       json: false,
@@ -20,11 +20,11 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
       authorization: { approvedOrganization: null, approvedDigest: null },
     });
     assert.throws(
-      () => parseFieldAdditionArgs(['apply', 'tanaabased/canon']),
+      () => parseSchemaMutationArgs(['apply', 'tanaabased/canon']),
       /requires --approved-organization and --approved-digest/,
     );
     assert.throws(
-      () => parseFieldAdditionArgs(['plan', 'tanaabased/canon', '--approved-digest', 'x']),
+      () => parseSchemaMutationArgs(['plan', 'tanaabased/canon', '--approved-digest', 'x']),
       /valid only with apply/,
     );
   });

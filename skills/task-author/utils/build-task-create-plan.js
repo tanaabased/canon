@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 function nativeFieldValue(field) {
   if (field.type === 'single_select') return field.value?.name ?? field.value;
   return field.value;
@@ -48,6 +46,3 @@ export function buildTaskCreatePlan(draft) {
 }
 
 /** Bind publication authorization to the exact ordered mutation plan. */
-export function taskCreatePlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
-}

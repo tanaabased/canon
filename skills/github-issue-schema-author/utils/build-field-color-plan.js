@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 import { desiredOptionColor } from './desired-option-color.js';
 
 const COLOR_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
@@ -96,10 +94,6 @@ export function buildFieldColorPlan(inspection, currentFields, policy) {
 }
 
 /** Bind field-color authorization to the complete preservation-safe update plan. */
-export function fieldColorPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
-}
-
 /** Require exact organization and digest authorization and reject non-color option changes. */
 export function evaluateFieldColorAuthorization(plan, digest, authorization = {}) {
   const reasons = [];

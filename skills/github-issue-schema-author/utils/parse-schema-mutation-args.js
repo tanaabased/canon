@@ -1,5 +1,13 @@
-/** Parse a digest-gated organization field plan and mutation command. */
-export function parseFieldMutationArgs(argv, { mutationCommand = 'apply' } = {}) {
+/** Parse a digest-gated schema plan and its mutation command. */
+export function parseSchemaMutationArgs(
+  argv,
+  {
+    mutationCommand = 'apply',
+    approvalFlag = '--approved-organization',
+    approvalKey = 'approvedOrganization',
+    expectedCommandSuffix = '',
+  } = {},
+) {
   if (argv.includes('--help') || argv.includes('-h')) return { help: true };
   const args = [...argv];
   const jsonIndex = args.indexOf('--json');
@@ -15,26 +23,26 @@ export function parseFieldMutationArgs(argv, { mutationCommand = 'apply' } = {})
     return value;
   }
 
-  const approvedOrganization = take('--approved-organization');
+  const approvedTarget = take(approvalFlag);
   const approvedDigest = take('--approved-digest');
   const command = args.shift();
   if (!['plan', mutationCommand].includes(command)) {
-    throw new Error(`Expected command: plan or ${mutationCommand}`);
+    throw new Error(`Expected command: plan or ${mutationCommand}${expectedCommandSuffix}`);
   }
   const target = args.shift();
   if (!target) throw new Error(`${command} requires an explicit OWNER/REPO target.`);
   if (args.length > 0) throw new Error(`Unexpected argument: ${args[0]}`);
-  if (command === 'plan' && (approvedOrganization || approvedDigest)) {
+  if (command === 'plan' && (approvedTarget || approvedDigest)) {
     throw new Error(`Approval flags are valid only with ${mutationCommand}.`);
   }
-  if (command === mutationCommand && (!approvedOrganization || !approvedDigest)) {
-    throw new Error(`${mutationCommand} requires --approved-organization and --approved-digest.`);
+  if (command === mutationCommand && (!approvedTarget || !approvedDigest)) {
+    throw new Error(`${mutationCommand} requires ${approvalFlag} and --approved-digest.`);
   }
   return {
     command,
     target,
     json,
     help: false,
-    authorization: { approvedOrganization, approvedDigest },
+    authorization: { [approvalKey]: approvedTarget, approvedDigest },
   };
 }

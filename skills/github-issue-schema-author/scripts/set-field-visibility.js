@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
-import { synchronizeGitHubIssueFieldVisibility } from '../lib/schema-field-visibility-synchronizer.js';
-import { parseFieldMutationArgs } from '../utils/parse-field-mutation-args.js';
+import { synchronizeGitHubIssueFieldVisibility } from '../lib/schema-field-synchronizer.js';
+import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 
 function usage() {
   return `Usage:
@@ -30,24 +31,14 @@ function render(report) {
 }
 
 export function runFieldVisibilityCli(argv, dependencies = {}) {
-  const stdout = dependencies.stdout ?? process.stdout;
-  const stderr = dependencies.stderr ?? process.stderr;
-  try {
-    const parsed = parseFieldMutationArgs(argv);
-    if (parsed.help) {
-      stdout.write(`${usage()}\n`);
-      return 0;
-    }
-    const report = synchronizeGitHubIssueFieldVisibility(parsed.target, {
-      ...dependencies,
-      authorization: parsed.authorization,
-    });
-    stdout.write(parsed.json ? `${JSON.stringify(report, null, 2)}\n` : render(report));
-    return ['blocked', 'partial', 'failed'].includes(report.status) ? 1 : 0;
-  } catch (error) {
-    stderr.write(`${error.message}\n\n${usage()}\n`);
-    return 1;
-  }
+  return runSchemaMutationCli(argv, dependencies, {
+    execute: synchronizeGitHubIssueFieldVisibility,
+    failureStatuses: ['blocked', 'partial', 'failed'],
+    parse: parseSchemaMutationArgs,
+    render,
+    runtimeErrorWithUsage: true,
+    usage,
+  });
 }
 
 if (import.meta.main) process.exitCode = runFieldVisibilityCli(process.argv.slice(2));

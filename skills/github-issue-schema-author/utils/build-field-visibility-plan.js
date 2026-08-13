@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 function findNamed(values, name) {
   return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
 }
@@ -48,10 +46,6 @@ export function buildFieldVisibilityPlan(inspection, currentFields, policy) {
         .map((field) => structuredClone(field)),
     },
   };
-}
-
-export function fieldVisibilityPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
 }
 
 /** Require separate exact authorization for visibility-only field PATCHes. */

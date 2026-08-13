@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
-import { addMissingGitHubIssueFields } from '../lib/schema-field-adder.js';
-import { parseFieldAdditionArgs } from '../utils/parse-field-addition-args.js';
+import { addMissingGitHubIssueFields } from '../lib/schema-field-synchronizer.js';
+import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 
 function usage() {
   return `Usage:
@@ -36,31 +37,13 @@ function render(report) {
 }
 
 export function runFieldAdditionCli(argv, dependencies = {}) {
-  const stdout = dependencies.stdout ?? process.stdout;
-  const stderr = dependencies.stderr ?? process.stderr;
-  let parsed;
-  try {
-    parsed = parseFieldAdditionArgs(argv);
-  } catch (error) {
-    stderr.write(`${error.message}\n\n${usage()}\n`);
-    return 1;
-  }
-  if (parsed.help) {
-    stdout.write(`${usage()}\n`);
-    return 0;
-  }
-
-  try {
-    const report = addMissingGitHubIssueFields(parsed.target, {
-      ...dependencies,
-      authorization: parsed.authorization,
-    });
-    stdout.write(parsed.json ? `${JSON.stringify(report, null, 2)}\n` : render(report));
-    return ['blocked', 'partial', 'failed'].includes(report.status) ? 1 : 0;
-  } catch (error) {
-    stderr.write(`error: ${error.message}\n`);
-    return 1;
-  }
+  return runSchemaMutationCli(argv, dependencies, {
+    execute: addMissingGitHubIssueFields,
+    failureStatuses: ['blocked', 'partial', 'failed'],
+    parse: parseSchemaMutationArgs,
+    render,
+    usage,
+  });
 }
 
 if (import.meta.main) process.exitCode = runFieldAdditionCli(process.argv.slice(2));

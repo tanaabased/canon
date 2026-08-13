@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 const MAX_PINNED_FIELDS_PER_TYPE = 10;
 
 function findNamed(values, name) {
@@ -128,10 +126,6 @@ export function buildFieldPinningPlan(inspection, restFields, policy) {
       deletions: [],
     },
   };
-}
-
-export function fieldPinningPlanDigest(plan) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(plan)).digest('hex')}`;
 }
 
 /** Bind browser execution authorization to the complete organization and pin set. */

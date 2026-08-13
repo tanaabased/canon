@@ -1,8 +1,8 @@
 import taskManagementSchema from '../../../references/task-management-schema.json' with { type: 'json' };
+import planDigest from '../../../utils/plan-digest.js';
 import {
   buildLabelSyncPlan,
   evaluateLabelSyncAuthorization,
-  labelSyncPlanDigest,
 } from '../utils/build-label-sync-plan.js';
 import { verifyLabelSync } from '../utils/verify-label-sync.js';
 import { GitHubLabelClient } from './github-label-client.js';
@@ -15,7 +15,7 @@ export function synchronizeGitHubIssueLabels(
 ) {
   const inspection = inspectGitHubIssueSchema(input, { client, policy });
   const { blockers, plan } = buildLabelSyncPlan(inspection, policy);
-  const digest = labelSyncPlanDigest(plan);
+  const digest = planDigest(plan);
   const approval = evaluateLabelSyncAuthorization(plan, digest, authorization);
   const base = {
     mode: 'synchronize_labels',

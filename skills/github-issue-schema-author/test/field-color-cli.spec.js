@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { runFieldColorCli } from '../scripts/recolor-fields.js';
-import { parseFieldColorArgs } from '../utils/parse-field-color-args.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 import { fakeFieldColorClient } from './fake-issue-field-client.js';
 
 function capture() {
@@ -11,7 +11,7 @@ function capture() {
 
 describe('skills/github-issue-schema-author/scripts/recolor-fields', () => {
   it('should parse plan and require exact apply authorization flags', () => {
-    assert.deepEqual(parseFieldColorArgs(['plan', 'tanaabased/canon']), {
+    assert.deepEqual(parseSchemaMutationArgs(['plan', 'tanaabased/canon']), {
       command: 'plan',
       target: 'tanaabased/canon',
       json: false,
@@ -19,7 +19,7 @@ describe('skills/github-issue-schema-author/scripts/recolor-fields', () => {
       authorization: { approvedOrganization: null, approvedDigest: null },
     });
     assert.throws(
-      () => parseFieldColorArgs(['apply', 'tanaabased/canon']),
+      () => parseSchemaMutationArgs(['apply', 'tanaabased/canon']),
       /requires --approved-organization and --approved-digest/,
     );
   });

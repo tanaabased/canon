@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
 import { synchronizeGitHubIssueLabels } from '../lib/schema-label-synchronizer.js';
-import { parseLabelSyncArgs } from '../utils/parse-label-sync-args.js';
+import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
+import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
 
 function usage() {
   return `Usage:
@@ -30,24 +31,19 @@ function render(report) {
 }
 
 export function runLabelSyncCli(argv, dependencies = {}) {
-  const stdout = dependencies.stdout ?? process.stdout;
-  const stderr = dependencies.stderr ?? process.stderr;
-  try {
-    const parsed = parseLabelSyncArgs(argv);
-    if (parsed.help) {
-      stdout.write(`${usage()}\n`);
-      return 0;
-    }
-    const report = synchronizeGitHubIssueLabels(parsed.target, {
-      ...dependencies,
-      authorization: parsed.authorization,
-    });
-    stdout.write(parsed.json ? `${JSON.stringify(report, null, 2)}\n` : render(report));
-    return ['blocked', 'partial', 'failed'].includes(report.status) ? 1 : 0;
-  } catch (error) {
-    stderr.write(`${error.message}\n\n${usage()}\n`);
-    return 1;
-  }
+  return runSchemaMutationCli(argv, dependencies, {
+    execute: synchronizeGitHubIssueLabels,
+    failureStatuses: ['blocked', 'partial', 'failed'],
+    parse: (args) =>
+      parseSchemaMutationArgs(args, {
+        approvalFlag: '--approved-repository',
+        approvalKey: 'approvedRepository',
+        expectedCommandSuffix: '.',
+      }),
+    render,
+    runtimeErrorWithUsage: true,
+    usage,
+  });
 }
 
 if (import.meta.main) process.exitCode = runLabelSyncCli(process.argv.slice(2));

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { synchronizeGitHubIssueFieldColors } from '../lib/schema-field-color-synchronizer.js';
+import { synchronizeGitHubIssueFieldColors } from '../lib/schema-field-synchronizer.js';
 import { fakeFieldColorClient, grayFieldColorState } from './fake-issue-field-client.js';
 
 function authorize(preview) {
@@ -19,7 +19,7 @@ function identity(options) {
   }));
 }
 
-describe('skills/github-issue-schema-author/lib/schema-field-color-synchronizer', () => {
+describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors', () => {
   it('should preview three color-only PATCH operations with every option identity retained', () => {
     const client = fakeFieldColorClient();
     const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
