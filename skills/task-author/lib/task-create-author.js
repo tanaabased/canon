@@ -1,5 +1,6 @@
 import { GitHubTaskClient } from './github-task-client.js';
 import { authorTaskDraft } from './task-draft-author.js';
+import { readTaskState } from './task-state-reader.js';
 import planDigest from '../../../utils/plan-digest.js';
 import { buildTaskCreatePlan } from '../utils/build-task-create-plan.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
@@ -130,31 +131,18 @@ export function createTask(input = {}, { githubClient = new GitHubTaskClient() }
     );
   }
 
-  const verificationErrors = [];
-  const issueRead = githubClient.readIssue(draft.target, issue.number);
-  if (!issueRead.ok) verificationErrors.push(issueRead.error);
-
-  let fields = [];
-  if (plan.expected.fields.length > 0) {
-    const fieldRead = githubClient.readIssueFieldValues(draft.target, issue.number);
-    if (fieldRead.ok) fields = fieldRead.value;
-    else verificationErrors.push(fieldRead.error);
-  }
-
-  let comments = [];
-  if (plan.comments.length > 0) {
-    const commentRead = githubClient.readComments(draft.target, issue.number);
-    if (commentRead.ok) comments = commentRead.value;
-    else verificationErrors.push(commentRead.error);
-  }
-
-  const verification = issueRead.ok
-    ? verifyCreatedTask(plan, { issue: issueRead.value, fields, comments })
+  const observed = readTaskState(githubClient, draft.target, {
+    comments: plan.comments.length > 0,
+    fields: plan.expected.fields.length > 0,
+    issueNumber: issue.number,
+  });
+  const verification = observed.issue
+    ? verifyCreatedTask(plan, observed)
     : { status: 'unavailable', checks: [], mismatches: [] };
-  verification.errors = verificationErrors;
+  verification.errors = observed.errors;
   const failedWrites = writes.some(({ status }) => status === 'failed');
   const complete =
-    !failedWrites && verification.status === 'verified' && verificationErrors.length === 0;
+    !failedWrites && verification.status === 'verified' && observed.errors.length === 0;
 
   return {
     ...report,

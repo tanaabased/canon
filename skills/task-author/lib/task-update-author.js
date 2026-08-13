@@ -1,5 +1,6 @@
 import { GitHubTaskClient } from './github-task-client.js';
 import { authorTaskDraft } from './task-draft-author.js';
+import { readTaskState } from './task-state-reader.js';
 import { buildTaskUpdatePlan } from '../utils/build-task-update-plan.js';
 import planDigest from '../../../utils/plan-digest.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
@@ -61,19 +62,6 @@ function preservedFallbackInput(parsed, input) {
   };
 }
 
-function readCurrent(client, target) {
-  const issue = client.readIssue(target, target.issueNumber);
-  const fields = client.readIssueFieldValues(target, target.issueNumber);
-  const comments = client.readComments(target, target.issueNumber);
-  const errors = [issue, fields, comments].filter(({ ok }) => !ok).map(({ error }) => error);
-  return {
-    errors,
-    issue: issue.ok ? issue.value : null,
-    fields: fields.ok ? fields.value : [],
-    comments: comments.ok ? comments.value : [],
-  };
-}
-
 function reportBase(mode, draft, current, plan, publication) {
   return {
     mode,
@@ -107,7 +95,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
     { ...input, target: draftTarget, title: input.title ?? 'read-current-title' },
     { githubClient },
   );
-  const current = readCurrent(githubClient, provisional.target);
+  const current = readTaskState(githubClient, provisional.target);
   if (current.errors.length > 0 || !current.issue) {
     return {
       mode,
@@ -224,7 +212,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
     );
   }
 
-  const observed = readCurrent(githubClient, draft.target);
+  const observed = readTaskState(githubClient, draft.target);
   const verification = observed.issue
     ? verifyCreatedTask(plan, observed)
     : { status: 'unavailable', checks: [], mismatches: [] };

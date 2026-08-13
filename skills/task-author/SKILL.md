@@ -117,6 +117,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - [./scripts/migrate-fallback.js](./scripts/migrate-fallback.js): two-phase fallback migration entrypoint
 - [./lib/task-draft-author.js](./lib/task-draft-author.js): draft orchestration over an injected GitHub client
 - [./lib/task-create-author.js](./lib/task-create-author.js): publication, mutation, and verification orchestration over an injected GitHub client
+- [./lib/task-state-reader.js](./lib/task-state-reader.js): shared issue, field, and comment read-back normalization
 - [./lib/github-capability-client.js](./lib/github-capability-client.js): read-only `gh` discovery boundary
 - [./lib/github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
 - [./utils/](./utils/): focused assessment, normalization, rendering, metadata, labeling, and scoring units

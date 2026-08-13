@@ -1,22 +1,11 @@
 import { GitHubTaskClient } from './github-task-client.js';
+import { readTaskState } from './task-state-reader.js';
 import planDigest from '../../../utils/plan-digest.js';
 import { buildFallbackMigrationPlan } from '../utils/build-fallback-migration-plan.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
 import { parseFallbackMetadata } from '../utils/parse-fallback-metadata.js';
 import { verifyCreatedTask } from '../utils/verify-created-task.js';
-
-function readState(client, target) {
-  const issue = client.readIssue(target, target.issueNumber);
-  const fields = client.readIssueFieldValues(target, target.issueNumber);
-  const comments = client.readComments(target, target.issueNumber);
-  return {
-    errors: [issue, fields, comments].filter(({ ok }) => !ok).map(({ error }) => error),
-    issue: issue.ok ? issue.value : null,
-    fields: fields.ok ? fields.value : [],
-    comments: comments.ok ? comments.value : [],
-  };
-}
 
 function phaseHasMutation(phase) {
   return Object.keys(phase.mutation).length > 0;
@@ -28,7 +17,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
   const target = normalizeTaskTarget(input.target);
   if (!target.issueNumber) throw new Error('Fallback migration requires OWNER/REPO#NUMBER.');
   const capabilities = githubClient.inspectRepository(target);
-  const current = readState(githubClient, target);
+  const current = readTaskState(githubClient, target);
   const parsed = parseFallbackMetadata(current.issue?.body ?? '');
   const { blockers: planBlockers, plan } = buildFallbackMigrationPlan(
     target,
@@ -101,7 +90,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
     }
   }
 
-  const nativeObserved = readState(githubClient, target);
+  const nativeObserved = readTaskState(githubClient, target);
   const nativePlan = {
     ...plan,
     issue: { ...plan.issue, body: nativeObserved.issue?.body ?? null },
@@ -134,7 +123,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
         : { operation: bodyPhase.name, status: 'failed', error: result.error },
     );
   }
-  const observed = readState(githubClient, target);
+  const observed = readTaskState(githubClient, target);
   const verification = observed.issue
     ? verifyCreatedTask(plan, observed)
     : { status: 'unavailable', checks: [], mismatches: [] };
