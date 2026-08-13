@@ -5,6 +5,88 @@
     { "key": "bug", "name": "Bug", "enabled": true },
     { "key": "feature", "name": "Feature", "enabled": true }
   ],
+  "bodyShapes": {
+    "task": [
+      { "heading": "Context", "key": "context", "level": 2, "required": true },
+      { "heading": "Objective", "key": "objective", "level": 2, "required": true },
+      { "heading": "Scope", "key": null, "level": 2, "required": false },
+      { "heading": "In scope", "key": "inScope", "level": 3, "required": true },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": true },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Constraints and notes",
+        "key": "constraints",
+        "level": 2,
+        "required": false
+      }
+    ],
+    "bug": [
+      {
+        "heading": "Observed behavior",
+        "key": "observedBehavior",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Expected behavior",
+        "key": "expectedBehavior",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Reproduction or evidence",
+        "key": "reproduction",
+        "level": 2,
+        "required": true
+      },
+      { "heading": "Impact", "key": "impactSummary", "level": 2, "required": true },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      }
+    ],
+    "feature": [
+      {
+        "heading": "Problem or opportunity",
+        "key": "problem",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Desired outcome",
+        "key": "desiredOutcome",
+        "level": 2,
+        "required": true
+      },
+      { "heading": "Scope", "key": null, "level": 2, "required": false },
+      { "heading": "In scope", "key": "inScope", "level": 3, "required": true },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": true },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Alternatives and constraints",
+        "key": "alternatives",
+        "level": 2,
+        "required": false
+      }
+    ]
+  },
+  "scoringDiagnostics": {
+    "urgency": ["None", "Moderate", "High", "Immediate"],
+    "enablement": ["None", "Some", "Substantial", "Foundational"],
+    "confidence": ["Low", "Medium", "High"]
+  },
   "issueFields": [
     {
       "key": "priority",

@@ -1,0 +1,7 @@
+interface:
+  display_name: 'GitHub Issue Form Author'
+  short_description: 'Tanaab-based canonical GitHub issue form authoring.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-github-issue-form-author to generate or inspect canonical Task, Bug, and Feature issue forms for an explicit GitHub repository without publishing changes.'

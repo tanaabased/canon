@@ -1,30 +1,6 @@
-const BODY_SHAPES = Object.freeze({
-  task: [
-    ['Context', 'context'],
-    ['Objective', 'objective'],
-    ['Scope', null],
-    ['In scope', 'inScope', 3],
-    ['Out of scope', 'outOfScope', 3],
-    ['Acceptance criteria', 'acceptanceCriteria'],
-    ['Constraints and notes', 'constraints', 2, true],
-  ],
-  bug: [
-    ['Observed behavior', 'observedBehavior'],
-    ['Expected behavior', 'expectedBehavior'],
-    ['Reproduction or evidence', 'reproduction'],
-    ['Impact', 'impactSummary'],
-    ['Acceptance criteria', 'acceptanceCriteria'],
-  ],
-  feature: [
-    ['Problem or opportunity', 'problem'],
-    ['Desired outcome', 'desiredOutcome'],
-    ['Scope', null],
-    ['In scope', 'inScope', 3],
-    ['Out of scope', 'outOfScope', 3],
-    ['Acceptance criteria', 'acceptanceCriteria'],
-    ['Alternatives and constraints', 'alternatives', 2, true],
-  ],
-});
+import taskManagementSchema from '../../../references/task-management-schema.json' with { type: 'json' };
+
+const BODY_SHAPES = Object.freeze(taskManagementSchema.bodyShapes);
 
 function present(value) {
   return Array.isArray(value) ? value.length > 0 : typeof value === 'string' && value.trim() !== '';
@@ -46,15 +22,15 @@ export function renderTaskBody(kind, sections = {}) {
 
   const missing = [];
   const blocks = [];
-  for (const [heading, key, level = 2, optional = false] of BODY_SHAPES[kind]) {
+  for (const { heading, key, level = 2, required = true } of BODY_SHAPES[kind]) {
     if (key === null) {
       blocks.push(`${'#'.repeat(level)} ${heading}`);
       continue;
     }
 
     const value = sections[key];
-    if (optional && !present(value)) continue;
-    if (!optional && !present(value)) missing.push(key);
+    if (!required && !present(value)) continue;
+    if (required && !present(value)) missing.push(key);
 
     let content = renderValue(key, value);
     if (kind === 'bug' && key === 'reproduction' && present(sections.environment)) {

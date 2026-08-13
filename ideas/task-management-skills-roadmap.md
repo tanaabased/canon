@@ -45,7 +45,7 @@ Last reviewed: 2026-08-13
 | Shared contract and fixtures     | Initial contract, machine-readable schema, label policy, fallback, scoring model, and fixture corpus are checked in. | Continue calibration when cross-surface fixtures reveal material ambiguity.                                 |
 | Task Author                      | Read-only capability discovery, deterministic drafting, fallback rendering, scoring, and T01-T15 coverage exist.     | Add create, revise, normalize, fallback migration, T16, R01, and exact post-write verification.             |
 | GitHub Issue Schema Author       | Read-only type, field, visibility, pinning, label, and association inspection exists and has passed S01 live.        | Add narrowly authorized synchronization, high-risk migration separation, and exact post-write verification. |
-| GitHub Issue Form Author         | Not started.                                                                                                         | Build Task, Bug, and Feature forms plus organization and personal-repository normalization coverage.        |
+| GitHub Issue Form Author         | Read-only Task, Bug, and Feature rendering, organization and personal variants, F01, and T01-T06 equivalence exist.  | Add repository inspection, managed diffs, authorized file writes, and live public-preview verification.     |
 | Phase 1 and phase 2 convergence  | In progress.                                                                                                         | Exercise all three surfaces together until one full fixture pass produces no material contract changes.     |
 | Decomposition and milestone work | Deferred.                                                                                                            | Begin only after the three-skill convergence gate passes.                                                   |
 
@@ -644,12 +644,10 @@ Defer Epic, Chore, Question, Severity, Area, Confidence, and workflow Status fie
 
 Complete the first usable phase 1 and phase 2 convergence loop on the shared core branch:
 
-1. Scaffold GitHub Issue Form Author and generate Task, Bug, and Feature forms from the shared contract and machine-readable schema.
-2. Implement organization and personal-repository variants, then satisfy F01 by normalizing their resulting Markdown through Task Author.
-3. Add cross-surface equivalence coverage for T01-T06 so agent-authored, form-authored, and normalized tasks preserve the same semantics.
-4. Implement Task Author create, revise, normalize, and fallback-migration paths with T16, R01, publication safety, and exact post-write verification.
-5. Add GitHub Issue Schema Author synchronization only after its read-only diff classifies safe additions, high-risk migrations, and unmanaged state deterministically.
-6. Run the complete fixture corpus across all three skills, revise the contract and schema when evidence warrants it, and repeat until the convergence gate passes.
-7. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
+1. Implement Task Author create, revise, normalize, and fallback-migration paths with T16, R01, publication safety, and exact post-write verification.
+2. Add GitHub Issue Form Author repository inspection, exact managed diffs, and authorized writes only after preserving compatible repository-specific additions.
+3. Add GitHub Issue Schema Author synchronization only after its read-only diff classifies safe additions, high-risk migrations, and unmanaged state deterministically.
+4. Run the complete fixture corpus across all three skills, revise the contract and schema when evidence warrants it, and repeat until the convergence gate passes.
+5. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
 
 The remaining questions are calibration questions rather than missing scaffolding decisions: whether the prompts elicit reliable Work size, Complexity, Impact, urgency, enablement, and confidence evidence; whether `task-score/v1` ordering matches human judgment; and whether native and fallback forms preserve equivalent meaning without redundant metadata.
