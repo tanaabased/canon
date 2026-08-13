@@ -1,4 +1,5 @@
 import policy from '../../../references/task-management-schema.json' with { type: 'json' };
+import { desiredOptionColor } from '../utils/desired-option-color.js';
 
 function issueTypes() {
   return ['Task', 'Bug', 'Feature'].map((name) => ({
@@ -114,7 +115,7 @@ export function allManagedFields() {
       visibility: field.visibility,
       options: (field.options ?? []).map((name) => ({
         name,
-        color: 'gray',
+        color: desiredOptionColor(field, name),
         description: '',
       })),
     })),

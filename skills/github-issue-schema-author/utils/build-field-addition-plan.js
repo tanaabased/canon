@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 
+import { desiredOptionColor } from './desired-option-color.js';
+
 const ADDITIVE_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact', 'Task score']);
 
 function fieldPayload(desired) {
@@ -13,7 +15,7 @@ function fieldPayload(desired) {
     payload.options = desired.options.map((name, index) => ({
       name,
       description: '',
-      color: 'gray',
+      color: desiredOptionColor(desired, name),
       priority: index + 1,
     }));
   }

@@ -38,13 +38,13 @@ describe('skills/github-issue-schema-author/lib/schema-field-adder', () => {
     assert.deepEqual(
       workSize.options.map(({ name, color, priority }) => ({ name, color, priority })),
       [
-        { name: '1', color: 'gray', priority: 1 },
-        { name: '2', color: 'gray', priority: 2 },
-        { name: '3', color: 'gray', priority: 3 },
-        { name: '5', color: 'gray', priority: 4 },
-        { name: '8', color: 'gray', priority: 5 },
-        { name: '13', color: 'gray', priority: 6 },
-        { name: '21', color: 'gray', priority: 7 },
+        { name: '1', color: 'green', priority: 1 },
+        { name: '2', color: 'green', priority: 2 },
+        { name: '3', color: 'green', priority: 3 },
+        { name: '5', color: 'blue', priority: 4 },
+        { name: '8', color: 'blue', priority: 5 },
+        { name: '13', color: 'yellow', priority: 6 },
+        { name: '21', color: 'red', priority: 7 },
       ],
     );
   });

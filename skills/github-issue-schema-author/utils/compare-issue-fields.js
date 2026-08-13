@@ -1,4 +1,5 @@
 import { highestSchemaStatus } from './schema-status.js';
+import { desiredOptionColor } from './desired-option-color.js';
 
 function findNamed(values, name) {
   return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
@@ -77,7 +78,8 @@ export function compareIssueFields(desiredFields, observedFields, observedTypes,
 
     const currentOptions = names(current.options);
     const desiredOptions = desired.options ?? [];
-    if (!sameValues(currentOptions, desiredOptions)) {
+    const optionsMatch = sameValues(currentOptions, desiredOptions);
+    if (!optionsMatch) {
       const desiredSet = new Set(desiredOptions);
       const extraOptions = currentOptions.filter((option) => !desiredSet.has(option));
       differences.push({ property: 'options', current: currentOptions, desired: desiredOptions });
@@ -85,6 +87,26 @@ export function compareIssueFields(desiredFields, observedFields, observedTypes,
         extraOptions.length > 0
           ? 'migration_required'
           : highestSchemaStatus([fieldStatus, 'drifted']);
+    }
+
+    if (optionsMatch && desired.optionColors) {
+      const currentColors = Object.fromEntries(
+        desiredOptions.map((name) => [
+          name,
+          String(findNamed(current.options, name)?.color ?? 'gray').toLowerCase(),
+        ]),
+      );
+      const desiredColors = Object.fromEntries(
+        desiredOptions.map((name) => [name, desiredOptionColor(desired, name)]),
+      );
+      if (JSON.stringify(currentColors) !== JSON.stringify(desiredColors)) {
+        differences.push({
+          property: 'optionColors',
+          current: currentColors,
+          desired: desiredColors,
+        });
+        fieldStatus = highestSchemaStatus([fieldStatus, 'drifted']);
+      }
     }
 
     const currentVisibility = normalizeVisibility(current.visibility);

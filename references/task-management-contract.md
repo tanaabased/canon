@@ -183,6 +183,14 @@ The initial organization schema is:
 | Field visibility   | Visibility    | Public; private-repository access still protects private tasks |
 | Field type pinning | Type binding  | Pin every managed field to Task, Bug, and Feature              |
 
+Canonical single-select option colors use GitHub's fixed palette as the closest semantic projection of the Tanaab brand and status colors:
+
+| Field      | Option groups                                       |
+| ---------- | --------------------------------------------------- |
+| Work size  | `1`-`3` green; `5`-`8` blue; `13` yellow; `21` red  |
+| Complexity | Low green; Medium yellow; High pink                 |
+| Impact     | Low gray; Medium yellow; High blue; Very high green |
+
 Work size is a separate canonical field. GitHub's default Effort field may coexist as unmanaged schema, but this contract does not rename it, map it into Work size, delete it, or use it as Task Author evidence. Changing used Work size options, field deletion, option removal, visibility changes, and value migrations are high-risk schema operations and must be previewed separately.
 
 ## Fallback Metadata

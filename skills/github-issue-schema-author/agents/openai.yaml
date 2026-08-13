@@ -1,7 +1,7 @@
 interface:
   display_name: 'GitHub Issue Schema Author'
-  short_description: 'Tanaab-based GitHub issue schema inspection and safe field additions.'
+  short_description: 'Tanaab-based GitHub issue schema inspection and bounded synchronization.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository or digest-gate additive creation of its missing Work size, Complexity, Impact, and Task score organization fields without updates or deletions.'
+  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository, digest-gate additive creation of its missing canonical fields, or safely synchronize retained Work size, Complexity, and Impact option colors without deletion or option identity changes.'

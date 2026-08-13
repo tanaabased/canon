@@ -104,6 +104,15 @@
       "dataType": "single_select",
       "fallbackKey": "work-size",
       "options": ["1", "2", "3", "5", "8", "13", "21"],
+      "optionColors": {
+        "1": "green",
+        "2": "green",
+        "3": "green",
+        "5": "blue",
+        "8": "blue",
+        "13": "yellow",
+        "21": "red"
+      },
       "visibility": "all",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
@@ -114,6 +123,7 @@
       "dataType": "single_select",
       "fallbackKey": "complexity",
       "options": ["Low", "Medium", "High"],
+      "optionColors": { "Low": "green", "Medium": "yellow", "High": "pink" },
       "visibility": "all",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },
@@ -124,6 +134,12 @@
       "dataType": "single_select",
       "fallbackKey": "impact",
       "options": ["Low", "Medium", "High", "Very high"],
+      "optionColors": {
+        "Low": "gray",
+        "Medium": "yellow",
+        "High": "blue",
+        "Very high": "green"
+      },
       "visibility": "all",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },

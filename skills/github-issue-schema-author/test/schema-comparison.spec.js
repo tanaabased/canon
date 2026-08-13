@@ -10,7 +10,7 @@ function observedField(name, options = [], dataType = 'single_select') {
     id: `field-${name}`,
     name,
     dataType,
-    options: options.map((option) => ({ name: option })),
+    options: options.map((option) => (typeof option === 'string' ? { name: option } : option)),
     visibility: 'organization_members_only',
   };
 }
@@ -49,6 +49,38 @@ describe('skills/github-issue-schema-author schema comparison', () => {
     assert.equal(
       comparison.unmanaged.find(({ name }) => name === 'Effort').classification,
       'preserved_unmanaged',
+    );
+  });
+
+  it('should report canonical option-color drift without requiring option migration', () => {
+    const desired = policy.issueFields.find(({ name }) => name === 'Work size');
+    const types = {
+      status: 'ok',
+      values: ['Task', 'Bug', 'Feature'].map((name) => ({
+        id: `type-${name}`,
+        name,
+        enabled: true,
+        pinnedFields: [{ name: 'Work size' }],
+      })),
+    };
+    const workSize = observedField(
+      'Work size',
+      desired.options.map((name) => ({ name, color: 'gray' })),
+    );
+    workSize.visibility = 'all';
+
+    const comparison = compareIssueFields(
+      policy.issueFields,
+      { status: 'ok', values: [workSize] },
+      types,
+      policy.preservedUnmanagedFields,
+    );
+
+    const drift = comparison.drifted.find(({ current }) => current.name === 'Work size');
+    assert.ok(drift.differences.some(({ property }) => property === 'optionColors'));
+    assert.equal(
+      comparison.migrationRequired.some(({ current }) => current.name === 'Work size'),
+      false,
     );
   });
 
