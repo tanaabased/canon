@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-issue-form-author to generate or inspect canonical Task, Bug, and Feature issue forms for an explicit GitHub repository without publishing changes.'
+  default_prompt: 'Use $tanaab-github-issue-form-author to render, inspect, or safely align canonical Task, Bug, and Feature issue forms for an explicit GitHub repository.'

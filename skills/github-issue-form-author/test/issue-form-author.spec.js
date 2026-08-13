@@ -25,7 +25,11 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
     assert.deepEqual(report.operations, []);
     assert.deepEqual(
       forms.map(({ document }) => document.type),
-      ['Task', 'Bug', 'Feature'],
+      ['task', 'bug', 'feature'],
+    );
+    assert.deepEqual(
+      forms.map(({ document }) => document.name),
+      ['Task', 'Bug report', 'Feature'],
     );
     for (const { content, document } of forms) {
       const ids = document.body.map(({ id }) => id).filter(Boolean);
@@ -35,6 +39,11 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
       assert.ok(!ids.includes('work-size'));
       assert.ok(!ids.includes('task-score'));
       assert.equal(Object.hasOwn(document, 'labels'), false);
+      assert.ok(
+        document.body
+          .filter(({ type }) => type === 'dropdown')
+          .every(({ attributes }) => !attributes.options.includes('None')),
+      );
       assert.deepEqual(parsedByBun(content), document);
     }
   });

@@ -9,6 +9,7 @@ import {
   SIGNAL_OPTIONS,
   displayValue,
   formId,
+  scoringFormOption,
 } from '../lib/issue-form-contract.js';
 import { normalizeIssueFormSubmission } from '../lib/issue-form-normalizer.js';
 import { renderFormSubmission } from '../utils/render-form-submission.js';
@@ -29,7 +30,9 @@ function answersFor(input, repositoryMode) {
     }
   }
   for (const key of ['urgency', 'enablement', 'confidence']) {
-    if (input.scoring[key] !== undefined) answers[key] = displayValue(input.scoring[key]);
+    if (input.scoring[key] !== undefined) {
+      answers[key] = scoringFormOption(key, input.scoring[key]);
+    }
   }
 
   answers['task-signals'] = SIGNAL_OPTIONS.filter(

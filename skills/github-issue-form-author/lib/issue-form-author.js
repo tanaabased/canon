@@ -7,6 +7,8 @@ import {
   TASK_KINDS,
   displayValue,
   formId,
+  issueFormName,
+  scoringFormOption,
   sectionPrompt,
 } from './issue-form-contract.js';
 import { serializeYaml } from '../utils/serialize-yaml.js';
@@ -84,7 +86,7 @@ function scoringElements() {
       label: `${displayValue(key)} assessment`,
       description:
         'Select only when the task evidence supports this assessment; otherwise leave unset.',
-      options,
+      options: options.map((option) => scoringFormOption(key, option)),
     },
     validations: { required: false },
   }));
@@ -146,10 +148,14 @@ export function authorIssueForm(kind, repositoryMode) {
   ];
   validateElements(body);
 
+  const name = issueFormName(kind);
+  if (name.length <= 3)
+    throw new Error('GitHub issue-form names must be longer than 3 characters.');
+
   return {
-    name: taskKind.name,
+    name,
     description: `Propose a canonical ${taskKind.name.toLowerCase()} with enough evidence for triage and estimation.`,
-    ...(repositoryMode === 'organization' ? { type: taskKind.name } : {}),
+    ...(repositoryMode === 'organization' ? { type: kind } : {}),
     body,
   };
 }

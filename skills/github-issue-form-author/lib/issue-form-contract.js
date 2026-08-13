@@ -6,6 +6,11 @@ export const TASK_KINDS = Object.freeze(
   Object.fromEntries(taskManagementSchema.issueTypes.map(({ key, name }) => [key, { key, name }])),
 );
 
+export function issueFormName(kind) {
+  if (!TASK_KINDS[kind]) throw new Error(`Unsupported task kind: ${kind}`);
+  return kind === 'bug' ? 'Bug report' : TASK_KINDS[kind].name;
+}
+
 export const BODY_SHAPES = Object.freeze(taskManagementSchema.bodyShapes);
 export const SCORING_DIAGNOSTICS = Object.freeze(taskManagementSchema.scoringDiagnostics);
 
@@ -45,6 +50,28 @@ export const PERSONAL_METADATA_FIELDS = Object.freeze([
   { id: 'start-date', key: 'startDate', label: 'Start date', type: 'input' },
   { id: 'target-date', key: 'targetDate', label: 'Target date', type: 'input' },
 ]);
+
+const RESERVED_SCORING_OPTION_REPLACEMENTS = Object.freeze({
+  urgency: Object.freeze({ none: 'Not time-sensitive' }),
+  enablement: Object.freeze({ none: 'No enabling effect' }),
+});
+
+function normalizedChoice(value) {
+  return String(value).trim().toLowerCase().replaceAll(' ', '-');
+}
+
+export function scoringFormOption(key, value) {
+  const canonical = normalizedChoice(value);
+  return RESERVED_SCORING_OPTION_REPLACEMENTS[key]?.[canonical] ?? displayValue(canonical);
+}
+
+export function scoringCanonicalValue(key, value) {
+  const submitted = normalizedChoice(value);
+  const replacement = Object.entries(RESERVED_SCORING_OPTION_REPLACEMENTS[key] ?? {}).find(
+    ([, display]) => normalizedChoice(display) === submitted,
+  );
+  return replacement?.[0] ?? submitted;
+}
 
 export const SIGNAL_OPTIONS = Object.freeze([
   { kinds: ['task'], label: 'Documentation work', signal: 'documentation' },

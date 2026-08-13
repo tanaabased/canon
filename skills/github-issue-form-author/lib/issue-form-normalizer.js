@@ -6,6 +6,8 @@ import {
   SIGNAL_OPTIONS,
   TASK_KINDS,
   formId,
+  issueFormName,
+  scoringCanonicalValue,
 } from './issue-form-contract.js';
 
 function normalizedValue(value) {
@@ -85,6 +87,10 @@ function metadataValues(repositoryMode, responses, nativeMetadata) {
   );
 }
 
+function formTaskKind(form) {
+  return Object.keys(TASK_KINDS).find((kind) => issueFormName(kind) === form.name);
+}
+
 function signalValues(kind, responses) {
   const selected = new Set(checkedValues(responses['task-signals']));
   const signals = {};
@@ -107,7 +113,7 @@ export function normalizeIssueFormSubmission(
     throw new Error(`repositoryMode must be one of: ${REPOSITORY_MODES.join(', ')}.`);
   }
   const responses = parseKnownResponses(markdown, form);
-  const rawKind = form.type ?? responses['task-kind'];
+  const rawKind = form.type ?? responses['task-kind'] ?? formTaskKind(form);
   const kind = normalizedValue(rawKind);
   if (!TASK_KINDS[kind]) throw new Error('Submitted form does not identify a supported task kind.');
 
@@ -115,7 +121,7 @@ export function normalizeIssueFormSubmission(
   const scoring = Object.fromEntries(
     ['urgency', 'enablement', 'confidence'].flatMap((key) => {
       const value = normalizedValue(responses[key]);
-      return value === undefined ? [] : [[key, value]];
+      return value === undefined ? [] : [[key, scoringCanonicalValue(key, value)]];
     }),
   );
   const { relationships, signals } = signalValues(kind, responses);

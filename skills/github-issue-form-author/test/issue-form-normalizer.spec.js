@@ -94,4 +94,24 @@ The projected form response.
     assert.deepEqual(normalized.signals, { breakingChange: true, helpWanted: true });
     assert.deepEqual(normalized.relationships, { externalBlocker: true });
   });
+
+  it('should normalize provider-safe scoring labels to canonical none values', () => {
+    const form = authorIssueForm('bug', 'organization');
+    const markdown = renderFormSubmission(form, {
+      urgency: 'Not time-sensitive',
+      enablement: 'No enabling effect',
+      confidence: 'High',
+    });
+    const normalized = normalizeIssueFormSubmission(markdown, {
+      form,
+      repositoryMode: 'organization',
+    });
+
+    assert.equal(normalized.kind, 'bug');
+    assert.deepEqual(normalized.scoring, {
+      urgency: 'none',
+      enablement: 'none',
+      confidence: 'high',
+    });
+  });
 });
