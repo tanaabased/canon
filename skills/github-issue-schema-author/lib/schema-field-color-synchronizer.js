@@ -5,13 +5,13 @@ import {
   fieldColorPlanDigest,
 } from '../utils/build-field-color-plan.js';
 import { verifyFieldColors } from '../utils/verify-field-colors.js';
-import { GitHubFieldColorClient } from './github-field-color-client.js';
+import { GitHubIssueFieldClient } from './github-issue-field-client.js';
 import { inspectGitHubIssueSchema } from './schema-inspector.js';
 
 /** Preview or apply only canonical colors while retaining every existing select option. */
 export function synchronizeGitHubIssueFieldColors(
   input,
-  { authorization = {}, client = new GitHubFieldColorClient(), policy = taskManagementSchema } = {},
+  { authorization = {}, client = new GitHubIssueFieldClient(), policy = taskManagementSchema } = {},
 ) {
   const inspection = inspectGitHubIssueSchema(input, { client, policy });
   const current = client.listIssueFields(inspection.repository.ownerLogin);

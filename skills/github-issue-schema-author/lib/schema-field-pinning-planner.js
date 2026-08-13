@@ -4,17 +4,13 @@ import {
   evaluateFieldPinningAuthorization,
   fieldPinningPlanDigest,
 } from '../utils/build-field-pinning-plan.js';
-import { GitHubFieldPinningClient } from './github-field-pinning-client.js';
+import { GitHubIssueFieldClient } from './github-issue-field-client.js';
 import { inspectGitHubIssueSchema } from './schema-inspector.js';
 
 /** Prepare or authorize a browser-only canonical issue-field pinning manifest. */
 export function planGitHubIssueFieldPinning(
   input,
-  {
-    authorization = {},
-    client = new GitHubFieldPinningClient(),
-    policy = taskManagementSchema,
-  } = {},
+  { authorization = {}, client = new GitHubIssueFieldClient(), policy = taskManagementSchema } = {},
 ) {
   const inspection = inspectGitHubIssueSchema(input, { client, policy });
   const current = client.listIssueFields(inspection.repository.ownerLogin);

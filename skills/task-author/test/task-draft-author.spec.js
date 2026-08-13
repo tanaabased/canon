@@ -5,7 +5,7 @@ import fixtures, {
   completeBugSections,
   fakeClient,
   organizationCapabilities,
-} from './task-fixtures.js';
+} from '../../../test/task-management-fixtures.js';
 
 describe('Task Author T01-T15 draft fixtures', () => {
   for (const fixture of fixtures) {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { runFieldPinningCli } from '../scripts/pin-fields.js';
 import { parseFieldPinningArgs } from '../utils/parse-field-pinning-args.js';
-import { fakeFieldPinningClient } from './fake-field-pinning-client.js';
+import { fakeFieldPinningClient } from './fake-issue-field-client.js';
 
 function capture() {
   let value = '';

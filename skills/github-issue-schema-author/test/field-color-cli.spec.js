@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { runFieldColorCli } from '../scripts/recolor-fields.js';
 import { parseFieldColorArgs } from '../utils/parse-field-color-args.js';
-import { fakeFieldColorClient } from './fake-field-color-client.js';
+import { fakeFieldColorClient } from './fake-issue-field-client.js';
 
 function capture() {
   let value = '';

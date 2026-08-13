@@ -1,4 +1,4 @@
-import { SCORE_FACTORS, SCORE_FORMULA_VERSION } from '../lib/task-author-contract.js';
+import { SCORE_FACTORS, SCORE_FORMULA_VERSION, WORK_SIZES } from '../lib/task-author-contract.js';
 
 const REQUIRED_FACTORS = Object.freeze([
   ['impact', 'impact'],
@@ -27,8 +27,8 @@ export function calculateTaskScore(input = {}) {
 
     if (key === 'workSize') {
       const value = Number(rawValue);
-      if (![1, 2, 3, 5, 8, 13, 21].includes(value)) {
-        errors.push('workSize must be one of: 1, 2, 3, 5, 8, 13, 21.');
+      if (!WORK_SIZES.includes(value)) {
+        errors.push(`workSize must be one of: ${WORK_SIZES.join(', ')}.`);
       } else {
         factors[key] = { level: value, value };
       }

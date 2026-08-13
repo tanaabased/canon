@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { synchronizeGitHubIssueFieldColors } from '../lib/schema-field-color-synchronizer.js';
-import { fakeFieldColorClient, grayFieldColorState } from './fake-field-color-client.js';
+import { fakeFieldColorClient, grayFieldColorState } from './fake-issue-field-client.js';
 
 function authorize(preview) {
   return {

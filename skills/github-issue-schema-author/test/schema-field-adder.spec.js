@@ -5,7 +5,7 @@ import {
   allManagedFields,
   fakeFieldAdditionClient,
   initialFields,
-} from './fake-field-addition-client.js';
+} from './fake-issue-field-client.js';
 
 function authorize(preview) {
   return {

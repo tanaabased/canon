@@ -5,17 +5,13 @@ import {
   fieldAdditionPlanDigest,
 } from '../utils/build-field-addition-plan.js';
 import { verifyAddedFields } from '../utils/verify-added-fields.js';
-import { GitHubFieldAdditionClient } from './github-field-addition-client.js';
+import { GitHubIssueFieldClient } from './github-issue-field-client.js';
 import { inspectGitHubIssueSchema } from './schema-inspector.js';
 
 /** Preview or apply only missing Work size, Complexity, Impact, and Task score fields. */
 export function addMissingGitHubIssueFields(
   input,
-  {
-    authorization = {},
-    client = new GitHubFieldAdditionClient(),
-    policy = taskManagementSchema,
-  } = {},
+  { authorization = {}, client = new GitHubIssueFieldClient(), policy = taskManagementSchema } = {},
 ) {
   const inspection = inspectGitHubIssueSchema(input, { client, policy });
   const { blockers, plan } = buildFieldAdditionPlan(inspection);

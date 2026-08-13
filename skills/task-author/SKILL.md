@@ -106,6 +106,7 @@ Create mode owns one issue plus its initial canonical labels, field values, and 
 - [./lib/github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
 - [./utils/](./utils/): focused normalization, rendering, metadata, labeling, and scoring units
 - [./test/](./test/): flat utility, client-boundary, T01–T15 draft, and T01–T06 create coverage
+- [../../test/task-management-fixtures.js](../../test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 
 ## Validation
 

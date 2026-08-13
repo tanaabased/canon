@@ -1,8 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { authorTaskDraft } from '../../task-author/lib/task-draft-author.js';
-import fixtures, { fakeClient } from '../../task-author/test/task-fixtures.js';
-import { authorIssueForm } from '../lib/issue-form-author.js';
+import { authorIssueForm } from '../skills/github-issue-form-author/lib/issue-form-author.js';
 import {
   BODY_SHAPES,
   PERSONAL_METADATA_FIELDS,
@@ -10,9 +8,11 @@ import {
   displayValue,
   formId,
   scoringFormOption,
-} from '../lib/issue-form-contract.js';
-import { normalizeIssueFormSubmission } from '../lib/issue-form-normalizer.js';
-import { renderFormSubmission } from '../utils/render-form-submission.js';
+} from '../skills/github-issue-form-author/lib/issue-form-contract.js';
+import { normalizeIssueFormSubmission } from '../skills/github-issue-form-author/lib/issue-form-normalizer.js';
+import { renderFormSubmission } from '../skills/github-issue-form-author/utils/render-form-submission.js';
+import { authorTaskDraft } from '../skills/task-author/lib/task-draft-author.js';
+import fixtures, { fakeClient } from './task-management-fixtures.js';
 
 function answersFor(input, repositoryMode) {
   const kind = input.kind.toLowerCase();
@@ -44,7 +44,7 @@ function answersFor(input, repositoryMode) {
   return answers;
 }
 
-describe('GitHub Issue Form Author F01 and T01-T06 equivalence', () => {
+describe('task-management cross-skill equivalence', () => {
   for (const fixture of fixtures.filter(({ id }) => /^T0[1-6]$/.test(id))) {
     it(`should normalize ${fixture.id} to the exact Task Author semantics`, () => {
       const repositoryMode =

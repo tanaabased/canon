@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { createTask } from '../lib/task-create-author.js';
 import { fakeGitHubTaskClient } from './fake-github-task-client.js';
-import fixtures, { organizationCapabilities } from './task-fixtures.js';
+import fixtures, { organizationCapabilities } from '../../../test/task-management-fixtures.js';
 
 function approve(input, preview) {
   return {

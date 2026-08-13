@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { addMissingGitHubIssueFields } from '../lib/schema-field-adder.js';
 import { runFieldAdditionCli } from '../scripts/add-fields.js';
 import { parseFieldAdditionArgs } from '../utils/parse-field-addition-args.js';
-import { fakeFieldAdditionClient } from './fake-field-addition-client.js';
+import { fakeFieldAdditionClient } from './fake-issue-field-client.js';
 
 function capture() {
   let value = '';

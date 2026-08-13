@@ -132,9 +132,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `scripts/recolor-fields.js`: digest-gated retained-option color entrypoint.
 - `scripts/pin-fields.js`: no-write field-pinning planner and digest authorization entrypoint.
 - `lib/github-schema-client.js`: injected read-only GraphQL boundary.
-- `lib/github-field-addition-client.js`: narrow organization-field POST boundary.
-- `lib/github-field-color-client.js`: narrow organization-field GET and color-only PATCH boundary.
-- `lib/github-field-pinning-client.js`: read-only organization-field ID boundary for GitHub settings URLs.
+- `lib/github-issue-field-client.js`: organization-field REST read, additive POST, and color-only PATCH boundary.
 - `lib/schema-inspector.js`: deterministic comparison orchestration.
 - `lib/schema-field-adder.js`: additive planning, authorization, mutation, and verification orchestration.
 - `lib/schema-field-color-synchronizer.js`: retained-option color planning, authorization, mutation, and verification orchestration.

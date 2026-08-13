@@ -29,10 +29,18 @@ export const FALLBACK_KEY_ORDER = Object.freeze([
   'target-date',
 ]);
 
-export const WORK_SIZES = Object.freeze([1, 2, 3, 5, 8, 13, 21]);
-export const PRIORITIES = Object.freeze(['urgent', 'high', 'medium', 'low']);
-export const COMPLEXITIES = Object.freeze(['low', 'medium', 'high']);
-export const IMPACTS = Object.freeze(['low', 'medium', 'high', 'very-high']);
+function fieldOptions(key) {
+  return taskManagementSchema.issueFields.find((field) => field.key === key)?.options ?? [];
+}
+
+function normalizedOptions(key) {
+  return fieldOptions(key).map((value) => value.toLowerCase().replaceAll(' ', '-'));
+}
+
+export const WORK_SIZES = Object.freeze(fieldOptions('workSize').map(Number));
+export const PRIORITIES = Object.freeze(normalizedOptions('priority'));
+export const COMPLEXITIES = Object.freeze(normalizedOptions('complexity'));
+export const IMPACTS = Object.freeze(normalizedOptions('impact'));
 
 export const SCORE_FACTORS = Object.freeze({
   impact: { low: 0.25, medium: 0.5, high: 0.75, 'very-high': 1 },

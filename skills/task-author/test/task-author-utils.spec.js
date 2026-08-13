@@ -6,7 +6,7 @@ import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
 import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
 import { renderTaskBody } from '../utils/render-task-body.js';
-import { completeBugSections } from './task-fixtures.js';
+import { completeBugSections } from '../../../test/task-management-fixtures.js';
 
 describe('Task Author deterministic utilities', () => {
   it('should normalize explicit repository and issue targets without directory inference', () => {

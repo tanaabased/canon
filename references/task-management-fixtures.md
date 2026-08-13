@@ -8,7 +8,7 @@ Contract version: `tanaab/task-management/v1`
 
 These fixtures are the shared comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author. Apply them with [the task management contract](./task-management-contract.md).
 
-The cases are descriptive golden fixtures, not live GitHub operations. Future skill-local tests should encode the same inputs and expected semantic results through fake clients before any operational scenario writes to GitHub.
+The cases are descriptive golden fixtures, not live GitHub operations. The shared executable fixture support and cross-skill equivalence spec live in the repository `test/` surface, while effect-specific fake-client coverage remains with each owning skill.
 
 Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, score, mutation boundary, and verification result are normative for the initial convergence loop.
 

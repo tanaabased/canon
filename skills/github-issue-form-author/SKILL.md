@@ -116,7 +116,8 @@ Generate, inspect, align, and normalize canonical GitHub Task, Bug, and Feature 
 - `lib/issue-form-contract.js`: GitHub form prompts and variant projections over shared policy.
 - `scripts/render-issue-forms.js`: internal render, plan, and digest-authorized apply command.
 - `utils/`: YAML serialization, repository-plan construction, authorization, submission rendering, and command parsing.
-- `test/`: GitHub form shape, repository alignment, YAML, ambiguity, CLI, F01, and T01-T06 equivalence coverage.
+- `test/`: GitHub form shape, repository alignment, YAML, ambiguity, and CLI coverage.
+- `../../test/task-management-equivalence.spec.js`: intentional cross-skill F01 and T01-T06 equivalence coverage.
 
 ## Validation
 

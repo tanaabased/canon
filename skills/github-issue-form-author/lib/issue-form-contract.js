@@ -18,38 +18,28 @@ export const LIST_SECTION_KEYS = Object.freeze(
   new Set(['inScope', 'outOfScope', 'acceptanceCriteria']),
 );
 
-export const PERSONAL_METADATA_FIELDS = Object.freeze([
-  {
-    id: 'priority',
-    key: 'priority',
-    label: 'Priority estimate',
-    type: 'dropdown',
-    options: ['Urgent', 'High', 'Medium', 'Low'],
-  },
-  {
-    id: 'work-size',
-    key: 'workSize',
-    label: 'Work size estimate',
-    type: 'dropdown',
-    options: ['1', '2', '3', '5', '8', '13', '21'],
-  },
-  {
-    id: 'complexity',
-    key: 'complexity',
-    label: 'Complexity estimate',
-    type: 'dropdown',
-    options: ['Low', 'Medium', 'High'],
-  },
-  {
-    id: 'impact',
-    key: 'impact',
-    label: 'Impact estimate',
-    type: 'dropdown',
-    options: ['Low', 'Medium', 'High', 'Very high'],
-  },
-  { id: 'start-date', key: 'startDate', label: 'Start date', type: 'input' },
-  { id: 'target-date', key: 'targetDate', label: 'Target date', type: 'input' },
+const PERSONAL_METADATA_KEYS = Object.freeze([
+  'priority',
+  'workSize',
+  'complexity',
+  'impact',
+  'startDate',
+  'targetDate',
 ]);
+
+export const PERSONAL_METADATA_FIELDS = Object.freeze(
+  PERSONAL_METADATA_KEYS.map((key) => {
+    const field = taskManagementSchema.issueFields.find((candidate) => candidate.key === key);
+    const type = field.dataType === 'date' ? 'input' : 'dropdown';
+    return {
+      id: field.fallbackKey,
+      key,
+      label: `${field.name}${type === 'dropdown' ? ' estimate' : ''}`,
+      type,
+      ...(field.options ? { options: field.options } : {}),
+    };
+  }),
+);
 
 const RESERVED_SCORING_OPTION_REPLACEMENTS = Object.freeze({
   urgency: Object.freeze({ none: 'Not time-sensitive' }),

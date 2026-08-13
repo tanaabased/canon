@@ -12,9 +12,8 @@ function resultStatus(result) {
   return result.returncode ?? result.status ?? 1;
 }
 
-function failure(result, method, endpoint) {
-  const detail = String(result.stderr ?? result.error?.message ?? result.stdout ?? '').trim();
-  return { ok: false, error: `${method} ${endpoint}: ${detail || 'unknown error'}` };
+function resultDetail(result) {
+  return String(result.stderr ?? result.error?.message ?? result.stdout ?? '').trim();
 }
 
 function parseJson(result, method, endpoint) {
@@ -28,6 +27,7 @@ function parseJson(result, method, endpoint) {
 function normalizeField(field) {
   return {
     id: field.id,
+    nodeId: field.node_id ?? null,
     name: field.name,
     description: field.description ?? '',
     dataType: String(field.data_type ?? '').toLowerCase(),
@@ -44,8 +44,8 @@ function normalizeField(field) {
   };
 }
 
-/** GitHub boundary for reading organization fields and replacing only retained option colors. */
-export class GitHubFieldColorClient {
+/** GitHub boundary for organization issue-field reads and the two supported REST mutations. */
+export class GitHubIssueFieldClient {
   #reader;
   #runner;
 
@@ -62,40 +62,40 @@ export class GitHubFieldColorClient {
     return this.#reader.inspect(target);
   }
 
+  #request(method, endpoint, payload) {
+    const args = ['api', endpoint];
+    const options = {};
+    if (method !== 'GET') {
+      args.push('--method', method, '-H', `X-GitHub-Api-Version: ${API_VERSION}`, '--input', '-');
+      options.input = JSON.stringify(payload);
+    } else {
+      args.push('-H', `X-GitHub-Api-Version: ${API_VERSION}`);
+    }
+    const result = this.#runner('gh', args, options);
+    if (resultStatus(result) !== 0) {
+      return {
+        ok: false,
+        error: `${method} ${endpoint}: ${resultDetail(result) || 'unknown error'}`,
+      };
+    }
+    return parseJson(result, method, endpoint);
+  }
+
   listIssueFields(organization) {
     const endpoint = `/orgs/${organization}/issue-fields`;
-    const result = this.#runner('gh', [
-      'api',
-      endpoint,
-      '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
-    ]);
-    if (resultStatus(result) !== 0) return failure(result, 'GET', endpoint);
-    const parsed = parseJson(result, 'GET', endpoint);
-    if (!parsed.ok) return parsed;
-    if (!Array.isArray(parsed.value)) {
+    const result = this.#request('GET', endpoint);
+    if (!result.ok) return result;
+    if (!Array.isArray(result.value)) {
       return { ok: false, error: `GET ${endpoint} returned a non-array response.` };
     }
-    return { ok: true, value: parsed.value.map(normalizeField) };
+    return { ok: true, value: result.value.map(normalizeField) };
+  }
+
+  createIssueField(organization, payload) {
+    return this.#request('POST', `/orgs/${organization}/issue-fields`, payload);
   }
 
   recolorIssueField(organization, fieldId, options) {
-    const endpoint = `/orgs/${organization}/issue-fields/${fieldId}`;
-    const result = this.#runner(
-      'gh',
-      [
-        'api',
-        endpoint,
-        '--method',
-        'PATCH',
-        '-H',
-        `X-GitHub-Api-Version: ${API_VERSION}`,
-        '--input',
-        '-',
-      ],
-      { input: JSON.stringify({ options }) },
-    );
-    if (resultStatus(result) !== 0) return failure(result, 'PATCH', endpoint);
-    return parseJson(result, 'PATCH', endpoint);
+    return this.#request('PATCH', `/orgs/${organization}/issue-fields/${fieldId}`, { options });
   }
 }

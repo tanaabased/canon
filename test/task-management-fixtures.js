@@ -1,4 +1,6 @@
-import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
+import taskManagementSchema from '../references/task-management-schema.json' with { type: 'json' };
+
+const CANONICAL_LABEL_NAMES = Object.freeze(taskManagementSchema.labels.map(({ name }) => name));
 
 export const completeTaskSections = Object.freeze({
   context: 'Release checks are repeated manually.',
@@ -34,18 +36,25 @@ function singleSelect(id, name, options) {
   };
 }
 
+function schemaField(id, key) {
+  const field = taskManagementSchema.issueFields.find((candidate) => candidate.key === key);
+  return field.dataType === 'single_select'
+    ? singleSelect(id, field.name, field.options)
+    : { id, name: field.name, data_type: field.dataType };
+}
+
 export function organizationCapabilities({ partial = false } = {}) {
   const fields = [
-    singleSelect(101, 'Priority', ['Urgent', 'High', 'Medium', 'Low']),
-    singleSelect(102, 'Work size', ['1', '2', '3', '5', '8', '13', '21']),
-    { id: 103, name: 'Start date', data_type: 'date' },
-    { id: 104, name: 'Target date', data_type: 'date' },
+    schemaField(101, 'priority'),
+    schemaField(102, 'workSize'),
+    schemaField(103, 'startDate'),
+    schemaField(104, 'targetDate'),
   ];
   if (!partial) {
     fields.push(
-      singleSelect(105, 'Complexity', ['Low', 'Medium', 'High']),
-      singleSelect(106, 'Impact', ['Low', 'Medium', 'High', 'Very high']),
-      { id: 107, name: 'Task score', data_type: 'number' },
+      schemaField(105, 'complexity'),
+      schemaField(106, 'impact'),
+      schemaField(107, 'taskScore'),
     );
   }
 
@@ -67,7 +76,7 @@ export function organizationCapabilities({ partial = false } = {}) {
     issueFields: { status: 'ok', values: fields },
     labels: {
       status: 'ok',
-      values: Object.keys(CANONICAL_LABELS).map((name) => ({ name })),
+      values: CANONICAL_LABEL_NAMES.map((name) => ({ name })),
     },
     warnings: [],
   };
@@ -85,7 +94,7 @@ export function personalCapabilities() {
     issueFields: { status: 'not_applicable', values: [] },
     labels: {
       status: 'ok',
-      values: Object.keys(CANONICAL_LABELS).map((name) => ({ name })),
+      values: CANONICAL_LABEL_NAMES.map((name) => ({ name })),
     },
     warnings: [],
   };

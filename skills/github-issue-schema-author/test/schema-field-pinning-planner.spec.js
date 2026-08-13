@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { planGitHubIssueFieldPinning } from '../lib/schema-field-pinning-planner.js';
-import { fakeFieldPinningClient } from './fake-field-pinning-client.js';
+import { fakeFieldPinningClient } from './fake-issue-field-client.js';
 
 function authorize(preview) {
   return {
