@@ -350,7 +350,7 @@ Expected body fallback:
 schema: tanaab/task-metadata/v1
 mode: fallback
 fallback:
-  complexity: medium
+  complexity: low
   impact: medium
   task-score: 37
 ```
