@@ -1,7 +1,7 @@
 interface:
   display_name: 'GitHub Issue Schema Author'
-  short_description: 'Tanaab-based read-only GitHub issue schema inspection.'
+  short_description: 'Tanaab-based GitHub issue schema inspection and safe field additions.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository and compare its issue schema and labels with the canonical task-management policy without mutating GitHub.'
+  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository or digest-gate additive creation of its missing Work size, Complexity, Impact, and Task score organization fields without updates or deletions.'

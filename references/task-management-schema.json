@@ -100,6 +100,7 @@
     {
       "key": "workSize",
       "name": "Work size",
+      "description": "Relative delivery size using 1, 2, 3, 5, 8, 13, and 21.",
       "dataType": "single_select",
       "fallbackKey": "work-size",
       "options": ["1", "2", "3", "5", "8", "13", "21"],
@@ -109,6 +110,7 @@
     {
       "key": "complexity",
       "name": "Complexity",
+      "description": "Model-neutral reasoning difficulty, ambiguity, novelty, and uncertainty.",
       "dataType": "single_select",
       "fallbackKey": "complexity",
       "options": ["Low", "Medium", "High"],
@@ -118,6 +120,7 @@
     {
       "key": "impact",
       "name": "Impact",
+      "description": "Expected local value of completing the task, independent of work size.",
       "dataType": "single_select",
       "fallbackKey": "impact",
       "options": ["Low", "Medium", "High", "Very high"],
@@ -127,6 +130,7 @@
     {
       "key": "taskScore",
       "name": "Task score",
+      "description": "Derived 0 through 100 goal-independent ranking from task-score/v1.",
       "dataType": "number",
       "fallbackKey": "task-score",
       "visibility": "all",
