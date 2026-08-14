@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)
+
 ### New Features
 
 - Added isolated unattended OpenClaw tool-call scenario guidance using `openclaw exec-policy preset yolo`.
