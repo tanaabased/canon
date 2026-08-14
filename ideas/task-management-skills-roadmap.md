@@ -153,7 +153,7 @@ Own GitHub-specific organization type and field definitions, field pinning, and 
 - **Owned surface:** checked-in GitHub issue forms and template-chooser configuration
 - **Variants:** Task, Bug, and Feature
 
-Own the four checked-in repository form files, organization and personal variants, lossless evidence extraction, safe managed merges, digest-authorized writes, and exact verification. Forms are intake adapters, not canonical task renderers: Task and Feature use two required responses, Bug uses three, and each has one optional context response. Keep the skill separate because repository files have different permissions and failure modes from task and organization-schema mutation. Task Author owns semantic normalization, metadata assessment, and canonical rewriting. The Task, Bug, and Feature prompts and mappings are accepted; the remaining work is disposable-repository realignment after approval and later organization-default distribution.
+Own the four checked-in repository form files, organization and personal variants, lossless evidence extraction, safe managed merges, digest-authorized writes, and exact verification. Forms are intake adapters, not canonical task renderers: Task and Feature use two required responses, Bug uses three, and each has one optional context response. Keep the skill separate because repository files have different permissions and failure modes from task and organization-schema mutation. Task Author owns semantic normalization, metadata assessment, and canonical rewriting. The Task, Bug, and Feature prompts and mappings are accepted and aligned in the disposable repository; the remaining work is later organization-default distribution.
 
 ### 4. `tanaab-task-decomposer`
 
