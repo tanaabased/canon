@@ -29,6 +29,14 @@ Use the domain nouns in provider-neutral Canon guidance. Use **repository**, **i
 - A release groups delivered project state; it does not replace the tasks, changes, or validation that justify that state.
 - Cross-project strategic goals are intentionally unmapped until Tanaab adopts a separate durable goal contract.
 
+## Repository Task-Management Projection
+
+- Unless checked-in project guidance explicitly declares shared task intake not applicable, every GitHub-backed Tanaab project must keep the repository-local Task, Bug, Feature, and chooser issue forms aligned with the shared task-management contract.
+- The same project must keep its canonical repository-label definitions aligned and expose the applicable organization issue types and managed fields when those capabilities are available. Organization-native metadata and personal-repository fallbacks remain distinct projections of the same task contract.
+- Treat a missing managed issue-form file or canonical repository-label definition as drift rather than silently classifying the surface as not applicable. Preserve unmanaged templates, labels, fields, and other repository-specific additions through their owning skills.
+- GitHub Issue Form Author owns the checked-in form projection. GitHub Issue Schema Author owns the issue-type, field, pinning, visibility, option-color, and repository-label projection. Project Optimizer may discover and assess both surfaces but must not duplicate their contracts or mutation paths.
+- Remote issue-schema and label inspection remains optional during a local project audit and requires an explicit or confirmed `OWNER/REPO`; unavailable remote evidence is unresolved, not proof of drift or alignment.
+
 ## Skill Naming and Types
 
 - Treat project management as a domain and category, not a skill type.

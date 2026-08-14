@@ -21,12 +21,12 @@ metadata:
 
 ## Overview
 
-Audit a project's checked-in repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then either report convergence or produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed surface is classified without modifying the project.
+Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then either report convergence or produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed or explicitly required surface is classified without modifying the project.
 
 ## When to Use
 
 - Run a repeatable, project-wide alignment and maintainability audit before an optimization pass.
-- Reconcile documentation, code, package, workflow, skill, and other observed surfaces through their existing Tanaab owners.
+- Reconcile documentation, code, package, workflow, skill, required-but-absent, and other applicable surfaces through their existing Tanaab owners.
 - Determine whether evidence-backed findings justify another optimization pass or the project has sufficiently converged.
 - Turn action-worthy findings into a staged implementation and validation plan before any changes are made.
 - Include GitHub-hosted repository settings only when the user explicitly requests remote coverage and supplies or confirms the repository slug.
@@ -47,9 +47,9 @@ Audit a project's checked-in repository surfaces against the Optimization facets
 
 ## Workflow
 
-1. Read repository guidance and inventory tracked local surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, and repo-native validation commands.
-2. Classify each observed area as live, cold-path, generated, or not applicable before recommending changes.
-3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
+1. Read repository guidance and its directly applicable shared canon, then inventory tracked local surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
+2. Classify each observed or contract-required area as live, cold-path, generated, missing, or not applicable before recommending changes. Declare an absent surface missing only when applicable checked-in guidance or directly linked canon makes it an expectation; otherwise preserve uncertainty or classify it not applicable.
+3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence or an explicit contract requirement and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
 4. When the repository contains multiple live `SKILL.md` files, always select Skill Author and review the skill collection individually and collectively even when no single skill has obvious drift.
 5. Use each selected skill's Optimization facet as the routing summary, then apply the skill's full relevant contract, directly linked canon, and the shared optimization operations to the observed surface. Do not limit the audit to the literal five facet bullets or skip high-value checks that the owning skill makes explicit elsewhere.
 6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces.
@@ -85,8 +85,8 @@ Audit a project's checked-in repository surfaces against the Optimization facets
 
 ## Completion Criteria
 
-- Every tracked local surface is accounted for as live, cold-path, generated, or not applicable.
-- Every live surface is reported as aligned, drifted, or not applicable with concrete repository evidence and a clear owning skill.
+- Every tracked local or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
+- Every live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
 - Every selected skill's high-value canonical checks are accounted for, including concrete documentation synchronization, structure, extraction, testing, and validation expectations when those surfaces are present.
 - Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
@@ -100,12 +100,14 @@ Audit a project's checked-in repository surfaces against the Optimization facets
 ## Bundled Resources
 
 - [../../references/optimization-operations.md](../../references/optimization-operations.md): shared evidence-led operation lenses; domain skills remain the source of truth for each surface
+- [../../references/project-management-model.md](../../references/project-management-model.md): GitHub-backed project mapping, lifecycle ownership, and required repository task-management projections
 
 ## Validation
 
 - Compare `git status --short` before and after the audit; the optimizer must create no tracked or untracked changes.
 - Confirm remote GitHub inspection was skipped unless the user explicitly requested it and supplied or confirmed a slug.
 - Confirm every selected skill matched an observed surface and exposed `## Optimization`.
+- Confirm contract-required but absent surfaces were inventoried when applicable canon establishes the expectation, without treating every conceivable surface as required.
 - Confirm every selected facet was followed into the skill's full relevant contract and directly linked canon rather than treated as a standalone generic checklist.
 - Confirm repositories with multiple live skills selected Skill Author for both individual and portfolio review.
 - Confirm every drift finding has one primary operation and that the audit did not force every operation onto every surface.
