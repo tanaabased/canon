@@ -6,7 +6,7 @@ Contract version: `tanaab/task-management/v1`
 
 ## Purpose
 
-These fixtures are the shared comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author. Apply them with [the task management contract](./task-management-contract.md).
+These fixtures are the shared comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author. Their completion assertions also constrain Task Completion Check. Apply them with [the task management contract](./task-management-contract.md).
 
 The cases are descriptive golden fixtures, not live GitHub operations. The shared executable fixture support and cross-skill equivalence spec live in the repository `test/` surface, while effect-specific fake-client coverage remains with each owning skill.
 

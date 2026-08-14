@@ -1,5 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added GitHub-backed task authoring, issue schema and form alignment, and pull-request-gated completion assessment. [#17](https://github.com/tanaabased/canon/pull/17)
 - Added isolated unattended OpenClaw tool-call scenario guidance using `openclaw exec-policy preset yolo`.
 - Added shared release destination guidance for Codex archives, GitHub Actions, npm packages, and OpenClaw registries.
 - Updated Canon's package metadata to prevent npm publication.

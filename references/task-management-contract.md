@@ -15,12 +15,13 @@ This reference is the shared semantic contract for GitHub-backed task authoring.
 The initial consumers are:
 
 - **Task Author**, which owns one task and its directly managed values;
-- **GitHub Issue Schema Author**, which owns organization issue types and fields plus repository label definitions; and
-- **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms.
+- **GitHub Issue Schema Author**, which owns organization issue types and fields plus repository label definitions;
+- **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms; and
+- **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence.
 
-Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
+Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, completion evidence, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
 
-The contract is usable now, but the Complexity and Impact rubrics, body prompts, and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
+The contract is usable now and the broad Task body and intake prompts are accepted. Bug and Feature prompts, the Complexity and Impact rubrics, and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
 
 ## Domain and Provider Terms
 
@@ -457,7 +458,7 @@ Every Task, Bug, and Feature requires at least one linked pull request before it
 
 ### Closure
 
-Completion assessment remains owned by Task Completion Check. A task with complete acceptance criteria but no linked completion pull request remains `pending`. This initial contract does not authorize Task Author to infer completion from a merged pull request or passing check. Use native issue state reasons rather than `duplicate`, `invalid`, or `wontfix` labels.
+Completion assessment remains owned by Task Completion Check. An open task with complete acceptance criteria but no linked completion pull request remains `pending`. An already-closed issue is reported as complete provider state; that report does not prove the required pull-request gate was followed. This initial contract does not authorize Task Author to infer completion from a merged pull request or passing check. Use native issue state reasons rather than `duplicate`, `invalid`, or `wontfix` labels.
 
 ## Remote Mutation and Verification
 
@@ -481,7 +482,7 @@ Schema Author must separate organization type and field authorization from organ
 
 ## Calibration and Change Control
 
-Use [the task-management fixture corpus](./task-management-fixtures.md) as the common comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author.
+Use [the task-management fixture corpus](./task-management-fixtures.md) as the common comparison surface for Task Author, GitHub Issue Form Author, GitHub Issue Schema Author, and the completion rules assessed by Task Completion Check.
 
 The phase 1 and phase 2 convergence loop may revise:
 

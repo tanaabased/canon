@@ -10,7 +10,8 @@ Last updated: 2026-08-14
 - Branch: `pirog-task-management-core`
 - Pull request: [#17](https://github.com/tanaabased/canon/pull/17), currently a draft requiring review
 - Base branch: `main`
-- Implementation baseline before this handoff: `eb206b0`
+- Pre-handoff implementation baseline: `eb206b0`
+- Accepted Task-template slice: `a0a18bd`
 - Worktree expectation: clean and synchronized with `origin/pirog-task-management-core`
 
 On the other computer:
@@ -31,14 +32,15 @@ Restart Codex after the cache sync if the refreshed plugin surfaces do not appea
 
 ## Current Outcome
 
-The core is a usable, separately authorized three-skill system:
+The core is a usable, separately authorized three-skill authoring system with a separate completion assessor:
 
 - [Task Author](../skills/task-author/SKILL.md) drafts, creates, revises, normalizes, and migrates fallback metadata for one task. It owns task values, assessment provenance, `task-score/v1`, publication safety, digest authorization, and exact read-back verification.
 - [GitHub Issue Schema Author](../skills/github-issue-schema-author/SKILL.md) inspects and narrowly aligns organization fields, retained option colors, field visibility, field pinning, and repository label definitions. It exposes no deletion path and preserves Effort as unmanaged.
 - [GitHub Issue Form Author](../skills/github-issue-form-author/SKILL.md) renders and aligns low-friction Task, Bug, and Feature intake forms and hands lossless evidence to Task Author for semantic normalization.
+- [Task Completion Check](../skills/task-completion-check/SKILL.md) assesses acceptance criteria and the required linked completion pull request without mutating the task or its delivery evidence.
 - [The shared contract](../references/task-management-contract.md), [machine schema](../references/task-management-schema.json), and [fixture corpus](../references/task-management-fixtures.md) own cross-skill semantics.
 
-The optimization pass consolidated only proven shared plumbing. The three skills retain distinct ownership and authorization boundaries. The branch's full local gate last passed with 272 tests, one expected PowerShell test pending, clean lint and formatting, clean Canon validation, all three skill validators clean, and an installed cache matching source. PR #17's lint, release, Ubuntu, and macOS checks were green before this documentation handoff.
+The optimization pass consolidated only proven shared plumbing. The four skill surfaces retain distinct ownership and authorization boundaries. The branch's full local gate last passed with 272 tests, one expected PowerShell test pending, clean lint and formatting, clean Canon validation, all four task-management skill validators clean, and an installed cache matching source. PR #17's lint, release, Ubuntu, and macOS checks were green before this documentation handoff.
 
 ## Live Evidence
 
@@ -61,7 +63,7 @@ Do this work in order:
 2. Run representative organization and personal-repository submissions through Issue Form Author and Task Author. Update the shared contract, schema, and fixtures first if human review exposes a real semantic change; then update both skill projections.
 3. Decide whether the convergence gate requires disposable live evidence for revise, normalize, and fallback migration. The modes and fixtures exist locally; they have not received the same final live proof as native creation. A live fallback migration should use a purpose-built disposable issue and preserve partial evidence rather than deleting or rolling back it.
 4. After the templates and mapping are accepted, generate a fresh Issue Form Author repository plan for `tanaabased/agent-system-test`. Review and authorize its exact repository, branch, SHA-bound operations, and digest before writing the four managed files.
-5. Run the full fixture corpus, all three skill validators, repository tests, lint, Codex validation, cache sync/check, and a final live read-only inspection. Update the roadmap with the convergence decision.
+5. Run the full fixture corpus, all four task-management skill validators, repository tests, lint, Codex validation, cache sync/check, and a final live read-only inspection. Update the roadmap with the convergence decision.
 6. Merge PR #17 as the first discrete usable task-management core. Start Task Decomposer and milestone work on new branches rather than expanding this one.
 
 The next collaborative step is item 1 for Bug. The Task intake, normalized body, and completion-delivery contract are accepted; Bug and Feature remain working shapes until their reviews finish.
@@ -86,4 +88,4 @@ The next collaborative step is item 1 for Bug. The Task intake, normalized body,
 - [`task-management-fixtures.md`](../references/task-management-fixtures.md): descriptive golden cases
 - [`task-management-fixtures.js`](../test/task-management-fixtures.js): shared executable fixtures
 - [`task-management-equivalence.spec.js`](../test/task-management-equivalence.spec.js): cross-skill intake preservation
-- [`Task Author`](../skills/task-author/SKILL.md), [`Issue Schema Author`](../skills/github-issue-schema-author/SKILL.md), and [`Issue Form Author`](../skills/github-issue-form-author/SKILL.md): runtime contracts and bundled entrypoints
+- [`Task Author`](../skills/task-author/SKILL.md), [`Issue Schema Author`](../skills/github-issue-schema-author/SKILL.md), [`Issue Form Author`](../skills/github-issue-form-author/SKILL.md), and [`Task Completion Check`](../skills/task-completion-check/SKILL.md): runtime contracts and bundled entrypoints

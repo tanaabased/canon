@@ -14,7 +14,7 @@ This roadmap focuses first on skill boundaries, task metadata, templates, and im
 
 ## Executive Recommendation
 
-Build six narrowly owned skills over time:
+Use a six-skill portfolio alongside the existing Task Completion Check:
 
 1. **Task Author** for drafting, creating, revising, and normalizing one task.
 2. **GitHub Issue Schema Author** for organization-level issue types and fields plus canonical repository labels.
@@ -28,7 +28,7 @@ The first three skills form a convergence loop without becoming one umbrella ski
 - Task Author owns one task and its field values.
 - GitHub Issue Schema Author owns organization-level type and field definitions plus canonical repository label definitions.
 - GitHub Issue Form Author owns checked-in low-friction evidence forms, lossless intake extraction, and chooser configuration.
-- The shared task contract owns the semantics all three must implement.
+- The shared task contract owns the authoring semantics all three must implement and the completion rules Task Completion Check assesses.
 
 Phase 1 and phase 2 repeat until the three surfaces agree. Their combined exit is a fully fledged ability to create, revise, and normalize Task, Bug, and Feature work with accepted templates, native metadata where available, portable fallbacks where required, and explainable goal-independent scoring.
 
@@ -38,7 +38,7 @@ Do not create separate Task Creator, Task Reworker, and Task Normalizer skills. 
 
 ## Implementation Checkpoint
 
-Last reviewed: 2026-08-13
+Last reviewed: 2026-08-14
 
 | Surface                          | Current state                                                                                                                                                                                                                                                                                                                                                                       | Remaining work                                                                                                                                                                                     |
 | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -46,8 +46,9 @@ Last reviewed: 2026-08-13
 | Task Author                      | Capability discovery, deterministic drafting, assessment provenance, digest-gated create/revise/normalize, verified two-phase fallback migration, scoring, optional collapsed public score audits, T01-T16, R01, exact verification, and full-native live Task/Bug/Feature creation evidence exist. The broad Task body and required completion pull-request contract are accepted. | Calibrate the canonical Bug and Feature bodies with their human intake layers; decide whether the convergence gate also requires disposable live revise, normalize, and fallback-migration proofs. |
 | GitHub Issue Schema Author       | Read-only inspection; digest-gated additive fields, retained-option colors, organization-members-only visibility, canonical repository-label definitions, and separately authorized field pinning exist. Field creation, colors, pinning, visibility, and disposable-repository labels are live-verified and idempotently aligned.                                                  | Keep any later rename, option, type, or destructive migration path separately authorized; no further initial-schema implementation is currently required.                                          |
 | GitHub Issue Form Author         | Task, Bug, and Feature rendering, shared low-friction organization/personal evidence questions, lossless intake handoff, repository inspection, deterministic managed diffs, digest-authorized writes, exact verification, and earlier live scaffolding evidence exist. The Task questions and lossless mapping are accepted.                                                       | Calibrate Bug and Feature intake alongside their canonical normalized bodies; align the disposable repository only after all three kinds and their mappings are accepted.                          |
-| Phase 1 and phase 2 convergence  | Core implementation and schema live proofs are complete; template calibration and the final cross-surface pass remain.                                                                                                                                                                                                                                                              | Exercise all three surfaces together until one full fixture pass produces no material contract changes, then align the accepted issue forms live.                                                  |
-| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                                                                                                                                           | Begin only after the three-skill convergence gate passes.                                                                                                                                          |
+| Task Completion Check            | Read-only completion assessment covers structured acceptance criteria, required linked pull requests, reviews, checks, bounded failure evidence, and the missing-pull-request pending state.                                                                                                                                                                                        | Revalidate its completion projection whenever Bug or Feature calibration changes shared acceptance or delivery evidence.                                                                           |
+| Phase 1 and phase 2 convergence  | Core implementation and schema live proofs are complete; Task is accepted, while Bug and Feature template calibration and the final cross-surface pass remain.                                                                                                                                                                                                                      | Exercise the three authoring surfaces plus Task Completion Check until one full fixture pass produces no material contract changes, then align the accepted issue forms live.                      |
+| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                                                                                                                                           | Begin only after the authoring convergence gate passes.                                                                                                                                            |
 
 Keep the initial Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author implementation on one integration branch until they form a discrete usable task-authoring system. After that core loop merges, implement decomposition and milestone surfaces as separately reviewable branches.
 
@@ -119,7 +120,7 @@ The roadmap owns sequencing, skill boundaries, and convergence status. It does n
 - [`task-management-fixtures.md`](../references/task-management-fixtures.md) owns descriptive golden scenarios.
 - [`task-management-fixtures.js`](../test/task-management-fixtures.js) and [`task-management-equivalence.spec.js`](../test/task-management-equivalence.spec.js) own shared executable evidence and cross-skill equivalence.
 
-The durable architectural decisions are: distinguish low-friction intake evidence from canonical tasks; make Task Author the semantic normalization and assessment owner; keep Priority and scheduling human- or policy-controlled; require source and rationale for agent estimates; derive Task score deterministically; keep canonical organization fields organization-members-only; treat the collapsed public scoring audit as optional explanation rather than score storage; prefer native GitHub metadata with partial visible fallbacks; preserve Effort separately from Work size; keep Complexity model-neutral; keep `task-score/v1` goal-independent; resolve targets conservatively; require exact mutation previews; and verify every remote write. Change those decisions in the contract and shared fixtures first, then update each skill projection.
+The durable architectural decisions are: distinguish low-friction intake evidence from canonical tasks; make Task Author the semantic normalization and assessment owner; keep Priority and scheduling human- or policy-controlled; require source and rationale for agent estimates; derive Task score deterministically; keep canonical organization fields organization-members-only; treat the collapsed public scoring audit as optional explanation rather than score storage; prefer native GitHub metadata with partial visible fallbacks; preserve Effort separately from Work size; keep Complexity model-neutral; keep `task-score/v1` goal-independent; require a linked completion pull request for every task kind; resolve targets conservatively; require exact mutation previews; and verify every remote write. Change those decisions in the contract and shared fixtures first, then update each skill projection.
 
 ## Proposed Skill Portfolio
 
@@ -148,7 +149,7 @@ Own GitHub-specific organization type and field definitions, field pinning, and 
 - **Owned surface:** checked-in GitHub issue forms and template-chooser configuration
 - **Variants:** Task, Bug, and Feature
 
-Own the four checked-in repository form files, organization and personal variants, lossless evidence extraction, safe managed merges, digest-authorized writes, and exact verification. Forms are intake adapters, not canonical task renderers: Task and Feature use two required responses, Bug uses three, and each has one optional context response. Keep the skill separate because repository files have different permissions and failure modes from task and organization-schema mutation. Task Author owns semantic normalization, metadata assessment, and canonical rewriting. The remaining work is exact prompt calibration, disposable-repository realignment after approval, and later organization-default distribution.
+Own the four checked-in repository form files, organization and personal variants, lossless evidence extraction, safe managed merges, digest-authorized writes, and exact verification. Forms are intake adapters, not canonical task renderers: Task and Feature use two required responses, Bug uses three, and each has one optional context response. Keep the skill separate because repository files have different permissions and failure modes from task and organization-schema mutation. Task Author owns semantic normalization, metadata assessment, and canonical rewriting. The remaining work is Bug and Feature prompt calibration, disposable-repository realignment after approval, and later organization-default distribution.
 
 ### 4. `tanaab-task-decomposer`
 
@@ -206,7 +207,7 @@ This remains separate from Project Milestone Author because planning a multi-tas
 ## Relationship to Existing Skills
 
 - **Project Author** continues to own GitHub repository creation and canonical repository settings. It does not absorb task, milestone, schema, or issue-form management.
-- **Task Completion Check** continues to own read-only completion assessment from acceptance criteria and delivery evidence.
+- **Task Completion Check** continues to own read-only completion assessment from acceptance criteria and the required linked completion pull request.
 - **Task Author** may eventually apply an explicitly authorized close or reopen operation, but it must not reinterpret completion evidence. If closure develops materially different authorization or audit needs, reconsider a separate Task State Author then rather than scaffolding it now.
 - **Project Optimizer** may later assess whether a repository has the expected task-management surfaces, but it should route concrete corrections to the owning skills rather than duplicate their contracts.
 
@@ -292,8 +293,9 @@ The convergence gate passes only when:
 - Native and fallback paths both pass their focused tests.
 - Another full fixture pass produces no material contract, schema, form, or scoring changes.
 - Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author validate independently and retain their separate permission and failure boundaries.
+- Task Completion Check validates independently and keeps an open task pending until its required completion pull request is linked.
 
-Calibrate one task kind at a time, then recheck all three together at the gate. The accepted Task slice is the first provisional contract; Bug and Feature remain executable calibration artifacts. Until the gate passes, cross-kind fixture or live-submission evidence may still require an explicit shared-contract revision. Passing the gate records the accepted two-layer template contract and freezes those surfaces for routine use; later changes require an explicit contract revision rather than incidental scaffolding work.
+Calibrate one task kind at a time, then recheck all three task kinds together at the gate. The accepted Task slice is the first provisional contract; Bug and Feature remain executable calibration artifacts. Until the gate passes, cross-kind fixture or live-submission evidence may still require an explicit shared-contract revision. Passing the gate records the accepted two-layer template contract and freezes those surfaces for routine use; later changes require an explicit contract revision rather than incidental scaffolding work.
 
 Only after this gate passes should the roadmap advance to decomposition and project milestone work.
 
@@ -375,8 +377,8 @@ Complete the first usable phase 1 and phase 2 convergence loop on the shared cor
 2. **Completed:** apply and verify the independently authorized canonical-label plan for `tanaabased/agent-system-test`.
 3. **Completed:** create and exactly verify a fully native Task, Bug, and Feature in that disposable repository from three separately displayed and authorized plans.
 4. **Completed for Task:** accept the broad Task body, low-friction Task form, lossless evidence mapping, and required completion pull-request gate.
-5. **Next:** calibrate Bug, then Feature, against representative submissions and the full fixture corpus. Recheck all three layers together, then align the disposable repository through a fresh exact plan.
-6. Run the complete fixture corpus across all three skills, revise the contract and schema only when evidence warrants it, and repeat until the convergence gate passes. Decide explicitly whether live revise, normalize, or fallback-migration evidence is required before declaring convergence.
+5. **Next:** calibrate Bug, then Feature, against representative submissions and the full fixture corpus. Recheck all three task kinds across the authoring and completion projections, then align the disposable repository through a fresh exact plan.
+6. Run the complete fixture corpus across the three authoring skills plus Task Completion Check, revise the contract and schema only when evidence warrants it, and repeat until the convergence gate passes. Decide explicitly whether live revise, normalize, or fallback-migration evidence is required before declaring convergence.
 7. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
 
 The ownership, schema, and mutation architecture are settled. The main remaining question is calibrational: the shared fixtures still need to establish whether the intake prompts, canonical normalized templates, scoring order, Complexity classifications, and native/fallback convergence match human judgment. See [`task-management-core-handoff.md`](./task-management-core-handoff.md) for the branch transfer context and restart procedure.
