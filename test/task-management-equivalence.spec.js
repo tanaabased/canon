@@ -51,7 +51,7 @@ function intakeAnswers({ kind, sections }) {
 
 function sourceEvidence({ kind, sections }) {
   return Object.entries(sections)
-    .filter(([key]) => !(kind.toLowerCase() === 'bug' && key === 'delivery'))
+    .filter(([key]) => !(kind.toLowerCase() !== 'task' && key === 'delivery'))
     .map(([, value]) => value)
     .flatMap((value) => (Array.isArray(value) ? value : [value]))
     .filter(Boolean)

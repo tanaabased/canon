@@ -10,6 +10,7 @@ import { renderTaskBody } from '../utils/render-task-body.js';
 import { renderTaskScoreComment } from '../utils/render-task-comments.js';
 import {
   completeBugSections,
+  completeFeatureSections,
   completeTaskSections,
 } from '../../../test/task-management-fixtures.js';
 
@@ -63,6 +64,24 @@ describe('Task Author deterministic utilities', () => {
       outOfScope: [],
     });
     assert.doesNotMatch(withoutExclusions.body, /### Out of scope/);
+  });
+
+  it('should render one bounded Feature with required delivery evidence', () => {
+    const complete = renderTaskBody('feature', completeFeatureSections);
+    assert.match(complete.body, /^## Problem or opportunity/);
+    assert.match(complete.body, /## Scope\n\n### In scope/);
+    assert.match(complete.body, /## Delivery and verification/);
+    assert.deepEqual(complete.missing, []);
+
+    const withoutDelivery = renderTaskBody('feature', {
+      ...completeFeatureSections,
+      delivery: '',
+    });
+    assert.deepEqual(withoutDelivery.missing, ['delivery']);
+    assert.match(
+      withoutDelivery.body,
+      /## Delivery and verification\n\n## Alternatives and constraints/,
+    );
   });
 
   it('should render ordered fallback YAML without unset or native-only concepts', () => {

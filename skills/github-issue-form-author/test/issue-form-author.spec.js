@@ -33,7 +33,11 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
     );
     assert.deepEqual(
       forms.map(({ document }) => document.name),
-      ['Task', 'Bug report', 'Feature'],
+      ['Task', 'Bug report', 'Feature request'],
+    );
+    assert.equal(
+      forms[2].document.description,
+      'Suggest a new or improved capability for triage and normalization.',
     );
     assert.deepEqual(
       forms.map(({ document }) => submittedElements(document).length),
@@ -100,6 +104,41 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
       ],
     );
     assert.doesNotMatch(JSON.stringify(forms[1].document), /write a test|pull request/i);
+    assert.deepEqual(
+      submittedElements(forms[2].document).map(({ id, attributes, validations }) => ({
+        description: attributes.description,
+        id,
+        label: attributes.label,
+        required: validations.required,
+      })),
+      [
+        {
+          description:
+            'Describe the affected users or workflows, the current experience or workaround, and why it matters.',
+          id: 'problem',
+          label: 'What problem or opportunity are you seeing?',
+          required: true,
+        },
+        {
+          description:
+            'Describe the capability or result you want and an example of how it would be used. Avoid prescribing implementation details unless they are essential.',
+          id: 'outcome',
+          label: 'What outcome would help?',
+          required: true,
+        },
+        {
+          description:
+            'Optionally share examples, mockups, comparable behavior, links, compatibility concerns, constraints, or dependencies.',
+          id: 'additional-context',
+          label: 'Additional context',
+          required: false,
+        },
+      ],
+    );
+    assert.doesNotMatch(
+      JSON.stringify(forms[2].document),
+      /acceptance criteria|implementation design|pull request/i,
+    );
 
     for (const { content, document } of forms) {
       const ids = submittedElements(document).map(({ id }) => id);

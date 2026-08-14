@@ -8,7 +8,9 @@ export const TASK_KINDS = Object.freeze(
 
 export function issueFormName(kind) {
   if (!TASK_KINDS[kind]) throw new Error(`Unsupported task kind: ${kind}`);
-  return kind === 'bug' ? 'Bug report' : TASK_KINDS[kind].name;
+  if (kind === 'bug') return 'Bug report';
+  if (kind === 'feature') return 'Feature request';
+  return TASK_KINDS[kind].name;
 }
 
 const ADDITIONAL_CONTEXT = Object.freeze({
@@ -24,6 +26,14 @@ const TASK_CONTEXT = Object.freeze({
   label: 'What constraints, inputs, or approvals should we know about?',
   description:
     'Include relevant deadlines, budgets, people, access, links, files, dependencies, privacy concerns, or actions requiring approval. Do not include secrets.',
+  required: false,
+});
+
+const FEATURE_CONTEXT = Object.freeze({
+  id: 'additional-context',
+  label: 'Additional context',
+  description:
+    'Optionally share examples, mockups, comparable behavior, links, compatibility concerns, constraints, or dependencies.',
   required: false,
 });
 
@@ -72,16 +82,17 @@ export const INTAKE_FORMS = Object.freeze({
     Object.freeze({
       id: 'problem',
       label: 'What problem or opportunity are you seeing?',
-      description: 'Describe the capability gap, affected users or workflows, and why it matters.',
+      description:
+        'Describe the affected users or workflows, the current experience or workaround, and why it matters.',
       required: true,
     }),
     Object.freeze({
       id: 'outcome',
       label: 'What outcome would help?',
       description:
-        'Describe the useful result without prescribing unnecessary implementation detail.',
+        'Describe the capability or result you want and an example of how it would be used. Avoid prescribing implementation details unless they are essential.',
       required: true,
     }),
-    ADDITIONAL_CONTEXT,
+    FEATURE_CONTEXT,
   ]),
 });

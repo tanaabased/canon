@@ -60,8 +60,9 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 ## Inputs
 
-- Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, evidence for every required body section, and checkable acceptance criteria. A Task additionally requires an outcome and scoped work. A Task or Bug requires expected delivery and verification evidence for its completion pull request.
+- Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, evidence for every required body section, checkable acceptance criteria, and expected delivery and verification evidence for its completion pull request. A Task additionally requires an outcome and scoped work.
 - For a Bug, keep reporter evidence separate from worker obligations. Plan one linked completion pull request that begins in draft with a regression test or reproduction harness executed in the safest suitable disposable environment, normally existing GitHub Actions. Require failing evidence against the affected baseline and the same reproduction plus relevant surrounding checks passing with the fix. Do not require host-local execution when it could mutate the agent machine; document safe exceptions and approval boundaries when automation is infeasible.
+- For a Feature, require one bounded new or materially expanded capability with an identifiable consumer or workflow, useful outcome, explicit in-scope and out-of-scope boundaries, consumer-visible acceptance criteria, and applicable compatibility or migration evidence. Plan substantive artifacts, tests or executable examples, documentation, checks, and release evidence in its completion pull request. Keep an oversized or umbrella request unready and recommend decomposition rather than treating Feature as an epic.
 - Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
 - A Task score additionally requires Impact, Work size, Urgency, Enablement, and Confidence evidence. Unknown factors remain unset.
 - Every accepted metadata value and scoring diagnostic requires an `assessment` entry with `source` equal to `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based `rationale`; Task score provenance is generated as `derived`.
@@ -99,7 +100,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 1. Resolve and display one exact target. Stop if it remains ambiguous.
 2. Run the bundled draft or create command. Both check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
-3. Review missing body evidence, Task and Bug delivery proof, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
+3. Review missing body evidence, delivery proof, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
 4. Review assessment provenance and rationales. Keep agent estimates evidence-based, keep human-controlled values out of agent ownership, and leave uncertain values unset.
 5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
 6. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.

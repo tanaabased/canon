@@ -61,6 +61,7 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 - Both variants use identical evidence questions. Task and Feature have two required responses plus optional context; Bug has three required responses plus optional context.
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. It warns reporters not to publish secrets.
 - Bug asks only for observed behavior, expected behavior, and safe reproduction or investigation evidence. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
+- The human-facing Feature request asks for the affected problem or opportunity and useful outcome, plus optional examples or constraints. It does not require formal scope, acceptance criteria, implementation design, or a pull request.
 - Forms do not auto-apply labels or expose metadata and scoring controls. Task Author estimates supported values after semantic normalization and chooses native or fallback storage.
 - Extraction returns the selected kind, title, observed organization metadata, complete raw Markdown, labeled answered responses, and `normalizationRequired: true`.
 - Preserve unknown headings inside their owning response and preserve the complete original Markdown even when content sits outside known responses.
@@ -130,4 +131,4 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 - Exercise missing, aligned, drifted, extended, invalid, stale-plan, SHA-conflict, and partial-write repository states through the fake client.
 - Run Skill Author validation against this directory.
 - Run repository tests, lint, `codex:validate`, and `codex:check`; sync the cache before the installed skill is invoked.
-- Confirm F01 and T01-T06 preserve every submitted evidence item, avoid invented classifications, require Task Author semantic normalization, and map the accepted Task prompts into outcome, scope, acceptance, delivery, and authorization evidence without loss.
+- Confirm F01 and T01-T06 preserve every submitted evidence item, avoid invented classifications, require Task Author semantic normalization, and map the accepted Task, Bug, and Feature prompts into their canonical evidence without loss.

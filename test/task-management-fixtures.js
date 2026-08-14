@@ -32,6 +32,8 @@ export const completeFeatureSections = Object.freeze({
   inScope: ['One versioned JSON schema'],
   outOfScope: ['Unrelated CLI redesign'],
   acceptanceCriteria: ['The schema is documented', 'Migration evidence is recorded'],
+  delivery:
+    'The linked draft completion pull request contains the versioned schema, tests or executable examples, user-facing documentation, migration evidence, and passing relevant checks.',
   alternatives: 'The experimental output shape is not retained because it is ambiguous.',
 });
 

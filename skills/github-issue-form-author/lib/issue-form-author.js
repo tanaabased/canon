@@ -64,7 +64,10 @@ export function authorIssueForm(kind, repositoryMode) {
 
   return {
     name,
-    description: `Share a ${taskKind.name.toLowerCase()} for triage and normalization.`,
+    description:
+      kind === 'feature'
+        ? 'Suggest a new or improved capability for triage and normalization.'
+        : `Share a ${taskKind.name.toLowerCase()} for triage and normalization.`,
     ...(repositoryMode === 'organization' ? { type: kind } : {}),
     body,
   };

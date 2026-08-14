@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { authorTaskDraft } from '../lib/task-draft-author.js';
 import fixtures, {
   completeBugSections,
+  completeFeatureSections,
   fakeClient,
   organizationCapabilities,
 } from '../../../test/task-management-fixtures.js';
@@ -92,6 +93,33 @@ describe('Task Author T01-T15 draft fixtures', () => {
     assert.ok(report.assessment.errors.some((error) => error.includes('assessment.impact')));
     assert.deepEqual(report.labels.apply, ['needs triage', 'needs reproduction']);
     assert.match(report.body, /## Reproduction or evidence\n\n## Impact/);
+  });
+
+  it('should keep an oversized Feature unready pending decomposition', () => {
+    const report = authorTaskDraft(
+      {
+        target: 'acme/widgets',
+        title: 'bundle task inspection, reporting, and automation',
+        kind: 'Feature',
+        sections: {
+          ...completeFeatureSections,
+          inScope: ['Task inspection', 'Reporting dashboards', 'Automation triggers'],
+        },
+        metadata: { workSize: 13 },
+        assessment: {
+          workSize: {
+            source: 'agent',
+            rationale: 'The request spans three independently deliverable capabilities.',
+          },
+        },
+        actionable: false,
+      },
+      { githubClient: fakeClient(organizationCapabilities()) },
+    );
+
+    assert.equal(report.status, 'needs_input');
+    assert.ok(report.warnings.some((warning) => warning.includes('decomposition review')));
+    assert.deepEqual(report.labels.apply, ['needs triage']);
   });
 
   it('should satisfy T11 with a partial capsule and no duplicate native values', () => {

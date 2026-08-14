@@ -92,6 +92,12 @@
         "required": true
       },
       {
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
         "heading": "Alternatives and constraints",
         "key": "alternatives",
         "level": 2,

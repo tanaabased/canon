@@ -21,7 +21,7 @@ The initial consumers are:
 
 Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, completion evidence, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
 
-The contract is usable now and the Task and Bug bodies and intake prompts are accepted. Feature prompts, the Complexity and Impact rubrics, and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
+The contract is usable now and the Task, Bug, and Feature bodies and intake prompts are accepted. The Complexity and Impact rubrics and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
 
 ## Domain and Provider Terms
 
@@ -139,10 +139,16 @@ Use these headings in order:
 
 - [ ] Observable capability condition
 
+## Delivery and verification
+
 ## Alternatives and constraints
 ```
 
-`Alternatives and constraints` is optional when no material alternative or constraint is known. Establish who or what gains the capability, the recurring value, boundaries, urgency, enablement, and any compatibility implications.
+Use Feature for one bounded new or materially expanded capability. `Problem or opportunity` establishes the affected user or workflow, current experience or workaround, recurrence, and value. `Desired outcome` describes the useful capability and primary use case without prescribing unnecessary implementation. `Scope` defines the smallest coherent delivery and requires explicit in-scope and out-of-scope boundaries. If the request cannot be assessed as one independently observable capability, keep it unready and recommend decomposition instead of treating Feature as an informal epic.
+
+`Acceptance criteria` express the consumer-visible capability, important boundaries, and applicable compatibility, documentation, example, or migration conditions. `Delivery and verification` identifies the linked completion pull request, substantive repository artifacts, tests or executable examples, user-facing documentation, compatibility or migration evidence, relevant checks, and release evidence when applicable. A Feature does not require an intentionally failing draft check; its completion pull request remains draft during implementation and must provide green validation before it is marked ready.
+
+`Alternatives and constraints` is optional when no material alternative or constraint is known. Record rejected approaches, dependencies, compatibility implications, security, privacy, accessibility, performance, approvals, and other meaningful boundaries without turning the issue into a speculative product specification.
 
 ### Intake Evidence and Canonical Tasks
 
@@ -152,7 +158,7 @@ Human intake and canonical task authoring are different representations of the s
 - A **canonical task** is the normalized working artifact. It uses the Task, Bug, or Feature body shape above, accepted metadata, and checkable acceptance criteria.
 - GitHub Issue Form Author extracts submitted responses and the original Markdown without semantic invention. Task Author owns the later evidence assessment and canonical rewrite.
 
-The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The Bug form uses three required evidence responses plus one optional context response. It asks for observed behavior, expected behavior, and safe reproduction or investigation evidence; it does not ask the reporter to write a test or open a pull request. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
+The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The human-facing Feature request asks for the problem or opportunity and the useful outcome, with optional examples, mockups, compatibility concerns, constraints, or dependencies; it does not require formal scope, acceptance criteria, or implementation design. The Bug form uses three required evidence responses plus one optional context response. It asks for observed behavior, expected behavior, and safe reproduction or investigation evidence; it does not ask the reporter to write a test or open a pull request. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
 
 Required form questions establish minimum useful evidence rather than demanding a fully planned task. A Bug's investigation response may provide reproducible steps or other direct occurrence evidence because intermittent failures can be valuable even when deterministic reproduction is unavailable.
 

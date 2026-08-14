@@ -144,6 +144,7 @@ Expected body:
 - `Desired outcome` describes the supported output contract.
 - `Scope` separates the new contract from unrelated CLI redesign.
 - `Acceptance criteria` covers schema, compatibility documentation, and migration evidence.
+- `Delivery and verification` requires the linked draft completion pull request to contain the versioned schema, tests or executable examples, user-facing documentation, migration evidence, and passing relevant checks.
 - `Alternatives and constraints` records the rejected compatibility approach.
 
 Expected native metadata:
@@ -247,6 +248,8 @@ fallback:
 Expected labels: `help wanted`.
 
 Do not apply `good first issue` because Work size exceeds `3`. Score inputs are Impact High (`0.75`), Urgency Moderate (`0.33`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `5`.
+
+The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, documentation, compatibility evidence, and validation beneath `Delivery and verification`.
 
 ### T07: Underspecified External Submission
 
@@ -501,6 +504,7 @@ Organization form assertions:
 - Task and Feature each expose two required evidence responses and one optional context response.
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter.
 - Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
+- The Feature chooser is named `Feature request`; it asks for the affected problem or opportunity and useful outcome, while optional context may contain examples, mockups, compatibility concerns, constraints, or dependencies.
 - The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
 - Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.
 
