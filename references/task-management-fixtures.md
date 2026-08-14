@@ -578,6 +578,21 @@ Expected behavior:
 - Post only the authorized revision-summary comment and keep the public scoring audit suppressed.
 - Re-read every expected field and return success only when none were cleared or changed unexpectedly.
 
+### R03: Imperative Rescore and Read-Only Planning
+
+Existing state:
+
+- One exact Task has complete accepted scoring evidence and a stale Task score after a human changes Impact.
+- The user may say either “Rescore `acme/widgets#99`” or “Show me the rescore plan for `acme/widgets#99`.”
+
+Expected behavior:
+
+- Treat the imperative “Rescore” request as authorization for one bounded revise-mode mutation on that exact issue.
+- Read current state, produce and inspect the exact diff and digest, safety-review the publication surfaces, apply the digest-bound plan, and verify it within the same turn without requesting a second approval solely for the digest.
+- Treat “Show me the rescore plan,” Plan mode, and equivalent draft or preview language as read-only; return the exact plan and digest without populating publication approval or calling a mutation endpoint.
+- In either path, stop for fresh direction if the resolved target differs, scoring evidence is incomplete, or the plan contains a material effect beyond the expected field replacement and contract-standard revision or score comments.
+- Do not treat an earlier imperative for one issue, mode, or digest as authorization for a later or different mutation.
+
 ## Convergence Review
 
 The fixture pass fails if any consumer:
@@ -591,6 +606,7 @@ The fixture pass fails if any consumer:
 - creates or deletes label definitions during task authoring;
 - loses fallback values, label associations, original evidence, or revision history;
 - mutates an ambiguous or undisclosed target; or
+- turns plan, draft, preview, or exploratory language into a write; or
 - sends a partial `issue_field_values` replacement that clears unchanged or unmanaged fields; or
 - reports complete success without verifying every managed value.
 

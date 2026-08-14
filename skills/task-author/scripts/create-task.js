@@ -8,7 +8,8 @@ function usage() {
 
 Read a JSON Task Author request, print the exact publication plan, and create only when
 publication.safetyReviewed, publication.approvedTarget, and publication.approvedDigest
-match that plan. Run once without approval to obtain the digest.`;
+match that plan. Run once without approval to obtain the digest. An agent may inspect and
+apply both passes in one turn when an explicit imperative already authorizes the bounded plan.`;
 }
 
 process.exitCode = runTaskJsonCommand(process.argv.slice(2), {

@@ -31,6 +31,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - Draft a new Task, Bug, or Feature against one explicit GitHub repository.
 - Use Task for any bounded unit of work that does not fit the more specific Bug or Feature shape, including repository, operational, administrative, research, content, purchasing, scheduling, or external work.
 - Create one fully evidenced Task, Bug, or Feature after the exact publication plan is displayed and authorized.
+- Treat an explicit create, revise, normalize, rescore, or fallback-migration imperative for one exact task as authorization for that bounded mode; keep planning, drafting, previewing, questions, and exploratory discussion read-only.
 - Revise one material task against newly accepted evidence and preserve its earlier discussion.
 - Normalize an existing external submission into canonical headings without inventing missing facts.
 - Migrate verified fallback metadata into newly available native fields through a separate two-phase plan.
@@ -70,15 +71,15 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - A GitHub issue-form handoff is intake evidence, not deterministic draft input. Semantically normalize its responses into supported canonical sections and assessment records first; preserve missing evidence as questions.
 - Optional label signals must be explicit. `regression`, `needs reproduction`, `good first issue`, and `help wanted` still pass their canonical eligibility checks.
 - Run `bun <skill-path>/scripts/draft-task.js --input <json-path>` for a read-only draft.
-- Run `bun <skill-path>/scripts/create-task.js --input <json-path>` first without publication approval to obtain the exact plan and digest. After the displayed plan is authorized, rerun with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`.
+- Run `bun <skill-path>/scripts/create-task.js --input <json-path>` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
 - Run `bun <skill-path>/scripts/update-task.js --input <json-path>` with `mode` set to `revise` or `normalize`. Material revision also requires a concise `revisionSummary`; incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
-- Run `bun <skill-path>/scripts/migrate-fallback.js --input <json-path>` only for a separately reviewed fallback-to-native plan. Preview first, then use the same exact publication approval fields.
+- Run `bun <skill-path>/scripts/migrate-fallback.js --input <json-path>` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
 - Either command accepts `--input -`. Use `--help` for its stable command contract.
 
 ## Outputs
 
 - Draft mode returns `ready`, `partial`, or `needs_input` and always sets `mutatesGitHub: false`.
-- Create mode returns `blocked`, `publication_blocked`, or `approval_required` without mutation; `created` only after exact read-back verification; `partial` when an issue exists but any write or managed value failed verification; and `failed` when no issue is known to have been created.
+- Create mode returns `blocked`, `publication_blocked`, or `approval_required` without mutation; `approval_required` is the deterministic input gate and does not by itself require another conversational turn when an earlier explicit imperative already authorized the bounded plan. Create mode returns `created` only after exact read-back verification, `partial` when an issue exists but any write or managed value failed verification, and `failed` when no issue is known to have been created.
 - Update mode returns `updated` only after the issue, fields, labels, and new comments verify. An incomplete normalization may return `needs_input`; fallback migration returns `migrated` only after native verification followed by verified capsule cleanup.
 - Show the resolved target, normalized title and body, expected delivery evidence, effective metadata values, assessment provenance and rationale, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, scoring calculation, scoring-audit publication state, planned comments, capability evidence, and warnings.
 - Show the complete creation payload, comments, publication digest, write results, created issue URL, and per-value verification checks.
@@ -93,6 +94,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - Preserve underspecified external evidence, add focused questions, and propose `needs triage` only when the label is known to exist.
 - Report absent requested labels as unapplied and never create their definitions.
 - Fail closed before mutation when native-versus-fallback placement is unresolved, publication safety is not attested, credential-shaped text is detected, the target differs, or the approved digest does not match the exact plan. Treat a collapsed scoring audit as public text on a public issue; the disclosure element is not a privacy boundary.
+- Do not translate Plan mode, “plan,” “draft,” “preview,” “show me the diff,” questions, or exploratory discussion into publication approval. An explicit mutation imperative authorizes only its exact target and bounded mode. Stop for fresh direction if the preview reveals a different target, missing required evidence, broader scope, nonstandard public text, or another material surprise.
 - After any mutation, do not delete, close, or issue an unplanned compensating write to simulate rollback. Preserve current state and report every failed write or mismatched value.
 - Treat `issue_field_values` in an issue update as a replacement set. Preserve every currently observed set field, including unmanaged values, and overlay intended changes into one complete payload; stop if any current value cannot be represented safely.
 - During fallback migration, stop before body cleanup whenever a native write cannot be observed. Preserve conflicting native values and their fallback keys.
@@ -106,12 +108,12 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
 6. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.
 7. Review `task-score/v1`, its required factors, and its optional collapsed audit comment. Keep Priority, Complexity, and scheduling fields out of both the formula and public audit. Use `publishScoringAudit: false` when the calculation should remain only in native or fallback metadata.
-8. For draft mode, return the complete read-only preview and stop.
-9. For create mode, first return the complete payload, comments, exact target, and digest without mutation. Screen every GitHub-facing string for publication safety and obtain authorization for that displayed plan.
-10. Rerun create mode with the exact safety attestation, target, and digest. Create one issue with native type, existing labels, native field values, and fallback metadata, then post only the planned comments.
+8. For Plan mode or planning, drafting, preview, question, and exploratory intent, return the complete read-only preview and stop without populating publication approval.
+9. For create mode, first return the complete payload, comments, exact target, and digest without mutation. Screen every GitHub-facing string for publication safety. An earlier explicit imperative for that exact bounded creation supplies the user authorization; a material surprise requires fresh direction.
+10. When authorized, rerun create mode in the same turn with the exact safety attestation, target, and digest. Create one issue with native type, existing labels, native field values, and fallback metadata, then post only the planned comments. Do not pause merely to ask the user to repeat the authorization after the digest is known.
 11. Re-read the issue, issue-field values, labels, and comments. Return `created` only when every managed value verifies; otherwise preserve the issue URL and return `partial` with exact mismatches.
-12. For revision or normalization, re-read current state first, preserve unmanaged labels and earlier comments, avoid duplicate score audits, mark a changed audit as superseding the previous assessment, show the complete semantic and storage diff, then require exact target and digest authorization before PATCH and verification.
-13. For fallback migration, preview two phases. Write native values, re-read them, and only then remove the verified fallback keys. Keep conflicts or unavailable representations in the capsule.
+12. For revision, normalization, or rescore, re-read current state first, preserve unmanaged labels and earlier comments, avoid duplicate score audits, mark a changed audit as superseding the previous assessment, and show the complete semantic and storage diff. If an explicit imperative already authorized that exact bounded mode and the diff contains no material surprise, bind its target and digest and continue to PATCH and verification in the same turn; otherwise stop at the preview.
+13. For an explicitly requested fallback migration, preview two phases and confirm the plan is limited to that mode. Write native values, re-read them, and only then remove the verified fallback keys. Keep conflicts or unavailable representations in the capsule and stop for fresh direction on any material surprise.
 
 ## Bundled Resources
 

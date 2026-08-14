@@ -49,7 +49,11 @@ Before a write, show:
 - any scoring or audit comment that will be posted; and
 - an exact managed diff for revision, normalization, or schema alignment.
 
-An explicit request to create the displayed task authorizes that exact creation. Revision, normalization, schema synchronization, relationship changes, and destructive operations require their displayed diff to be explicitly authorized. Never broaden authorization from one repository, task, or displayed mutation to another.
+Authorization is conveyed by user intent, not by a mandatory extra conversational round trip. An unambiguous imperative to create, revise, normalize, rescore, or explicitly migrate one exact task authorizes one bounded Task Author mutation when every planned effect is an ordinary consequence of the requested mode and this contract. The agent must still read current state, generate and inspect the exact plan, scan every publication surface, bind the write to the exact target and digest, apply it, and verify it. When those checks reveal no material surprise, the preview and digest-authorized write may occur in the same turn without asking the user to approve the digest separately.
+
+Plan mode and requests such as “plan,” “draft,” “preview,” “show me the diff,” or “what would change?” are read-only. Questions and exploratory discussion do not authorize mutation. Stop for fresh direction when the target is unresolved, required evidence is missing, or the exact plan contains a material surprise outside the requested mode, such as a different target, broader scope, additional public text beyond contract-standard comments, or another consequential side effect.
+
+Schema synchronization, relationship changes, and destructive operations retain their own authorization boundaries. An explicit fallback-migration imperative authorizes only the separately planned two-phase migration for that exact task. Never broaden authorization from one repository, task, mode, or displayed mutation to another.
 
 ## Publication Safety
 
