@@ -522,5 +522,4 @@ Goal-aware scoring, additional task types, Severity, Area, Confidence, workflow 
 
 - [Machine-readable task management schema](./task-management-schema.json)
 - [GitHub-backed project management model](./project-management-model.md)
-- [Task management skills roadmap](../ideas/task-management-skills-roadmap.md)
 - [Task Completion Check](../skills/task-completion-check/SKILL.md)
