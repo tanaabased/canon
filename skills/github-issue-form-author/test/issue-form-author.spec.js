@@ -46,6 +46,22 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
       ),
       [2, 3, 2],
     );
+    assert.deepEqual(
+      submittedElements(forms[0].document).map(({ id, attributes, validations }) => ({
+        id,
+        label: attributes.label,
+        required: validations.required,
+      })),
+      [
+        { id: 'work', label: 'What needs to be done, and why?', required: true },
+        { id: 'completion', label: 'How will we know it is complete?', required: true },
+        {
+          id: 'task-context',
+          label: 'What constraints, inputs, or approvals should we know about?',
+          required: false,
+        },
+      ],
+    );
 
     for (const { content, document } of forms) {
       const ids = submittedElements(document).map(({ id }) => id);

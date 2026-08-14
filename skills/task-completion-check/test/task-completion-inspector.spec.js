@@ -50,10 +50,10 @@ describe('skills/task-completion-check/lib/task-completion-inspector', () => {
     assert.equal(inspectTaskCompletion(options, client).status, 'complete');
   });
 
-  it('should classify a non-code task with complete criteria as ready', () => {
+  it('should keep a task pending until a completion pull request is linked', () => {
     const report = inspectTaskCompletion(options, createClient());
 
-    assert.equal(report.status, 'ready');
+    assert.equal(report.status, 'pending');
     assert.equal(report.pullRequests.length, 0);
   });
 

@@ -19,23 +19,32 @@ const ADDITIONAL_CONTEXT = Object.freeze({
   required: false,
 });
 
+const TASK_CONTEXT = Object.freeze({
+  id: 'task-context',
+  label: 'What constraints, inputs, or approvals should we know about?',
+  description:
+    'Include relevant deadlines, budgets, people, access, links, files, dependencies, privacy concerns, or actions requiring approval. Do not include secrets.',
+  required: false,
+});
+
 /** Human-oriented evidence prompts; canonical task headings are produced during normalization. */
 export const INTAKE_FORMS = Object.freeze({
   task: Object.freeze([
     Object.freeze({
-      id: 'change',
-      label: 'What needs to change, and why?',
+      id: 'work',
+      label: 'What needs to be done, and why?',
       description:
-        'Describe the current situation, the affected workflow, and the change you need.',
+        'Describe the current situation, the result you want, and who or what is affected.',
       required: true,
     }),
     Object.freeze({
-      id: 'success',
-      label: 'What would a successful result look like?',
-      description: 'Describe the observable outcome. Formal acceptance criteria are not required.',
+      id: 'completion',
+      label: 'How will we know it is complete?',
+      description:
+        'Describe the observable result, deliverable, or external state. Formal acceptance criteria are not required.',
       required: true,
     }),
-    ADDITIONAL_CONTEXT,
+    TASK_CONTEXT,
   ]),
   bug: Object.freeze([
     Object.freeze({

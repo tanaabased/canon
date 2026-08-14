@@ -4,6 +4,7 @@ import normalizePrEvidence from '../utils/normalize-pr-evidence.js';
 
 const base = {
   baseRefName: 'main',
+  body: '## Outcome\n\nThe task is complete.',
   isDraft: false,
   mergeable: 'MERGEABLE',
   mergeStateStatus: 'CLEAN',
@@ -23,6 +24,7 @@ describe('skills/task-completion-check/utils/normalize-pr-evidence', () => {
 
     assert.equal(result.outcome, 'landed');
     assert.equal(result.targetIsDefault, true);
+    assert.match(result.body, /The task is complete/);
   });
 
   it('should classify active review and check work as pending', () => {

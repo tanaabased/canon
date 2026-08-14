@@ -29,6 +29,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 ## When to Use
 
 - Draft a new Task, Bug, or Feature against one explicit GitHub repository.
+- Use Task for any bounded unit of work that does not fit the more specific Bug or Feature shape, including repository, operational, administrative, research, content, purchasing, scheduling, or external work.
 - Create one fully evidenced Task, Bug, or Feature after the exact publication plan is displayed and authorized.
 - Revise one material task against newly accepted evidence and preserve its earlier discussion.
 - Normalize an existing external submission into canonical headings without inventing missing facts.
@@ -58,7 +59,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 ## Inputs
 
-- Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, evidence for every required body section, and checkable acceptance criteria.
+- Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, evidence for every required body section, and checkable acceptance criteria. A Task additionally requires an outcome, scoped work, and the expected delivery and verification evidence for its completion pull request.
 - Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
 - A Task score additionally requires Impact, Work size, Urgency, Enablement, and Confidence evidence. Unknown factors remain unset.
 - Every accepted metadata value and scoring diagnostic requires an `assessment` entry with `source` equal to `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based `rationale`; Task score provenance is generated as `derived`.
@@ -76,7 +77,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - Draft mode returns `ready`, `partial`, or `needs_input` and always sets `mutatesGitHub: false`.
 - Create mode returns `blocked`, `publication_blocked`, or `approval_required` without mutation; `created` only after exact read-back verification; `partial` when an issue exists but any write or managed value failed verification; and `failed` when no issue is known to have been created.
 - Update mode returns `updated` only after the issue, fields, labels, and new comments verify. An incomplete normalization may return `needs_input`; fallback migration returns `migrated` only after native verification followed by verified capsule cleanup.
-- Show the resolved target, normalized title and body, effective metadata values, assessment provenance and rationale, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, scoring calculation, scoring-audit publication state, planned comments, capability evidence, and warnings.
+- Show the resolved target, normalized title and body, expected delivery evidence, effective metadata values, assessment provenance and rationale, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, scoring calculation, scoring-audit publication state, planned comments, capability evidence, and warnings.
 - Show the complete creation payload, comments, publication digest, write results, created issue URL, and per-value verification checks.
 - Treat `partial` as an honest discovery result, not permission to guess whether unavailable fields or labels exist.
 - A missing canonical field in a successfully inspected organization schema may use fallback metadata. An unavailable inspection remains unresolved because absence was not proven.
@@ -95,7 +96,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 1. Resolve and display one exact target. Stop if it remains ambiguous.
 2. Run the bundled draft or create command. Both check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
-3. Review missing body evidence and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
+3. Review missing body evidence, Task delivery proof, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
 4. Review assessment provenance and rationales. Keep agent estimates evidence-based, keep human-controlled values out of agent ownership, and leave uncertain values unset.
 5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
 6. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.

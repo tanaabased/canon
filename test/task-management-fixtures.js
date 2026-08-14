@@ -4,10 +4,12 @@ const CANONICAL_LABEL_NAMES = Object.freeze(taskManagementSchema.labels.map(({ n
 
 export const completeTaskSections = Object.freeze({
   context: 'Release checks are repeated manually.',
-  objective: 'Provide one consolidated repository health summary.',
-  inScope: ['Existing repository health checks'],
+  outcome: 'One consolidated repository health summary is available.',
+  scope: ['Consolidate the existing repository health checks'],
   outOfScope: ['Automatic remediation'],
   acceptanceCriteria: ['The summary reports every supported check', 'Validation passes'],
+  delivery:
+    'The completion pull request contains the summary implementation and the observed validation results.',
 });
 
 export const completeBugSections = Object.freeze({

@@ -2,7 +2,7 @@
 
 Status: active branch handoff for the phase 1 and phase 2 convergence loop
 
-Last updated: 2026-08-13
+Last updated: 2026-08-14
 
 ## Resume Point
 
@@ -38,7 +38,7 @@ The core is a usable, separately authorized three-skill system:
 - [GitHub Issue Form Author](../skills/github-issue-form-author/SKILL.md) renders and aligns low-friction Task, Bug, and Feature intake forms and hands lossless evidence to Task Author for semantic normalization.
 - [The shared contract](../references/task-management-contract.md), [machine schema](../references/task-management-schema.json), and [fixture corpus](../references/task-management-fixtures.md) own cross-skill semantics.
 
-The optimization pass consolidated only proven shared plumbing. The three skills retain distinct ownership and authorization boundaries. The branch's full local gate last passed with 271 tests, one expected PowerShell test pending, clean lint and formatting, clean Canon validation, all three skill validators clean, and an installed cache matching source. PR #17's lint, release, Ubuntu, and macOS checks were green before this documentation handoff.
+The optimization pass consolidated only proven shared plumbing. The three skills retain distinct ownership and authorization boundaries. The branch's full local gate last passed with 272 tests, one expected PowerShell test pending, clean lint and formatting, clean Canon validation, all three skill validators clean, and an installed cache matching source. PR #17's lint, release, Ubuntu, and macOS checks were green before this documentation handoff.
 
 ## Live Evidence
 
@@ -57,19 +57,20 @@ The disposable repository is `tanaabased/agent-system-test`.
 
 Do this work in order:
 
-1. Calibrate the low-friction human forms and canonical normalized Task, Bug, and Feature body templates together. Review question count, required inputs, body headings, lossless evidence mapping, and whether representative reporters can submit useful evidence without being asked to score agent-owned metadata.
+1. Continue type-by-type template calibration. The broad Task intake and canonical body are accepted and implemented, including the required completion pull-request gate. Calibrate Bug next, then Feature, while preserving the shared evidence and metadata boundaries.
 2. Run representative organization and personal-repository submissions through Issue Form Author and Task Author. Update the shared contract, schema, and fixtures first if human review exposes a real semantic change; then update both skill projections.
 3. Decide whether the convergence gate requires disposable live evidence for revise, normalize, and fallback migration. The modes and fixtures exist locally; they have not received the same final live proof as native creation. A live fallback migration should use a purpose-built disposable issue and preserve partial evidence rather than deleting or rolling back it.
 4. After the templates and mapping are accepted, generate a fresh Issue Form Author repository plan for `tanaabased/agent-system-test`. Review and authorize its exact repository, branch, SHA-bound operations, and digest before writing the four managed files.
 5. Run the full fixture corpus, all three skill validators, repository tests, lint, Codex validation, cache sync/check, and a final live read-only inspection. Update the roadmap with the convergence decision.
 6. Merge PR #17 as the first discrete usable task-management core. Start Task Decomposer and milestone work on new branches rather than expanding this one.
 
-The next collaborative step is item 1. The human intake templates and canonical normalized templates are working shapes, not accepted final designs.
+The next collaborative step is item 1 for Bug. The Task intake, normalized body, and completion-delivery contract are accepted; Bug and Feature remain working shapes until their reviews finish.
 
 ## Guardrails
 
 - Require a fresh plan and exact digest for every GitHub write. Never reuse the historical digests recorded during live proof.
 - Keep human intake questions shorter than the canonical task representation. Task Author, not the reporter, owns semantic normalization and agent-derived assessment.
+- Require a linked completion pull request for every task kind. Use an evidence-bearing body for external work and an empty commit only when no safe or useful repository artifact exists.
 - Keep Priority and scheduling human- or policy-controlled. Keep Complexity model-neutral and outside `task-score/v1`.
 - Prefer native GitHub issue types and fields. Use visible fallback YAML only when native metadata is proven unavailable.
 - Treat public scoring-audit comments as optional explanation, not score storage or a privacy boundary.

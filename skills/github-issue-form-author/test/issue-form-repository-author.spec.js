@@ -153,7 +153,23 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     const task = parsedByBun(files['.github/ISSUE_TEMPLATE/task.yml']);
     task.body[0].attributes.value =
       'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.';
-    task.body.push(
+    task.body = [
+      task.body[0],
+      {
+        type: 'textarea',
+        id: 'change',
+        attributes: { label: 'What needs to change, and why?' },
+      },
+      {
+        type: 'textarea',
+        id: 'success',
+        attributes: { label: 'What would a successful result look like?' },
+      },
+      {
+        type: 'textarea',
+        id: 'additional-context',
+        attributes: { label: 'Additional context' },
+      },
       {
         type: 'textarea',
         id: 'acceptance-criteria',
@@ -164,7 +180,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
         id: 'urgency',
         attributes: { label: 'Urgency assessment', options: ['Moderate', 'High'] },
       },
-    );
+    ];
     files['.github/ISSUE_TEMPLATE/task.yml'] = serializeYaml(task);
     const client = fakeIssueFormClient({ files });
 
@@ -180,7 +196,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     assert.equal(report.status, 'aligned_after_write');
     assert.deepEqual(
       updated.body.filter(({ type }) => type !== 'markdown').map(({ id }) => id),
-      ['change', 'success', 'additional-context'],
+      ['work', 'completion', 'task-context'],
     );
   });
 
@@ -282,7 +298,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     assert.equal(Object.hasOwn(task, 'type'), false);
     assert.deepEqual(
       task.body.filter(({ type }) => type !== 'markdown').map(({ id }) => id),
-      ['change', 'success', 'additional-context'],
+      ['work', 'completion', 'task-context'],
     );
   });
 });

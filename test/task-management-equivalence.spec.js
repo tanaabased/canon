@@ -13,9 +13,9 @@ function intakeAnswers({ kind, sections }) {
   const normalizedKind = kind.toLowerCase();
   if (normalizedKind === 'task') {
     return {
-      change: [sections.context, ...sections.inScope].map(text).join('\n'),
-      success: [sections.objective, ...sections.acceptanceCriteria].map(text).join('\n'),
-      'additional-context': [sections.constraints, ...sections.outOfScope]
+      work: [sections.context, sections.outcome, ...sections.scope].map(text).join('\n'),
+      completion: [...sections.acceptanceCriteria, sections.delivery].map(text).join('\n'),
+      'task-context': [sections.constraints, ...sections.outOfScope]
         .filter(Boolean)
         .map(text)
         .join('\n'),

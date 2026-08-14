@@ -27,6 +27,7 @@ Every applicable fixture must satisfy these assertions:
 - By default, persist a collapsed advisory scoring-audit comment whenever a score is first written or its displayed inputs change; allow explicit suppression without suppressing the score.
 - Preview every write and re-read every managed value afterward.
 - Report partial success honestly rather than treating an issue URL as complete success.
+- Require at least one linked completion pull request before an open task can become ready. Keep external or sensitive evidence safely summarized rather than publishing private material.
 
 ## Fixture Matrix
 
@@ -59,16 +60,18 @@ Every applicable fixture must satisfy these assertions:
 Input evidence:
 
 - Explicit target: `acme/widgets`.
-- Objective: add a repository health summary that consolidates existing checks.
+- Outcome: one repository health summary consolidates the existing checks.
 - Scope and acceptance conditions are bounded and directly testable.
+- Delivery evidence is expected in the linked completion pull request.
 - The work removes recurring release friction and enables one follow-up workflow.
 
 Expected body:
 
 - `Context` identifies the repeated manual check sequence.
-- `Objective` names one consolidated summary.
-- `Scope` separates the supported checks from unrelated remediation.
+- `Outcome` names the observable consolidated summary.
+- `Scope` identifies the required check consolidation and omits unrelated remediation through an optional exclusion.
 - `Acceptance criteria` contains observable output and validation conditions.
+- `Delivery and verification` identifies the expected pull-request artifact and observed validation results.
 - No fallback capsule appears.
 
 Expected native metadata:
@@ -491,6 +494,7 @@ Organization form assertions:
 
 - The form sets the matching top-level issue `type`.
 - Task and Feature each expose two required evidence responses and one optional context response.
+- Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter.
 - Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response.
 - The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
 - Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.

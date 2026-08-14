@@ -8,7 +8,10 @@ import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
 import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
 import { renderTaskBody } from '../utils/render-task-body.js';
 import { renderTaskScoreComment } from '../utils/render-task-comments.js';
-import { completeBugSections } from '../../../test/task-management-fixtures.js';
+import {
+  completeBugSections,
+  completeTaskSections,
+} from '../../../test/task-management-fixtures.js';
 
 describe('Task Author deterministic utilities', () => {
   it('should normalize explicit repository and issue targets without directory inference', () => {
@@ -40,6 +43,21 @@ describe('Task Author deterministic utilities', () => {
     const incomplete = renderTaskBody('bug', { ...completeBugSections, reproduction: '' });
     assert.deepEqual(incomplete.missing, ['reproduction']);
     assert.match(incomplete.body, /## Reproduction or evidence\n\n## Impact/);
+  });
+
+  it('should render the broad Task delivery contract without requiring exclusions', () => {
+    const complete = renderTaskBody('task', completeTaskSections);
+    assert.match(complete.body, /^## Context/);
+    assert.match(complete.body, /## Outcome/);
+    assert.match(complete.body, /## Scope\n\n- Consolidate/);
+    assert.match(complete.body, /## Delivery and verification/);
+    assert.deepEqual(complete.missing, []);
+
+    const withoutExclusions = renderTaskBody('task', {
+      ...completeTaskSections,
+      outOfScope: [],
+    });
+    assert.doesNotMatch(withoutExclusions.body, /### Out of scope/);
   });
 
   it('should render ordered fallback YAML without unset or native-only concepts', () => {

@@ -11,6 +11,9 @@ const PRESERVED_FORM_KEYS = Object.freeze(['title', 'assignees', 'projects']);
 const CONFIG_KEYS = Object.freeze(new Set(['blank_issues_enabled', 'contact_links']));
 const RETIRED_MANAGED_INPUTS = Object.freeze({
   'task-kind': { type: 'dropdown', label: 'Task kind' },
+  change: { type: 'textarea', label: 'What needs to change, and why?' },
+  success: { type: 'textarea', label: 'What would a successful result look like?' },
+  'additional-context': { type: 'textarea', label: 'Additional context' },
   context: { type: 'textarea', label: 'Context' },
   objective: { type: 'textarea', label: 'Objective' },
   'in-scope': { type: 'textarea', label: 'In scope' },

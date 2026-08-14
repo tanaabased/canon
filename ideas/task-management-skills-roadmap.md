@@ -2,7 +2,7 @@
 
 Status: active implementation roadmap; contract hypotheses remain under convergence review
 
-Last researched: 2026-08-13
+Last researched: 2026-08-14
 
 ## Purpose
 
@@ -40,14 +40,14 @@ Do not create separate Task Creator, Task Reworker, and Task Normalizer skills. 
 
 Last reviewed: 2026-08-13
 
-| Surface                          | Current state                                                                                                                                                                                                                                                                                                                      | Remaining work                                                                                                                                                                                     |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shared contract and fixtures     | Human contract, machine-readable schema, descriptive fixtures, shared executable fixtures, and root-owned cross-skill intake-preservation coverage are checked in. The contract distinguishes human intake from canonical tasks and defines assessment ownership.                                                                  | Continue calibration when cross-surface fixtures reveal material ambiguity.                                                                                                                        |
-| Task Author                      | Capability discovery, deterministic drafting, assessment provenance, digest-gated create/revise/normalize, verified two-phase fallback migration, scoring, optional collapsed public score audits, T01-T16, R01, exact verification, and full-native live Task/Bug/Feature creation evidence exist.                                | Calibrate the canonical normalized body templates with the human intake layer; decide whether the convergence gate also requires disposable live revise, normalize, and fallback-migration proofs. |
-| GitHub Issue Schema Author       | Read-only inspection; digest-gated additive fields, retained-option colors, organization-members-only visibility, canonical repository-label definitions, and separately authorized field pinning exist. Field creation, colors, pinning, visibility, and disposable-repository labels are live-verified and idempotently aligned. | Keep any later rename, option, type, or destructive migration path separately authorized; no further initial-schema implementation is currently required.                                          |
-| GitHub Issue Form Author         | Task, Bug, and Feature rendering, shared low-friction organization/personal evidence questions, lossless intake handoff, repository inspection, deterministic managed diffs, digest-authorized writes, exact verification, and earlier live scaffolding evidence exist.                                                            | Calibrate the intake templates alongside Task Author's canonical normalized body templates; align the disposable repository only after both layers and their mapping are accepted.                 |
-| Phase 1 and phase 2 convergence  | Core implementation and schema live proofs are complete; template calibration and the final cross-surface pass remain.                                                                                                                                                                                                             | Exercise all three surfaces together until one full fixture pass produces no material contract changes, then align the accepted issue forms live.                                                  |
-| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                                                                                          | Begin only after the three-skill convergence gate passes.                                                                                                                                          |
+| Surface                          | Current state                                                                                                                                                                                                                                                                                                                                                                       | Remaining work                                                                                                                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared contract and fixtures     | Human contract, machine-readable schema, descriptive fixtures, shared executable fixtures, and root-owned cross-skill intake-preservation coverage are checked in. The contract distinguishes human intake from canonical tasks and defines assessment ownership.                                                                                                                   | Continue calibration when cross-surface fixtures reveal material ambiguity.                                                                                                                        |
+| Task Author                      | Capability discovery, deterministic drafting, assessment provenance, digest-gated create/revise/normalize, verified two-phase fallback migration, scoring, optional collapsed public score audits, T01-T16, R01, exact verification, and full-native live Task/Bug/Feature creation evidence exist. The broad Task body and required completion pull-request contract are accepted. | Calibrate the canonical Bug and Feature bodies with their human intake layers; decide whether the convergence gate also requires disposable live revise, normalize, and fallback-migration proofs. |
+| GitHub Issue Schema Author       | Read-only inspection; digest-gated additive fields, retained-option colors, organization-members-only visibility, canonical repository-label definitions, and separately authorized field pinning exist. Field creation, colors, pinning, visibility, and disposable-repository labels are live-verified and idempotently aligned.                                                  | Keep any later rename, option, type, or destructive migration path separately authorized; no further initial-schema implementation is currently required.                                          |
+| GitHub Issue Form Author         | Task, Bug, and Feature rendering, shared low-friction organization/personal evidence questions, lossless intake handoff, repository inspection, deterministic managed diffs, digest-authorized writes, exact verification, and earlier live scaffolding evidence exist. The Task questions and lossless mapping are accepted.                                                       | Calibrate Bug and Feature intake alongside their canonical normalized bodies; align the disposable repository only after all three kinds and their mappings are accepted.                          |
+| Phase 1 and phase 2 convergence  | Core implementation and schema live proofs are complete; template calibration and the final cross-surface pass remain.                                                                                                                                                                                                                                                              | Exercise all three surfaces together until one full fixture pass produces no material contract changes, then align the accepted issue forms live.                                                  |
+| Decomposition and milestone work | Deferred.                                                                                                                                                                                                                                                                                                                                                                           | Begin only after the three-skill convergence gate passes.                                                                                                                                          |
 
 Keep the initial Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author implementation on one integration branch until they form a discrete usable task-authoring system. After that core loop merges, implement decomposition and milestone surfaces as separately reviewable branches.
 
@@ -130,7 +130,7 @@ The durable architectural decisions are: distinguish low-friction intake evidenc
 - **Owned surface:** one GitHub-backed task and its directly managed metadata
 - **Modes:** draft, create, revise, normalize
 
-Own drafting, creation, revision, and normalization for one task plus its directly managed native or fallback values. Keep schema definitions, checked-in forms, multi-task decomposition, milestone planning, and completion assessment outside this boundary. The next implementation slice is revise, normalize, and fallback migration with exact managed diffs and post-write verification.
+Own drafting, creation, revision, and normalization for one task plus its directly managed native or fallback values. Keep schema definitions, checked-in forms, multi-task decomposition, milestone planning, and completion assessment outside this boundary. Draft, create, revise, normalize, fallback migration, exact managed diffs, and post-write verification are implemented; the broad Task body is accepted while Bug and Feature remain under template calibration.
 
 ### 2. `tanaab-github-issue-schema-author`
 
@@ -139,7 +139,7 @@ Own drafting, creation, revision, and normalization for one task plus its direct
 - **Owned surface:** one organization's GitHub issue-type and issue-field schema plus the canonical label projection for one repository
 - **Modes:** inspect and synchronize
 
-Own GitHub-specific organization type and field definitions, field pinning, and the canonical repository-label projection. Preserve unmanaged state and isolate high-risk effects. Additive fields, retained-option colors, and pinning are complete; visibility, label synchronization, and migrations remain separately authorized future slices.
+Own GitHub-specific organization type and field definitions, field pinning, and the canonical repository-label projection. Preserve unmanaged state and isolate high-risk effects. Additive fields, retained-option colors, visibility, label synchronization, and pinning are complete; destructive or value migrations remain separately authorized future slices.
 
 ### 3. `tanaab-github-issue-form-author`
 
@@ -241,7 +241,7 @@ Completed: capability discovery; deterministic Task, Bug, and Feature drafting; 
 
 Completed in code: Task Author revise, normalize, and two-phase fallback migration; T16 and R01; exact managed diffs; digest-gated publication; and post-write verification.
 
-Remaining: complete full-native live Task/Bug/Feature evidence, then jointly calibrate and accept the human intake templates, canonical normalized body templates, and the evidence mapping between them.
+Remaining: calibrate and accept Bug and Feature human intake, canonical normalized body templates, and their evidence mappings. The Task slice and full-native live Task/Bug/Feature creation evidence are complete.
 
 ### Phase 2: build schema management and calibrate scoring
 
@@ -249,7 +249,7 @@ Completed: read-only inspection; desired schema capture; digest-gated additive f
 
 Completed in code: separately authorized visibility-only synchronization and canonical repository-label create/update synchronization with association verification and no rename or deletion path.
 
-Remaining: apply and verify fresh exact organization-members-only visibility and canonical-label plans, preserve associations through any later high-risk migration path, and calibrate scoring and Complexity classifications against the complete fixture corpus.
+Remaining: preserve associations through any later high-risk migration path and calibrate scoring and Complexity classifications against the complete fixture corpus. Organization-members-only visibility and canonical labels are live-verified and aligned.
 
 ### Phase 1 and phase 2 convergence loop
 
@@ -293,7 +293,7 @@ The convergence gate passes only when:
 - Another full fixture pass produces no material contract, schema, form, or scoring changes.
 - Task Author, GitHub Issue Schema Author, and GitHub Issue Form Author validate independently and retain their separate permission and failure boundaries.
 
-Template finalization happens at this gate, not when the first renderable forms or canonical body renderers are installed. Until the gate passes, both layers are executable calibration artifacts: intake questions and required fields, canonical body headings and required sections, their evidence mapping, generated Markdown, and metadata projections may change in response to fixture and live-submission evidence. Passing the gate records the accepted two-layer template contract and freezes those surfaces for routine use; later changes require an explicit contract revision rather than incidental scaffolding work.
+Calibrate one task kind at a time, then recheck all three together at the gate. The accepted Task slice is the first provisional contract; Bug and Feature remain executable calibration artifacts. Until the gate passes, cross-kind fixture or live-submission evidence may still require an explicit shared-contract revision. Passing the gate records the accepted two-layer template contract and freezes those surfaces for routine use; later changes require an explicit contract revision rather than incidental scaffolding work.
 
 Only after this gate passes should the roadmap advance to decomposition and project milestone work.
 
@@ -374,8 +374,9 @@ Complete the first usable phase 1 and phase 2 convergence loop on the shared cor
 1. **Completed:** apply and verify the independently authorized organization-members-only visibility plan for Work size, Complexity, Impact, and Task score.
 2. **Completed:** apply and verify the independently authorized canonical-label plan for `tanaabased/agent-system-test`.
 3. **Completed:** create and exactly verify a fully native Task, Bug, and Feature in that disposable repository from three separately displayed and authorized plans.
-4. **Next:** calibrate the low-friction forms and canonical normalized Task, Bug, and Feature bodies against representative submissions and the full fixture corpus. Finalize both layers and their mapping together, then align the disposable repository through a fresh exact plan.
-5. Run the complete fixture corpus across all three skills, revise the contract and schema only when evidence warrants it, and repeat until the convergence gate passes. Decide explicitly whether live revise, normalize, or fallback-migration evidence is required before declaring convergence.
-6. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
+4. **Completed for Task:** accept the broad Task body, low-friction Task form, lossless evidence mapping, and required completion pull-request gate.
+5. **Next:** calibrate Bug, then Feature, against representative submissions and the full fixture corpus. Recheck all three layers together, then align the disposable repository through a fresh exact plan.
+6. Run the complete fixture corpus across all three skills, revise the contract and schema only when evidence warrants it, and repeat until the convergence gate passes. Decide explicitly whether live revise, normalize, or fallback-migration evidence is required before declaring convergence.
+7. Merge the core task-management branch as one discrete usable system; begin decomposition and milestone work on separate branches afterward.
 
 The ownership, schema, and mutation architecture are settled. The main remaining question is calibrational: the shared fixtures still need to establish whether the intake prompts, canonical normalized templates, scoring order, Complexity classifications, and native/fallback convergence match human judgment. See [`task-management-core-handoff.md`](./task-management-core-handoff.md) for the branch transfer context and restart procedure.

@@ -8,10 +8,9 @@
   "bodyShapes": {
     "task": [
       { "heading": "Context", "key": "context", "level": 2, "required": true },
-      { "heading": "Objective", "key": "objective", "level": 2, "required": true },
-      { "heading": "Scope", "key": null, "level": 2, "required": false },
-      { "heading": "In scope", "key": "inScope", "level": 3, "required": true },
-      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": true },
+      { "heading": "Outcome", "key": "outcome", "level": 2, "required": true },
+      { "heading": "Scope", "key": "scope", "level": 2, "required": true },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": false },
       {
         "heading": "Acceptance criteria",
         "key": "acceptanceCriteria",
@@ -19,7 +18,13 @@
         "required": true
       },
       {
-        "heading": "Constraints and notes",
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Constraints and approvals",
         "key": "constraints",
         "level": 2,
         "required": false

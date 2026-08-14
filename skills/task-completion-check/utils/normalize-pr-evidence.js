@@ -70,6 +70,7 @@ export default function normalizePrEvidence(pullRequest, { checks = [], defaultB
 
   return {
     baseRefName: pullRequest.baseRefName || '',
+    body: pullRequest.body || '',
     blockers,
     checkCounts: {
       failing: failingChecks.length,

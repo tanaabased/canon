@@ -24,11 +24,11 @@ The contract is usable now, but the Complexity and Impact rubrics, body prompts,
 
 ## Domain and Provider Terms
 
-A **task** is one GitHub issue in the repository that represents its project. Task, Bug, and Feature are the initial GitHub issue types and the only initial task kinds.
+A **task** is one GitHub issue in the repository that represents its project. A Task may cover any bounded unit of work, including code, repository administration, research, operations, content, purchasing, scheduling, or another external outcome. Bug and Feature remain the more specific initial task kinds.
 
 Use task and project in user-facing workflows. Use repository, issue, issue type, issue field, label, milestone, sub-issue, and dependency when the GitHub representation matters.
 
-The task owns its state and acceptance criteria. A pull request, check, or release may provide completion evidence but does not replace the task.
+The task owns its state and acceptance criteria. Every task requires a linked completion pull request, but that change is the delivery and review envelope rather than a replacement for the task. A check or release may add evidence but does not prove completion by itself.
 
 ## Target Resolution and Authorization
 
@@ -72,11 +72,9 @@ Use these headings in order:
 ```markdown
 ## Context
 
-## Objective
+## Outcome
 
 ## Scope
-
-### In scope
 
 ### Out of scope
 
@@ -84,10 +82,14 @@ Use these headings in order:
 
 - [ ] Observable completion condition
 
-## Constraints and notes
+## Delivery and verification
+
+## Constraints and approvals
 ```
 
-`Constraints and notes` is optional when there is no material constraint. The evidence-gathering path should establish the affected workflow, current condition, desired outcome, boundaries, known constraints, local value, urgency, enablement, and acceptance evidence.
+`Scope` states the work, deliverables, or external actions that belong to the task. `Out of scope` is optional and appears only when an explicit boundary prevents expansion. `Delivery and verification` identifies the expected artifact or external state plus the evidence the completion pull request must provide. `Constraints and approvals` is optional and records material deadlines, budgets, access, privacy, affected people, external communication, spending, or irreversible actions.
+
+The evidence-gathering path should establish the current condition, desired outcome, required work, acceptance evidence, delivery proof, known constraints, local value, urgency, enablement, and any human authorization boundary. Never treat task creation as approval to spend money, contact a third party, disclose private information, or perform another consequential external action.
 
 ### Bug
 
@@ -141,7 +143,7 @@ Human intake and canonical task authoring are different representations of the s
 - A **canonical task** is the normalized working artifact. It uses the Task, Bug, or Feature body shape above, accepted metadata, and checkable acceptance criteria.
 - GitHub Issue Form Author extracts submitted responses and the original Markdown without semantic invention. Task Author owns the later evidence assessment and canonical rewrite.
 
-The initial Task and Feature forms use two required evidence responses plus one optional context response. The Bug form uses three required evidence responses plus one optional context response. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
+The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The Bug form uses three required evidence responses plus one optional context response. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
 
 Required form questions establish minimum useful evidence rather than demanding a fully planned task. A Bug's investigation response may provide reproducible steps or other direct occurrence evidence because intermittent failures can be valuable even when deterministic reproduction is unavailable.
 
@@ -414,7 +416,7 @@ Task Author may apply or remove existing canonical labels but must not create, r
 
 ### Revise
 
-Revise the body to represent the current task rather than accumulating an inline changelog. For a material change to objective, scope, acceptance criteria, constraints, task kind, or execution assumptions:
+Revise the body to represent the current task rather than accumulating an inline changelog. For a material change to outcome, scope, acceptance criteria, constraints, task kind, or execution assumptions:
 
 1. show the exact semantic diff;
 2. update the current body after authorization; and
@@ -442,9 +444,20 @@ When a canonical native representation becomes available:
 5. remove only the verified fallback key; and
 6. remove the capsule when empty.
 
+### Completion Pull Request
+
+Every Task, Bug, and Feature requires at least one linked pull request before it can be ready for completion. Use [the canonical completion pull-request template](../templates/task-completion-pull-request.md) as the evidence envelope.
+
+- Keep the pull request in draft while work is in progress. Marking it ready for review requests completion assessment.
+- Link it through GitHub's supported closing or development relationship so Task Completion Check can discover it.
+- Map the task's acceptance criteria to safe supporting evidence in the pull-request body. The body may reference code, repository artifacts, external outcomes, checks, or approved private evidence without publishing sensitive material.
+- Prefer a substantive repository change or safe artifact. When the outcome is entirely external and no useful artifact belongs in the repository, an empty completion commit is acceptable only with an evidence-bearing pull-request body.
+- Treat spending, external communication, account changes, legal or tax actions, and other consequential side effects as separately authorized work. A task or completion pull request never supplies missing authority.
+- Do not infer completion from the existence, approval, checks, or merge of the pull request alone. The task's acceptance criteria remain authoritative.
+
 ### Closure
 
-Completion assessment remains owned by Task Completion Check. This initial contract does not authorize Task Author to infer completion from a merged pull request or passing check. Use native issue state reasons rather than `duplicate`, `invalid`, or `wontfix` labels.
+Completion assessment remains owned by Task Completion Check. A task with complete acceptance criteria but no linked completion pull request remains `pending`. This initial contract does not authorize Task Author to infer completion from a merged pull request or passing check. Use native issue state reasons rather than `duplicate`, `invalid`, or `wontfix` labels.
 
 ## Remote Mutation and Verification
 
