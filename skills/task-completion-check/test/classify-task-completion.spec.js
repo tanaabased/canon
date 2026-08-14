@@ -35,7 +35,8 @@ describe('skills/task-completion-check/utils/classify-task-completion', () => {
     assert.equal(classify({ pullRequests: [{ outcome: 'blocked' }] }).status, 'blocked');
     assert.equal(classify({ pullRequests: [{ outcome: 'pending' }] }).status, 'pending');
     assert.equal(classify({ pullRequests: [{ outcome: 'landed' }] }).status, 'ready');
-    assert.equal(classify().status, 'ready');
+    assert.equal(classify().status, 'pending');
+    assert.match(classify().reason, /no linked completion pull request/);
     assert.equal(classify({ pullRequests: [{ outcome: 'discarded' }] }).status, 'blocked');
   });
 });

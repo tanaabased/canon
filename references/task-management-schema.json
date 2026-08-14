@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "tanaab/task-management-schema/v1",
+  "issueTypes": [
+    { "key": "task", "name": "Task", "enabled": true },
+    { "key": "bug", "name": "Bug", "enabled": true },
+    { "key": "feature", "name": "Feature", "enabled": true }
+  ],
+  "bodyShapes": {
+    "task": [
+      { "heading": "Context", "key": "context", "level": 2, "required": true },
+      { "heading": "Outcome", "key": "outcome", "level": 2, "required": true },
+      { "heading": "Scope", "key": "scope", "level": 2, "required": true },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": false },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Constraints and approvals",
+        "key": "constraints",
+        "level": 2,
+        "required": false
+      }
+    ],
+    "bug": [
+      {
+        "heading": "Observed behavior",
+        "key": "observedBehavior",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Expected behavior",
+        "key": "expectedBehavior",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Reproduction or evidence",
+        "key": "reproduction",
+        "level": 2,
+        "required": true
+      },
+      { "heading": "Impact", "key": "impactSummary", "level": 2, "required": true },
+      {
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Constraints and approvals",
+        "key": "constraints",
+        "level": 2,
+        "required": false
+      }
+    ],
+    "feature": [
+      {
+        "heading": "Problem or opportunity",
+        "key": "problem",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Desired outcome",
+        "key": "desiredOutcome",
+        "level": 2,
+        "required": true
+      },
+      { "heading": "Scope", "key": null, "level": 2, "required": false },
+      { "heading": "In scope", "key": "inScope", "level": 3, "required": true },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": true },
+      {
+        "heading": "Acceptance criteria",
+        "key": "acceptanceCriteria",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
+        "heading": "Alternatives and constraints",
+        "key": "alternatives",
+        "level": 2,
+        "required": false
+      }
+    ]
+  },
+  "scoringDiagnostics": {
+    "urgency": ["None", "Moderate", "High", "Immediate"],
+    "enablement": ["None", "Some", "Substantial", "Foundational"],
+    "confidence": ["Low", "Medium", "High"]
+  },
+  "issueFields": [
+    {
+      "key": "priority",
+      "name": "Priority",
+      "dataType": "single_select",
+      "fallbackKey": "priority",
+      "options": ["Urgent", "High", "Medium", "Low"],
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "workSize",
+      "name": "Work size",
+      "description": "Relative delivery size using 1, 2, 3, 5, 8, 13, and 21.",
+      "dataType": "single_select",
+      "fallbackKey": "work-size",
+      "options": ["1", "2", "3", "5", "8", "13", "21"],
+      "optionColors": {
+        "1": "green",
+        "2": "green",
+        "3": "green",
+        "5": "blue",
+        "8": "blue",
+        "13": "yellow",
+        "21": "red"
+      },
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "complexity",
+      "name": "Complexity",
+      "description": "Model-neutral reasoning difficulty, ambiguity, novelty, and uncertainty.",
+      "dataType": "single_select",
+      "fallbackKey": "complexity",
+      "options": ["Low", "Medium", "High"],
+      "optionColors": { "Low": "green", "Medium": "yellow", "High": "pink" },
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "impact",
+      "name": "Impact",
+      "description": "Expected local value of completing the task, independent of work size.",
+      "dataType": "single_select",
+      "fallbackKey": "impact",
+      "options": ["Low", "Medium", "High", "Very high"],
+      "optionColors": {
+        "Low": "gray",
+        "Medium": "yellow",
+        "High": "blue",
+        "Very high": "green"
+      },
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "taskScore",
+      "name": "Task score",
+      "description": "Derived 0 through 100 goal-independent ranking from task-score/v1.",
+      "dataType": "number",
+      "fallbackKey": "task-score",
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "startDate",
+      "name": "Start date",
+      "dataType": "date",
+      "fallbackKey": "start-date",
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    },
+    {
+      "key": "targetDate",
+      "name": "Target date",
+      "dataType": "date",
+      "fallbackKey": "target-date",
+      "visibility": "organization_members_only",
+      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
+    }
+  ],
+  "preservedUnmanagedFields": ["Effort"],
+  "labels": [
+    {
+      "name": "documentation",
+      "description": "Documentation additions or improvements",
+      "color": "2f81f7"
+    },
+    {
+      "name": "breaking change",
+      "description": "Requires consumer migration or coordination",
+      "color": "db2777"
+    },
+    {
+      "name": "regression",
+      "description": "Previously working behavior has degraded",
+      "color": "e5484d"
+    },
+    {
+      "name": "blocked",
+      "description": "Cannot proceed because of a documented blocker",
+      "color": "7f1d1d"
+    },
+    {
+      "name": "needs triage",
+      "description": "Submitted but not yet normalized against the task contract",
+      "color": "f59e0b"
+    },
+    {
+      "name": "needs reproduction",
+      "description": "A Bug needs reproducible evidence before work can proceed",
+      "color": "f97316"
+    },
+    {
+      "name": "good first issue",
+      "description": "Well-bounded work suitable for a first contribution",
+      "color": "86e7c4"
+    },
+    {
+      "name": "help wanted",
+      "description": "Maintainers welcome outside contribution",
+      "color": "00c88a"
+    }
+  ],
+  "legacyUnmanagedLabels": ["bug", "enhancement", "duplicate", "invalid", "question", "wontfix"],
+  "automationOwnedLabels": ["dependencies", "javascript", "github_actions"],
+  "projectSpecificLabelLimit": 2
+}

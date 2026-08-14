@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import { authorTaskDraft } from '../lib/task-draft-author.js';
 import fixtures, {
   completeBugSections,
+  completeFeatureSections,
   fakeClient,
   organizationCapabilities,
-} from './task-fixtures.js';
+} from '../../../test/task-management-fixtures.js';
 
-describe('Task Author T01-T15 draft fixtures', () => {
+describe('Task Author T01-T17 draft fixtures', () => {
   for (const fixture of fixtures) {
     it(`should satisfy ${fixture.id} without mutating GitHub`, () => {
       const client = fakeClient(fixture.capabilities);
@@ -15,6 +16,8 @@ describe('Task Author T01-T15 draft fixtures', () => {
 
       assert.equal(report.mutatesGitHub, false);
       assert.equal(report.scoring.score, fixture.expected.score);
+      assert.equal(report.assessment.errors.length, 0);
+      assert.equal(report.assessment.values.taskScore.source, 'derived');
       assert.equal(report.metadata.native.fields.length, fixture.expected.nativeFields);
       assert.deepEqual(report.labels.apply, fixture.expected.labels);
       if (fixture.expected.fallback) {
@@ -87,8 +90,36 @@ describe('Task Author T01-T15 draft fixtures', () => {
     assert.equal(report.metadata.values.workSize, undefined);
     assert.equal(report.metadata.values.complexity, undefined);
     assert.equal(report.scoring.score, null);
+    assert.ok(report.assessment.errors.some((error) => error.includes('assessment.impact')));
     assert.deepEqual(report.labels.apply, ['needs triage', 'needs reproduction']);
     assert.match(report.body, /## Reproduction or evidence\n\n## Impact/);
+  });
+
+  it('should keep an oversized Feature unready pending decomposition', () => {
+    const report = authorTaskDraft(
+      {
+        target: 'acme/widgets',
+        title: 'bundle task inspection, reporting, and automation',
+        kind: 'Feature',
+        sections: {
+          ...completeFeatureSections,
+          inScope: ['Task inspection', 'Reporting dashboards', 'Automation triggers'],
+        },
+        metadata: { workSize: 13 },
+        assessment: {
+          workSize: {
+            source: 'agent',
+            rationale: 'The request spans three independently deliverable capabilities.',
+          },
+        },
+        actionable: false,
+      },
+      { githubClient: fakeClient(organizationCapabilities()) },
+    );
+
+    assert.equal(report.status, 'needs_input');
+    assert.ok(report.warnings.some((warning) => warning.includes('decomposition review')));
+    assert.deepEqual(report.labels.apply, ['needs triage']);
   });
 
   it('should satisfy T11 with a partial capsule and no duplicate native values', () => {
@@ -131,6 +162,34 @@ describe('Task Author T01-T15 draft fixtures', () => {
     const comment = report.comments.find(({ kind }) => kind === 'priority-override');
     assert.match(comment.body, /contractual sequencing policy/);
     assert.match(comment.body, /Task score remains 22/);
+  });
+
+  it('should satisfy T17 with policy-sourced Urgency None and no Priority default', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T17');
+    const report = authorTaskDraft(fixture.input, {
+      githubClient: fakeClient(fixture.capabilities),
+    });
+
+    assert.equal(report.metadata.values.priority, undefined);
+    assert.equal(report.assessment.values.urgency.value, 'none');
+    assert.equal(report.assessment.values.urgency.source, 'policy');
+    assert.equal(report.scoring.score, 30);
+  });
+
+  it('should allow the scoring audit comment to be suppressed without suppressing the score', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T01');
+    const report = authorTaskDraft(
+      { ...fixture.input, publishScoringAudit: false },
+      { githubClient: fakeClient(fixture.capabilities) },
+    );
+
+    assert.equal(report.scoring.score, fixture.expected.score);
+    assert.equal(report.scoring.auditPublication, 'suppressed');
+    assert.equal(report.scoring.auditComment, '');
+    assert.equal(
+      report.comments.some(({ kind }) => kind === 'task-score'),
+      false,
+    );
   });
 
   it('should leave fallback eligibility unresolved when field inspection is unavailable', () => {

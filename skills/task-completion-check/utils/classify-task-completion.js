@@ -25,6 +25,12 @@ export default function classifyTaskCompletion({ criteria, errors, pullRequests,
   if (errors.length > 0) {
     return { reason: 'Some required GitHub evidence could not be inspected.', status: 'uncertain' };
   }
+  if (pullRequests.length === 0) {
+    return {
+      reason: 'Acceptance criteria are complete, but no linked completion pull request exists.',
+      status: 'pending',
+    };
+  }
 
   const blocked = pullRequests.filter((pullRequest) => pullRequest.outcome === 'blocked');
   if (blocked.length > 0) {
@@ -42,11 +48,9 @@ export default function classifyTaskCompletion({ criteria, errors, pullRequests,
   }
 
   const landed = pullRequests.some((pullRequest) => pullRequest.outcome === 'landed');
-  if (landed || pullRequests.length === 0) {
+  if (landed) {
     return {
-      reason: landed
-        ? 'Acceptance criteria are complete and linked delivery has landed.'
-        : 'Acceptance criteria are complete and no pull request evidence is required.',
+      reason: 'Acceptance criteria are complete and linked delivery has landed.',
       status: 'ready',
     };
   }

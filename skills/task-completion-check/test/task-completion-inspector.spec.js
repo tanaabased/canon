@@ -50,10 +50,10 @@ describe('skills/task-completion-check/lib/task-completion-inspector', () => {
     assert.equal(inspectTaskCompletion(options, client).status, 'complete');
   });
 
-  it('should classify a non-code task with complete criteria as ready', () => {
+  it('should keep a task pending until a completion pull request is linked', () => {
     const report = inspectTaskCompletion(options, createClient());
 
-    assert.equal(report.status, 'ready');
+    assert.equal(report.status, 'pending');
     assert.equal(report.pullRequests.length, 0);
   });
 
@@ -100,6 +100,41 @@ describe('skills/task-completion-check/lib/task-completion-inspector', () => {
 
     const report = inspectTaskCompletion(options, client);
     assert.equal(report.status, 'blocked');
+    assert.match(report.pullRequests[0].failureDetails[0].logSnippet, /Error: broken/);
+  });
+
+  it('should keep an intentionally red draft pull request pending with failure evidence', () => {
+    const client = createClient({
+      fetchChecks: () => [
+        {
+          conclusion: 'failure',
+          detailsUrl: 'https://github.com/tanaabased/canon/actions/runs/123/job/456',
+          name: 'regression test',
+        },
+      ],
+      fetchLinkedPullRequests: () => [
+        {
+          number: '9',
+          slug: 'tanaabased/canon',
+          url: 'https://github.com/tanaabased/canon/pull/9',
+        },
+      ],
+      fetchPullRequest: (target) => ({
+        baseRefName: 'main',
+        isDraft: true,
+        mergeable: 'MERGEABLE',
+        mergeStateStatus: 'BLOCKED',
+        number: target.number,
+        reviewDecision: 'REVIEW_REQUIRED',
+        state: 'OPEN',
+        title: 'Reproduce Bug',
+        url: target.url,
+      }),
+    });
+
+    const report = inspectTaskCompletion(options, client);
+    assert.equal(report.status, 'pending');
+    assert.equal(report.pullRequests[0].outcome, 'pending');
     assert.match(report.pullRequests[0].failureDetails[0].logSnippet, /Error: broken/);
   });
 

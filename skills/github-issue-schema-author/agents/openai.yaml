@@ -1,0 +1,7 @@
+interface:
+  display_name: 'GitHub Issue Schema Author'
+  short_description: 'Tanaab-based GitHub issue schema inspection and bounded synchronization.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-github-issue-schema-author to inspect an explicit GitHub repository and separately digest-gate bounded field, visibility, label, color, or browser-backed pinning synchronization without deletion.'

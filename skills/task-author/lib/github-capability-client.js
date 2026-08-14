@@ -1,10 +1,6 @@
-import { spawnSync } from 'node:child_process';
+import runGitHubCli from '../../../lib/run-github-cli.js';
 
 const API_VERSION = '2026-03-10';
-
-function defaultRunner(args) {
-  return spawnSync('gh', args, { encoding: 'utf8' });
-}
 
 function commandFailure(result, context) {
   const detail = String(result.stderr ?? result.error?.message ?? 'unknown error').trim();
@@ -34,7 +30,7 @@ function flattenCollection(payload, keys = []) {
 export class GitHubCapabilityClient {
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
   }
 

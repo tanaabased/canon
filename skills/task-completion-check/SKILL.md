@@ -22,14 +22,14 @@ metadata:
 
 ## Overview
 
-Assess whether one GitHub-backed task is complete, ready, pending, blocked, or uncertain from its declared acceptance criteria and available delivery evidence. The workflow is read-only: the GitHub issue remains the authority for task state, and the skill never closes it or mutates its pull requests.
+Assess whether one GitHub-backed task is complete, ready, pending, blocked, or uncertain from its declared acceptance criteria and required linked completion pull request. The workflow is read-only: the GitHub issue remains the authority for task state, and the skill never closes it or mutates its pull requests.
 
 ## When to Use
 
 - Check whether an explicit GitHub issue is ready to close.
 - Review acceptance criteria, linked pull requests, reviews, merge state, and checks as one task-completion decision.
 - Inspect failing GitHub-hosted CI checks and extract useful Actions failure snippets when they block a task.
-- Distinguish a completed non-code task from a code task whose delivery evidence is still pending.
+- Inspect code, repository artifacts, or sanitized external-outcome evidence through the same required pull-request gate.
 
 ## When Not to Use
 
@@ -42,6 +42,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 
 - Require one explicit task identity as a GitHub issue URL or `OWNER/REPO#NUMBER`; never infer the task from a checkout or current pull request.
 - Confirm `gh` is installed and authenticated with read access to the task, linked pull requests, checks, and Actions logs.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Resolve [the bundled command](./scripts/check-task-completion.js) relative to this `SKILL.md`, then run `bun <resolved-path> OWNER/REPO#NUMBER --json`.
 - Add repeatable `--pr <value>` arguments only to supply missing or disambiguating pull request evidence. Automatic discovery remains the default.
 
@@ -51,7 +52,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 2. Extract Markdown acceptance-criteria checkboxes from the issue body. If none exist, classify the result as `uncertain` instead of inventing criteria.
 3. Discover closing and manually linked pull requests through GitHub's issue relationship, then merge any explicit `--pr` evidence without duplicates.
 4. Inspect each pull request's target branch, state, draft state, mergeability, review decision, and checks. For failing GitHub Actions checks, include the run identity and a bounded failure snippet when logs are available.
-5. Classify the task as `complete`, `ready`, `pending`, `blocked`, or `uncertain`. A closed issue is complete; incomplete criteria or explicit failures block; active review or checks remain pending; missing or contradictory evidence is uncertain.
+5. Classify the task as `complete`, `ready`, `pending`, `blocked`, or `uncertain`. A closed issue is complete; incomplete criteria or explicit failures on a ready pull request block; complete criteria without a linked completion pull request, a draft pull request with failing reproduction checks, active review, or pending checks remain pending; missing or contradictory evidence is uncertain.
 6. Report the normalized evidence and stop. A separate user-authorized workflow owns any fix, merge, or task closure.
 
 ## Checkpoints
@@ -59,12 +60,14 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 - Stop when the task identity is missing or malformed rather than guessing from local Git state.
 - Treat missing authentication or task access as a failed prerequisite.
 - Preserve `uncertain` when linked evidence cannot be queried, acceptance criteria are absent, or the available signals contradict one another.
+- Surface failing checks on draft pull requests as evidence, but keep the pull-request path `pending` until it is marked ready for review. Do not extend that allowance to a ready pull request.
 - Treat external check providers as evidence links only; do not claim to have inspected unavailable logs.
 
 ## Completion Criteria
 
 - The report names the exact task and one normalized status with a concrete reason.
 - Every structured acceptance criterion is shown as complete or incomplete.
+- Every open task with complete acceptance criteria has at least one linked completion pull request before it can be `ready`.
 - Every discovered or explicitly supplied pull request is accounted for as landed, pending, blocked, discarded, or uncertain.
 - Failing GitHub Actions checks include bounded failure evidence when available.
 - No GitHub state was mutated.
@@ -82,7 +85,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 
 - Confirm the task target is explicit and every GitHub operation is read-only.
 - Confirm passing checks alone never produce `ready` and missing acceptance criteria produce `uncertain`.
-- Confirm non-code tasks can become `ready` without pull request evidence when their criteria are complete.
+- Confirm code and non-code tasks remain `pending` without a linked completion pull request even when their criteria are complete.
 - Confirm draft, review-required, pending-check, failed-check, conflict, non-default-target, merged, and closed-unmerged pull request paths classify correctly.
 - Confirm fake-client tests cover task and pull request API failures without live GitHub calls.
 - Build and smoke the bundled command, then run the skill validator and focused flat test suite.

@@ -4,6 +4,7 @@ import normalizePrEvidence from '../utils/normalize-pr-evidence.js';
 
 const base = {
   baseRefName: 'main',
+  body: '## Outcome\n\nThe task is complete.',
   isDraft: false,
   mergeable: 'MERGEABLE',
   mergeStateStatus: 'CLEAN',
@@ -23,6 +24,7 @@ describe('skills/task-completion-check/utils/normalize-pr-evidence', () => {
 
     assert.equal(result.outcome, 'landed');
     assert.equal(result.targetIsDefault, true);
+    assert.match(result.body, /The task is complete/);
   });
 
   it('should classify active review and check work as pending', () => {
@@ -38,6 +40,22 @@ describe('skills/task-completion-check/utils/normalize-pr-evidence', () => {
     assert.equal(result.outcome, 'pending');
     assert.match(result.waiting.join(' '), /draft/);
     assert.equal(result.checkCounts.pending, 1);
+  });
+
+  it('should preserve failing draft checks as pending reproduction evidence', () => {
+    const result = normalizePrEvidence(
+      { ...base, isDraft: true, mergeStateStatus: 'BLOCKED', reviewDecision: 'REVIEW_REQUIRED' },
+      {
+        checks: [{ conclusion: 'failure', name: 'regression test' }],
+        defaultBranch: 'main',
+        slug: 'acme/tools',
+      },
+    );
+
+    assert.equal(result.outcome, 'pending');
+    assert.equal(result.checkCounts.failing, 1);
+    assert.deepEqual(result.blockers, []);
+    assert.match(result.waiting.join(' '), /failing checks.*draft pull request/);
   });
 
   it('should classify failed checks, conflicts, and non-default targets as blocked', () => {

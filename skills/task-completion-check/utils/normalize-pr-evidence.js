@@ -48,7 +48,11 @@ export default function normalizePrEvidence(pullRequest, { checks = [], defaultB
     if (pullRequest.mergeable === 'CONFLICTING' || pullRequest.mergeStateStatus === 'DIRTY') {
       blockers.push('merge conflict');
     }
-    if (failingChecks.length > 0) blockers.push(`${failingChecks.length} failing checks`);
+    if (failingChecks.length > 0) {
+      const message = `${failingChecks.length} failing checks`;
+      if (pullRequest.isDraft) waiting.push(`${message} on the draft pull request`);
+      else blockers.push(message);
+    }
 
     if (pullRequest.isDraft) waiting.push('pull request is a draft');
     if (pullRequest.reviewDecision === 'REVIEW_REQUIRED') waiting.push('review is required');
@@ -70,6 +74,7 @@ export default function normalizePrEvidence(pullRequest, { checks = [], defaultB
 
   return {
     baseRefName: pullRequest.baseRefName || '',
+    body: pullRequest.body || '',
     blockers,
     checkCounts: {
       failing: failingChecks.length,

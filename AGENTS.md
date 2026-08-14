@@ -17,13 +17,14 @@
 
 - Treat GitHub as the canonical project-management implementation for Tanaab work.
 - In Canon terminology, a project is represented by one GitHub repository, a task by one GitHub issue, a project milestone by one GitHub milestone, a change by a pull request, validation by checks or Actions results, and a release by a tag plus GitHub Release.
-- The task owns task state. Pull requests and checks provide completion evidence but are not themselves proof that the task is complete.
+- The task owns task state. Every task requires a linked pull request as its completion submission; pull requests and checks provide completion evidence but are not themselves proof that the task is complete.
 - Refer to an optional planning board explicitly as a GitHub Projects board; it is a view over project work, not the project's identity or source of truth.
 - Apply the complete shared contract in [`references/project-management-model.md`](./references/project-management-model.md). Cross-project strategic goals remain outside this initial model.
 
 ## Runtime Boundaries
 
 - Keep support material local to the owning skill by default.
+- Apply [`references/github-cli-routing.md`](./references/github-cli-routing.md) to every agent- or code-owned GitHub CLI invocation. Resolve bare `gh` from the inherited `PATH` and preserve the active process environment and working directory so a host harness can route and bind the responsible agent.
 - Hoist support material to repo root only when it is used by 2+ live skills or 2+ live repo entrypoints, is a true repo-wide contract or shared tooling surface, or is a cold-path human doc with standalone value.
 - A hoisted file must reduce total complexity instead of merely moving it.
 - Hoisted files with only one meaningful live consumer should be reviewed for demotion.
@@ -78,6 +79,7 @@
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
 - Before rolling a new canon release, run [`prompts/optimize-canon-project.md`](./prompts/optimize-canon-project.md) as a planning pass and review the resulting staged optimization plan.
+- Treat optimizer convergence and release readiness as separate conclusions. Reconcile the unreleased changelog against the latest versioned tag and run `tanaab-release-author` independently.
 
 ## Validation
 

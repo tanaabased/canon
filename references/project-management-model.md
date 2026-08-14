@@ -9,7 +9,7 @@ Use this reference for Tanaab project-management terminology and lifecycle owner
 | project               | repository (`OWNER/REPO`)          | Canonical project container and source of project identity                     |
 | task                  | issue                              | Atomic, independently trackable unit of work and authority for task state      |
 | project milestone     | milestone                          | Bounded project outcome or timebox that groups tasks                           |
-| change                | pull request                       | Delivery and review vehicle that may provide evidence for one or more tasks    |
+| change                | pull request                       | Required delivery and completion-review vehicle for one or more tasks          |
 | validation            | check run or GitHub Actions result | Automated evidence about a change or repository state                          |
 | release               | Git tag plus GitHub Release        | Packaged project delivery and its published metadata                           |
 | GitHub Projects board | optional planning view             | Visualization of project work, never the project's identity or source of truth |
@@ -20,12 +20,22 @@ Use the domain nouns in provider-neutral Canon guidance. Use **repository**, **i
 
 ## Lifecycle Ownership
 
-- The task owns task state and completion. A pull request is not the task, and passing validation does not by itself prove completion.
-- A change may implement, review, or provide evidence for a task. Non-code tasks may have no pull request.
+- The task owns task state and completion. A pull request is the required completion submission, not the task, and passing validation does not by itself prove completion.
+- Every task requires at least one linked pull request. The change may contain code, repository artifacts, or sanitized evidence of an external outcome. An empty commit is acceptable only when no safe or useful repository artifact exists; the pull-request body must still describe the outcome and acceptance evidence.
+- Keep the completion pull request in draft while work is in progress. Marking it ready for review requests completion assessment; merging it records delivery but does not satisfy undocumented acceptance criteria.
+- A Bug's draft completion pull request may intentionally begin with a failing regression test run against the affected baseline. Surface the failure as work-in-progress evidence and keep the path pending while the pull request is draft; a failing ready-for-review pull request is blocked.
 - A task is ready for completion only when its acceptance evidence is sufficient and no relevant change or validation remains pending or blocking.
 - A pull request linked through GitHub's supported mechanism may close its task when it merges into the default branch. Treat that as an implementation of task-state transition, not as a transfer of task ownership to the pull request.
 - A release groups delivered project state; it does not replace the tasks, changes, or validation that justify that state.
 - Cross-project strategic goals are intentionally unmapped until Tanaab adopts a separate durable goal contract.
+
+## Repository Task-Management Projection
+
+- Unless checked-in project guidance explicitly declares shared task intake not applicable, every GitHub-backed Tanaab project must keep the repository-local Task, Bug, Feature, and chooser issue forms aligned with the shared task-management contract.
+- The same project must keep its canonical repository-label definitions aligned and expose the applicable organization issue types and managed fields when those capabilities are available. Organization-native metadata and personal-repository fallbacks remain distinct projections of the same task contract.
+- Treat a missing managed issue-form file or canonical repository-label definition as drift rather than silently classifying the surface as not applicable. Preserve unmanaged templates, labels, fields, and other repository-specific additions through their owning skills.
+- GitHub Issue Form Author owns the checked-in form projection. GitHub Issue Schema Author owns the issue-type, field, pinning, visibility, option-color, and repository-label projection. Project Optimizer may discover and assess both surfaces but must not duplicate their contracts or mutation paths.
+- Remote issue-schema and label inspection remains optional during a local project audit and requires an explicit or confirmed `OWNER/REPO`; unavailable remote evidence is unresolved, not proof of drift or alignment.
 
 ## Skill Naming and Types
 
@@ -40,5 +50,5 @@ Use the domain nouns in provider-neutral Canon guidance. Use **repository**, **i
 ## Boundaries
 
 - A GitHub Projects board is optional. Do not require or create one merely because a project exists.
-- Do not infer that a passing check makes a task complete, that a merged pull request satisfies undocumented acceptance criteria, or that an open pull request means every task it references is incomplete.
+- Do not infer that a passing check makes a task complete, that a merged pull request satisfies undocumented acceptance criteria, or that an open pull request alone proves every task it references is complete.
 - Do not merge project-container mutation, task-state assessment, release authoring, and whole-project optimization into one umbrella skill.

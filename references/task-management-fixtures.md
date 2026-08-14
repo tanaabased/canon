@@ -6,9 +6,9 @@ Contract version: `tanaab/task-management/v1`
 
 ## Purpose
 
-These fixtures are the shared comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author. Apply them with [the task management contract](./task-management-contract.md).
+These fixtures are the shared comparison surface for Task Author, GitHub Issue Form Author, and GitHub Issue Schema Author. Their completion assertions also constrain Task Completion Check. Apply them with [the task management contract](./task-management-contract.md).
 
-The cases are descriptive golden fixtures, not live GitHub operations. Future skill-local tests should encode the same inputs and expected semantic results through fake clients before any operational scenario writes to GitHub.
+The cases are descriptive golden fixtures, not live GitHub operations. The shared executable fixture support and cross-skill equivalence spec live in the repository `test/` surface, while effect-specific fake-client coverage remains with each owning skill.
 
 Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, score, mutation boundary, and verification result are normative for the initial convergence loop.
 
@@ -17,15 +17,18 @@ Fixture prose is illustrative. The expected task kind, body shape, metadata auth
 Every applicable fixture must satisfy these assertions:
 
 - Resolve and display one exact `OWNER/REPO` target or stop without mutation.
-- Produce the same normalized task semantics whether input comes from Task Author, a GitHub issue form, or an external submission.
+- Preserve form and external-submission evidence losslessly, then produce the same canonical task semantics after Task Author normalization.
+- Show source and rationale for accepted estimates; keep Priority human- or policy-controlled and Task score derived.
 - Use native metadata when available and include only unavailable canonical values in fallback metadata.
 - Omit unknown values instead of inventing defaults or sentinels.
+- After a complete evidence review finds no urgency signal, assess Urgency as policy-sourced None; preserve incomplete or ambiguous urgency as unset.
 - Use only existing canonical labels; never create label definitions during task authoring.
 - Keep Complexity model-neutral and exclude it from Task score.
 - Keep Priority out of Task score and preserve a material override rationale.
-- Persist a scoring audit comment whenever a score is first written or changes.
+- By default, persist a collapsed advisory scoring-audit comment whenever a score is first written or its displayed inputs change; allow explicit suppression without suppressing the score.
 - Preview every write and re-read every managed value afterward.
 - Report partial success honestly rather than treating an issue URL as complete success.
+- Require at least one linked completion pull request before an open task can become ready. Keep external or sensitive evidence safely summarized rather than publishing private material.
 
 ## Fixture Matrix
 
@@ -47,9 +50,11 @@ Every applicable fixture must satisfy these assertions:
 | T14 | Task Author   | Task      | Organization    | Material Priority override                   | `22`           |
 | T15 | Task Author   | Task      | Organization    | Score boundaries and insufficient evidence   | Varies         |
 | T16 | Task Author   | Task      | Organization    | Fallback-to-native migration                 | Unchanged      |
+| T17 | Task Author   | Task      | Organization    | Evidence-aware Urgency None policy default   | `30`           |
 | S01 | Schema Author | All       | Organization    | Current-schema and legacy-label inspection   | Not applicable |
-| F01 | Form Author   | All       | Both            | Organization and personal form equivalence   | Fixture-owned  |
+| F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff        | Fixture-owned  |
 | R01 | Task Author   | Feature   | Organization    | Material revision history                    | Recomputed     |
+| R02 | Task Author   | Task      | Organization    | Score recomputation preserves native fields  | `50`           |
 
 ## Task Author Fixtures
 
@@ -58,16 +63,18 @@ Every applicable fixture must satisfy these assertions:
 Input evidence:
 
 - Explicit target: `acme/widgets`.
-- Objective: add a repository health summary that consolidates existing checks.
+- Outcome: one repository health summary consolidates the existing checks.
 - Scope and acceptance conditions are bounded and directly testable.
+- Delivery evidence is expected in the linked completion pull request.
 - The work removes recurring release friction and enables one follow-up workflow.
 
 Expected body:
 
 - `Context` identifies the repeated manual check sequence.
-- `Objective` names one consolidated summary.
-- `Scope` separates the supported checks from unrelated remediation.
+- `Outcome` names the observable consolidated summary.
+- `Scope` identifies the required check consolidation and omits unrelated remediation through an optional exclusion.
 - `Acceptance criteria` contains observable output and validation conditions.
+- `Delivery and verification` identifies the expected pull-request artifact and observed validation results.
 - No fallback capsule appears.
 
 Expected native metadata:
@@ -106,7 +113,7 @@ Input evidence:
 - Reproduction steps, observed output, expected output, and affected versions are available.
 - The bug affects a major release workflow but does not block unrelated work.
 
-Expected body uses the complete Bug shape and preserves version and command evidence beneath `Reproduction or evidence`.
+Expected body uses the complete Bug shape, preserves version and command evidence beneath `Reproduction or evidence`, and requires a linked draft completion pull request whose regression test runs in disposable GitHub Actions, fails against the affected baseline, and passes with the fix.
 
 Expected native metadata:
 
@@ -123,6 +130,8 @@ Expected labels: `regression`.
 
 Do not apply `needs reproduction`: the evidence is actionable. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `5`.
 
+The reporter is not asked to write the test or open the pull request. Those are worker-owned obligations normalized into `Delivery and verification`.
+
 ### T03: Organization Feature with a Breaking Change
 
 Input evidence:
@@ -138,6 +147,7 @@ Expected body:
 - `Desired outcome` describes the supported output contract.
 - `Scope` separates the new contract from unrelated CLI redesign.
 - `Acceptance criteria` covers schema, compatibility documentation, and migration evidence.
+- `Delivery and verification` requires the linked draft completion pull request to contain the versioned schema, tests or executable examples, user-facing documentation, migration evidence, and passing relevant checks.
 - `Alternatives and constraints` records the rejected compatibility approach.
 
 Expected native metadata:
@@ -183,7 +193,7 @@ Expected labels: `documentation` if that definition already exists. If it does n
 
 Score inputs are Impact Low (`0.25`), Urgency None (`0.00`), Enablement Some (`0.33`), Confidence High (`1.00`), and Work size `2`.
 
-Unset dates are omitted. The scoring audit comment remains required even though the numeric score uses the fallback capsule.
+Unset dates are omitted. By default, the collapsed scoring-audit comment remains planned even though the numeric score uses the fallback capsule; `publishScoringAudit: false` suppresses only the comment.
 
 ### T05: Personal-Repository Bug with Regression
 
@@ -212,6 +222,8 @@ Expected labels: `regression`.
 
 Do not apply `needs reproduction`. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `3`.
 
+`Delivery and verification` uses the same worker-owned draft-red-to-green pull-request lifecycle as T02.
+
 ### T06: Personal-Repository Feature Open to Contributors
 
 Input evidence:
@@ -239,6 +251,8 @@ fallback:
 Expected labels: `help wanted`.
 
 Do not apply `good first issue` because Work size exceeds `3`. Score inputs are Impact High (`0.75`), Urgency Moderate (`0.33`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `5`.
+
+The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, documentation, compatibility evidence, and validation beneath `Delivery and verification`.
 
 ### T07: Underspecified External Submission
 
@@ -271,6 +285,7 @@ Existing issue input:
 Expected behavior:
 
 - Normalize into the Bug body shape without fabricating reproduction steps.
+- Preserve the standard safe delivery lifecycle without claiming that a failing reproduction has already been observed.
 - Preserve the reporter's evidence and identify the exact missing diagnostic information.
 - Set issue type Bug when available.
 - Set Impact High only if the described blast radius supports it.
@@ -442,6 +457,26 @@ Expected migration:
 
 If a native value already conflicts with fallback, preserve the native value, report the conflict, and do not overwrite it through automatic migration.
 
+### T17: Evidence-Aware Urgency None Policy Default
+
+Input evidence:
+
+- Explicit target: `acme/widgets`.
+- One bounded research task reviews a broad existing surface and may enable multiple follow-up packages.
+- The available evidence contains no deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting.
+- No human or policy supplies Priority or scheduling dates.
+
+Expected native values are Task, Priority unset, Work size `21`, Complexity High, Impact Medium, and Task score `30`.
+
+Score inputs are Impact Medium (`0.50`), Urgency None (`0.00`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `21`.
+
+Expected behavior:
+
+- Record Urgency None with `policy` provenance and a rationale that the complete evidence review found no meaningful cost of waiting.
+- Keep Priority unset; do not translate the absence of a sequencing override into Priority Low.
+- Keep Priority out of the formula.
+- If the evidence instead suggests possible but unbounded time sensitivity, ask a focused question and leave Urgency and Task score unset.
+
 ## GitHub Issue Schema Author Fixture
 
 ### S01: Current Organization Schema and Legacy Labels
@@ -459,10 +494,11 @@ Expected read-only report:
 
 - Types: aligned.
 - Priority: aligned.
-- Effort: migration required; inspect every existing value before proposing the Work size rename and option mapping.
+- Effort: unmanaged and preserved; do not rename, delete, map, or treat it as Work size evidence.
+- Work size: missing managed field.
 - Complexity, Impact, and Task score: missing managed fields.
 - Start date and Target date: aligned except for separately reported visibility or type-pinning drift.
-- Managed fields: compare public visibility and Task, Bug, and Feature pinning with the desired contract.
+- Managed fields: compare organization-members-only visibility and Task, Bug, and Feature pinning with the desired contract.
 
 Expected label classification:
 
@@ -481,29 +517,30 @@ Expected mutation boundary:
 
 ## GitHub Issue Form Author Fixture
 
-### F01: Equivalent Organization and Personal Forms
+### F01: Low-Friction Organization and Personal Intake
 
 Generate Task, Bug, and Feature variants for both repository modes.
 
 Organization form assertions:
 
 - The form sets the matching top-level issue `type`.
-- The resulting Markdown uses the canonical body headings.
-- Prompts collect enough evidence for Work size, Complexity, Impact, urgency, enablement, and confidence without asking the submitter to calculate Task score.
-- Native fields pinned to the issue type remain native and are not mirrored into the body.
-- Labels are applied only when their conditions are known from form evidence and their definitions already exist.
+- Task and Feature each expose two required evidence responses and one optional context response.
+- Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter.
+- Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
+- The Feature chooser is named `Feature request`; it asks for the affected problem or opportunity and useful outcome, while optional context may contain examples, mockups, compatibility concerns, constraints, or dependencies.
+- The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
+- Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.
 
 Personal form assertions:
 
-- The resulting Markdown uses the same canonical body headings.
-- Stable labeled inputs expose unavailable task kind and estimation evidence for deterministic Task Author normalization.
-- Task Author converts supported values into `tanaab/task-metadata/v1` fallback metadata.
-- The submitter is not asked to calculate Task score.
-- Labels, assignees, milestone, and relationships remain native rather than entering the capsule.
+- The form uses the same evidence questions and required-response rules as the organization variant.
+- The selected form identifies Task, Bug, or Feature without asking the reporter to repeat task kind in a dropdown.
+- The form does not expose unavailable issue fields as fallback controls.
+- Task Author assesses supported metadata after normalization and then renders `tanaab/task-metadata/v1` fallback values where native representations are unavailable.
 
-Equivalence assertion:
+Handoff and convergence assertions:
 
-For each of T01 through T06, Task Author draft output, normalized issue-form output, and normalized external input must produce the same semantic body, effective metadata values, labels, and score explanation for the same evidence. Native and fallback storage may differ, but meaning may not.
+For each of T01 through T06, the form handoff preserves every submitted response plus the complete original Markdown and marks semantic normalization as required. It must not claim that intake is already canonical or invent metadata, scoring diagnostics, labels, relationships, or missing evidence. After Task Author performs the semantic assessment, agent-authored, form-authored, and externally submitted evidence must converge on the same canonical body and accepted metadata semantics. Native and fallback storage may differ, but meaning may not.
 
 ## Revision Fixture
 
@@ -520,9 +557,41 @@ Expected behavior:
 - Show a semantic diff covering the desired outcome, scope removal, new acceptance condition, `breaking change` label, Work size change, and recomputed score.
 - After authorization, update the body to the current contract rather than appending an inline changelog.
 - Post a concise comment summarizing what changed and why.
-- Post a new versioned scoring audit comment if the score changes.
+- Post a new collapsed versioned scoring-audit comment if the score or its displayed inputs change, mark it as superseding the earlier assessment, and omit it when explicitly suppressed.
 - Preserve all earlier comments and do not claim earlier implementation satisfied the new acceptance condition.
 - Re-read and verify the body, metadata, label, and both new comments.
+
+### R02: Score Recomputation Preserves Native Fields
+
+Existing state:
+
+- A Task records Work size `21`, Complexity High, Impact Very high, and stale Task score `30`.
+- A human changed Impact from Medium to Very high before requesting recomputation.
+- Priority and dates remain unset, and the public scoring audit remains suppressed.
+- The accepted scoring diagnostics remain Urgency None, Enablement Substantial, and Confidence High.
+
+Expected behavior:
+
+- Recompute `task-score/v1` as `50` and preview Task score as the only semantic field change.
+- Because GitHub issue-field updates replace the entire set, send Work size `21`, Complexity High, Impact Very high, and Task score `50` together with every other currently observed set field.
+- Preserve unmanaged and unchanged native fields without treating them as newly assessed values.
+- Post only the authorized revision-summary comment and keep the public scoring audit suppressed.
+- Re-read every expected field and return success only when none were cleared or changed unexpectedly.
+
+### R03: Imperative Rescore and Read-Only Planning
+
+Existing state:
+
+- One exact Task has complete accepted scoring evidence and a stale Task score after a human changes Impact.
+- The user may say either “Rescore `acme/widgets#99`” or “Show me the rescore plan for `acme/widgets#99`.”
+
+Expected behavior:
+
+- Treat the imperative “Rescore” request as authorization for one bounded revise-mode mutation on that exact issue.
+- Read current state, produce and inspect the exact diff and digest, safety-review the publication surfaces, apply the digest-bound plan, and verify it within the same turn without requesting a second approval solely for the digest.
+- Treat “Show me the rescore plan,” Plan mode, and equivalent draft or preview language as read-only; return the exact plan and digest without populating publication approval or calling a mutation endpoint.
+- In either path, stop for fresh direction if the resolved target differs, scoring evidence is incomplete, or the plan contains a material effect beyond the expected field replacement and contract-standard revision or score comments.
+- Do not treat an earlier imperative for one issue, mode, or digest as authorization for a later or different mutation.
 
 ## Convergence Review
 
@@ -537,6 +606,8 @@ The fixture pass fails if any consumer:
 - creates or deletes label definitions during task authoring;
 - loses fallback values, label associations, original evidence, or revision history;
 - mutates an ambiguous or undisclosed target; or
+- turns plan, draft, preview, or exploratory language into a write; or
+- sends a partial `issue_field_values` replacement that clears unchanged or unmanaged fields; or
 - reports complete success without verifying every managed value.
 
 After a full pass produces no material contract, template, field, label, fallback, or scoring changes, the corpus may serve as the phase 1 and phase 2 convergence gate for the three core skills.

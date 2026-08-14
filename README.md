@@ -17,36 +17,14 @@
 
 ## Overview
 
-Outside the Codex plugin surface, the main Markdown canon lives in a small set of top-level folders.
+Canon has one live agent-facing surface and a small set of supporting documentation surfaces.
 
+- [`skills/`](./skills/) contains the executable workflows bundled with the Codex plugin.
 - [`guidance/`](./guidance/) holds durable policy, architecture, and design-shaping docs that should influence decisions but do not need to trigger as skills.
 - [`ideas/`](./ideas/) holds proposals, deferred designs, and revisit notes that are not adopted canon yet.
 - [`references/`](./references/) holds stable lookup material such as standards, contracts, naming rules, repo-structure rules, and testing doctrine.
 - [`prompts/`](./prompts/) holds reusable prompts with cross-task value, such as project maintenance and optimization workflows.
 - [`templates/`](./templates/) holds canonical copy/adapt starters, shared scaffolds, and reusable workflow templates that have proven human or cross-skill value.
-
-## Usage
-
-Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). Today that plugin bundles skills plus a stub [`.mcp.json`](./.mcp.json) registry reserved for a future real shared MCP surface.
-
-The live skills are:
-
-- [`tanaab-changelog-author`](./skills/changelog-author/) owns `CHANGELOG.md` drafting, maintenance, and changelog-contract alignment.
-- [`tanaab-github-action-author`](./skills/github-action-author/) shapes GitHub Action product surfaces such as `action.yml`, committed runtime files, and action README contracts.
-- [`tanaab-github-workflow-author`](./skills/github-workflow-author/) owns GitHub Actions workflow graphs, including triggers, permissions, reusable workflows, and job topology.
-- [`tanaab-javascript-author`](./skills/javascript-author/) handles JavaScript, TypeScript, and Bun implementation work, especially low-coupling helpers and utility logic.
-- [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/) owns true JavaScript or TypeScript Bun CLI product surfaces such as entrypoints, help output, versioning, and packaging contracts.
-- [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) standardizes JavaScript, TypeScript, and Bun repo baselines such as workspace layout, linting, formatting, type-checking, and baseline scripts.
-- [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/) authors, validates, packages, and deploys native OpenClaw code plugins.
-- [`tanaab-project-author`](./skills/project-author/) creates the GitHub repository that represents a project and audits or synchronizes its managed settings against canon.
-- [`tanaab-project-optimizer`](./skills/project-optimizer/) audits applicable project surfaces read-only, reports convergence, and produces a staged, skill-owned improvement plan only when warranted.
-- [`tanaab-readme-author`](./skills/readme-author/) structures and rewrites repository README surfaces.
-- [`tanaab-release-author`](./skills/release-author/) prepares GitHub Release drafts from changelog entries, version decisions, and release-readiness checks.
-- [`tanaab-shell-cli-author`](./skills/shell-cli-author/) owns Bash and PowerShell CLI surfaces, including wrappers, help output, and shell safety behavior.
-- [`tanaab-skill-author`](./skills/skill-author/) scaffolds, standardizes, and validates canon skills.
-- [`tanaab-task-completion-check`](./skills/task-completion-check/) assesses whether a GitHub-backed task is complete or ready from its acceptance criteria, linked pull requests, reviews, checks, and failure evidence.
-- [`tanaab-vitepress-author`](./skills/vitepress-author/) owns VitePress docs and static-site surfaces.
-- [`tanaab-vue-author`](./skills/vue-author/) owns Vue 3 frontend implementation surfaces such as components and Composition API flows.
 
 ## Installation
 
@@ -55,7 +33,8 @@ Versioned release archives are published on the [GitHub releases page](https://g
 1. Download the release archive for the version you want.
 2. Extract it into `~/.codex/plugins/tanaab`.
 3. Create or update `~/.agents/plugins/marketplace.json` so it points at that plugin directory.
-4. Open the Plugins view in Codex and install `Tanaab Maneuvering Systems` from your personal marketplace.
+4. Restart the ChatGPT desktop app, open Plugins, and install `Tanaab Maneuvering Systems` from your personal marketplace.
+5. Start a new Codex task so the installed skills are available.
 
 Example personal marketplace entry:
 
@@ -84,7 +63,50 @@ Example personal marketplace entry:
 
 - If `~/.agents/plugins/marketplace.json` already exists, add the `tanaab` plugin entry instead of replacing the whole file.
 - Codex resolves `source.path` relative to the marketplace root, so the `./.codex/plugins/tanaab` path is the important part.
-- For the underlying plugin and marketplace rules, see the official Codex docs for [Plugins](https://developers.openai.com/codex/plugins) and [Build plugins](https://developers.openai.com/codex/plugins/build).
+- For the underlying plugin and marketplace rules, see the official OpenAI docs for [using plugins](https://learn.chatgpt.com/docs/plugins) and [packaging plugins and local marketplaces](https://developers.openai.com/plugins/build/plugins).
+
+## Skills
+
+Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). The plugin currently bundles the live skills below plus a stub [`.mcp.json`](./.mcp.json) registry reserved for a future shared MCP surface.
+
+### Project and task management
+
+| Skill                                                                       | Owns                                                                                                    |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [`tanaab-github-issue-form-author`](./skills/github-issue-form-author/)     | Low-friction Task, Bug, and Feature issue forms plus repository alignment.                              |
+| [`tanaab-github-issue-schema-author`](./skills/github-issue-schema-author/) | Organization issue fields, field presentation, and canonical repository labels.                         |
+| [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation and managed settings inspection or synchronization.                          |
+| [`tanaab-project-optimizer`](./skills/project-optimizer/)                   | Read-only project audits, convergence reports, and staged improvement plans.                            |
+| [`tanaab-task-author`](./skills/task-author/)                               | Canonical Task, Bug, and Feature assessment, creation, revision, normalization, and fallback migration. |
+| [`tanaab-task-completion-check`](./skills/task-completion-check/)           | Read-only completion assessment from criteria, linked pull requests, reviews, checks, and failures.     |
+
+### Code and interface authoring
+
+| Skill                                                                           | Owns                                                                            |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                                 |
+| [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript Bun CLI entrypoints, help, versioning, and packaging. |
+| [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                           |
+| [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring, validation, packaging, and deployment.        |
+| [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety.       |
+| [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                               |
+| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components and Composition API implementation.                            |
+
+### GitHub and delivery
+
+| Skill                                                               | Owns                                                                                                 |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [`tanaab-github-action-author`](./skills/github-action-author/)     | GitHub Action product surfaces such as `action.yml`, runtime artifacts, and action README contracts. |
+| [`tanaab-github-workflow-author`](./skills/github-workflow-author/) | GitHub Actions workflow triggers, permissions, reusable workflows, and job topology.                 |
+| [`tanaab-release-author`](./skills/release-author/)                 | Changelog-backed GitHub Release drafts and release-readiness checks.                                 |
+
+### Documentation and meta
+
+| Skill                                                   | Owns                                                                        |
+| ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [`tanaab-changelog-author`](./skills/changelog-author/) | `CHANGELOG.md` drafting, maintenance, and contract alignment.               |
+| [`tanaab-readme-author`](./skills/readme-author/)       | Repository README structure and content.                                    |
+| [`tanaab-skill-author`](./skills/skill-author/)         | Canon skill scaffolding, standardization, validation, and portfolio review. |
 
 ## Development
 
