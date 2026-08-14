@@ -1,5 +1,10 @@
 import { readFileSync } from 'node:fs';
 
+export const TASK_JSON_INPUT_GUIDANCE = `Agents should prefer --input - and send JSON through standard input.
+If standard input is unavailable, use a repository-local ignored scratch path under the
+active workspace only after verifying the intended path with git check-ignore. Do not use an
+operating-system or user-level temporary directory for request JSON.`;
+
 /** Run one JSON-in/JSON-out Task Author command. */
 export function runTaskJsonCommand(
   argv,

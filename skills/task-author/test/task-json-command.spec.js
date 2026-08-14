@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { runTaskJsonCommand } from '../lib/task-json-command.js';
+import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../lib/task-json-command.js';
 
 function capture() {
   let value = '';
@@ -8,6 +8,13 @@ function capture() {
 }
 
 describe('Task Author JSON command runner', () => {
+  it('should prefer stdin and keep file fallback inside an ignored workspace path', () => {
+    assert.match(TASK_JSON_INPUT_GUIDANCE, /prefer --input -/);
+    assert.match(TASK_JSON_INPUT_GUIDANCE, /repository-local ignored scratch path/);
+    assert.match(TASK_JSON_INPUT_GUIDANCE, /git check-ignore/);
+    assert.match(TASK_JSON_INPUT_GUIDANCE, /Do not use an\s+operating-system or user-level/);
+  });
+
   it('should preserve help without reading input', () => {
     const stdout = capture();
     const status = runTaskJsonCommand(

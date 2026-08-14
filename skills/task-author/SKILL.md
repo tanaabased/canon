@@ -70,11 +70,12 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - `publishScoringAudit` defaults to `true`. Set it to `false` to suppress the optional public scoring-audit comment while retaining the native or fallback Task score.
 - A GitHub issue-form handoff is intake evidence, not deterministic draft input. Semantically normalize its responses into supported canonical sections and assessment records first; preserve missing evidence as questions.
 - Optional label signals must be explicit. `regression`, `needs reproduction`, `good first issue`, and `help wanted` still pass their canonical eligibility checks.
-- Run `bun <skill-path>/scripts/draft-task.js --input <json-path>` for a read-only draft.
-- Run `bun <skill-path>/scripts/create-task.js --input <json-path>` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
-- Run `bun <skill-path>/scripts/update-task.js --input <json-path>` with `mode` set to `revise` or `normalize`. Material revision also requires a concise `revisionSummary`; incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
-- Run `bun <skill-path>/scripts/migrate-fallback.js --input <json-path>` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
-- Either command accepts `--input -`. Use `--help` for its stable command contract.
+- For agent-owned command execution, prefer `--input -` and send the JSON request through standard input. Do not create request files in operating-system or user-level temporary directories. If the harness cannot provide standard input, use a repository-local ignored scratch path under the active workspace, verify the intended path with `git check-ignore` before writing, and do not add a tracked placeholder merely to retain the directory.
+- Run `bun <skill-path>/scripts/draft-task.js --input <path|->` for a read-only draft.
+- Run `bun <skill-path>/scripts/create-task.js --input <path|->` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
+- Run `bun <skill-path>/scripts/update-task.js --input <path|->` with `mode` set to `revise` or `normalize`. Material revision also requires a concise `revisionSummary`; incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
+- Run `bun <skill-path>/scripts/migrate-fallback.js --input <path|->` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
+- Every command accepts `--input -`; file input is the fallback. Use `--help` for the stable command contract.
 
 ## Outputs
 
@@ -102,7 +103,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 ## Workflow
 
 1. Resolve and display one exact target. Stop if it remains ambiguous.
-2. Run the bundled draft or create command. Both check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
+2. Run the bundled draft or create command with JSON on standard input. If standard input is unavailable, verify one repository-local ignored scratch path with `git check-ignore` before writing the request there. Both commands check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
 3. Review missing body evidence, delivery proof, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
 4. Review assessment provenance and rationales. Keep agent estimates evidence-based and human-controlled values out of agent ownership. When a complete evidence review finds no urgency signal, use policy-sourced Urgency `None`; leave ambiguous factors unset.
 5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
