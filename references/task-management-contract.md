@@ -21,7 +21,7 @@ The initial consumers are:
 
 Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, completion evidence, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
 
-The contract is usable now and the broad Task body and intake prompts are accepted. Bug and Feature prompts, the Complexity and Impact rubrics, and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
+The contract is usable now and the Task and Bug bodies and intake prompts are accepted. Feature prompts, the Complexity and Impact rubrics, and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
 
 ## Domain and Provider Terms
 
@@ -105,12 +105,20 @@ Use these headings in order:
 
 ## Impact
 
+## Delivery and verification
+
 ## Acceptance criteria
 
 - [ ] Observable fix condition
+
+## Constraints and approvals
 ```
 
-Capture environment details beneath `Reproduction or evidence` when they affect reproducibility. Establish whether the behavior previously worked before applying `regression`. Missing reproduction evidence does not prevent preserving a credible report, but it does require `needs reproduction` until the gap is resolved.
+Capture the reporter's steps, environment, affected baseline, inputs, logs, and other direct evidence beneath `Reproduction or evidence`. Do not require the reporter to write a test, open a pull request, or execute risky or machine-mutating steps merely to complete intake. Establish whether the behavior previously worked before applying `regression`. Missing reproduction evidence does not prevent preserving a credible report, but it does require `needs reproduction` until the gap is resolved.
+
+`Delivery and verification` defines the worker-owned red-to-green completion path. Plan one linked completion pull request that starts in draft. When technically feasible, its first substantive change is a regression test or reproduction harness that demonstrates the reported behavior against the affected baseline in the safest suitable disposable environment, normally existing GitHub Actions. The plan records the baseline, execution environment, expected failing evidence, the same test or harness passing with the fix, and relevant surrounding validation. It must not require execution on an agent host when reproduction could mutate that machine.
+
+A disposable runner is not authorization to mutate external systems, consume paid services, use sensitive credentials, contact people, or cause another consequential effect. Prefer least-privilege validation without secrets. When safe automation is infeasible, record the constraint, proposed equivalent evidence, and any required approval instead of fabricating a test or performing the action. `Constraints and approvals` is optional and records those or other material boundaries.
 
 ### Feature
 
@@ -144,7 +152,7 @@ Human intake and canonical task authoring are different representations of the s
 - A **canonical task** is the normalized working artifact. It uses the Task, Bug, or Feature body shape above, accepted metadata, and checkable acceptance criteria.
 - GitHub Issue Form Author extracts submitted responses and the original Markdown without semantic invention. Task Author owns the later evidence assessment and canonical rewrite.
 
-The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The Bug form uses three required evidence responses plus one optional context response. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
+The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The Bug form uses three required evidence responses plus one optional context response. It asks for observed behavior, expected behavior, and safe reproduction or investigation evidence; it does not ask the reporter to write a test or open a pull request. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
 
 Required form questions establish minimum useful evidence rather than demanding a fully planned task. A Bug's investigation response may provide reproducible steps or other direct occurrence evidence because intermittent failures can be valuable even when deterministic reproduction is unavailable.
 
@@ -452,6 +460,8 @@ Every Task, Bug, and Feature requires at least one linked pull request before it
 - Keep the pull request in draft while work is in progress. Marking it ready for review requests completion assessment.
 - Link it through GitHub's supported closing or development relationship so Task Completion Check can discover it.
 - Map the task's acceptance criteria to safe supporting evidence in the pull-request body. The body may reference code, repository artifacts, external outcomes, checks, or approved private evidence without publishing sensitive material.
+- For a Bug, use the linked draft completion pull request as the red-to-green delivery envelope. Preserve the failing regression run against the affected baseline, add the fix to the same pull request, and show the same reproduction plus relevant surrounding checks passing before marking it ready. When automated reproduction is unsafe or infeasible, document the exception and equivalent evidence in the pull-request body.
+- Surface failing checks on a draft pull request but classify the path as `pending` while it remains work in progress. Once the pull request is ready for review, failing checks are `blocked` completion evidence.
 - Prefer a substantive repository change or safe artifact. When the outcome is entirely external and no useful artifact belongs in the repository, an empty completion commit is acceptable only with an evidence-bearing pull-request body.
 - Treat spending, external communication, account changes, legal or tax actions, and other consequential side effects as separately authorized work. A task or completion pull request never supplies missing authority.
 - Do not infer completion from the existence, approval, checks, or merge of the pull request alone. The task's acceptance criteria remain authoritative.

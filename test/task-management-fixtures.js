@@ -17,7 +17,13 @@ export const completeBugSections = Object.freeze({
   expectedBehavior: 'Stale plugin files are removed.',
   reproduction: 'Run the refresh twice and inspect the installed cache.',
   impactSummary: 'The release workflow retains incorrect output.',
-  acceptanceCriteria: ['A refresh removes every stale plugin file'],
+  delivery:
+    'Open the linked completion pull request as a draft with a regression test that runs in disposable GitHub Actions, preserve the failing baseline run, then show the same test and relevant refresh checks passing with the fix.',
+  acceptanceCriteria: [
+    'A regression test fails against the affected baseline for the expected reason',
+    'The same regression test passes with the fix',
+    'A refresh removes every stale plugin file',
+  ],
 });
 
 export const completeFeatureSections = Object.freeze({

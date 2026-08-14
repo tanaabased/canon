@@ -6,6 +6,18 @@ Closes #ISSUE
 
 Describe what was completed and what changed.
 
+## Regression proof
+
+For a Bug, complete this section. For other task kinds, remove it.
+
+- Affected baseline:
+- Regression test or reproduction harness:
+- Disposable execution environment:
+- Failing run and expected failure:
+- Passing run with the fix:
+- Relevant surrounding validation:
+- Automated-test exception or required approval, if applicable:
+
 ## Acceptance evidence
 
 - [ ] Acceptance criterion — supporting evidence

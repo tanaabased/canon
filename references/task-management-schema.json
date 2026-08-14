@@ -51,10 +51,22 @@
       },
       { "heading": "Impact", "key": "impactSummary", "level": 2, "required": true },
       {
+        "heading": "Delivery and verification",
+        "key": "delivery",
+        "level": 2,
+        "required": true
+      },
+      {
         "heading": "Acceptance criteria",
         "key": "acceptanceCriteria",
         "level": 2,
         "required": true
+      },
+      {
+        "heading": "Constraints and approvals",
+        "key": "constraints",
+        "level": 2,
+        "required": false
       }
     ],
     "feature": [

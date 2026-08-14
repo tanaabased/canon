@@ -62,6 +62,44 @@ describe('skills/github-issue-form-author/lib/issue-form-author', () => {
         },
       ],
     );
+    assert.deepEqual(
+      submittedElements(forms[1].document).map(({ id, attributes, validations }) => ({
+        description: attributes.description,
+        id,
+        label: attributes.label,
+        required: validations.required,
+      })),
+      [
+        {
+          description:
+            'Describe the behavior you observed, when it occurred, and how it affected you.',
+          id: 'observed',
+          label: 'What happened?',
+          required: true,
+        },
+        {
+          description: 'Describe the behavior that should have occurred instead.',
+          id: 'expected',
+          label: 'What did you expect?',
+          required: true,
+        },
+        {
+          description:
+            'Provide steps, inputs, affected versions or environments, logs, or other direct evidence. Do not perform risky or machine-mutating actions solely to complete this report.',
+          id: 'investigation',
+          label: 'How can we reproduce or investigate it?',
+          required: true,
+        },
+        {
+          description:
+            'Share relevant constraints, dependencies, deadlines, logs, screenshots, or other evidence.',
+          id: 'additional-context',
+          label: 'Additional context',
+          required: false,
+        },
+      ],
+    );
+    assert.doesNotMatch(JSON.stringify(forms[1].document), /write a test|pull request/i);
 
     for (const { content, document } of forms) {
       const ids = submittedElements(document).map(({ id }) => id);

@@ -49,8 +49,10 @@ function intakeAnswers({ kind, sections }) {
   };
 }
 
-function sourceEvidence(sections) {
-  return Object.values(sections)
+function sourceEvidence({ kind, sections }) {
+  return Object.entries(sections)
+    .filter(([key]) => !(kind.toLowerCase() === 'bug' && key === 'delivery'))
+    .map(([, value]) => value)
     .flatMap((value) => (Array.isArray(value) ? value : [value]))
     .filter(Boolean)
     .map(text);
@@ -63,7 +65,8 @@ describe('task-management cross-skill intake boundary', () => {
         fixture.capabilities.repository.ownerType === 'User' ? 'personal' : 'organization';
       const kind = fixture.input.kind.toLowerCase();
       const form = authorIssueForm(kind, repositoryMode);
-      const markdown = renderFormSubmission(form, intakeAnswers(fixture.input));
+      const answers = intakeAnswers(fixture.input);
+      const markdown = renderFormSubmission(form, answers);
       const normalized = normalizeIssueFormSubmission(markdown, {
         form,
         repositoryMode,
@@ -75,7 +78,7 @@ describe('task-management cross-skill intake boundary', () => {
       assert.equal(normalized.kind, kind);
       assert.equal(normalized.title, fixture.input.title);
       assert.equal(normalized.originalBody, markdown.trim());
-      for (const evidence of sourceEvidence(fixture.input.sections)) {
+      for (const evidence of sourceEvidence(fixture.input)) {
         assert.match(normalized.intakeEvidence.rawMarkdown, new RegExp(escapeRegex(evidence)));
       }
       assert.deepEqual(normalized.scoring, {});

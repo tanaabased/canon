@@ -52,7 +52,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 2. Extract Markdown acceptance-criteria checkboxes from the issue body. If none exist, classify the result as `uncertain` instead of inventing criteria.
 3. Discover closing and manually linked pull requests through GitHub's issue relationship, then merge any explicit `--pr` evidence without duplicates.
 4. Inspect each pull request's target branch, state, draft state, mergeability, review decision, and checks. For failing GitHub Actions checks, include the run identity and a bounded failure snippet when logs are available.
-5. Classify the task as `complete`, `ready`, `pending`, `blocked`, or `uncertain`. A closed issue is complete; incomplete criteria or explicit failures block; complete criteria without a linked completion pull request, active review, or checks remain pending; missing or contradictory evidence is uncertain.
+5. Classify the task as `complete`, `ready`, `pending`, `blocked`, or `uncertain`. A closed issue is complete; incomplete criteria or explicit failures on a ready pull request block; complete criteria without a linked completion pull request, a draft pull request with failing reproduction checks, active review, or pending checks remain pending; missing or contradictory evidence is uncertain.
 6. Report the normalized evidence and stop. A separate user-authorized workflow owns any fix, merge, or task closure.
 
 ## Checkpoints
@@ -60,6 +60,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 - Stop when the task identity is missing or malformed rather than guessing from local Git state.
 - Treat missing authentication or task access as a failed prerequisite.
 - Preserve `uncertain` when linked evidence cannot be queried, acceptance criteria are absent, or the available signals contradict one another.
+- Surface failing checks on draft pull requests as evidence, but keep the pull-request path `pending` until it is marked ready for review. Do not extend that allowance to a ready pull request.
 - Treat external check providers as evidence links only; do not claim to have inspected unavailable logs.
 
 ## Completion Criteria

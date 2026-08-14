@@ -110,7 +110,7 @@ Input evidence:
 - Reproduction steps, observed output, expected output, and affected versions are available.
 - The bug affects a major release workflow but does not block unrelated work.
 
-Expected body uses the complete Bug shape and preserves version and command evidence beneath `Reproduction or evidence`.
+Expected body uses the complete Bug shape, preserves version and command evidence beneath `Reproduction or evidence`, and requires a linked draft completion pull request whose regression test runs in disposable GitHub Actions, fails against the affected baseline, and passes with the fix.
 
 Expected native metadata:
 
@@ -126,6 +126,8 @@ Expected native metadata:
 Expected labels: `regression`.
 
 Do not apply `needs reproduction`: the evidence is actionable. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `5`.
+
+The reporter is not asked to write the test or open the pull request. Those are worker-owned obligations normalized into `Delivery and verification`.
 
 ### T03: Organization Feature with a Breaking Change
 
@@ -216,6 +218,8 @@ Expected labels: `regression`.
 
 Do not apply `needs reproduction`. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `3`.
 
+`Delivery and verification` uses the same worker-owned draft-red-to-green pull-request lifecycle as T02.
+
 ### T06: Personal-Repository Feature Open to Contributors
 
 Input evidence:
@@ -275,6 +279,7 @@ Existing issue input:
 Expected behavior:
 
 - Normalize into the Bug body shape without fabricating reproduction steps.
+- Preserve the standard safe delivery lifecycle without claiming that a failing reproduction has already been observed.
 - Preserve the reporter's evidence and identify the exact missing diagnostic information.
 - Set issue type Bug when available.
 - Set Impact High only if the described blast radius supports it.
@@ -495,7 +500,7 @@ Organization form assertions:
 - The form sets the matching top-level issue `type`.
 - Task and Feature each expose two required evidence responses and one optional context response.
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter.
-- Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response.
+- Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
 - The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
 - Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.
 

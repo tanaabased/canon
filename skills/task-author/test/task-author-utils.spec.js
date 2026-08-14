@@ -38,11 +38,16 @@ describe('Task Author deterministic utilities', () => {
     const complete = renderTaskBody('bug', completeBugSections);
     assert.match(complete.body, /^## Observed behavior/);
     assert.match(complete.body, /## Reproduction or evidence/);
+    assert.match(complete.body, /## Delivery and verification/);
     assert.deepEqual(complete.missing, []);
 
     const incomplete = renderTaskBody('bug', { ...completeBugSections, reproduction: '' });
     assert.deepEqual(incomplete.missing, ['reproduction']);
     assert.match(incomplete.body, /## Reproduction or evidence\n\n## Impact/);
+
+    const withoutDelivery = renderTaskBody('bug', { ...completeBugSections, delivery: '' });
+    assert.deepEqual(withoutDelivery.missing, ['delivery']);
+    assert.match(withoutDelivery.body, /## Delivery and verification\n\n## Acceptance criteria/);
   });
 
   it('should render the broad Task delivery contract without requiring exclusions', () => {

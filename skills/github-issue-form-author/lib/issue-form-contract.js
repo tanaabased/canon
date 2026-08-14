@@ -50,7 +50,7 @@ export const INTAKE_FORMS = Object.freeze({
     Object.freeze({
       id: 'observed',
       label: 'What happened?',
-      description: 'Describe the behavior you observed and when it occurred.',
+      description: 'Describe the behavior you observed, when it occurred, and how it affected you.',
       required: true,
     }),
     Object.freeze({
@@ -63,7 +63,7 @@ export const INTAKE_FORMS = Object.freeze({
       id: 'investigation',
       label: 'How can we reproduce or investigate it?',
       description:
-        'Provide steps when reproducible. Otherwise share occurrence details, environment, versions, logs, or other direct evidence.',
+        'Provide steps, inputs, affected versions or environments, logs, or other direct evidence. Do not perform risky or machine-mutating actions solely to complete this report.',
       required: true,
     }),
     ADDITIONAL_CONTEXT,

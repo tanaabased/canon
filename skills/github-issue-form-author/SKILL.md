@@ -60,6 +60,7 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 - Organization forms set the matching top-level `type`; personal forms omit it because user-owned repositories lack organization issue types.
 - Both variants use identical evidence questions. Task and Feature have two required responses plus optional context; Bug has three required responses plus optional context.
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. It warns reporters not to publish secrets.
+- Bug asks only for observed behavior, expected behavior, and safe reproduction or investigation evidence. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
 - Forms do not auto-apply labels or expose metadata and scoring controls. Task Author estimates supported values after semantic normalization and chooses native or fallback storage.
 - Extraction returns the selected kind, title, observed organization metadata, complete raw Markdown, labeled answered responses, and `normalizationRequired: true`.
 - Preserve unknown headings inside their owning response and preserve the complete original Markdown even when content sits outside known responses.
