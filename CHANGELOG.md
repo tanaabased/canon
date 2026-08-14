@@ -1,12 +1,40 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Added GitHub-backed task authoring, issue schema and form alignment, and pull-request-gated completion assessment. [#17](https://github.com/tanaabased/canon/pull/17)
+### New Features
+
 - Added isolated unattended OpenClaw tool-call scenario guidance using `openclaw exec-policy preset yolo`.
-- Added shared release destination guidance for Codex archives, GitHub Actions, npm packages, and OpenClaw registries.
-- Updated Canon's package metadata to prevent npm publication.
+- Added public namespace and plugin-container support to `tanaab-skill-author`.
+- Added shared release-destination guidance for Codex archives, GitHub Actions, npm packages, and OpenClaw registries.
+- Added `tanaab-github-issue-form-author` for low-friction `Task`, `Bug`, and `Feature` forms plus repository alignment. [#17](https://github.com/tanaabased/canon/pull/17)
+- Added `tanaab-github-issue-schema-author` for issue fields, presentation, labels, and bounded synchronization. [#17](https://github.com/tanaabased/canon/pull/17)
+- Added `tanaab-task-author` for canonical task assessment, publication, normalization, rescoring, and fallback migration. [#17](https://github.com/tanaabased/canon/pull/17)
+
+### Policy and Guidance
+
+- Defined canonical `Task`, `Bug`, and `Feature` templates, metadata, scoring, and pull-request completion contracts. [#17](https://github.com/tanaabased/canon/pull/17)
 - Updated Leia scenario guidance to prefer fail-fast newline command sequencing over equivalent `&&` chains.
-- Updated OpenClaw plugin CLI guidance for `cli/` placement, host output and logging APIs, machine modes, and diagnostic namespaces.
-- Updated OpenClaw plugin publication guidance so npm and ClawHub pipelines remain independently operable under one aligned package contract.
+- Updated `tanaab-openclaw-plugin-author` for `cli/` placement, host output and logging APIs, machine modes, and diagnostic namespaces.
+- Updated `tanaab-openclaw-plugin-author` for SDK boundary ownership and independent npm and ClawHub pipelines.
+
+### Improvements
+
+- Reorganized the root README around installation, repository surfaces, and a categorized live-skill catalog.
+- Updated `tanaab-github-action-author` and `tanaab-openclaw-plugin-author` for the shared release-destination contract.
+- Updated `tanaab-javascript-author` and `tanaab-javascript-repo-standardizer` for the shared release-destination contract.
+- Updated `tanaab-project-optimizer` to inspect contract-required task-management surfaces that are missing or stale. [#17](https://github.com/tanaabased/canon/pull/17)
+- Updated `tanaab-task-author` to reuse explicit write authorization, prefer standard input, and apply an evidence-backed `Urgency: None` default. [#17](https://github.com/tanaabased/canon/pull/17)
+- Updated `tanaab-task-completion-check` to require a linked completion pull request for code and non-code tasks. [#17](https://github.com/tanaabased/canon/pull/17)
+
+### Bug Fixes
+
+- Fixed GitHub CLI routing for `tanaab-github-issue-form-author`, `tanaab-github-issue-schema-author`, and `tanaab-task-author`. [#17](https://github.com/tanaabased/canon/pull/17)
+- Fixed GitHub CLI routing for `tanaab-project-author`, `tanaab-release-author`, and `tanaab-task-completion-check`. [#17](https://github.com/tanaabased/canon/pull/17)
+- Fixed `tanaab-task-author` rescoring to preserve every existing issue field during replacement writes. [#17](https://github.com/tanaabased/canon/pull/17)
+
+### Developer Notes
+
+- Marked `@tanaab/canon` private to prevent npm publication.
+- Updated the release workflow to run `bun run codex:validate` after formatting staged release changes.
 
 ## v0.7.0 - [August 1, 2026](https://github.com/tanaabased/canon/releases/tag/v0.7.0)
 

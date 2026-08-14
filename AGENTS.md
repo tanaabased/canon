@@ -79,6 +79,7 @@
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
 - Before rolling a new canon release, run [`prompts/optimize-canon-project.md`](./prompts/optimize-canon-project.md) as a planning pass and review the resulting staged optimization plan.
+- Treat optimizer convergence and release readiness as separate conclusions. Reconcile the unreleased changelog against the latest versioned tag and run `tanaab-release-author` independently.
 
 ## Validation
 
