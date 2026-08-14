@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process';
+import runGitHubCli from '../../../lib/run-github-cli.js';
 
 const PENDING_LOG_MARKERS = ['still in progress', 'log will be available when it is complete'];
 
@@ -21,7 +21,8 @@ const LINKED_PULL_REQUESTS_QUERY = `
 `;
 
 function defaultCommandRunner(command, args, { raw = false } = {}) {
-  const result = spawnSync(command, args, { encoding: raw ? undefined : 'utf8' });
+  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
+  const result = runGitHubCli(args, { encoding: raw ? undefined : 'utf8' });
   const stdout = raw
     ? Buffer.isBuffer(result.stdout)
       ? result.stdout

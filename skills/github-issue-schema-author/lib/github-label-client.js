@@ -1,11 +1,11 @@
-import { spawnSync } from 'node:child_process';
-
+import runGitHubCli from '../../../lib/run-github-cli.js';
 import { GitHubSchemaClient } from './github-schema-client.js';
 
 const API_VERSION = '2026-03-10';
 
 function defaultRunner(command, args, options = {}) {
-  return spawnSync(command, args, { encoding: 'utf8', ...options });
+  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
+  return runGitHubCli(args, options);
 }
 
 /** GitHub boundary for repository-label reads, creates, and definition-only updates. */

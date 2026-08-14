@@ -47,6 +47,7 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 ## Prerequisites
 
 - Require Bun and the GitHub CLI (`gh`).
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Verify GitHub CLI availability and authentication without exposing credentials.
 - Treat private repositories and organization schema as permission-sensitive. Preserve partial read results and mark inaccessible surfaces unresolved.
 - Additive mode requires an organization administrator or a token with organization Issue Fields write permission.

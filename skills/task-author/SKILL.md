@@ -52,6 +52,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 ## Prerequisites
 
 - Require `bun` and GitHub CLI `gh`.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Prefer an explicit `OWNER/REPO` or `OWNER/REPO#NUMBER`; otherwise accept only a repository that `gh repo view` resolves unambiguously from the active project.
 - Check `gh auth status`. A failed auth probe is a visible warning because public reads may still work; never conceal a private-repository discovery failure.
 - Create mode requires GitHub Issues write access. Native type, label, and issue-field values require repository push access and may otherwise be silently dropped, so a successful create response is never sufficient verification.
@@ -85,6 +86,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 ## Failure Handling
 
 - Stop on missing `gh`, an invalid target, or failure to read the target repository.
+- Treat host routing, identity, credential, or policy denials as `gh` failures under the shared routing contract.
 - Keep optional issue-type, issue-field, and label discovery failures as explicit capability warnings; do not mutate schema or assume fallback eligibility to compensate.
 - Preserve underspecified external evidence, add focused questions, and propose `needs triage` only when the label is known to exist.
 - Report absent requested labels as unapplied and never create their definitions.

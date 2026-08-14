@@ -38,6 +38,7 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 ## Prerequisites
 
 - Require Bun for the bundled render command and YAML validation.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Treat GitHub issue forms as a public-preview schema and verify current official syntax before publication.
 - Determine whether the target is organization-owned or personal; the variants have materially different metadata capabilities.
 

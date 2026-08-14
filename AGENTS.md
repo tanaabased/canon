@@ -24,6 +24,7 @@
 ## Runtime Boundaries
 
 - Keep support material local to the owning skill by default.
+- Apply [`references/github-cli-routing.md`](./references/github-cli-routing.md) to every agent- or code-owned GitHub CLI invocation. Resolve bare `gh` from the inherited `PATH` and preserve the active process environment and working directory so a host harness can route and bind the responsible agent.
 - Hoist support material to repo root only when it is used by 2+ live skills or 2+ live repo entrypoints, is a true repo-wide contract or shared tooling surface, or is a cold-path human doc with standalone value.
 - A hoisted file must reduce total complexity instead of merely moving it.
 - Hoisted files with only one meaningful live consumer should be reviewed for demotion.

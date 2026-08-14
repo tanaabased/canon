@@ -43,7 +43,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 - Require an explicit GitHub slug in `OWNER/REPO` form; never infer a mutation target from a nearby checkout.
 - Confirm `gh` is installed, authenticated to the intended GitHub host, and authorized to administer the target owner and repository.
-- On macOS, confirm the tool shell resolves the intended Homebrew `gh`; prefer a non-login tool shell when login startup files place stale `/usr/local/bin` tools before `/opt/homebrew/bin`.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
 - Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired settings. Do not recapture policy from the live `tanaabased/canon` repository.
 

@@ -42,6 +42,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 
 - Require one explicit task identity as a GitHub issue URL or `OWNER/REPO#NUMBER`; never infer the task from a checkout or current pull request.
 - Confirm `gh` is installed and authenticated with read access to the task, linked pull requests, checks, and Actions logs.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Resolve [the bundled command](./scripts/check-task-completion.js) relative to this `SKILL.md`, then run `bun <resolved-path> OWNER/REPO#NUMBER --json`.
 - Add repeatable `--pr <value>` arguments only to supply missing or disambiguating pull request evidence. Automatic discovery remains the default.
 

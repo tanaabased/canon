@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process';
+import runGitHubCli from '../../../lib/run-github-cli.js';
 
 export const SCHEMA_INSPECTION_QUERY = `
   query SchemaInspection($owner: String!, $repo: String!, $labelCursor: String) {
@@ -88,7 +88,8 @@ export const SCHEMA_INSPECTION_QUERY = `
 `;
 
 function defaultRunner(command, args) {
-  return spawnSync(command, args, { encoding: 'utf8' });
+  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
+  return runGitHubCli(args);
 }
 
 function resultStatus(result) {

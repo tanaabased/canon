@@ -46,6 +46,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Confirm the target repo has `package.json`, `CHANGELOG.md`, and a GitHub remote.
 - Confirm the local worktree is clean before checking out the release target branch; pause if unrelated local changes exist.
 - Confirm `gh` is installed and authenticated for the target repository.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Confirm `.github/workflows/release.yml` is triggered by `release.published` before relying on draft publication as the release gate.
 - Inspect root workspaces and their manifests. When more than one publishable workspace exists, identify the repo's fixed-version or independent-version and tag strategy before deriving a release.
 - Resolve the GitHub default branch and use it as the release target unless the user explicitly specifies another branch.

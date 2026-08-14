@@ -1,5 +1,4 @@
-import { spawnSync } from 'node:child_process';
-
+import runGitHubCli from '../../../lib/run-github-cli.js';
 import { parseRepositoryTarget } from '../utils/parse-repository-target.js';
 
 const API_VERSION = '2026-03-10';
@@ -12,7 +11,8 @@ export const MANAGED_ISSUE_FORM_PATHS = Object.freeze([
 ]);
 
 function defaultRunner(command, args, options = {}) {
-  return spawnSync(command, args, { encoding: 'utf8', ...options });
+  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
+  return runGitHubCli(args, options);
 }
 
 function resultStatus(result) {

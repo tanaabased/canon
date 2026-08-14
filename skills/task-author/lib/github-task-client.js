@@ -1,12 +1,7 @@
-import { spawnSync } from 'node:child_process';
-
 import { GitHubCapabilityClient } from './github-capability-client.js';
+import runGitHubCli from '../../../lib/run-github-cli.js';
 
 const API_VERSION = '2026-03-10';
-
-function defaultRunner(args, options = {}) {
-  return spawnSync('gh', args, { encoding: 'utf8', ...options });
-}
 
 function parseResult(result, context) {
   if (result.status !== 0) {
@@ -25,7 +20,7 @@ export class GitHubTaskClient {
   #capabilities;
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
     this.#capabilities = new GitHubCapabilityClient({ runner });
   }
