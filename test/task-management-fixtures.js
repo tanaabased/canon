@@ -336,6 +336,28 @@ const fixtures = [
     ),
     expected: { score: 22, nativeFields: 5, fallback: {}, labels: [] },
   },
+  {
+    id: 'T17',
+    capabilities: organizationCapabilities(),
+    input: assessed(
+      {
+        target: 'acme/widgets',
+        title: 'assess utilities as standalone packages',
+        kind: 'Task',
+        sections: completeTaskSections,
+        metadata: { workSize: 21, complexity: 'high', impact: 'medium' },
+        scoring: { urgency: 'none', enablement: 'substantial', confidence: 'high' },
+      },
+      {
+        urgency: {
+          source: 'policy',
+          rationale:
+            'The complete evidence review found no deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting.',
+        },
+      },
+    ),
+    expected: { score: 30, nativeFields: 4, fallback: {}, labels: [] },
+  },
 ];
 
 export default fixtures;

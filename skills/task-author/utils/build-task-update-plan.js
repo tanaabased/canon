@@ -1,4 +1,5 @@
 import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
+import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
 import {
   isTaskScoreAuditComment,
   markTaskScoreCommentSuperseding,
@@ -88,10 +89,10 @@ export function buildTaskUpdatePlan(draft, current, { revisionSummary = '' } = {
   }
   if (!sameLabels(labelNames(current.issue), labels)) mutation.labels = labels;
   if (changedFields.length > 0) {
-    mutation.issue_field_values = changedFields.map(({ id, value }) => ({
-      field_id: id,
-      value,
-    }));
+    mutation.issue_field_values = buildReplacementIssueFieldValues(
+      current.fields,
+      expectedFields.map(({ id, value }) => ({ field_id: id, value })),
+    );
   }
 
   const changes = Object.entries(mutation).map(([property, after]) => ({

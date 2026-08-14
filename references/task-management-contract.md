@@ -176,16 +176,16 @@ Required form questions establish minimum useful evidence rather than demanding 
 
 Task Author performs a semantic assessment before its deterministic helper validates, scores, renders, and gates publication. The helper does not contain an LLM estimator.
 
-| Value                                           | Default authority                    | Collaboration rule                                                                                                                       |
-| ----------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Task kind, title, body, and acceptance criteria | Human and agent                      | The agent drafts from evidence; the human authorizes the complete publication or revision plan.                                          |
-| Priority                                        | Human or explicit policy             | The agent may discuss a recommendation but must not persist it as an agent estimate. Leave it unset until a human or policy supplies it. |
-| Work size                                       | Agent estimate                       | Apply the delivery-scope rubric, show rationale and provenance, and permit a human override.                                             |
-| Complexity                                      | Agent estimate                       | Apply the model-neutral reasoning rubric, show rationale and provenance, and permit a human override.                                    |
-| Impact                                          | Agent estimate with human correction | Assess local value only when evidence is sufficient; otherwise leave it unset.                                                           |
-| Task score                                      | Derived                              | Calculate only through the versioned formula from accepted inputs. Never accept a directly supplied score.                               |
-| Start date and Target date                      | Human or explicit policy             | Preserve explicitly supplied commitments; do not invent scheduling dates from urgency evidence.                                          |
-| Urgency, Enablement, and Confidence             | Agent-assessed diagnostics           | Show rationale and provenance, use them for Task score, and do not persist them as separate issue fields.                                |
+| Value                                           | Default authority                    | Collaboration rule                                                                                                                                                                                               |
+| ----------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Task kind, title, body, and acceptance criteria | Human and agent                      | The agent drafts from evidence; the human authorizes the complete publication or revision plan.                                                                                                                  |
+| Priority                                        | Human or explicit policy             | The agent may discuss a recommendation but must not persist it as an agent estimate. Leave it unset until a human or policy supplies it.                                                                         |
+| Work size                                       | Agent estimate                       | Apply the delivery-scope rubric, show rationale and provenance, and permit a human override.                                                                                                                     |
+| Complexity                                      | Agent estimate                       | Apply the model-neutral reasoning rubric, show rationale and provenance, and permit a human override.                                                                                                            |
+| Impact                                          | Agent estimate with human correction | Assess local value only when evidence is sufficient; otherwise leave it unset.                                                                                                                                   |
+| Task score                                      | Derived                              | Calculate only through the versioned formula from accepted inputs. Never accept a directly supplied score.                                                                                                       |
+| Start date and Target date                      | Human or explicit policy             | Preserve explicitly supplied commitments; do not invent scheduling dates from urgency evidence.                                                                                                                  |
+| Urgency, Enablement, and Confidence             | Agent-assessed diagnostics           | Show rationale and provenance, use them for Task score, and do not persist them as separate issue fields. After reviewing the available evidence, use policy-sourced Urgency None when no urgency signal exists. |
 
 Every accepted metadata value and scoring diagnostic must show its source as `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based rationale. A derived Task score identifies its formula version. Exact-plan authorization accepts the displayed values; changing one value requires a fresh plan. During revision, preserve existing native values by default unless the user requests reassessment or changed evidence makes a displayed recomputation necessary.
 
@@ -320,7 +320,7 @@ For Tasks, examine leverage, recurring time saved, maintenance removed, work unb
 
 ### Priority
 
-Priority is an explicit human or policy override using Urgent, High, Medium, or Low. It is not derived from Task score and is not an input to it.
+Priority is an explicit human or policy override using Urgent, High, Medium, or Low. It is not derived from Task score and is not an input to it. An unset Priority means no sequencing override has been supplied; it does not imply Low.
 
 If Priority materially conflicts with Task score ordering, record the durable rationale in a task comment. A draft must preview that comment before creation or revision.
 
@@ -346,7 +346,7 @@ Impact uses the persisted Impact mapping above. Urgency, enablement, and confide
 | Confidence | Medium       | `0.75` | Reasonable direct evidence with some bounded assumptions                              |
 | Confidence | High         | `1.00` | Direct, reproducible, or independently validated evidence supports the estimates      |
 
-Missing urgency or enablement evidence is not the same as None. If the factors cannot be assessed, leave Task score unset. Low confidence is the minimum scorable confidence; evidence below that threshold is insufficient.
+After reviewing all available evidence, the absence of a deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting supports policy-sourced Urgency None. This is an evidence-aware default, not a blind conversion of every missing value to zero. If urgency evidence is incomplete or ambiguous, leave Urgency and Task score unset and ask a focused question. Missing enablement evidence is likewise not the same as None. Low confidence is the minimum scorable confidence; evidence below that threshold is insufficient.
 
 ### Formula
 
@@ -362,6 +362,7 @@ Scoring rules:
 
 - Require Impact, Work size, Urgency, Enablement, and Confidence assessments.
 - Leave the score unset when any required factor lacks enough evidence.
+- Use policy-sourced Urgency None when a complete evidence review finds no urgency signal; preserve ambiguity as unset.
 - Exclude Complexity and Priority.
 - A target date may provide urgency evidence but does not determine urgency by itself.
 - Recompute after relevant evidence, field values, deadlines, dependencies, or the formula changes.
@@ -491,6 +492,8 @@ For every mutation:
 7. Re-read title, body, type or fallback, fields or fallbacks, labels, assignees, milestone, relationships, and managed comments.
 8. Compare requested and observed values.
 9. Report complete success, partial success, or failure without hiding a created issue or partially applied mutation.
+
+GitHub treats `issue_field_values` on an issue update as a replacement set rather than a partial merge. Whenever a mutation includes that property, preserve every currently observed set issue field and overlay the intended changes into one complete replacement payload. This applies to canonical, provider-managed, and unmanaged fields alike. Stop before mutation if a current set value cannot be represented safely; never send only the changed field values.
 
 Silently dropped values are failures for those values. Never compensate for a failed task write by changing organization schema, widening permissions, creating labels, or making a broader second mutation.
 

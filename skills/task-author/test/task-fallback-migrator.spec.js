@@ -28,8 +28,9 @@ function approve(input, preview) {
 }
 
 describe('Task Author T16 fallback migration', () => {
-  it('should verify native values before removing the fallback capsule', () => {
+  it('should preserve current fields while verifying native values before capsule removal', () => {
     const capabilities = organizationCapabilities();
+    const priorityField = capabilities.issueFields.values.find(({ name }) => name === 'Priority');
     const body = `## Context\n\nMigration fixture.\n\n${renderFallbackMetadata({
       complexity: 'medium',
       impact: 'high',
@@ -37,6 +38,15 @@ describe('Task Author T16 fallback migration', () => {
     })}`;
     const options = {
       initialIssue: issue(body),
+      initialFields: [
+        {
+          issue_field_id: priorityField.id,
+          issue_field_name: 'Priority',
+          data_type: 'single_select',
+          value: null,
+          single_select_option: { name: 'Medium' },
+        },
+      ],
       initialComments: [{ id: 1, body: 'Task score: 52 (`task-score/v1`)\n' }],
     };
     const input = { target: 'acme/widgets#91' };
@@ -46,14 +56,19 @@ describe('Task Author T16 fallback migration', () => {
 
     assert.equal(preview.status, 'approval_required');
     assert.deepEqual(preview.plannedMutation.removableKeys, ['complexity', 'impact', 'task-score']);
-    assert.equal(preview.plannedMutation.phases[0].mutation.issue_field_values.length, 3);
+    assert.equal(preview.plannedMutation.phases[0].mutation.issue_field_values.length, 4);
 
     const client = fakeGitHubTaskClient(capabilities, options);
     const report = migrateTaskFallback(approve(input, preview), { githubClient: client });
     assert.equal(report.status, 'migrated');
     assert.equal(report.verification.status, 'verified');
     assert.doesNotMatch(client.state.issue.body, /Task metadata/);
-    assert.equal(client.state.fields.length, 3);
+    assert.equal(client.state.fields.length, 4);
+    assert.equal(
+      client.state.fields.find(({ issue_field_name: name }) => name === 'Priority')
+        .single_select_option.name,
+      'Medium',
+    );
     assert.equal(client.state.comments.length, 1);
     assert.deepEqual(
       client.calls

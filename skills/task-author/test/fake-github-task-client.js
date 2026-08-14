@@ -64,13 +64,9 @@ export function fakeGitHubTaskClient(capabilities, options = {}) {
         state.issue.labels = payload.labels.map((name) => ({ name }));
       }
       if (payload.issue_field_values !== undefined && !options.dropFields) {
-        for (const { field_id: fieldId, value } of payload.issue_field_values) {
+        state.fields = payload.issue_field_values.map(({ field_id: fieldId, value }) => {
           const definition = fieldDefinition(capabilities, fieldId);
-          const current = state.fields.find(
-            (field) =>
-              Number(field.issue_field_id ?? field.field_id ?? field.id) === Number(fieldId),
-          );
-          const next = {
+          return {
             issue_field_id: fieldId,
             issue_field_name: definition?.name,
             data_type: definition?.data_type,
@@ -78,9 +74,7 @@ export function fakeGitHubTaskClient(capabilities, options = {}) {
             single_select_option:
               definition?.data_type === 'single_select' ? { name: value } : null,
           };
-          if (current) Object.assign(current, next);
-          else state.fields.push(next);
-        }
+        });
       }
       return { ok: true, value: structuredClone(state.issue) };
     },

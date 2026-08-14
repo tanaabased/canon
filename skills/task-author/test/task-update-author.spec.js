@@ -6,6 +6,7 @@ import { fakeGitHubTaskClient } from './fake-github-task-client.js';
 import {
   completeBugSections,
   completeFeatureSections,
+  completeTaskSections,
   fakeClient,
   organizationCapabilities,
 } from '../../../test/task-management-fixtures.js';
@@ -183,5 +184,65 @@ describe('Task Author existing-issue modes', () => {
     assert.equal(report.verification.status, 'verified');
     assert.equal(client.state.comments[1].body, 'Earlier implementation discussion must remain.');
     assert.equal(client.state.comments.length, 4);
+  });
+
+  it('should preserve every current issue field when recomputing Task score', () => {
+    const capabilities = organizationCapabilities();
+    const originalInput = {
+      target: 'acme/widgets#99',
+      title: 'assess utilities as standalone packages',
+      kind: 'Task',
+      sections: completeTaskSections,
+      metadata: { workSize: 21, complexity: 'high', impact: 'medium' },
+      scoring: { urgency: 'none', enablement: 'substantial', confidence: 'high' },
+      assessment: {
+        workSize: { source: 'agent', rationale: 'The inventory is broad.' },
+        complexity: { source: 'agent', rationale: 'The comparisons require research.' },
+        impact: { source: 'agent', rationale: 'The report has medium local value.' },
+        urgency: { source: 'policy', rationale: 'No urgency signal exists.' },
+        enablement: { source: 'agent', rationale: 'Several follow-ups become possible.' },
+        confidence: { source: 'agent', rationale: 'The inventory is directly verified.' },
+      },
+      publishScoringAudit: false,
+    };
+    const originalDraft = authorTaskDraft(originalInput, {
+      githubClient: fakeClient(capabilities),
+    });
+    const initialFields = observedFields(originalDraft, capabilities);
+    initialFields.find(({ issue_field_name: name }) => name === 'Impact').single_select_option = {
+      name: 'Very high',
+    };
+    const options = {
+      initialIssue: initialIssue(
+        99,
+        originalDraft.title,
+        originalDraft.body,
+        [],
+        originalDraft.taskKind.name,
+      ),
+      initialFields,
+    };
+    const input = {
+      ...originalInput,
+      mode: 'revise',
+      metadata: { ...originalInput.metadata, impact: 'very-high' },
+      assessment: {
+        ...originalInput.assessment,
+        impact: { source: 'human', rationale: 'A human changed Impact to Very high.' },
+      },
+      revisionSummary: 'Recomputed task-score/v1 after Impact changed to Very high.',
+    };
+    const preview = updateTask(input, {
+      githubClient: fakeGitHubTaskClient(capabilities, options),
+    });
+
+    assert.equal(preview.scoring.score, 50);
+    assert.equal(preview.plannedMutation.mutation.issue_field_values.length, 4);
+
+    const client = fakeGitHubTaskClient(capabilities, options);
+    const report = updateTask(approve(input, preview), { githubClient: client });
+    assert.equal(report.status, 'updated');
+    assert.equal(report.verification.status, 'verified');
+    assert.equal(client.state.fields.length, 4);
   });
 });

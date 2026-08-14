@@ -21,6 +21,7 @@ Every applicable fixture must satisfy these assertions:
 - Show source and rationale for accepted estimates; keep Priority human- or policy-controlled and Task score derived.
 - Use native metadata when available and include only unavailable canonical values in fallback metadata.
 - Omit unknown values instead of inventing defaults or sentinels.
+- After a complete evidence review finds no urgency signal, assess Urgency as policy-sourced None; preserve incomplete or ambiguous urgency as unset.
 - Use only existing canonical labels; never create label definitions during task authoring.
 - Keep Complexity model-neutral and exclude it from Task score.
 - Keep Priority out of Task score and preserve a material override rationale.
@@ -49,9 +50,11 @@ Every applicable fixture must satisfy these assertions:
 | T14 | Task Author   | Task      | Organization    | Material Priority override                   | `22`           |
 | T15 | Task Author   | Task      | Organization    | Score boundaries and insufficient evidence   | Varies         |
 | T16 | Task Author   | Task      | Organization    | Fallback-to-native migration                 | Unchanged      |
+| T17 | Task Author   | Task      | Organization    | Evidence-aware Urgency None policy default   | `30`           |
 | S01 | Schema Author | All       | Organization    | Current-schema and legacy-label inspection   | Not applicable |
 | F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff        | Fixture-owned  |
 | R01 | Task Author   | Feature   | Organization    | Material revision history                    | Recomputed     |
+| R02 | Task Author   | Task      | Organization    | Score recomputation preserves native fields  | `50`           |
 
 ## Task Author Fixtures
 
@@ -454,6 +457,26 @@ Expected migration:
 
 If a native value already conflicts with fallback, preserve the native value, report the conflict, and do not overwrite it through automatic migration.
 
+### T17: Evidence-Aware Urgency None Policy Default
+
+Input evidence:
+
+- Explicit target: `acme/widgets`.
+- One bounded research task reviews a broad existing surface and may enable multiple follow-up packages.
+- The available evidence contains no deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting.
+- No human or policy supplies Priority or scheduling dates.
+
+Expected native values are Task, Priority unset, Work size `21`, Complexity High, Impact Medium, and Task score `30`.
+
+Score inputs are Impact Medium (`0.50`), Urgency None (`0.00`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `21`.
+
+Expected behavior:
+
+- Record Urgency None with `policy` provenance and a rationale that the complete evidence review found no meaningful cost of waiting.
+- Keep Priority unset; do not translate the absence of a sequencing override into Priority Low.
+- Keep Priority out of the formula.
+- If the evidence instead suggests possible but unbounded time sensitivity, ask a focused question and leave Urgency and Task score unset.
+
 ## GitHub Issue Schema Author Fixture
 
 ### S01: Current Organization Schema and Legacy Labels
@@ -538,6 +561,23 @@ Expected behavior:
 - Preserve all earlier comments and do not claim earlier implementation satisfied the new acceptance condition.
 - Re-read and verify the body, metadata, label, and both new comments.
 
+### R02: Score Recomputation Preserves Native Fields
+
+Existing state:
+
+- A Task records Work size `21`, Complexity High, Impact Very high, and stale Task score `30`.
+- A human changed Impact from Medium to Very high before requesting recomputation.
+- Priority and dates remain unset, and the public scoring audit remains suppressed.
+- The accepted scoring diagnostics remain Urgency None, Enablement Substantial, and Confidence High.
+
+Expected behavior:
+
+- Recompute `task-score/v1` as `50` and preview Task score as the only semantic field change.
+- Because GitHub issue-field updates replace the entire set, send Work size `21`, Complexity High, Impact Very high, and Task score `50` together with every other currently observed set field.
+- Preserve unmanaged and unchanged native fields without treating them as newly assessed values.
+- Post only the authorized revision-summary comment and keep the public scoring audit suppressed.
+- Re-read every expected field and return success only when none were cleared or changed unexpectedly.
+
 ## Convergence Review
 
 The fixture pass fails if any consumer:
@@ -551,6 +591,7 @@ The fixture pass fails if any consumer:
 - creates or deletes label definitions during task authoring;
 - loses fallback values, label associations, original evidence, or revision history;
 - mutates an ambiguous or undisclosed target; or
+- sends a partial `issue_field_values` replacement that clears unchanged or unmanaged fields; or
 - reports complete success without verifying every managed value.
 
 After a full pass produces no material contract, template, field, label, fallback, or scoring changes, the corpus may serve as the phase 1 and phase 2 convergence gate for the three core skills.

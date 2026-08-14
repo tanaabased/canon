@@ -8,7 +8,7 @@ import fixtures, {
   organizationCapabilities,
 } from '../../../test/task-management-fixtures.js';
 
-describe('Task Author T01-T15 draft fixtures', () => {
+describe('Task Author T01-T17 draft fixtures', () => {
   for (const fixture of fixtures) {
     it(`should satisfy ${fixture.id} without mutating GitHub`, () => {
       const client = fakeClient(fixture.capabilities);
@@ -162,6 +162,18 @@ describe('Task Author T01-T15 draft fixtures', () => {
     const comment = report.comments.find(({ kind }) => kind === 'priority-override');
     assert.match(comment.body, /contractual sequencing policy/);
     assert.match(comment.body, /Task score remains 22/);
+  });
+
+  it('should satisfy T17 with policy-sourced Urgency None and no Priority default', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T17');
+    const report = authorTaskDraft(fixture.input, {
+      githubClient: fakeClient(fixture.capabilities),
+    });
+
+    assert.equal(report.metadata.values.priority, undefined);
+    assert.equal(report.assessment.values.urgency.value, 'none');
+    assert.equal(report.assessment.values.urgency.source, 'policy');
+    assert.equal(report.scoring.score, 30);
   });
 
   it('should allow the scoring audit comment to be suppressed without suppressing the score', () => {

@@ -1,4 +1,5 @@
 import { METADATA_DEFINITIONS, TASK_KINDS, displayValue } from '../lib/task-author-contract.js';
+import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
 import { renderMigratedTaskBody } from './render-migrated-task-body.js';
 
 function findNamed(values, name) {
@@ -107,7 +108,11 @@ export function buildFallbackMigrationPlan(target, capabilities, current, parsed
   const body = renderMigratedTaskBody(parsed.body, parsed.fallback, removableKeys);
   const nativeMutation = {
     ...(typeWrite ? { type: typeWrite } : {}),
-    ...(fieldWrites.length > 0 ? { issue_field_values: fieldWrites } : {}),
+    ...(fieldWrites.length > 0
+      ? {
+          issue_field_values: buildReplacementIssueFieldValues(current.fields, fieldWrites),
+        }
+      : {}),
   };
   const bodyMutation = body === current.issue.body ? {} : { body };
   return {

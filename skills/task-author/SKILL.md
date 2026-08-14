@@ -64,7 +64,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - For a Bug, keep reporter evidence separate from worker obligations. Plan one linked completion pull request that begins in draft with a regression test or reproduction harness executed in the safest suitable disposable environment, normally existing GitHub Actions. Require failing evidence against the affected baseline and the same reproduction plus relevant surrounding checks passing with the fix. Do not require host-local execution when it could mutate the agent machine; document safe exceptions and approval boundaries when automation is infeasible.
 - For a Feature, require one bounded new or materially expanded capability with an identifiable consumer or workflow, useful outcome, explicit in-scope and out-of-scope boundaries, consumer-visible acceptance criteria, and applicable compatibility or migration evidence. Plan substantive artifacts, tests or executable examples, documentation, checks, and release evidence in its completion pull request. Keep an oversized or umbrella request unready and recommend decomposition rather than treating Feature as an epic.
 - Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
-- A Task score additionally requires Impact, Work size, Urgency, Enablement, and Confidence evidence. Unknown factors remain unset.
+- A Task score additionally requires Impact, Work size, Urgency, Enablement, and Confidence evidence. After reviewing all available evidence, use Urgency `None` with `policy` provenance and a concise no-cost-of-waiting rationale when no deadline, active pain, recurring cost, blockage, or other urgency signal exists. This is an evidence-aware default: if the evidence is incomplete or ambiguous, leave Urgency and Task score unset and ask a focused question. Unknown enablement or other factors remain unset.
 - Every accepted metadata value and scoring diagnostic requires an `assessment` entry with `source` equal to `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based `rationale`; Task score provenance is generated as `derived`.
 - `publishScoringAudit` defaults to `true`. Set it to `false` to suppress the optional public scoring-audit comment while retaining the native or fallback Task score.
 - A GitHub issue-form handoff is intake evidence, not deterministic draft input. Semantically normalize its responses into supported canonical sections and assessment records first; preserve missing evidence as questions.
@@ -94,6 +94,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - Report absent requested labels as unapplied and never create their definitions.
 - Fail closed before mutation when native-versus-fallback placement is unresolved, publication safety is not attested, credential-shaped text is detected, the target differs, or the approved digest does not match the exact plan. Treat a collapsed scoring audit as public text on a public issue; the disclosure element is not a privacy boundary.
 - After any mutation, do not delete, close, or issue an unplanned compensating write to simulate rollback. Preserve current state and report every failed write or mismatched value.
+- Treat `issue_field_values` in an issue update as a replacement set. Preserve every currently observed set field, including unmanaged values, and overlay intended changes into one complete payload; stop if any current value cannot be represented safely.
 - During fallback migration, stop before body cleanup whenever a native write cannot be observed. Preserve conflicting native values and their fallback keys.
 
 ## Workflow
@@ -101,7 +102,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 1. Resolve and display one exact target. Stop if it remains ambiguous.
 2. Run the bundled draft or create command. Both check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
 3. Review missing body evidence, delivery proof, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
-4. Review assessment provenance and rationales. Keep agent estimates evidence-based, keep human-controlled values out of agent ownership, and leave uncertain values unset.
+4. Review assessment provenance and rationales. Keep agent estimates evidence-based and human-controlled values out of agent ownership. When a complete evidence review finds no urgency signal, use policy-sourced Urgency `None`; leave ambiguous factors unset.
 5. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
 6. Review canonical label intent against observed repository labels. Keep missing or unverified labels unapplied.
 7. Review `task-score/v1`, its required factors, and its optional collapsed audit comment. Keep Priority, Complexity, and scheduling fields out of both the formula and public audit. Use `publishScoringAudit: false` when the calculation should remain only in native or fallback metadata.
@@ -126,7 +127,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 - [./lib/github-capability-client.js](./lib/github-capability-client.js): read-only `gh` discovery boundary
 - [./lib/github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
 - [./utils/](./utils/): focused assessment, normalization, rendering, metadata, labeling, and scoring units
-- [./test/](./test/): flat utility, client-boundary, T01–T16, and R01 coverage
+- [./test/](./test/): flat utility, client-boundary, T01–T17, and R01–R02 coverage
 - [../../test/task-management-fixtures.js](../../test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 
 ## Validation
