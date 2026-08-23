@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { GitHubIssueFormClient } from '../lib/github-issue-form-client.js';
 
-const TARGET = 'tanaabased/agent-system-test';
+const TARGET = 'tanaabased/big-test-bucket';
 const TASK_PATH = '.github/ISSUE_TEMPLATE/task.yml';
 
 function success(value) {

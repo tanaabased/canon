@@ -84,5 +84,6 @@
 ## Validation
 
 - For skill work, check discovery shape, section structure, and bundled-resource paths.
+- When manual or GitHub-hosted integration testing requires a disposable live repository, use `tanaabased/big-test-bucket`; keep ordinary unit tests local or fake-backed and clean up test-created state.
 - For managed plugin or `codexsync` changes, run `bun run test`, `bun run lint`, `bun run codex:validate`, and `bun run codex:check`; if cache drift is reported, run `bun run codex:sync` and then `bun run codex:check` again.
 - If cache sync or agent restart is intentionally skipped, say so explicitly.

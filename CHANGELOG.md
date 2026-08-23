@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### New Features
+
+- Added `tanaab-project-milestone-planner` for read-only milestone coverage, gap, overlap, and proposed task-graph planning.
+
 ## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)
 
 ### New Features

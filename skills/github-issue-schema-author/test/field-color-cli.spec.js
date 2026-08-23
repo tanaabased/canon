@@ -27,7 +27,7 @@ describe('skills/github-issue-schema-author/scripts/recolor-fields', () => {
   it('should render the exact color-only update plan', () => {
     const stdout = capture();
     const stderr = capture();
-    const status = runFieldColorCli(['plan', 'tanaabased/agent-system-test'], {
+    const status = runFieldColorCli(['plan', 'tanaabased/big-test-bucket'], {
       client: fakeFieldColorClient(),
       stdout: stdout.stream,
       stderr: stderr.stream,

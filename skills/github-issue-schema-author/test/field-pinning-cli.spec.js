@@ -33,7 +33,7 @@ describe('skills/github-issue-schema-author/scripts/pin-fields', () => {
   it('should render the exact browser-backed pinning plan', () => {
     const stdout = capture();
     const stderr = capture();
-    const status = runFieldPinningCli(['plan', 'tanaabased/agent-system-test'], {
+    const status = runFieldPinningCli(['plan', 'tanaabased/big-test-bucket'], {
       client: fakeFieldPinningClient(),
       stdout: stdout.stream,
       stderr: stderr.stream,

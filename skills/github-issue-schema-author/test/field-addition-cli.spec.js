@@ -32,7 +32,7 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
   it('should render a no-write four-field plan', () => {
     const stdout = capture();
     const stderr = capture();
-    const status = runFieldAdditionCli(['plan', 'tanaabased/agent-system-test'], {
+    const status = runFieldAdditionCli(['plan', 'tanaabased/big-test-bucket'], {
       client: fakeFieldAdditionClient(),
       stdout: stdout.stream,
       stderr: stderr.stream,
@@ -48,13 +48,13 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
 
   it('should render the API error when a creation fails', () => {
     const client = fakeFieldAdditionClient({ failAt: 1 });
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
     const stdout = capture();
     const stderr = capture();
     const status = runFieldAdditionCli(
       [
         'apply',
-        'tanaabased/agent-system-test',
+        'tanaabased/big-test-bucket',
         '--approved-organization',
         report.authorization.organization,
         '--approved-digest',
