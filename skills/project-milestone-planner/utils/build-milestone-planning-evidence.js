@@ -87,11 +87,9 @@ export default function buildMilestonePlanningEvidence({
     existingTasks,
     memberTasks,
     candidateTasks: existingTasks.filter((item) => !isMember(item)),
+    closedTasks: existingTasks.filter((item) => item.state === 'closed'),
     pullRequests,
     memberPullRequests,
-    deliveredWork: [
-      ...existingTasks.filter((item) => item.state === 'closed'),
-      ...pullRequests.filter((item) => item.state === 'closed' || item.mergedAt),
-    ],
+    mergedPullRequests: pullRequests.filter((item) => item.mergedAt),
   };
 }

@@ -1,6 +1,6 @@
 ---
 name: tanaab-project-milestone-planner
-description: Tanaab-based read-only project milestone planning. Use when a user wants to compare one repository milestone with existing tasks and delivered evidence, identify gaps or overlap, and produce a reviewable proposed task graph without mutating GitHub.
+description: Tanaab-based read-only project milestone planning. Use when a user wants to compare one repository milestone with existing tasks and delivery evidence, identify gaps or overlap, and produce a reviewable proposed task graph without mutating GitHub.
 license: MIT
 metadata:
   type: workflow
@@ -22,13 +22,13 @@ metadata:
 
 ## Overview
 
-Plan the task graph needed to achieve one repository-scoped project milestone. Read the milestone, existing tasks, checked-in plans, and delivered evidence; define a completion argument; reuse existing work; and produce one gap-and-overlap report plus a proposed task, hierarchy, dependency, and membership graph.
+Plan the task graph needed to achieve one repository-scoped project milestone. Read the milestone, existing tasks, checked-in plans, provider task states, and merged pull-request evidence; define a completion argument; reuse existing work; and produce one gap-and-overlap report plus a proposed task, hierarchy, dependency, and membership graph.
 
 This version is read-only. It does not create milestones or tasks, change relationships or membership, or claim that the milestone is complete. Deterministic helpers collect and normalize GitHub evidence; the agent owns semantic comparison and plan authorship.
 
 ## When to Use
 
-- Compare one existing project milestone with repository tasks and delivered work.
+- Compare one existing project milestone with repository tasks and delivery evidence.
 - Decide whether existing tasks collectively cover a bounded milestone outcome.
 - Identify missing, overlapping, oversized, obsolete, or unresolved work.
 - Produce a reviewable task graph that reuses existing tasks before proposing new ones.
@@ -49,6 +49,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 - Apply [the project-management model](../../references/project-management-model.md) and [task-management contract](../../references/task-management-contract.md).
 - Require Bun and a host-routed bare `gh` command. Apply [the GitHub CLI routing contract](../../references/github-cli-routing.md) without overriding the inherited working directory or environment.
 - Treat milestone title, description, due date, state, task bodies, comments, repository plans, and delivered artifacts as evidence rather than automatically accepted intent.
+- Treat issue closure as provider state and pull-request merge as delivery evidence, not proof that task acceptance or milestone completion was satisfied.
 - Keep publication and relationship mutation unavailable. A read-only planning request does not authorize later materialization.
 
 ## Workflow
@@ -63,7 +64,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 
 3. Inspect checked-in repository guidance, relevant plans, and delivered artifacts that materially affect the milestone. Keep unavailable evidence unresolved.
 4. State one bounded completion argument: the milestone outcome, in-scope result, completion conditions, and any real timebox. If the milestone cannot support that argument, ask focused questions before proposing work.
-5. Compare the completion argument with existing open and closed tasks plus delivered pull requests. Classify each relevant item as `covered`, `partial`, `overlap`, `too_broad`, `obsolete`, or `unresolved`, with concise evidence.
+5. Compare the completion argument with existing open and closed tasks plus merged pull-request evidence. Treat closed issues as provider state, closed-unmerged pull requests as nondelivery, and merged pull requests as evidence that still requires comparison with task acceptance. Classify each relevant item as `covered`, `partial`, `overlap`, `too_broad`, `obsolete`, or `unresolved`, with concise evidence.
 6. Reuse existing tasks wherever they provide distinct coverage. Do not restate an existing task as a proposed new task merely to make the plan look complete.
 7. Identify uncovered completion conditions and propose only the missing tasks. Each proposed task needs a kind, bounded outcome, non-overlapping scope, observable acceptance criteria, and enough evidence for a later Task Author assessment; leave unsupported metadata unset.
 8. Propose shallow parent/sub-issue relationships, blocked-by dependencies, and milestone membership only when the evidence requires them. Mark oversized work for a Task Decomposer handoff rather than inventing child tasks inside this workflow.
@@ -106,6 +107,6 @@ This version is read-only. It does not create milestones or tasks, change relati
 - Run `bunx mocha "skills/project-milestone-planner/test/**/*.spec.js"`.
 - Run Skill Author validation against this directory.
 - Confirm the evidence command calls only read-only GitHub endpoints and always reports `mutatesGitHub: false`.
-- Exercise missing `gh`, unauthenticated public reads, invalid targets, partial API evidence, empty milestones, membership, candidate tasks, and delivered work through injected fakes.
+- Exercise missing `gh`, unauthenticated public reads, invalid targets, partial API evidence, empty milestones, membership, candidate tasks, closed provider state, closed-unmerged pull requests, and merged delivery evidence through injected fakes.
 - Run repository tests, lint, `codex:validate`, and `codex:check`; synchronize the managed cache only when preparing installed-skill validation.
 - Do not add a model-backed Leia scenario merely to test plan prose. Add an installed scenario later only when the public agent workflow or host-routing boundary exposes risk that deterministic tests cannot cover.

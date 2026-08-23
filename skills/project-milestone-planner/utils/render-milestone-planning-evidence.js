@@ -24,8 +24,9 @@ export default function renderMilestonePlanningEvidence(report) {
     '',
     `member tasks: ${report.memberTasks.length}`,
     `candidate tasks: ${report.candidateTasks.length}`,
+    `closed tasks (provider state): ${report.closedTasks.length}`,
     `member pull requests: ${report.memberPullRequests.length}`,
-    `delivered work: ${report.deliveredWork.length}`,
+    `merged pull requests (delivery evidence): ${report.mergedPullRequests.length}`,
   );
 
   if (report.warnings.length > 0) {

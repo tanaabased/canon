@@ -11,7 +11,7 @@ const target = {
 };
 
 describe('skills/project-milestone-planner/utils/build-milestone-planning-evidence', () => {
-  it('should separate membership, candidates, pull requests, and delivered work', () => {
+  it('should separate membership, provider state, and merged delivery evidence', () => {
     const report = buildMilestonePlanningEvidence({
       target,
       repository: {
@@ -56,6 +56,15 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
           state: 'closed',
           title: 'Deliver planner',
         },
+        {
+          body: 'Abandoned change.',
+          labels: [],
+          milestone: null,
+          number: 13,
+          pull_request: { merged_at: null },
+          state: 'closed',
+          title: 'Do not deliver planner',
+        },
       ],
     });
 
@@ -64,9 +73,14 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
     assert.equal(report.candidateTasks.length, 1);
     assert.equal(report.memberPullRequests.length, 1);
     assert.deepEqual(
-      report.deliveredWork.map((item) => item.number),
-      ['11', '12'],
+      report.closedTasks.map((item) => item.number),
+      ['11'],
     );
+    assert.deepEqual(
+      report.mergedPullRequests.map((item) => item.number),
+      ['12'],
+    );
+    assert.equal(report.pullRequests.length, 2);
     assert.deepEqual(report.memberTasks[0].labels, ['planning', 'task']);
     assert.equal(report.repository.defaultBranch, 'main');
   });
@@ -78,6 +92,8 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
     assert.equal(report.repository, null);
     assert.equal(report.milestone, null);
     assert.deepEqual(report.existingTasks, []);
+    assert.deepEqual(report.closedTasks, []);
     assert.deepEqual(report.pullRequests, []);
+    assert.deepEqual(report.mergedPullRequests, []);
   });
 });
