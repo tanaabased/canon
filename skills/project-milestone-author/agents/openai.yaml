@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Project Milestone Author'
+  short_description: 'Tanaab-based verified GitHub milestone authoring'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-project-milestone-author to interpret my intent, then inspect, draft, or apply one exact GitHub project milestone desired state through digest-gated writes and read-back verification.'

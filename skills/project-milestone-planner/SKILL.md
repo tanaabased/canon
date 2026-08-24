@@ -36,7 +36,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 
 ## When Not to Use
 
-- Do not create, revise, close, or synchronize a milestone; that belongs to the future Project Milestone Author surface.
+- Do not create, revise, close, or synchronize a milestone; route those changes to [Project Milestone Author](../project-milestone-author/SKILL.md).
 - Do not create or revise tasks, assign milestone membership, create sub-issues, or change dependencies in this version.
 - Do not decompose one oversized task as the primary request; use Task Decomposer when that skill exists.
 - Do not manage a GitHub Projects board. A board is an optional view, not the project or milestone source of truth.
@@ -86,7 +86,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 - Every relevant existing task is classified with evidence, and reused work is distinguished from proposed work.
 - Gaps, overlaps, oversized tasks, dependencies, and membership changes are explicit rather than buried in prose.
 - Every proposed task contributes distinct milestone coverage and includes observable acceptance criteria.
-- The report names the future owning handoff for each proposed mutation and makes no GitHub changes.
+- The report names the owning handoff for each proposed mutation and makes no GitHub changes.
 
 ## Bundled Resources
 

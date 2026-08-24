@@ -21,6 +21,8 @@ Use the domain nouns in provider-neutral Canon guidance. Use **repository**, **i
 ## Lifecycle Ownership
 
 - The task owns task state and completion. A pull request is the required completion submission, not the task, and passing validation does not by itself prove completion.
+- A project milestone owns one bounded repository outcome or timebox, its description, state, due date, and explicit task membership. Project Milestone Author owns those mutations without deciding what tasks are needed, inferring completion, or deleting milestones.
+- Project Milestone Planner owns read-only milestone completion arguments, coverage maps, and proposed task graphs. Its proposals are handoffs, not mutation authorization or proof of completion.
 - Every task requires at least one linked pull request. The change may contain code, repository artifacts, or sanitized evidence of an external outcome. An empty commit is acceptable only when no safe or useful repository artifact exists; the pull-request body must still describe the outcome and acceptance evidence.
 - Keep the completion pull request in draft while work is in progress. Marking it ready for review requests completion assessment; merging it records delivery but does not satisfy undocumented acceptance criteria.
 - A Bug's draft completion pull request may intentionally begin with a failing regression test run against the affected baseline. Surface the failure as work-in-progress evidence and keep the path pending while the pull request is draft; a failing ready-for-review pull request is blocked.
