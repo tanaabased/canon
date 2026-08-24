@@ -17,7 +17,7 @@ function authorize(preview) {
 describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additions', () => {
   it('should preview exactly four additive POST operations and no updates or deletions', () => {
     const client = fakeFieldAdditionClient();
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
 
     assert.equal(report.status, 'approval_required');
     assert.equal(report.mutatesGitHub, false);
@@ -51,8 +51,8 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
   it('should create and exactly verify all four fields after digest-bound authorization', () => {
     const client = fakeFieldAdditionClient();
-    const preview = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', {
+    const preview = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', {
       client,
       authorization: authorize(preview),
     });
@@ -68,7 +68,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
   it('should be idempotent after all four additive fields exist', () => {
     const client = fakeFieldAdditionClient({ fields: allManagedFields() });
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
 
     assert.equal(report.status, 'aligned');
     assert.equal(report.mutatesGitHub, false);
@@ -92,7 +92,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
       },
     ];
     const client = fakeFieldAdditionClient({ fields });
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
 
     assert.deepEqual(
       report.plannedMutation.operations.map(({ body }) => body.name),
@@ -108,8 +108,8 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
   it('should stop on the first failed creation and preserve partial success without rollback', () => {
     const client = fakeFieldAdditionClient({ failAt: 2 });
-    const preview = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', {
+    const preview = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', {
       client,
       authorization: authorize(preview),
     });
@@ -131,7 +131,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
       fakeFieldAdditionClient({ ownerType: 'User' }),
       fakeFieldAdditionClient({ fieldsStatus: 'unavailable' }),
     ]) {
-      const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', { client });
+      const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
       assert.equal(report.status, 'blocked');
       assert.equal(report.mutatesGitHub, false);
       assert.equal(
@@ -143,7 +143,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
   it('should reject an approval for a different organization or plan digest', () => {
     const client = fakeFieldAdditionClient();
-    const report = addMissingGitHubIssueFields('tanaabased/agent-system-test', {
+    const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', {
       client,
       authorization: {
         approvedOrganization: 'another-org',

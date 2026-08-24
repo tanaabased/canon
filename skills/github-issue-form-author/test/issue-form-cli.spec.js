@@ -58,7 +58,7 @@ describe('skills/github-issue-form-author/scripts/render-issue-forms', () => {
   it('should plan and apply through the injected repository client', () => {
     const client = fakeIssueFormClient();
     const stdout = capture();
-    let status = runCli(['plan', 'tanaabased/agent-system-test', '--json'], {
+    let status = runCli(['plan', 'tanaabased/big-test-bucket', '--json'], {
       client,
       stdout: stdout.stream,
     });
@@ -70,7 +70,7 @@ describe('skills/github-issue-form-author/scripts/render-issue-forms', () => {
     status = runCli(
       [
         'apply',
-        'tanaabased/agent-system-test',
+        'tanaabased/big-test-bucket',
         '--approved-repository',
         preview.authorization.repository,
         '--approved-branch',

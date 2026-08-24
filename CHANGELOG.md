@@ -1,6 +1,13 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### New Features
+
 - Added `tanaab-project-milestone-author` for model-led, verified milestone and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18)
+- Added `tanaab-project-milestone-planner` for read-only milestone coverage, gap, overlap, and proposed task-graph planning. [#20](https://github.com/tanaabased/canon/issues/20) [#22](https://github.com/tanaabased/canon/pull/22)
+
+### Policy and Guidance
+
+- Updated `tanaab-task-author` to keep task payloads out of shell commands and approval rules. [#22](https://github.com/tanaabased/canon/pull/22)
 
 ## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)
 

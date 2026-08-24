@@ -6,7 +6,7 @@ import { alignGitHubIssueForms } from '../lib/issue-form-repository-author.js';
 import { serializeYaml } from '../utils/serialize-yaml.js';
 import { fakeIssueFormClient } from './fake-issue-form-client.js';
 
-const TARGET = 'tanaabased/agent-system-test';
+const TARGET = 'tanaabased/big-test-bucket';
 
 function authorize(preview) {
   return {

@@ -12,7 +12,7 @@ function authorize(preview) {
 
 describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', () => {
   it('should preview only the six canonical pin replacements that currently drift', () => {
-    const report = planGitHubIssueFieldPinning('tanaabased/agent-system-test', {
+    const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client: fakeFieldPinningClient(),
     });
 
@@ -41,8 +41,8 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
 
   it('should become ready for browser execution only after exact digest authorization', () => {
     const client = fakeFieldPinningClient();
-    const preview = planGitHubIssueFieldPinning('tanaabased/agent-system-test', { client });
-    const report = planGitHubIssueFieldPinning('tanaabased/agent-system-test', {
+    const preview = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', { client });
+    const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client,
       authorization: authorize(preview),
     });
@@ -53,7 +53,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
   });
 
   it('should be idempotent when every managed field is already pinned', () => {
-    const report = planGitHubIssueFieldPinning('tanaabased/agent-system-test', {
+    const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client: fakeFieldPinningClient({ canonical: true }),
     });
 
@@ -62,7 +62,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
   });
 
   it('should block a projection that exceeds GitHub pin limits', () => {
-    const report = planGitHubIssueFieldPinning('tanaabased/agent-system-test', {
+    const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client: fakeFieldPinningClient({ extraPinnedNames: ['Owner', 'Severity', 'Customer'] }),
     });
 
@@ -71,7 +71,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
   });
 
   it('should reject authorization for a different organization and digest', () => {
-    const report = planGitHubIssueFieldPinning('tanaabased/agent-system-test', {
+    const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client: fakeFieldPinningClient(),
       authorization: {
         approvedOrganization: 'another-org',

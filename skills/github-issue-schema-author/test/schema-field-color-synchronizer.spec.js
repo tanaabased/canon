@@ -22,7 +22,7 @@ function identity(options) {
 describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors', () => {
   it('should preview three color-only PATCH operations with every option identity retained', () => {
     const client = fakeFieldColorClient();
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', { client });
 
     assert.equal(report.status, 'approval_required');
     assert.equal(report.mutatesGitHub, false);
@@ -56,8 +56,8 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors
 
   it('should recolor and exactly verify all fields after digest-bound authorization', () => {
     const client = fakeFieldColorClient();
-    const preview = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', {
+    const preview = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', { client });
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', {
       client,
       authorization: authorize(preview),
     });
@@ -72,7 +72,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors
 
   it('should be idempotent when canonical colors are already present', () => {
     const client = fakeFieldColorClient({ canonical: true });
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', { client });
 
     assert.equal(report.status, 'aligned');
     assert.equal(report.mutatesGitHub, false);
@@ -81,8 +81,8 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors
 
   it('should stop after a failed update and preserve successful color changes without rollback', () => {
     const client = fakeFieldColorClient({ failAt: 2 });
-    const preview = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', {
+    const preview = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', { client });
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', {
       client,
       authorization: authorize(preview),
     });
@@ -101,7 +101,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors
     const stateFields = grayFieldColorState();
     stateFields[0].options.pop();
     const client = fakeFieldColorClient({ stateFields });
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', { client });
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', { client });
 
     assert.equal(report.status, 'blocked');
     assert.match(report.blockers.join('\n'), /options or order differ/);
@@ -113,7 +113,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer colors
 
   it('should reject authorization for a different organization or digest', () => {
     const client = fakeFieldColorClient();
-    const report = synchronizeGitHubIssueFieldColors('tanaabased/agent-system-test', {
+    const report = synchronizeGitHubIssueFieldColors('tanaabased/big-test-bucket', {
       client,
       authorization: {
         approvedOrganization: 'another-org',
