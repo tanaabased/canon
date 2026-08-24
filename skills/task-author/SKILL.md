@@ -42,10 +42,10 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 ## When Not to Use
 
-- Do not close, reopen, delete, assign, or change milestone or relationship state.
+- Do not close, reopen, delete, assign, or change relationship state. Route milestone lifecycle and explicit task-membership changes to [Project Milestone Author](../project-milestone-author/SKILL.md).
 - Do not create, recolor, rename, or delete label definitions; create mode may apply only observed existing canonical labels.
 - Do not create or change issue types, organization issue fields, field options, milestones, dependencies, parents, or sub-issues.
-- Do not set assignees or milestone membership through the current create mode.
+- Do not set assignees through the current create mode, and do not bundle milestone membership with task creation.
 - Do not create a task with requested relationship mutations; keep that preview blocked until relationship support is implemented.
 - Do not use this skill to assess completion; use [Task Completion Check](../task-completion-check/SKILL.md).
 - Do not infer a target from a directory name. If neither an explicit target nor one unambiguous verified GitHub binding exists, request `OWNER/REPO`.

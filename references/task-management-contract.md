@@ -16,8 +16,9 @@ The initial consumers are:
 
 - **Task Author**, which owns one task and its directly managed values;
 - **GitHub Issue Schema Author**, which owns organization issue types and fields plus repository label definitions;
-- **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms; and
-- **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence.
+- **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms;
+- **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence; and
+- **Project Milestone Author**, which owns one repository milestone and explicitly selected task membership without changing task semantics.
 
 Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, completion evidence, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
 

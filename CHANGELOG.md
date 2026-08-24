@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added `tanaab-project-milestone-author` for model-led, verified milestone and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18)
+
 ## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)
 
 ### New Features

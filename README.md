@@ -76,6 +76,7 @@ Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugi
 | [`tanaab-github-issue-form-author`](./skills/github-issue-form-author/)     | Low-friction Task, Bug, and Feature issue forms plus repository alignment.                              |
 | [`tanaab-github-issue-schema-author`](./skills/github-issue-schema-author/) | Organization issue fields, field presentation, and canonical repository labels.                         |
 | [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation and managed settings inspection or synchronization.                          |
+| [`tanaab-project-milestone-author`](./skills/project-milestone-author/)     | Model-led milestone authoring with verified state, due-date, and explicit task-membership writes.       |
 | [`tanaab-project-optimizer`](./skills/project-optimizer/)                   | Read-only project audits, convergence reports, and staged improvement plans.                            |
 | [`tanaab-task-author`](./skills/task-author/)                               | Canonical Task, Bug, and Feature assessment, creation, revision, normalization, and fallback migration. |
 | [`tanaab-task-completion-check`](./skills/task-completion-check/)           | Read-only completion assessment from criteria, linked pull requests, reviews, checks, and failures.     |
