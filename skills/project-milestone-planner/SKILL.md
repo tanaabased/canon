@@ -41,7 +41,6 @@ This version is read-only. It does not create milestones or tasks, change relati
 - Do not decompose one oversized task as the primary request; use [Task Decomposer](../task-decomposer/SKILL.md).
 - Do not manage a GitHub Projects board. A board is an optional view, not the project or milestone source of truth.
 - Do not treat a milestone as proof that its tasks or outcome are complete.
-- Do not change `task-score/v1` because a task joins a milestone or appears strategically relevant.
 
 ## Preconditions
 
@@ -99,7 +98,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 - `utils/render-milestone-planning-evidence.js`: human-readable evidence summary.
 - `test/`: focused target, parsing, client, normalization, and orchestration coverage.
 - [../../references/project-management-model.md](../../references/project-management-model.md): project milestone identity and ownership boundaries.
-- [../../references/task-management-contract.md](../../references/task-management-contract.md): task shape, relationships, scoring, and authorization rules.
+- [../../references/task-management-contract.md](../../references/task-management-contract.md): task shape, metadata, relationships, and authorization rules.
 - [../../references/github-cli-routing.md](../../references/github-cli-routing.md): inherited host routing for GitHub CLI calls.
 
 ## Validation

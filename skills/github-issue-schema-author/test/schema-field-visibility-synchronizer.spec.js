@@ -18,7 +18,7 @@ describe('GitHub Issue Schema Author visibility synchronization', () => {
     assert.equal(preview.status, 'approval_required');
     assert.deepEqual(
       preview.plannedMutation.operations.map(({ field }) => field.name),
-      ['Work size', 'Complexity', 'Impact', 'Task score'],
+      ['Work size', 'Complexity', 'Impact'],
     );
     assert.ok(
       preview.plannedMutation.operations.every(

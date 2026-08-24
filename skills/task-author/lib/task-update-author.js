@@ -12,7 +12,6 @@ const FALLBACK_TO_METADATA = Object.freeze({
   'work-size': 'workSize',
   complexity: 'complexity',
   impact: 'impact',
-  'task-score': 'taskScore',
   'start-date': 'startDate',
   'target-date': 'targetDate',
 });
@@ -44,7 +43,7 @@ function preservedFallbackInput(parsed, input) {
   const assessment = {};
   for (const [fallbackKey, value] of Object.entries(parsed.fallback)) {
     const key = FALLBACK_TO_METADATA[fallbackKey];
-    if (key && key !== 'taskScore') {
+    if (key) {
       metadata[key] = value;
       assessment[key] = {
         source: 'existing',
@@ -58,7 +57,6 @@ function preservedFallbackInput(parsed, input) {
     kind: input.kind ?? parsed.fallback.type,
     metadata: { ...metadata, ...input.metadata },
     assessment: { ...assessment, ...input.assessment },
-    preservedTaskScore: parsed.fallback['task-score'],
   };
 }
 
@@ -73,7 +71,6 @@ function reportBase(mode, draft, current, plan, publication) {
     metadata: draft.metadata,
     assessment: draft.assessment,
     labels: draft.labels,
-    scoring: draft.scoring,
     plannedMutation: plan,
     publication,
     warnings: draft.warnings,
@@ -135,16 +132,6 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
   if (draft.labels.unresolved.length > 0) blockers.push('Label availability remains unresolved.');
   if (draft.metadata.errors.length > 0) blockers.push(...draft.metadata.errors);
   if (draft.assessment.errors.length > 0) blockers.push(...draft.assessment.errors);
-  if (draft.scoring.errors.length > 0) blockers.push(...draft.scoring.errors);
-  if (
-    parsed.fallback['task-score'] !== undefined &&
-    (input.metadata?.impact !== undefined || input.metadata?.workSize !== undefined) &&
-    draft.scoring.score === null
-  ) {
-    blockers.push(
-      'Changing a score input requires complete scoring evidence to recompute Task score.',
-    );
-  }
   if (mode === 'revise' && draft.status === 'needs_input') {
     blockers.push('Revision requires a complete actionable canonical task.');
   }

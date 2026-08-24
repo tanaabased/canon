@@ -11,7 +11,7 @@ function authorize(preview) {
 }
 
 describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', () => {
-  it('should preview only the six canonical pin replacements that currently drift', () => {
+  it('should preview only the five canonical pin replacements that currently drift', () => {
     const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
       client: fakeFieldPinningClient(),
     });
@@ -21,13 +21,13 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
     assert.equal(report.plannedMutation.executionSurface, 'github_settings_ui');
     assert.deepEqual(
       report.plannedMutation.operations.map(({ field }) => field.name),
-      ['Work size', 'Complexity', 'Impact', 'Task score', 'Start date', 'Target date'],
+      ['Work size', 'Complexity', 'Impact', 'Start date', 'Target date'],
     );
     assert.deepEqual(report.plannedMutation.creates, []);
     assert.deepEqual(report.plannedMutation.deletions, []);
-    assert.deepEqual(report.plannedMutation.operations[4].before.pinnedIssueTypes, ['Feature']);
+    assert.deepEqual(report.plannedMutation.operations[3].before.pinnedIssueTypes, ['Feature']);
     assert.deepEqual(
-      report.plannedMutation.operations[4].after.pinnedIssueTypes.map(({ name }) => name),
+      report.plannedMutation.operations[3].after.pinnedIssueTypes.map(({ name }) => name),
       ['Task', 'Bug', 'Feature'],
     );
     assert.ok(
@@ -36,7 +36,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
           surface === 'github_settings_ui' && after.pinToNoTypeIssues === false,
       ),
     );
-    assert.ok(report.plannedMutation.projectedIssueTypes.every(({ count }) => count === 8));
+    assert.ok(report.plannedMutation.projectedIssueTypes.every(({ count }) => count === 7));
   });
 
   it('should become ready for browser execution only after exact digest authorization', () => {
@@ -63,7 +63,9 @@ describe('skills/github-issue-schema-author/lib/schema-field-pinning-planner', (
 
   it('should block a projection that exceeds GitHub pin limits', () => {
     const report = planGitHubIssueFieldPinning('tanaabased/big-test-bucket', {
-      client: fakeFieldPinningClient({ extraPinnedNames: ['Owner', 'Severity', 'Customer'] }),
+      client: fakeFieldPinningClient({
+        extraPinnedNames: ['Owner', 'Severity', 'Customer', 'Area'],
+      }),
     });
 
     assert.equal(report.status, 'blocked');

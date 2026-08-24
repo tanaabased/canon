@@ -61,11 +61,7 @@ export function organizationCapabilities({ partial = false } = {}) {
     schemaField(104, 'targetDate'),
   ];
   if (!partial) {
-    fields.push(
-      schemaField(105, 'complexity'),
-      schemaField(106, 'impact'),
-      schemaField(107, 'taskScore'),
-    );
+    fields.push(schemaField(105, 'complexity'), schemaField(106, 'impact'));
   }
 
   return {
@@ -142,12 +138,6 @@ function assessed(input, overrides = {}) {
           : `The described evidence supports ${key} as ${value}.`,
     };
   }
-  for (const [key, value] of Object.entries(input.scoring ?? {})) {
-    assessment[key] = {
-      source: 'agent',
-      rationale: `The described evidence supports ${key} as ${value}.`,
-    };
-  }
   return { ...input, assessment: { ...assessment, ...overrides } };
 }
 
@@ -161,9 +151,8 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'medium', workSize: 3, complexity: 'low', impact: 'medium' },
-      scoring: { urgency: 'moderate', enablement: 'some', confidence: 'high' },
     }),
-    expected: { score: 37, nativeFields: 5, fallback: {}, labels: [] },
+    expected: { nativeFields: 4, fallback: {}, labels: [] },
   },
   {
     id: 'T02',
@@ -174,11 +163,10 @@ const fixtures = [
       kind: 'Bug',
       sections: completeBugSections,
       metadata: { priority: 'high', workSize: 5, complexity: 'medium', impact: 'high' },
-      scoring: { urgency: 'high', enablement: 'none', confidence: 'high' },
       signals: { regression: true },
       reproductionAvailable: true,
     }),
-    expected: { score: 47, nativeFields: 5, fallback: {}, labels: ['regression'] },
+    expected: { nativeFields: 4, fallback: {}, labels: ['regression'] },
   },
   {
     id: 'T03',
@@ -195,10 +183,9 @@ const fixtures = [
         impact: 'high',
         targetDate: '2026-10-01',
       },
-      scoring: { urgency: 'moderate', enablement: 'substantial', confidence: 'medium' },
       signals: { breakingChange: true },
     }),
-    expected: { score: 37, nativeFields: 6, fallback: {}, labels: ['breaking change'] },
+    expected: { nativeFields: 5, fallback: {}, labels: ['breaking change'] },
   },
   {
     id: 'T04',
@@ -209,11 +196,9 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'low', workSize: 2, complexity: 'low', impact: 'low' },
-      scoring: { urgency: 'none', enablement: 'some', confidence: 'high' },
       signals: { documentation: true },
     }),
     expected: {
-      score: 20,
       nativeFields: 0,
       fallback: {
         type: 'task',
@@ -221,7 +206,6 @@ const fixtures = [
         'work-size': 2,
         complexity: 'low',
         impact: 'low',
-        'task-score': 20,
       },
       labels: ['documentation'],
     },
@@ -235,11 +219,10 @@ const fixtures = [
       kind: 'Bug',
       sections: completeBugSections,
       metadata: { priority: 'high', workSize: 3, complexity: 'medium', impact: 'high' },
-      scoring: { urgency: 'high', enablement: 'none', confidence: 'high' },
       signals: { regression: true },
       reproductionAvailable: true,
     }),
-    expected: { score: 50, nativeFields: 0, labels: ['regression'] },
+    expected: { nativeFields: 0, labels: ['regression'] },
   },
   {
     id: 'T06',
@@ -250,10 +233,9 @@ const fixtures = [
       kind: 'Feature',
       sections: completeFeatureSections,
       metadata: { priority: 'medium', workSize: 5, complexity: 'medium', impact: 'high' },
-      scoring: { urgency: 'moderate', enablement: 'substantial', confidence: 'high' },
       signals: { helpWanted: true, goodFirstIssue: true },
     }),
-    expected: { score: 52, nativeFields: 0, labels: ['help wanted'] },
+    expected: { nativeFields: 0, labels: ['help wanted'] },
   },
   {
     id: 'T09',
@@ -264,10 +246,9 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'high', workSize: 8, complexity: 'high', impact: 'high' },
-      scoring: { urgency: 'high', enablement: 'substantial', confidence: 'medium' },
       relationships: { externalBlocker: true, note: 'Vendor must grant API access.' },
     }),
-    expected: { score: 41, nativeFields: 5, fallback: {}, labels: ['blocked'] },
+    expected: { nativeFields: 4, fallback: {}, labels: ['blocked'] },
   },
   {
     id: 'T10',
@@ -278,10 +259,9 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'medium', workSize: 5, complexity: 'medium', impact: 'high' },
-      scoring: { urgency: 'moderate', enablement: 'substantial', confidence: 'high' },
       relationships: { blockedBy: 'acme/widgets#42' },
     }),
-    expected: { score: 52, nativeFields: 5, fallback: {}, labels: ['blocked'] },
+    expected: { nativeFields: 4, fallback: {}, labels: ['blocked'] },
   },
   {
     id: 'T11',
@@ -292,12 +272,10 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'medium', workSize: 3, complexity: 'low', impact: 'medium' },
-      scoring: { urgency: 'moderate', enablement: 'some', confidence: 'high' },
     }),
     expected: {
-      score: 37,
       nativeFields: 2,
-      fallback: { complexity: 'low', impact: 'medium', 'task-score': 37 },
+      fallback: { complexity: 'low', impact: 'medium' },
       labels: [],
     },
   },
@@ -310,9 +288,8 @@ const fixtures = [
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { priority: 'high', workSize: 21, complexity: 'high', impact: 'very-high' },
-      scoring: { urgency: 'high', enablement: 'foundational', confidence: 'high' },
     }),
-    expected: { score: 64, nativeFields: 5, fallback: {}, labels: [] },
+    expected: { nativeFields: 4, fallback: {}, labels: [] },
   },
   {
     id: 'T14',
@@ -324,8 +301,6 @@ const fixtures = [
         kind: 'Task',
         sections: completeTaskSections,
         metadata: { priority: 'urgent', workSize: 1, complexity: 'low', impact: 'low' },
-        scoring: { urgency: 'moderate', enablement: 'none', confidence: 'high' },
-        priorityRationale: 'A contractual sequencing policy requires this work first.',
       },
       {
         priority: {
@@ -334,29 +309,7 @@ const fixtures = [
         },
       },
     ),
-    expected: { score: 22, nativeFields: 5, fallback: {}, labels: [] },
-  },
-  {
-    id: 'T17',
-    capabilities: organizationCapabilities(),
-    input: assessed(
-      {
-        target: 'acme/widgets',
-        title: 'assess utilities as standalone packages',
-        kind: 'Task',
-        sections: completeTaskSections,
-        metadata: { workSize: 21, complexity: 'high', impact: 'medium' },
-        scoring: { urgency: 'none', enablement: 'substantial', confidence: 'high' },
-      },
-      {
-        urgency: {
-          source: 'policy',
-          rationale:
-            'The complete evidence review found no deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting.',
-        },
-      },
-    ),
-    expected: { score: 30, nativeFields: 4, fallback: {}, labels: [] },
+    expected: { nativeFields: 4, fallback: {}, labels: [] },
   },
 ];
 

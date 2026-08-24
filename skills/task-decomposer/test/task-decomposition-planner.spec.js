@@ -60,9 +60,7 @@ describe('Task Decomposer exact planning', () => {
       preview.plan.operationOrder.map(({ id }) => id),
       [
         'create:inspection',
-        'comment:inspection:task-score',
         'create:publication',
-        'comment:publication:task-score',
         'sub-issue:inspection',
         'sub-issue:publication',
         'dependency:publication<-inspection',

@@ -1,6 +1,14 @@
 import { COMPLEXITIES, IMPACTS, PRIORITIES, WORK_SIZES } from '../lib/task-author-contract.js';
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const METADATA_KEYS = Object.freeze([
+  'priority',
+  'workSize',
+  'complexity',
+  'impact',
+  'startDate',
+  'targetDate',
+]);
 
 function normalizedEnum(value) {
   return typeof value === 'string' ? value.trim().toLowerCase().replaceAll(' ', '-') : value;
@@ -37,15 +45,11 @@ function validateDate(values, key, errors) {
 /** Normalize canonical task metadata without inventing values for missing evidence. */
 export function normalizeTaskMetadata(input = {}) {
   const values = Object.fromEntries(
-    ['priority', 'workSize', 'complexity', 'impact', 'startDate', 'targetDate']
-      .filter((key) => input?.[key] !== undefined)
-      .map((key) => [key, input[key]]),
+    METADATA_KEYS.filter((key) => input?.[key] !== undefined).map((key) => [key, input[key]]),
   );
-  const errors = [];
-
-  if (input?.taskScore !== undefined && input.taskScore !== null) {
-    errors.push('taskScore is derived from task-score/v1 inputs and may not be supplied directly.');
-  }
+  const errors = Object.keys(input ?? {})
+    .filter((key) => !METADATA_KEYS.includes(key))
+    .map((key) => `metadata.${key} is not supported.`);
 
   validateEnum(values, 'priority', PRIORITIES, errors);
   validateEnum(values, 'complexity', COMPLEXITIES, errors);

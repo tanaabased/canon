@@ -1,8 +1,8 @@
 # Task Management Fixture Corpus
 
-Status: initial cross-skill fixture baseline
+Status: canonical cross-skill fixture baseline
 
-Contract version: `tanaab/task-management/v1`
+Contract version: `tanaab/task-management/v2`
 
 ## Purpose
 
@@ -10,7 +10,7 @@ These fixtures are the shared comparison surface for Task Author, GitHub Issue F
 
 The cases are descriptive golden fixtures, not live GitHub operations. The shared executable fixture support and cross-skill equivalence spec live in the repository `test/` surface, while effect-specific fake-client coverage remains with each owning skill.
 
-Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, score, mutation boundary, and verification result are normative for the initial convergence loop.
+Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, mutation boundary, and verification result are normative for the convergence loop.
 
 ## Shared Assertions
 
@@ -18,43 +18,38 @@ Every applicable fixture must satisfy these assertions:
 
 - Resolve and display one exact `OWNER/REPO` target or stop without mutation.
 - Preserve form and external-submission evidence losslessly, then produce the same canonical task semantics after Task Author normalization.
-- Show source and rationale for accepted estimates; keep Priority human- or policy-controlled and Task score derived.
+- Show source and rationale for accepted estimates; keep Priority human- or policy-controlled.
 - Use native metadata when available and include only unavailable canonical values in fallback metadata.
 - Omit unknown values instead of inventing defaults or sentinels.
-- After a complete evidence review finds no urgency signal, assess Urgency as policy-sourced None; preserve incomplete or ambiguous urgency as unset.
 - Use only existing canonical labels; never create label definitions during task authoring.
-- Keep Complexity model-neutral and exclude it from Task score.
-- Keep Priority out of Task score and preserve a material override rationale.
-- By default, persist a collapsed advisory scoring-audit comment whenever a score is first written or its displayed inputs change; allow explicit suppression without suppressing the score.
+- Keep Complexity model-neutral and Impact independent of delivery cost.
 - Preview every write and re-read every managed value afterward.
 - Report partial success honestly rather than treating an issue URL as complete success.
 - Require at least one linked completion pull request before an open task can become ready. Keep external or sensitive evidence safely summarized rather than publishing private material.
 
 ## Fixture Matrix
 
-| ID  | Surface       | Task kind | Repository mode | Primary coverage                             | Expected score |
-| --- | ------------- | --------- | --------------- | -------------------------------------------- | -------------- |
-| T01 | Task Author   | Task      | Organization    | Complete native metadata                     | `37`           |
-| T02 | Task Author   | Bug       | Organization    | Reproducible regression                      | `47`           |
-| T03 | Task Author   | Feature   | Organization    | Breaking change and medium confidence        | `37`           |
-| T04 | Task Author   | Task      | Personal        | Complete fallback and documentation label    | `20`           |
-| T05 | Task Author   | Bug       | Personal        | Fallback Bug with regression                 | `50`           |
-| T06 | Task Author   | Feature   | Personal        | Fallback Feature with contributor invitation | `52`           |
-| T07 | Task Author   | Unknown   | Organization    | Underspecified external submission           | Unset          |
-| T08 | Task Author   | Bug       | Organization    | Missing reproduction evidence                | Unset          |
-| T09 | Task Author   | Task      | Organization    | Documented external blocker                  | `41`           |
-| T10 | Task Author   | Task      | Organization    | Native task dependency and blocked lifecycle | `52`           |
-| T11 | Task Author   | Task      | Organization    | Partial native schema and partial fallback   | `37`           |
-| T12 | Task Author   | Task      | Ambiguous       | Conservative target resolution               | Not calculated |
-| T13 | Task Author   | Task      | Organization    | Oversized, very-high-value work              | `64`           |
-| T14 | Task Author   | Task      | Organization    | Material Priority override                   | `22`           |
-| T15 | Task Author   | Task      | Organization    | Score boundaries and insufficient evidence   | Varies         |
-| T16 | Task Author   | Task      | Organization    | Fallback-to-native migration                 | Unchanged      |
-| T17 | Task Author   | Task      | Organization    | Evidence-aware Urgency None policy default   | `30`           |
-| S01 | Schema Author | All       | Organization    | Current-schema and legacy-label inspection   | Not applicable |
-| F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff        | Fixture-owned  |
-| R01 | Task Author   | Feature   | Organization    | Material revision history                    | Recomputed     |
-| R02 | Task Author   | Task      | Organization    | Score recomputation preserves native fields  | `50`           |
+| ID  | Surface       | Task kind | Repository mode | Primary coverage                              |
+| --- | ------------- | --------- | --------------- | --------------------------------------------- |
+| T01 | Task Author   | Task      | Organization    | Complete native metadata                      |
+| T02 | Task Author   | Bug       | Organization    | Reproducible regression                       |
+| T03 | Task Author   | Feature   | Organization    | Breaking change and target date               |
+| T04 | Task Author   | Task      | Personal        | Complete fallback and documentation label     |
+| T05 | Task Author   | Bug       | Personal        | Fallback Bug with regression                  |
+| T06 | Task Author   | Feature   | Personal        | Fallback Feature with contributor invitation  |
+| T07 | Task Author   | Unknown   | Organization    | Underspecified external submission            |
+| T08 | Task Author   | Bug       | Organization    | Missing reproduction evidence                 |
+| T09 | Task Author   | Task      | Organization    | Documented external blocker                   |
+| T10 | Task Author   | Task      | Organization    | Native task dependency and blocked lifecycle  |
+| T11 | Task Author   | Task      | Organization    | Partial native schema and partial fallback    |
+| T12 | Task Author   | Task      | Ambiguous       | Conservative target resolution                |
+| T13 | Task Author   | Task      | Organization    | Oversized, very-high-value work               |
+| T14 | Task Author   | Task      | Organization    | Human-controlled Priority                     |
+| T16 | Task Author   | Task      | Organization    | Legacy fallback retirement and migration      |
+| S01 | Schema Author | All       | Organization    | Current schema and unmanaged-field inspection |
+| F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff         |
+| R01 | Task Author   | Feature   | Organization    | Material revision history                     |
+| R02 | Task Author   | Task      | Organization    | Replacement write preserves unmanaged fields  |
 
 ## Task Author Fixtures
 
@@ -86,22 +81,12 @@ Expected native metadata:
 | Work size   | `3`      |
 | Complexity  | Low      |
 | Impact      | Medium   |
-| Task score  | `37`     |
 | Start date  | Unset    |
 | Target date | Unset    |
 
 Expected labels: none.
 
-Expected score evidence:
-
-- Impact: Medium (`0.50`).
-- Urgency: Moderate (`0.33`).
-- Enablement: Some (`0.33`).
-- Confidence: High (`1.00`).
-- Work size: `3`.
-- `task-score/v1`: `37`.
-
-Creation succeeds only after the issue and scoring comment are re-read and match the preview.
+Creation succeeds only after the issue and every managed metadata value are re-read and match the preview.
 
 ### T02: Organization Bug with Reproducible Regression
 
@@ -124,11 +109,10 @@ Expected native metadata:
 | Work size  | `5`      |
 | Complexity | Medium   |
 | Impact     | High     |
-| Task score | `47`     |
 
 Expected labels: `regression`.
 
-Do not apply `needs reproduction`: the evidence is actionable. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `5`.
+Do not apply `needs reproduction`: the evidence is actionable.
 
 The reporter is not asked to write the test or open the pull request. Those are worker-owned obligations normalized into `Delivery and verification`.
 
@@ -159,12 +143,9 @@ Expected native metadata:
 | Work size   | `8`          |
 | Complexity  | High         |
 | Impact      | High         |
-| Task score  | `37`         |
 | Target date | `2026-10-01` |
 
 Expected labels: `breaking change`.
-
-Score inputs are Impact High (`0.75`), Urgency Moderate (`0.33`), Enablement Substantial (`0.67`), Confidence Medium (`0.75`), and Work size `8`. Complexity does not change the score.
 
 ### T04: Personal-Repository Task with Complete Fallback
 
@@ -178,7 +159,7 @@ Input evidence:
 Expected body uses the Task shape and ends with:
 
 ```yaml
-schema: tanaab/task-metadata/v1
+schema: tanaab/task-metadata/v2
 mode: fallback
 fallback:
   type: task
@@ -186,14 +167,11 @@ fallback:
   work-size: 2
   complexity: low
   impact: low
-  task-score: 20
 ```
 
 Expected labels: `documentation` if that definition already exists. If it does not exist, report it as unapplied and do not create it.
 
-Score inputs are Impact Low (`0.25`), Urgency None (`0.00`), Enablement Some (`0.33`), Confidence High (`1.00`), and Work size `2`.
-
-Unset dates are omitted. By default, the collapsed scoring-audit comment remains planned even though the numeric score uses the fallback capsule; `publishScoringAudit: false` suppresses only the comment.
+Unset dates are omitted.
 
 ### T05: Personal-Repository Bug with Regression
 
@@ -207,7 +185,7 @@ Input evidence:
 Expected fallback:
 
 ```yaml
-schema: tanaab/task-metadata/v1
+schema: tanaab/task-metadata/v2
 mode: fallback
 fallback:
   type: bug
@@ -215,12 +193,11 @@ fallback:
   work-size: 3
   complexity: medium
   impact: high
-  task-score: 50
 ```
 
 Expected labels: `regression`.
 
-Do not apply `needs reproduction`. Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `3`.
+Do not apply `needs reproduction`.
 
 `Delivery and verification` uses the same worker-owned draft-red-to-green pull-request lifecycle as T02.
 
@@ -237,7 +214,7 @@ Input evidence:
 Expected fallback:
 
 ```yaml
-schema: tanaab/task-metadata/v1
+schema: tanaab/task-metadata/v2
 mode: fallback
 fallback:
   type: feature
@@ -245,12 +222,11 @@ fallback:
   work-size: 5
   complexity: medium
   impact: high
-  task-score: 52
 ```
 
 Expected labels: `help wanted`.
 
-Do not apply `good first issue` because Work size exceeds `3`. Score inputs are Impact High (`0.75`), Urgency Moderate (`0.33`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `5`.
+Do not apply `good first issue` because Work size exceeds `3`.
 
 The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, documentation, compatibility evidence, and validation beneath `Delivery and verification`.
 
@@ -267,12 +243,12 @@ Expected behavior:
 
 - Preserve the original title and body evidence.
 - Do not guess Task, Bug, or Feature.
-- Do not invent Priority, Work size, Complexity, Impact, Task score, or acceptance criteria.
+- Do not invent Priority, Work size, Complexity, Impact, or acceptance criteria.
 - Apply `needs triage` if the label definition exists.
 - Produce focused questions for task kind, current condition, desired outcome, and observable acceptance.
 - Do not claim normalization is complete and do not remove `needs triage`.
 
-The expected Task score is unset. Missing evidence is not equivalent to low Impact, None urgency, or Low confidence.
+Missing evidence is not equivalent to low Impact or low Complexity.
 
 ### T08: Bug Missing Reproduction Evidence
 
@@ -289,7 +265,7 @@ Expected behavior:
 - Preserve the reporter's evidence and identify the exact missing diagnostic information.
 - Set issue type Bug when available.
 - Set Impact High only if the described blast radius supports it.
-- Leave Work size, Complexity, and Task score unset.
+- Leave Work size and Complexity unset.
 - Apply `needs reproduction`.
 - Apply `regression` only if separate evidence establishes previously working behavior.
 - Do not apply `good first issue` or `help wanted` while the report is not actionable.
@@ -314,13 +290,12 @@ Expected native metadata:
 | Work size  | `8`      |
 | Complexity | High     |
 | Impact     | High     |
-| Task score | `41`     |
 
 Expected labels: `blocked`.
 
 Expected relationships: no fabricated GitHub dependency.
 
-Score inputs are Impact High (`0.75`), Urgency High (`0.67`), Enablement Substantial (`0.67`), Confidence Medium (`0.75`), and Work size `8`. When access arrives, remove `blocked`, reconsider Confidence and other affected factors, and recompute the score if their evidence changes.
+When access arrives, remove `blocked` after verifying the task is actionable.
 
 ### T10: Task Blocked by Another GitHub Task
 
@@ -336,19 +311,19 @@ Expected behavior:
 - Apply `blocked` as the filterable lifecycle signal.
 - Record the dependency in the preview and verify both the relationship and label after mutation.
 
-Expected native values are Task, Priority Medium, Work size `5`, Complexity Medium, Impact High, and Task score `52`. Score inputs are Impact High (`0.75`), Urgency Moderate (`0.33`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `5`.
+Expected native values are Task, Priority Medium, Work size `5`, Complexity Medium, and Impact High.
 
 Remove `blocked` only after the final blocker is actually resolved. Closing the related issue is evidence to inspect, not automatic proof that its required outcome exists.
 
 ### T11: Organization Repository with a Partial Native Schema
 
-Use the task evidence and scoring factors from T01, but target a repository with these capabilities:
+Use the task evidence from T01, but target a repository with these capabilities:
 
 Capabilities:
 
 - Task issue type exists.
 - Priority and Work size fields exist.
-- Complexity, Impact, and Task score fields do not exist.
+- Complexity and Impact fields do not exist.
 - Start date and Target date exist but are unset.
 
 Expected native metadata:
@@ -362,12 +337,11 @@ Expected native metadata:
 Expected body fallback:
 
 ```yaml
-schema: tanaab/task-metadata/v1
+schema: tanaab/task-metadata/v2
 mode: fallback
 fallback:
   complexity: low
   impact: medium
-  task-score: 37
 ```
 
 Do not duplicate type, Priority, Work size, or unset dates. Do not mutate organization schema. Report the missing managed fields as a possible separate Schema Author alignment task.
@@ -394,9 +368,7 @@ Input evidence:
 - The task establishes a foundational capability and unblocks broad downstream work.
 - Scope is understood well enough to estimate but is too broad for one execution task.
 
-Expected native values are Task, Priority High, Work size `21`, Complexity High, Impact Very high, and Task score `64`.
-
-Score inputs are Impact Very high (`1.00`), Urgency High (`0.67`), Enablement Foundational (`1.00`), Confidence High (`1.00`), and Work size `21`.
+Expected native values are Task, Priority High, Work size `21`, Complexity High, and Impact Very high.
 
 Expected behavior:
 
@@ -406,9 +378,7 @@ Expected behavior:
 - Create only as an explicitly acknowledged parent or planning task; Task Author must not create child tasks itself.
 - Route later decomposition to Task Decomposer.
 
-The score remaining above smaller low-value work demonstrates the intended sublinear Work size penalty.
-
-### T14: Material Priority Override
+### T14: Human-Controlled Priority
 
 Input evidence:
 
@@ -416,66 +386,30 @@ Input evidence:
 - The work is small and narrow but an explicit contractual sequencing policy requires Urgent Priority.
 - Base local value remains Low; the policy override is not a new Impact value.
 
-Expected native values are Task, Priority Urgent, Work size `1`, Complexity Low, Impact Low, and Task score `22`.
-
-Score inputs are Impact Low (`0.25`), Urgency Moderate (`0.33`), Enablement None (`0.00`), Confidence High (`1.00`), and Work size `1`.
+Expected native values are Task, Priority Urgent, Work size `1`, Complexity Low, and Impact Low.
 
 Expected behavior:
 
-- Keep Priority out of the formula.
-- Preview and post a durable comment explaining the contractual override.
-- Do not inflate Impact, urgency, or enablement to make the score agree with Priority.
-
-### T15: Score Boundaries and Insufficient Evidence
-
-Use these calculation assertions:
-
-| Impact    | Urgency   | Enablement   | Confidence | Work size | Expected score |
-| --------- | --------- | ------------ | ---------- | --------- | -------------- |
-| Very high | Immediate | Foundational | High       | `1`       | `100`          |
-| Low       | None      | None         | High       | `1`       | `15`           |
-| Very high | High      | Foundational | High       | `13`      | `67`           |
-| Very high | High      | Foundational | High       | `21`      | `64`           |
-
-If any required factor lacks enough evidence, the expected score is unset even if the other values would produce a number. Unknown must never be represented as zero.
+- Preserve Priority with `policy` provenance and the contractual sequencing rationale.
+- Do not inflate Impact to justify the sequencing decision.
 
 ### T16: Fallback-to-Native Migration
 
 Existing state:
 
-- An organization task body contains fallback keys for Complexity Medium, Impact High, and Task score `52`.
-- Those three native fields have since become available.
-- The native fields are unset.
+- An organization task body contains a legacy `tanaab/task-metadata/v1` capsule with Complexity Medium, Impact High, and the retired `task-score` key.
+- Complexity and Impact native fields have since become available and are unset.
+- An earlier automated assessment comment remains in issue history.
 
 Expected migration:
 
-1. Preview native writes for Complexity Medium, Impact High, and Task score `52` plus removal of the three fallback keys.
-2. Write and re-read all three native values.
-3. Remove the verified keys from the fallback capsule.
-4. Remove the entire capsule if no other fallback keys remain.
-5. Preserve the existing scoring audit comment because formula inputs did not change.
+1. Preview native writes for Complexity Medium and Impact High plus retirement of the unsupported legacy key.
+2. Write and re-read only the two supported native values.
+3. Remove the verified keys and retired key from the fallback capsule.
+4. Remove the entire capsule if no other fallback keys remain; otherwise render the remaining values as `tanaab/task-metadata/v2`.
+5. Preserve the existing automated assessment comment as historical discussion.
 
 If a native value already conflicts with fallback, preserve the native value, report the conflict, and do not overwrite it through automatic migration.
-
-### T17: Evidence-Aware Urgency None Policy Default
-
-Input evidence:
-
-- Explicit target: `acme/widgets`.
-- One bounded research task reviews a broad existing surface and may enable multiple follow-up packages.
-- The available evidence contains no deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting.
-- No human or policy supplies Priority or scheduling dates.
-
-Expected native values are Task, Priority unset, Work size `21`, Complexity High, Impact Medium, and Task score `30`.
-
-Score inputs are Impact Medium (`0.50`), Urgency None (`0.00`), Enablement Substantial (`0.67`), Confidence High (`1.00`), and Work size `21`.
-
-Expected behavior:
-
-- Record Urgency None with `policy` provenance and a rationale that the complete evidence review found no meaningful cost of waiting.
-- Keep Priority unset; do not translate the absence of a sequencing override into Priority Low.
-- Keep Priority out of the formula.
-- If the evidence instead suggests possible but unbounded time sensitivity, ask a focused question and leave Urgency and Task score unset.
 
 ## GitHub Issue Schema Author Fixture
 
@@ -487,7 +421,8 @@ Observed state:
 - Priority options are Urgent, High, Medium, and Low.
 - Effort options are High, Medium, and Low.
 - Start date and Target date exist.
-- Complexity, Impact, and Task score are missing.
+- Complexity and Impact are missing.
+- The retired Task score number field still exists pending a separately authorized organization-schema deletion.
 - Repository labels include GitHub's nine defaults plus `dependencies`, `javascript`, and `github_actions`.
 
 Expected read-only report:
@@ -496,7 +431,8 @@ Expected read-only report:
 - Priority: aligned.
 - Effort: unmanaged and preserved; do not rename, delete, map, or treat it as Work size evidence.
 - Work size: missing managed field.
-- Complexity, Impact, and Task score: missing managed fields.
+- Complexity and Impact: missing managed fields.
+- Task score: unmanaged; do not create, synchronize, pin, validate, migrate, or delete it.
 - Start date and Target date: aligned except for separately reported visibility or type-pinning drift.
 - Managed fields: compare organization-members-only visibility and Task, Bug, and Feature pinning with the desired contract.
 
@@ -528,7 +464,7 @@ Organization form assertions:
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter.
 - Bug exposes three required evidence responses and one optional context response; reproduction or other investigation evidence satisfies the third response. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
 - The Feature chooser is named `Feature request`; it asks for the affected problem or opportunity and useful outcome, while optional context may contain examples, mockups, compatibility concerns, constraints, or dependencies.
-- The form does not ask the reporter to classify metadata, scoring diagnostics, labels, dates, or formal acceptance criteria.
+- The form does not ask the reporter to classify metadata, labels, dates, or formal acceptance criteria.
 - Native fields pinned to the issue type remain native and are not mirrored into submitted Markdown.
 
 Personal form assertions:
@@ -536,11 +472,11 @@ Personal form assertions:
 - The form uses the same evidence questions and required-response rules as the organization variant.
 - The selected form identifies Task, Bug, or Feature without asking the reporter to repeat task kind in a dropdown.
 - The form does not expose unavailable issue fields as fallback controls.
-- Task Author assesses supported metadata after normalization and then renders `tanaab/task-metadata/v1` fallback values where native representations are unavailable.
+- Task Author assesses supported metadata after normalization and then renders `tanaab/task-metadata/v2` fallback values where native representations are unavailable.
 
 Handoff and convergence assertions:
 
-For each of T01 through T06, the form handoff preserves every submitted response plus the complete original Markdown and marks semantic normalization as required. It must not claim that intake is already canonical or invent metadata, scoring diagnostics, labels, relationships, or missing evidence. After Task Author performs the semantic assessment, agent-authored, form-authored, and externally submitted evidence must converge on the same canonical body and accepted metadata semantics. Native and fallback storage may differ, but meaning may not.
+For each of T01 through T06, the form handoff preserves every submitted response plus the complete original Markdown and marks semantic normalization as required. It must not claim that intake is already canonical or invent metadata, labels, relationships, or missing evidence. After Task Author performs the semantic assessment, agent-authored, form-authored, and externally submitted evidence must converge on the same canonical body and accepted metadata semantics. Native and fallback storage may differ, but meaning may not.
 
 ## Revision Fixture
 
@@ -548,50 +484,33 @@ For each of T01 through T06, the form handoff preserves every submitted response
 
 Existing state:
 
-- A Feature has an accepted body, native metadata, Task score, and earlier discussion.
+- A Feature has an accepted body, native metadata, a retired unmanaged organization field value, an earlier automated assessment comment, and other discussion.
 - New compatibility evidence changes the desired outcome, removes one in-scope behavior, adds a breaking migration requirement, and increases Work size from `5` to `8`.
 
 Expected behavior:
 
-- Re-read the body, comments, linked work, metadata, and current score evidence.
-- Show a semantic diff covering the desired outcome, scope removal, new acceptance condition, `breaking change` label, Work size change, and recomputed score.
+- Re-read the body, comments, linked work, and metadata.
+- Show a semantic diff covering the desired outcome, scope removal, new acceptance condition, `breaking change` label, and Work size change.
 - After authorization, update the body to the current contract rather than appending an inline changelog.
 - Post a concise comment summarizing what changed and why.
-- Post a new collapsed versioned scoring-audit comment if the score or its displayed inputs change, mark it as superseding the earlier assessment, and omit it when explicitly suppressed.
 - Preserve all earlier comments and do not claim earlier implementation satisfied the new acceptance condition.
-- Re-read and verify the body, metadata, label, and both new comments.
+- Re-read and verify the body, metadata, label, and revision-summary comment.
 
-### R02: Score Recomputation Preserves Native Fields
+### R02: Replacement Write Preserves Unmanaged Fields
 
 Existing state:
 
-- A Task records Work size `21`, Complexity High, Impact Very high, and stale Task score `30`.
-- A human changed Impact from Medium to Very high before requesting recomputation.
-- Priority and dates remain unset, and the public scoring audit remains suppressed.
-- The accepted scoring diagnostics remain Urgency None, Enablement Substantial, and Confidence High.
+- A Task records Work size `21`, Complexity High, Impact Medium, and one unrelated unmanaged provider field.
+- A human changes Impact from Medium to Very high.
+- Priority and dates remain unset.
 
 Expected behavior:
 
-- Recompute `task-score/v1` as `50` and preview Task score as the only semantic field change.
-- Because GitHub issue-field updates replace the entire set, send Work size `21`, Complexity High, Impact Very high, and Task score `50` together with every other currently observed set field.
+- Preview Impact as the only semantic field change.
+- Because GitHub issue-field updates replace the entire set, send Work size `21`, Complexity High, Impact Very high, and every other currently observed set field.
 - Preserve unmanaged and unchanged native fields without treating them as newly assessed values.
-- Post only the authorized revision-summary comment and keep the public scoring audit suppressed.
+- Post only the authorized revision-summary comment.
 - Re-read every expected field and return success only when none were cleared or changed unexpectedly.
-
-### R03: Imperative Rescore and Read-Only Planning
-
-Existing state:
-
-- One exact Task has complete accepted scoring evidence and a stale Task score after a human changes Impact.
-- The user may say either “Rescore `acme/widgets#99`” or “Show me the rescore plan for `acme/widgets#99`.”
-
-Expected behavior:
-
-- Treat the imperative “Rescore” request as authorization for one bounded revise-mode mutation on that exact issue.
-- Read current state, produce and inspect the exact diff and digest, safety-review the publication surfaces, apply the digest-bound plan, and verify it within the same turn without requesting a second approval solely for the digest.
-- Treat “Show me the rescore plan,” Plan mode, and equivalent draft or preview language as read-only; return the exact plan and digest without populating publication approval or calling a mutation endpoint.
-- In either path, stop for fresh direction if the resolved target differs, scoring evidence is incomplete, or the plan contains a material effect beyond the expected field replacement and contract-standard revision or score comments.
-- Do not treat an earlier imperative for one issue, mode, or digest as authorization for a later or different mutation.
 
 ## Convergence Review
 
@@ -600,8 +519,6 @@ The fixture pass fails if any consumer:
 - generates materially different body semantics for the same evidence;
 - mirrors available native metadata into fallback YAML;
 - guesses missing values;
-- uses Complexity or Priority in Task score;
-- changes score output without a new formula version;
 - applies lifecycle labels beyond their evidence or fails to remove them when their conditions clear;
 - creates or deletes label definitions during task authoring;
 - loses fallback values, label associations, original evidence, or revision history;
@@ -610,4 +527,4 @@ The fixture pass fails if any consumer:
 - sends a partial `issue_field_values` replacement that clears unchanged or unmanaged fields; or
 - reports complete success without verifying every managed value.
 
-After a full pass produces no material contract, template, field, label, fallback, or scoring changes, the corpus may serve as the phase 1 and phase 2 convergence gate for the three core skills.
+After a full pass produces no material contract, template, field, label, or fallback changes, the corpus may serve as the convergence gate for the three core skills.

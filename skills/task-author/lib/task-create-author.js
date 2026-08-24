@@ -37,7 +37,6 @@ function baseReport(draft, plan, publication) {
     metadata: draft.metadata,
     assessment: draft.assessment,
     labels: draft.labels,
-    scoring: draft.scoring,
     comments: draft.comments,
     capabilities: draft.capabilities,
     plannedMutation: plan,

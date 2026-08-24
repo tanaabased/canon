@@ -5,9 +5,6 @@ const ASSESSMENT_KEYS = Object.freeze([
   'impact',
   'startDate',
   'targetDate',
-  'urgency',
-  'enablement',
-  'confidence',
 ]);
 
 const SOURCES = Object.freeze(['agent', 'human', 'policy', 'existing']);
@@ -23,27 +20,17 @@ function normalizedRecord(record) {
   };
 }
 
-function effectiveValues(metadata, scoring) {
-  return {
-    ...Object.fromEntries(
-      ['priority', 'workSize', 'complexity', 'impact', 'startDate', 'targetDate'].flatMap((key) =>
-        metadata[key] === undefined ? [] : [[key, metadata[key]]],
-      ),
-    ),
-    ...Object.fromEntries(
-      ['urgency', 'enablement', 'confidence'].flatMap((key) => {
-        const level = scoring.factors[key]?.level;
-        return level === undefined ? [] : [[key, level]];
-      }),
-    ),
-  };
+function effectiveValues(metadata) {
+  return Object.fromEntries(
+    ASSESSMENT_KEYS.flatMap((key) => (metadata[key] === undefined ? [] : [[key, metadata[key]]])),
+  );
 }
 
 /** Validate who supplied each accepted estimate and expose its review rationale. */
-export function buildTaskAssessment(metadata = {}, scoring = {}, input = {}) {
+export function buildTaskAssessment(metadata = {}, input = {}) {
   const errors = [];
   const values = {};
-  const effective = effectiveValues(metadata, scoring);
+  const effective = effectiveValues(metadata);
 
   for (const key of Object.keys(input ?? {})) {
     if (!ASSESSMENT_KEYS.includes(key)) errors.push(`assessment.${key} is not supported.`);
@@ -73,14 +60,6 @@ export function buildTaskAssessment(metadata = {}, scoring = {}, input = {}) {
     if (input?.[key] !== undefined && effective[key] === undefined) {
       errors.push(`assessment.${key} cannot describe an unset value.`);
     }
-  }
-
-  if (scoring.score !== null) {
-    values.taskScore = {
-      value: scoring.score,
-      source: 'derived',
-      rationale: `Calculated from accepted inputs using ${scoring.formulaVersion}.`,
-    };
   }
 
   return { values, errors };

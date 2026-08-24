@@ -1,12 +1,10 @@
 # Task Management Contract
 
-Status: initial contract for phase 1 and phase 2 calibration
+Status: canonical contract
 
-Contract version: `tanaab/task-management/v1`
+Contract version: `tanaab/task-management/v2`
 
-Fallback schema: `tanaab/task-metadata/v1`
-
-Scoring formula: `task-score/v1`
+Fallback schema: `tanaab/task-metadata/v2`
 
 ## Purpose
 
@@ -21,9 +19,9 @@ The initial consumers are:
 - **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence; and
 - **Project Milestone Author**, which owns one repository milestone and explicitly selected task membership without changing task semantics.
 
-Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, completion evidence, or scoring must update the shared [fixture corpus](./task-management-fixtures.md).
+Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, or completion evidence must update the shared [fixture corpus](./task-management-fixtures.md).
 
-The contract is usable now and the Task, Bug, and Feature bodies and intake prompts are accepted. The Complexity and Impact rubrics and `task-score/v1` mappings remain calibration hypotheses until the phase 1 and phase 2 convergence gate passes.
+The Task, Bug, and Feature bodies and intake prompts are accepted. Complexity and Impact remain direct planning metadata whose rubrics may be refined through the shared convergence loop.
 
 ## Domain and Provider Terms
 
@@ -48,10 +46,10 @@ Before a write, show:
 - the resolved `OWNER/REPO` and issue number when applicable;
 - the complete proposed title and body for creation;
 - native metadata, fallback metadata, labels, assignees, milestone, and relationships;
-- any scoring or audit comment that will be posted; and
+- any managed comment that will be posted; and
 - an exact managed diff for revision, normalization, or schema alignment.
 
-Authorization is conveyed by user intent, not by a mandatory extra conversational round trip. An unambiguous imperative to create, revise, normalize, rescore, or explicitly migrate one exact task authorizes one bounded Task Author mutation when every planned effect is an ordinary consequence of the requested mode and this contract. The agent must still read current state, generate and inspect the exact plan, scan every publication surface, bind the write to the exact target and digest, apply it, and verify it. When those checks reveal no material surprise, the preview and digest-authorized write may occur in the same turn without asking the user to approve the digest separately.
+Authorization is conveyed by user intent, not by a mandatory extra conversational round trip. An unambiguous imperative to create, revise, normalize, or explicitly migrate fallback metadata for one exact task authorizes one bounded Task Author mutation when every planned effect is an ordinary consequence of the requested mode and this contract. The agent must still read current state, generate and inspect the exact plan, scan every publication surface, bind the write to the exact target and digest, apply it, and verify it. When those checks reveal no material surprise, the preview and digest-authorized write may occur in the same turn without asking the user to approve the digest separately.
 
 Plan mode and requests such as “plan,” “draft,” “preview,” “show me the diff,” or “what would change?” are read-only. Questions and exploratory discussion do not authorize mutation. Stop for fresh direction when the target is unresolved, required evidence is missing, or the exact plan contains a material surprise outside the requested mode, such as a different target, broader scope, additional public text beyond contract-standard comments, or another consequential side effect.
 
@@ -96,7 +94,7 @@ Use these headings in order:
 
 `Scope` states the work, deliverables, or external actions that belong to the task. `Out of scope` is optional and appears only when an explicit boundary prevents expansion. `Delivery and verification` identifies the expected artifact or external state plus the evidence the completion pull request must provide. `Constraints and approvals` is optional and records material deadlines, budgets, access, privacy, affected people, external communication, spending, or irreversible actions.
 
-The evidence-gathering path should establish the current condition, desired outcome, required work, acceptance evidence, delivery proof, known constraints, local value, urgency, enablement, and any human authorization boundary. Never treat task creation as approval to spend money, contact a third party, disclose private information, or perform another consequential external action.
+The evidence-gathering path should establish the current condition, desired outcome, required work, acceptance evidence, delivery proof, known constraints, local value, time sensitivity, dependencies, and any human authorization boundary. Never treat task creation as approval to spend money, contact a third party, disclose private information, or perform another consequential external action.
 
 ### Bug
 
@@ -164,7 +162,7 @@ Human intake and canonical task authoring are different representations of the s
 - A **canonical task** is the normalized working artifact. It uses the Task, Bug, or Feature body shape above, accepted metadata, and checkable acceptance criteria.
 - GitHub Issue Form Author extracts submitted responses and the original Markdown without semantic invention. Task Author owns the later evidence assessment and canonical rewrite.
 
-The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The human-facing Feature request asks for the problem or opportunity and the useful outcome, with optional examples, mockups, compatibility concerns, constraints, or dependencies; it does not require formal scope, acceptance criteria, or implementation design. The Bug form uses three required evidence responses plus one optional context response. It asks for observed behavior, expected behavior, and safe reproduction or investigation evidence; it does not ask the reporter to write a test or open a pull request. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, Task score, Urgency, Enablement, Confidence, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
+The initial Task and Feature forms use two required evidence responses plus one optional context response. The Task prompts ask what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. The human-facing Feature request asks for the problem or opportunity and the useful outcome, with optional examples, mockups, compatibility concerns, constraints, or dependencies; it does not require formal scope, acceptance criteria, or implementation design. The Bug form uses three required evidence responses plus one optional context response. It asks for observed behavior, expected behavior, and safe reproduction or investigation evidence; it does not ask the reporter to write a test or open a pull request. Forms must not ask reporters to estimate Priority, Work size, Complexity, Impact, labels, or scheduling commitments. Organization and personal repositories collect the same evidence; native or fallback metadata is decided only after normalization.
 
 Required form questions establish minimum useful evidence rather than demanding a fully planned task. A Bug's investigation response may provide reproducible steps or other direct occurrence evidence because intermittent failures can be valuable even when deterministic reproduction is unavailable.
 
@@ -172,7 +170,7 @@ Required form questions establish minimum useful evidence rather than demanding 
 
 - Preserve the complete submitted Markdown and every useful response before reshaping evidence.
 - Normalize Task Author drafts, form submissions, and external submissions to the same canonical body and metadata contract, but do not require their intake headings to match it.
-- Move evidence into the canonical shape without inventing missing facts, acceptance criteria, reproduction steps, dates, estimates, or scoring evidence.
+- Move evidence into the canonical shape without inventing missing facts, acceptance criteria, reproduction steps, dates, or estimates.
 - Surface unresolved canonical sections as focused follow-up questions. Do not turn a short submission into generic filler merely to satisfy the shape.
 - If the task kind or minimum actionable shape remains unknown, retain the evidence, apply `needs triage` when available, and request the missing information instead of guessing.
 - Preserve discussion history and preview the exact body diff before normalizing an existing task.
@@ -180,43 +178,38 @@ Required form questions establish minimum useful evidence rather than demanding 
 
 ### Assessment Ownership and Collaboration
 
-Task Author performs a semantic assessment before its deterministic helper validates, scores, renders, and gates publication. The helper does not contain an LLM estimator.
+Task Author performs a semantic assessment before its deterministic helper validates, renders, and gates publication. The helper does not contain an LLM estimator.
 
-| Value                                           | Default authority                    | Collaboration rule                                                                                                                                                                                               |
-| ----------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Task kind, title, body, and acceptance criteria | Human and agent                      | The agent drafts from evidence; the human authorizes the complete publication or revision plan.                                                                                                                  |
-| Priority                                        | Human or explicit policy             | The agent may discuss a recommendation but must not persist it as an agent estimate. Leave it unset until a human or policy supplies it.                                                                         |
-| Work size                                       | Agent estimate                       | Apply the delivery-scope rubric, show rationale and provenance, and permit a human override.                                                                                                                     |
-| Complexity                                      | Agent estimate                       | Apply the model-neutral reasoning rubric, show rationale and provenance, and permit a human override.                                                                                                            |
-| Impact                                          | Agent estimate with human correction | Assess local value only when evidence is sufficient; otherwise leave it unset.                                                                                                                                   |
-| Task score                                      | Derived                              | Calculate only through the versioned formula from accepted inputs. Never accept a directly supplied score.                                                                                                       |
-| Start date and Target date                      | Human or explicit policy             | Preserve explicitly supplied commitments; do not invent scheduling dates from urgency evidence.                                                                                                                  |
-| Urgency, Enablement, and Confidence             | Agent-assessed diagnostics           | Show rationale and provenance, use them for Task score, and do not persist them as separate issue fields. After reviewing the available evidence, use policy-sourced Urgency None when no urgency signal exists. |
+| Value                                           | Default authority                    | Collaboration rule                                                                                                                       |
+| ----------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Task kind, title, body, and acceptance criteria | Human and agent                      | The agent drafts from evidence; the human authorizes the complete publication or revision plan.                                          |
+| Priority                                        | Human or explicit policy             | The agent may discuss a recommendation but must not persist it as an agent estimate. Leave it unset until a human or policy supplies it. |
+| Work size                                       | Agent estimate                       | Apply the delivery-scope rubric, show rationale and provenance, and permit a human override.                                             |
+| Complexity                                      | Agent estimate                       | Apply the model-neutral reasoning rubric, show rationale and provenance, and permit a human override.                                    |
+| Impact                                          | Agent estimate with human correction | Assess local value only when evidence is sufficient; otherwise leave it unset.                                                           |
+| Start date and Target date                      | Human or explicit policy             | Preserve explicitly supplied commitments; do not invent scheduling dates from contextual evidence.                                       |
 
-Every accepted metadata value and scoring diagnostic must show its source as `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based rationale. A derived Task score identifies its formula version. Exact-plan authorization accepts the displayed values; changing one value requires a fresh plan. During revision, preserve existing native values by default unless the user requests reassessment or changed evidence makes a displayed recomputation necessary.
-
-Task score storage and score explanation are separate decisions. The native Task score field or fallback key owns the numeric value. By default, Task Author also previews a collapsed public scoring-audit comment so future readers can reproduce the calculation. Set `publishScoringAudit: false` to suppress that comment without suppressing the score. Suppression never deletes or conceals an earlier audit.
+Every accepted metadata value must show its source as `agent`, `human`, `policy`, or `existing`. Agent estimates require a concise evidence-based rationale. Exact-plan authorization accepts the displayed values; changing one value requires a fresh plan. During revision, preserve existing native values by default unless the user requests reassessment or changed evidence supports a displayed change.
 
 ## Metadata Authority
 
 Use GitHub's native representation when it exists and is writable. The fallback capsule contains only canonical values that have no available native representation for that repository.
 
-| Canonical concept          | Native representation                | Fallback key  | Initial contract                                                                                             |
-| -------------------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------ |
-| Task kind                  | Issue type: Task, Bug, or Feature    | `type`        | Required                                                                                                     |
-| Priority                   | Priority single-select issue field   | `priority`    | Optional override; excluded from Task score                                                                  |
-| Work size                  | Work size single-select issue field  | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                                                             |
-| Complexity                 | Complexity single-select issue field | `complexity`  | Optional; stable execution-tier input                                                                        |
-| Impact                     | Impact single-select issue field     | `impact`      | Optional; local value independent of Work size                                                               |
-| Task score                 | Task score number issue field        | `task-score`  | Derived integer `0` through `100`; unknown remains unset                                                     |
-| Planned start              | Start date issue field               | `start-date`  | Optional ISO `YYYY-MM-DD` date                                                                               |
-| Target completion          | Target date issue field              | `target-date` | Optional ISO `YYYY-MM-DD` date and urgency evidence                                                          |
-| Work state                 | Issue state and state reason         | None          | Do not create a Status field                                                                                 |
-| Responsibility             | Assignees                            | None          | Do not create an Owner or DRI field                                                                          |
-| Project outcome or timebox | Milestone                            | None          | Do not use as a base-score input                                                                             |
-| Hierarchy                  | Parent issue and sub-issues          | None          | Use native relationships                                                                                     |
-| Blocking                   | Dependencies plus `blocked` label    | None          | Use dependencies for GitHub task blockers and document external blockers                                     |
-| Classification and intake  | Canonical repository labels          | None          | Use the approved vocabulary without duplicating issue type, fields, state, relationships, or scoring factors |
+| Canonical concept          | Native representation                | Fallback key  | Initial contract                                                                            |
+| -------------------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------- |
+| Task kind                  | Issue type: Task, Bug, or Feature    | `type`        | Required                                                                                    |
+| Priority                   | Priority single-select issue field   | `priority`    | Optional human- or policy-controlled sequencing override                                    |
+| Work size                  | Work size single-select issue field  | `work-size`   | Optional; `1`, `2`, `3`, `5`, `8`, `13`, or `21`                                            |
+| Complexity                 | Complexity single-select issue field | `complexity`  | Optional; stable execution-tier input                                                       |
+| Impact                     | Impact single-select issue field     | `impact`      | Optional; local value independent of Work size                                              |
+| Planned start              | Start date issue field               | `start-date`  | Optional ISO `YYYY-MM-DD` date                                                              |
+| Target completion          | Target date issue field              | `target-date` | Optional ISO `YYYY-MM-DD` commitment                                                        |
+| Work state                 | Issue state and state reason         | None          | Do not create a Status field                                                                |
+| Responsibility             | Assignees                            | None          | Do not create an Owner or DRI field                                                         |
+| Project outcome or timebox | Milestone                            | None          | Keep milestone context separate from task metadata                                          |
+| Hierarchy                  | Parent issue and sub-issues          | None          | Use native relationships                                                                    |
+| Blocking                   | Dependencies plus `blocked` label    | None          | Use dependencies for GitHub task blockers and document external blockers                    |
+| Classification and intake  | Canonical repository labels          | None          | Use the approved vocabulary without duplicating issue type, fields, state, or relationships |
 
 Native metadata is authoritative if a duplicate fallback value exists accidentally. Migrate the fallback value into a newly available native field, verify the native write, then remove only the migrated key. Remove the capsule when it becomes empty.
 
@@ -233,7 +226,6 @@ The initial organization schema is:
 | Work size          | Single-select | `1`, `2`, `3`, `5`, `8`, `13`, `21`                                           |
 | Complexity         | Single-select | Low, Medium, High                                                             |
 | Impact             | Single-select | Low, Medium, High, Very high                                                  |
-| Task score         | Number        | Integer `0` through `100` written by a contract-aware author                  |
 | Start date         | Date          | Optional                                                                      |
 | Target date        | Date          | Optional                                                                      |
 | Field visibility   | Visibility    | Organization members and repository collaborators with read access or greater |
@@ -257,7 +249,7 @@ Place fallback metadata at the end of the task body in a visible fenced YAML blo
 ### Task metadata
 
 ```yaml
-schema: tanaab/task-metadata/v1
+schema: tanaab/task-metadata/v2
 mode: fallback
 fallback:
   type: task
@@ -265,7 +257,6 @@ fallback:
   work-size: 5
   complexity: medium
   impact: high
-  task-score: 52
 ```
 ````
 
@@ -273,9 +264,9 @@ Rules:
 
 - Include only keys whose canonical native representation is unavailable.
 - Omit unset keys. Do not write explicit `null`, `unknown`, zero, or another sentinel.
-- Order keys as `type`, `priority`, `work-size`, `complexity`, `impact`, `task-score`, `start-date`, and `target-date`.
+- Order keys as `type`, `priority`, `work-size`, `complexity`, `impact`, `start-date`, and `target-date`.
 - Use lowercase enum values: `task`, `bug`, `feature`; `urgent`, `high`, `medium`, `low`; and `very-high` where applicable.
-- Use an integer for `work-size` and `task-score` and an ISO `YYYY-MM-DD` scalar for dates.
+- Use an integer for `work-size` and an ISO `YYYY-MM-DD` scalar for dates.
 - Do not place labels, assignees, milestones, state, parent, sub-issues, or dependencies in the capsule. GitHub supports those natively in organization- and user-owned repositories.
 - Do not retain an empty capsule.
 
@@ -315,89 +306,18 @@ Unknown complexity remains unset rather than defaulting to High. Downstream cons
 
 Impact estimates expected local value if the task is completed and deliberately excludes delivery cost.
 
-| Option    | Numeric mapping | Meaning                                                                                             |
-| --------- | --------------- | --------------------------------------------------------------------------------------------------- |
-| Low       | `0.25`          | Narrow convenience, limited maintenance reduction, or a small improvement for few consumers         |
-| Medium    | `0.50`          | Material local improvement, recurring friction removed, or a meaningful workflow made more reliable |
-| High      | `0.75`          | Important capability, reliability, risk, or productivity gain across a major workflow or audience   |
-| Very high | `1.00`          | Broad mission-critical value, severe ongoing risk removed, or a foundational capability gap closed  |
+| Option    | Meaning                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| Low       | Narrow convenience, limited maintenance reduction, or a small improvement for few consumers         |
+| Medium    | Material local improvement, recurring friction removed, or a meaningful workflow made more reliable |
+| High      | Important capability, reliability, risk, or productivity gain across a major workflow or audience   |
+| Very high | Broad mission-critical value, severe ongoing risk removed, or a foundational capability gap closed  |
 
 For Tasks, examine leverage, recurring time saved, maintenance removed, work unblocked, and risk reduced. For Bugs, examine frequency, blast radius, workflow blockage, data or security exposure, and affected users. For Features, examine reach, capability gaps, recurring value, and users or agents enabled.
 
 ### Priority
 
-Priority is an explicit human or policy override using Urgent, High, Medium, or Low. It is not derived from Task score and is not an input to it. An unset Priority means no sequencing override has been supplied; it does not imply Low.
-
-If Priority materially conflicts with Task score ordering, record the durable rationale in a task comment. A draft must preview that comment before creation or revision.
-
-## Goal-Independent Task Score
-
-`task-score/v1` ranks local task value and execution economics without a Goal field or goal-alignment factor.
-
-### Factor Mappings
-
-Impact uses the persisted Impact mapping above. Urgency, enablement, and confidence are calculation diagnostics rather than additional issue fields.
-
-| Factor     | Level        | Value  | Evidence standard                                                                     |
-| ---------- | ------------ | ------ | ------------------------------------------------------------------------------------- |
-| Urgency    | None         | `0.00` | Evidence supports no meaningful cost of waiting                                       |
-| Urgency    | Moderate     | `0.33` | Some time sensitivity, recurring cost, or scheduling reason                           |
-| Urgency    | High         | `0.67` | Active pain, material recurring cost, or a near-term deadline                         |
-| Urgency    | Immediate    | `1.00` | Incident, imminent deadline, severe exposure, or essential workflow currently blocked |
-| Enablement | None         | `0.00` | Value is principally standalone                                                       |
-| Enablement | Some         | `0.33` | Unblocks one bounded follow-up or saves occasional repeated work                      |
-| Enablement | Substantial  | `0.67` | Unblocks multiple tasks or workflows, or creates significant recurring leverage       |
-| Enablement | Foundational | `1.00` | Prerequisite for broad downstream work or removal of systemic risk                    |
-| Confidence | Low          | `0.50` | Enough evidence to estimate, but material assumptions or unknowns remain              |
-| Confidence | Medium       | `0.75` | Reasonable direct evidence with some bounded assumptions                              |
-| Confidence | High         | `1.00` | Direct, reproducible, or independently validated evidence supports the estimates      |
-
-After reviewing all available evidence, the absence of a deadline, active pain, recurring cost, blockage, or other meaningful cost of waiting supports policy-sourced Urgency None. This is an evidence-aware default, not a blind conversion of every missing value to zero. If urgency evidence is incomplete or ambiguous, leave Urgency and Task score unset and ask a focused question. Missing enablement evidence is likewise not the same as None. Low confidence is the minimum scorable confidence; evidence below that threshold is insufficient.
-
-### Formula
-
-Use natural logarithm `ln` and round to the nearest integer:
-
-```text
-benefit = 0.60 * impact + 0.20 * urgency + 0.20 * enablement
-work-size penalty = 1 + 0.15 * ln(work size)
-task score = clamp(round(100 * benefit * confidence / work-size penalty), 0, 100)
-```
-
-Scoring rules:
-
-- Require Impact, Work size, Urgency, Enablement, and Confidence assessments.
-- Leave the score unset when any required factor lacks enough evidence.
-- Use policy-sourced Urgency None when a complete evidence review finds no urgency signal; preserve ambiguity as unset.
-- Exclude Complexity and Priority.
-- A target date may provide urgency evidence but does not determine urgency by itself.
-- Recompute after relevant evidence, field values, deadlines, dependencies, or the formula changes.
-- Do not alter the base score merely because a task joins a milestone or a backlog is filtered through a project goal.
-- Work size uses a sublinear penalty so a large, very-high-value task can still rank above small low-value work.
-
-### Scoring Audit Comment
-
-By default, whenever a score is first persisted or a scoring input changes, preview and post a concise durable comment collapsed behind a closed disclosure:
-
-```markdown
-<details>
-<summary>Automated task assessment — advisory · score 37/100</summary>
-
-This machine-generated assessment reflects the evidence and accepted inputs currently recorded for this task. It is a prioritization aid, not a delivery commitment, schedule, severity determination, or maintainer decision.
-
-- Formula: `task-score/v1`
-- Impact: Medium (`0.50`) — material recurring friction is removed.
-- Urgency: Moderate (`0.33`) — the cost recurs during each release.
-- Enablement: Some (`0.33`) — one follow-up workflow becomes possible.
-- Work size: `3`
-- Confidence: High (`1.00`) — the current behavior and desired outcome are directly verified.
-
-</details>
-```
-
-The disclosure is presentation only, not access control. On a public issue, the comment and its expanded contents are public and must pass the publication-safety gate. The audit must not disclose Priority, Complexity, Start date, Target date, secrets, or private planning context. Set `publishScoringAudit: false` when no public audit is appropriate; the issue field or fallback key remains authoritative.
-
-Do not post a duplicate when the score and displayed calculation evidence are unchanged. When a changed score or input produces a new audit, state that it supersedes the earlier automated assessment while preserving all earlier comments. The comment explains the versioned calculation and does not replace the source task evidence or constitute a maintainer decision.
+Priority is an explicit human or policy override using Urgent, High, Medium, or Low. An unset Priority means no sequencing override has been supplied; it does not imply Low. Preserve its provenance and rationale in the Task Author assessment and exact publication preview.
 
 ## Canonical Repository Labels
 
@@ -518,16 +438,15 @@ Schema Author must separate organization type and field authorization from organ
 
 Use [the task-management fixture corpus](./task-management-fixtures.md) as the common comparison surface for Task Author, GitHub Issue Form Author, GitHub Issue Schema Author, and the completion rules assessed by Task Completion Check.
 
-The phase 1 and phase 2 convergence loop may revise:
+The convergence loop may revise:
 
 - evidence prompts and normalized body wording;
 - Complexity or Impact descriptions and option granularity;
-- scoring weights, factor mappings, confidence threshold, or Work size penalty; and
 - fallback or label behavior when fixtures expose ambiguity.
 
-Any scoring change requires a new formula version if it would change a persisted score for the same inputs. Do not silently redefine `task-score/v1`. Any fallback-schema change that alters key meaning or representation requires a new schema version.
+Any fallback-schema change that alters key meaning or representation requires a new schema version. Task Author may read the retired `tanaab/task-metadata/v1` format only to preserve supported values and remove retired keys through an exact authorized task mutation; all newly rendered capsules use `tanaab/task-metadata/v2`.
 
-Goal-aware scoring, additional task types, Severity, Area, Confidence, workflow Status, arbitrary label expansion, and GitHub Projects board fields remain deferred until repeated evidence establishes a concrete need.
+Additional task types, Severity, Area, Confidence, workflow Status, arbitrary label expansion, and GitHub Projects board fields remain deferred until repeated evidence establishes a concrete need.
 
 ## Related Canon
 

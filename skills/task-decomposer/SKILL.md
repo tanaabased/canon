@@ -24,7 +24,7 @@ metadata:
 
 Inspect one canonical Task, Bug, or Feature; recommend whether it should remain intact or become one shallow parent; and preview or publish the approved child issues, native relationships, and parent rollup through one exact plan.
 
-Recommendation is always read-only. Publication reuses Task Author's canonical child payload, metadata, label, fallback, scoring-comment, safety, and verification contracts while this skill owns the multi-issue ordering, sub-issue and dependency graph, parent rollup, and resumable partial-failure boundary.
+Recommendation is always read-only. Publication reuses Task Author's canonical child payload, metadata, label, fallback, safety, and verification contracts while this skill owns the multi-issue ordering, sub-issue and dependency graph, parent rollup, and resumable partial-failure boundary.
 
 ## When to Use
 

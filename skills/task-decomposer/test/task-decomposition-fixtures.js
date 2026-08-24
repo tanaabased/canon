@@ -53,14 +53,10 @@ function childTask(title, outcome, acceptanceCriterion) {
       constraints: sharedConstraint,
     },
     metadata: { workSize: 3, complexity: 'low', impact: 'medium' },
-    scoring: { urgency: 'none', enablement: 'some', confidence: 'high' },
     assessment: {
       workSize: { source: 'agent', rationale: 'The child is a bounded multi-step change.' },
       complexity: { source: 'agent', rationale: 'The child follows established local patterns.' },
       impact: { source: 'agent', rationale: 'The child materially improves the local workflow.' },
-      urgency: { source: 'policy', rationale: 'No urgency signal is recorded.' },
-      enablement: { source: 'agent', rationale: 'The child enables the complete parent outcome.' },
-      confidence: { source: 'agent', rationale: 'The child evidence and boundary are explicit.' },
     },
   };
 }

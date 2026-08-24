@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "tanaab/task-management-schema/v1",
+  "schemaVersion": "tanaab/task-management-schema/v2",
   "issueTypes": [
     { "key": "task", "name": "Task", "enabled": true },
     { "key": "bug", "name": "Bug", "enabled": true },
@@ -105,11 +105,6 @@
       }
     ]
   },
-  "scoringDiagnostics": {
-    "urgency": ["None", "Moderate", "High", "Immediate"],
-    "enablement": ["None", "Some", "Substantial", "Foundational"],
-    "confidence": ["Low", "Medium", "High"]
-  },
   "issueFields": [
     {
       "key": "priority",
@@ -163,15 +158,6 @@
         "High": "blue",
         "Very high": "green"
       },
-      "visibility": "organization_members_only",
-      "pinnedIssueTypes": ["Task", "Bug", "Feature"]
-    },
-    {
-      "key": "taskScore",
-      "name": "Task score",
-      "description": "Derived 0 through 100 goal-independent ranking from task-score/v1.",
-      "dataType": "number",
-      "fallbackKey": "task-score",
       "visibility": "organization_members_only",
       "pinnedIssueTypes": ["Task", "Bug", "Feature"]
     },

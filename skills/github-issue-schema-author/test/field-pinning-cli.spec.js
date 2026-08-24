@@ -42,7 +42,7 @@ describe('skills/github-issue-schema-author/scripts/pin-fields', () => {
     assert.equal(status, 0);
     assert.match(stdout.value(), /status: approval_required/);
     assert.match(stdout.value(), /execution surface: github_settings_ui/);
-    assert.match(stdout.value(), /updates: 6/);
+    assert.match(stdout.value(), /updates: 5/);
     assert.match(stdout.value(), /Start date: Feature -> Task, Bug, Feature/);
     assert.match(stdout.value(), /deletions: none/);
     assert.equal(stderr.value(), '');

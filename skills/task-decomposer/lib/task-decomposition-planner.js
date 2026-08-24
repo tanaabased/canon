@@ -88,12 +88,7 @@ function buildChildPlan(child, proposal, evidence, client) {
     { githubClient: client },
   );
   const { errors, plan } = buildTaskCreatePlan(draft);
-  const blockers = [
-    ...errors,
-    ...draft.metadata.errors,
-    ...draft.assessment.errors,
-    ...draft.scoring.errors,
-  ];
+  const blockers = [...errors, ...draft.metadata.errors, ...draft.assessment.errors];
   if (draft.status === 'needs_input')
     blockers.push(`Child ${child.key} is not a complete canonical task.`);
   if (draft.metadata.unresolved.length > 0) {

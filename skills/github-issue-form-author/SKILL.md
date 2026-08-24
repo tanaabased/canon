@@ -31,7 +31,7 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 
 - Do not author, revise, or normalize an individual task directly; hand normalized evidence to Task Author.
 - Do not create or synchronize issue types, issue fields, or label definitions; use GitHub Issue Schema Author.
-- Do not ask a submitter to classify Priority, Work size, Complexity, Impact, scoring diagnostics, labels, dates, or Task score.
+- Do not ask a submitter to classify Priority, Work size, Complexity, Impact, labels, dates, or other agent-assessed metadata.
 - Do not claim that extracted intake evidence is already a canonical task; Task Author owns semantic assessment and rewriting.
 - Do not delete unknown issue templates, silently replace custom submitted inputs, or auto-apply canonical labels through form YAML.
 
@@ -62,7 +62,7 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. It warns reporters not to publish secrets.
 - Bug asks only for observed behavior, expected behavior, and safe reproduction or investigation evidence. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
 - The human-facing Feature request asks for the affected problem or opportunity and useful outcome, plus optional examples or constraints. It does not require formal scope, acceptance criteria, implementation design, or a pull request.
-- Forms do not auto-apply labels or expose metadata and scoring controls. Task Author estimates supported values after semantic normalization and chooses native or fallback storage.
+- Forms do not auto-apply labels or expose metadata controls. Task Author estimates supported values after semantic normalization and chooses native or fallback storage.
 - Extraction returns the selected kind, title, observed organization metadata, complete raw Markdown, labeled answered responses, and `normalizationRequired: true`.
 - Preserve unknown headings inside their owning response and preserve the complete original Markdown even when content sits outside known responses.
 
@@ -100,14 +100,14 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
    ```
 
 5. Re-read all four files, require an aligned idempotent plan, and report partial writes or SHA conflicts honestly.
-6. Validate each YAML document against the current GitHub form schema, unique IDs and labels, supported types, and the no-Task-score/no-duplicate-native-metadata boundary.
+6. Validate each YAML document against the current GitHub form schema, unique IDs and labels, supported types, and the no-duplicate-native-metadata boundary.
 7. For submitted Markdown, extract only known generated headings, preserve unknown headings within their owning response, preserve the complete original Markdown, and stop on duplicate known headings.
 8. Hand the evidence package to Task Author for semantic normalization. Do not invoke deterministic task rendering until an agent has produced supported canonical sections, assessment provenance, rationales, and focused questions for missing evidence.
 
 ## Optimization
 
 - **Inspect:** Read the exact repository form paths, chooser configuration, repository ownership mode, and current issue-type and field capabilities before proposing alignment.
-- **Compare:** Diff Task, Bug, Feature, and chooser definitions against generated policy; identify duplicate IDs or labels, metadata or diagnostics pushed onto reporters, lost repository additions, and stale GitHub syntax.
+- **Compare:** Diff Task, Bug, Feature, and chooser definitions against generated policy; identify duplicate IDs or labels, metadata pushed onto reporters, lost repository additions, and stale GitHub syntax.
 - **Recommend:** Keep compatible repository guidance and contact links; reconcile the approved intake questions and variant behavior; retire only previously managed controls or proven duplicates.
 - **Apply:** Require exact repository, default branch, and digest authorization; create or update only the four managed paths, preserve compatible additions, and never delete unknown templates.
 - **Verify:** Parse every rendered YAML document, simulate submitted Markdown, and prove complete response and raw-Markdown preservation. Canonical semantic convergence is a Task Author fixture concern after the agent assessment pass.

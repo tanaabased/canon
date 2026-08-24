@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Breaking Changes
+
+- Removed Task score, its diagnostics, audit comments, and schema ownership from the canonical task model. [#27](https://github.com/tanaabased/canon/issues/27)
+
 ### New Features
 
 - Added `tanaab-project-milestone-author` for model-led, verified milestone and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18)

@@ -63,7 +63,7 @@ Send the request as JSON through `decompose-task.js --input -`. The model suppli
 }
 ```
 
-`task` accepts the same semantic child input as Task Author, including supported metadata, assessment provenance, scoring evidence, signals, and scoring-audit suppression. `reuseIssueNumber` may identify one expected existing issue, but the planner still requires it to match the generated canonical child exactly.
+`task` accepts the same semantic child input as Task Author, including supported metadata, assessment provenance, and signals. `reuseIssueNumber` may identify one expected existing issue, but the planner still requires it to match the generated canonical child exactly.
 
 A `keep_intact` request contains the recommendation only. It must not contain children, dependencies, or a parent revision.
 

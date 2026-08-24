@@ -104,7 +104,6 @@ describe('Task Author existing-issue modes', () => {
     });
 
     assert.equal(preview.status, 'approval_required');
-    assert.equal(preview.scoring.score, null);
     assert.deepEqual(preview.plannedMutation.issue.labels, ['needs triage', 'needs reproduction']);
     assert.equal(preview.plannedMutation.mutation.issue_field_values.length, 1);
 
@@ -123,22 +122,21 @@ describe('Task Author existing-issue modes', () => {
       kind: 'Feature',
       sections: completeFeatureSections,
       metadata: { priority: 'medium', workSize: 5, complexity: 'medium', impact: 'high' },
-      scoring: { urgency: 'moderate', enablement: 'substantial', confidence: 'high' },
       assessment: {
         priority: { source: 'human', rationale: 'A human selected medium priority.' },
         workSize: { source: 'agent', rationale: 'The original scope fits work size 5.' },
         complexity: { source: 'agent', rationale: 'The original scope has medium complexity.' },
         impact: { source: 'agent', rationale: 'The API has high impact.' },
-        urgency: { source: 'agent', rationale: 'The timing is moderately urgent.' },
-        enablement: { source: 'agent', rationale: 'The API substantially enables automation.' },
-        confidence: { source: 'agent', rationale: 'The evidence supports high confidence.' },
       },
     };
     const oldDraft = authorTaskDraft(oldInput, {
       githubClient: fakeClient(capabilities),
     });
     const oldComments = [
-      { id: 1, body: oldDraft.comments[0].body },
+      {
+        id: 1,
+        body: '<details>\n<summary>Automated task assessment — advisory · score 37/100</summary>\n\nHistorical assessment.\n</details>\n',
+      },
       { id: 2, body: 'Earlier implementation discussion must remain.' },
     ];
     const options = {
@@ -172,21 +170,17 @@ describe('Task Author existing-issue modes', () => {
     assert.equal(preview.status, 'approval_required');
     assert.ok(preview.plannedMutation.issue.labels.includes('breaking change'));
     assert.ok(preview.plannedMutation.comments.some(({ kind }) => kind === 'revision-summary'));
-    assert.ok(preview.plannedMutation.comments.some(({ kind }) => kind === 'task-score'));
-    assert.match(
-      preview.plannedMutation.comments.find(({ kind }) => kind === 'task-score').body,
-      /supersedes the previous automated task assessment/,
-    );
+    assert.equal(preview.plannedMutation.comments.length, 1);
 
     const client = fakeGitHubTaskClient(capabilities, options);
     const report = updateTask(approve(input, preview), { githubClient: client });
     assert.equal(report.status, 'updated');
     assert.equal(report.verification.status, 'verified');
     assert.equal(client.state.comments[1].body, 'Earlier implementation discussion must remain.');
-    assert.equal(client.state.comments.length, 4);
+    assert.equal(client.state.comments.length, 3);
   });
 
-  it('should preserve every current issue field when recomputing Task score', () => {
+  it('should preserve every current issue field while changing Impact', () => {
     const capabilities = organizationCapabilities();
     const originalInput = {
       target: 'acme/widgets#99',
@@ -194,24 +188,23 @@ describe('Task Author existing-issue modes', () => {
       kind: 'Task',
       sections: completeTaskSections,
       metadata: { workSize: 21, complexity: 'high', impact: 'medium' },
-      scoring: { urgency: 'none', enablement: 'substantial', confidence: 'high' },
       assessment: {
         workSize: { source: 'agent', rationale: 'The inventory is broad.' },
         complexity: { source: 'agent', rationale: 'The comparisons require research.' },
         impact: { source: 'agent', rationale: 'The report has medium local value.' },
-        urgency: { source: 'policy', rationale: 'No urgency signal exists.' },
-        enablement: { source: 'agent', rationale: 'Several follow-ups become possible.' },
-        confidence: { source: 'agent', rationale: 'The inventory is directly verified.' },
       },
-      publishScoringAudit: false,
     };
     const originalDraft = authorTaskDraft(originalInput, {
       githubClient: fakeClient(capabilities),
     });
     const initialFields = observedFields(originalDraft, capabilities);
-    initialFields.find(({ issue_field_name: name }) => name === 'Impact').single_select_option = {
-      name: 'Very high',
-    };
+    initialFields.push({
+      issue_field_id: 999,
+      issue_field_name: 'Task score',
+      data_type: 'number',
+      value: 30,
+      single_select_option: null,
+    });
     const options = {
       initialIssue: initialIssue(
         99,
@@ -230,13 +223,12 @@ describe('Task Author existing-issue modes', () => {
         ...originalInput.assessment,
         impact: { source: 'human', rationale: 'A human changed Impact to Very high.' },
       },
-      revisionSummary: 'Recomputed task-score/v1 after Impact changed to Very high.',
+      revisionSummary: 'Updated Impact after the human assessment changed to Very high.',
     };
     const preview = updateTask(input, {
       githubClient: fakeGitHubTaskClient(capabilities, options),
     });
 
-    assert.equal(preview.scoring.score, 50);
     assert.equal(preview.plannedMutation.mutation.issue_field_values.length, 4);
 
     const client = fakeGitHubTaskClient(capabilities, options);
@@ -244,5 +236,6 @@ describe('Task Author existing-issue modes', () => {
     assert.equal(report.status, 'updated');
     assert.equal(report.verification.status, 'verified');
     assert.equal(client.state.fields.length, 4);
+    assert.equal(client.state.fields.find(({ issue_field_id: id }) => id === 999).value, 30);
   });
 });

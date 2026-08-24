@@ -1,6 +1,6 @@
 import { desiredOptionColor } from './desired-option-color.js';
 
-const ADDITIVE_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact', 'Task score']);
+const ADDITIVE_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
 
 function fieldPayload(desired) {
   const payload = {
