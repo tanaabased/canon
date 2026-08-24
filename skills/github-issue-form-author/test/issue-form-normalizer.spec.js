@@ -68,7 +68,6 @@ The projected form response.
     assert.equal(normalized.title, 'add a health summary');
     assert.equal(normalized.normalizationRequired, true);
     assert.deepEqual(normalized.metadata, {});
-    assert.deepEqual(normalized.scoring, {});
     assert.deepEqual(Object.keys(normalized.intakeEvidence.responses), ['work', 'completion']);
   });
 

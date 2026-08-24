@@ -15,7 +15,7 @@ function authorize(preview) {
 }
 
 describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additions', () => {
-  it('should preview exactly four additive POST operations and no updates or deletions', () => {
+  it('should preview exactly three additive POST operations and no updates or deletions', () => {
     const client = fakeFieldAdditionClient();
     const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
 
@@ -23,7 +23,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
     assert.equal(report.mutatesGitHub, false);
     assert.deepEqual(
       report.plannedMutation.operations.map(({ body }) => body.name),
-      ['Work size', 'Complexity', 'Impact', 'Task score'],
+      ['Work size', 'Complexity', 'Impact'],
     );
     assert.ok(report.plannedMutation.operations.every(({ method }) => method === 'POST'));
     assert.deepEqual(report.plannedMutation.updates, []);
@@ -49,7 +49,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
     );
   });
 
-  it('should create and exactly verify all four fields after digest-bound authorization', () => {
+  it('should create and exactly verify all three fields after digest-bound authorization', () => {
     const client = fakeFieldAdditionClient();
     const preview = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
     const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', {
@@ -59,14 +59,14 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
     assert.equal(report.status, 'added');
     assert.equal(report.mutatesGitHub, true);
-    assert.equal(report.writes.length, 4);
+    assert.equal(report.writes.length, 3);
     assert.ok(report.writes.every(({ status }) => status === 'succeeded'));
     assert.equal(report.verification.status, 'verified');
     assert.equal(report.verification.mismatches.length, 0);
-    assert.equal(client.calls.filter((call) => call.operation === 'createIssueField').length, 4);
+    assert.equal(client.calls.filter((call) => call.operation === 'createIssueField').length, 3);
   });
 
-  it('should be idempotent after all four additive fields exist', () => {
+  it('should be idempotent after all three additive fields exist', () => {
     const client = fakeFieldAdditionClient({ fields: allManagedFields() });
     const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
 
@@ -96,7 +96,7 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
 
     assert.deepEqual(
       report.plannedMutation.operations.map(({ body }) => body.name),
-      ['Complexity', 'Impact', 'Task score'],
+      ['Complexity', 'Impact'],
     );
     assert.ok(
       report.inspection.issueFields.migrationRequired.some(

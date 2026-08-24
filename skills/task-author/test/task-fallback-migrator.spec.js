@@ -27,15 +27,25 @@ function approve(input, preview) {
   };
 }
 
-describe('Task Author T16 fallback migration', () => {
+describe('skills/task-author/lib/task-fallback-migrator', () => {
   it('should preserve current fields while verifying native values before capsule removal', () => {
     const capabilities = organizationCapabilities();
     const priorityField = capabilities.issueFields.values.find(({ name }) => name === 'Priority');
-    const body = `## Context\n\nMigration fixture.\n\n${renderFallbackMetadata({
-      complexity: 'medium',
-      impact: 'high',
-      'task-score': 52,
-    })}`;
+    const body = `## Context
+
+Migration fixture.
+
+### Task metadata
+
+\`\`\`yaml
+schema: tanaab/task-metadata/v1
+mode: fallback
+fallback:
+  complexity: medium
+  impact: high
+  task-score: 52
+\`\`\`
+`;
     const options = {
       initialIssue: issue(body),
       initialFields: [
@@ -55,15 +65,16 @@ describe('Task Author T16 fallback migration', () => {
     });
 
     assert.equal(preview.status, 'approval_required');
-    assert.deepEqual(preview.plannedMutation.removableKeys, ['complexity', 'impact', 'task-score']);
-    assert.equal(preview.plannedMutation.phases[0].mutation.issue_field_values.length, 4);
+    assert.deepEqual(preview.plannedMutation.removableKeys, ['complexity', 'impact']);
+    assert.deepEqual(preview.plannedMutation.retiredKeys, ['task-score']);
+    assert.equal(preview.plannedMutation.phases[0].mutation.issue_field_values.length, 3);
 
     const client = fakeGitHubTaskClient(capabilities, options);
     const report = migrateTaskFallback(approve(input, preview), { githubClient: client });
     assert.equal(report.status, 'migrated');
     assert.equal(report.verification.status, 'verified');
     assert.doesNotMatch(client.state.issue.body, /Task metadata/);
-    assert.equal(client.state.fields.length, 4);
+    assert.equal(client.state.fields.length, 3);
     assert.equal(
       client.state.fields.find(({ issue_field_name: name }) => name === 'Priority')
         .single_select_option.name,

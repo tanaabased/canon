@@ -86,7 +86,6 @@ export function normalizeIssueFormSubmission(
       rawMarkdown,
     },
     metadata: repositoryMode === 'organization' ? { ...nativeMetadata } : {},
-    scoring: {},
     signals: {},
     relationships: {},
     normalizationRequired: true,

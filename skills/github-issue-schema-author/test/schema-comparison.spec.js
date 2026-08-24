@@ -16,7 +16,7 @@ function observedField(name, options = [], dataType = 'single_select') {
 }
 
 describe('skills/github-issue-schema-author schema comparison', () => {
-  it('should preserve Effort independently and report missing Work size without migration', () => {
+  it('should preserve Effort and leave the retired score field unmanaged', () => {
     const types = {
       status: 'ok',
       values: ['Task', 'Bug', 'Feature'].map((name) => ({
@@ -31,6 +31,7 @@ describe('skills/github-issue-schema-author schema comparison', () => {
       values: [
         observedField('Priority', ['Urgent', 'High', 'Medium', 'Low']),
         observedField('Effort', ['High', 'Medium', 'Low']),
+        observedField('Task score', [], 'number'),
         observedField('Start date', [], 'date'),
         observedField('Target date', [], 'date'),
       ],
@@ -49,6 +50,10 @@ describe('skills/github-issue-schema-author schema comparison', () => {
     assert.equal(
       comparison.unmanaged.find(({ name }) => name === 'Effort').classification,
       'preserved_unmanaged',
+    );
+    assert.equal(
+      comparison.unmanaged.find(({ name }) => name === 'Task score').classification,
+      'unmanaged',
     );
   });
 

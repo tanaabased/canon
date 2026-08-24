@@ -9,7 +9,7 @@ function usage() {
   bun add-fields.js plan OWNER/REPO [--json]
   bun add-fields.js apply OWNER/REPO --approved-organization ORG --approved-digest SHA256 [--json]
 
-Creates only missing Work size, Complexity, Impact, and Task score organization fields.
+Creates only missing Work size, Complexity, and Impact organization fields.
 It never updates, renames, pins, changes visibility on, or deletes existing GitHub state.
 Run plan first and bind apply to its exact organization and digest.`;
 }

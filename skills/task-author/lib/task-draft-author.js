@@ -1,6 +1,5 @@
 import { GitHubCapabilityClient } from './github-capability-client.js';
 import { TASK_KINDS } from './task-author-contract.js';
-import { calculateTaskScore } from '../utils/calculate-task-score.js';
 import { buildTaskAssessment } from '../utils/build-task-assessment.js';
 import { classifyTaskLabels } from '../utils/classify-task-labels.js';
 import { normalizeTaskKind } from '../utils/normalize-task-kind.js';
@@ -9,10 +8,6 @@ import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
 import { planTaskMetadata } from '../utils/plan-task-metadata.js';
 import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
 import { renderTaskBody } from '../utils/render-task-body.js';
-import {
-  renderPriorityOverrideComment,
-  renderTaskScoreComment,
-} from '../utils/render-task-comments.js';
 
 function appendBlock(body, block) {
   if (!block) return body;
@@ -36,16 +31,7 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
 
   const kind = normalizeTaskKind(input.kind);
   const metadataResult = normalizeTaskMetadata(input.metadata);
-  const scoreInput = { ...input.scoring, impact: metadataResult.values.impact };
-  if (metadataResult.values.workSize !== undefined) {
-    scoreInput.workSize = metadataResult.values.workSize;
-  }
-  const scoring = calculateTaskScore(scoreInput);
-  if (scoring.score !== null) metadataResult.values.taskScore = scoring.score;
-  else if (Number.isInteger(input.preservedTaskScore)) {
-    metadataResult.values.taskScore = input.preservedTaskScore;
-  }
-  const assessment = buildTaskAssessment(metadataResult.values, scoring, input.assessment);
+  const assessment = buildTaskAssessment(metadataResult.values, input.assessment);
 
   const renderedBody = kind
     ? renderTaskBody(kind, input.sections)
@@ -83,29 +69,12 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
   }
 
   const comments = [];
-  const assessmentRationales = Object.fromEntries(
-    Object.entries(assessment.values).flatMap(([key, record]) =>
-      record.rationale ? [[key, record.rationale]] : [],
-    ),
-  );
-  const scoreComment =
-    input.publishScoringAudit === false
-      ? ''
-      : renderTaskScoreComment(scoring, assessmentRationales);
-  if (scoreComment) comments.push({ kind: 'task-score', body: scoreComment });
-  const priorityComment = renderPriorityOverrideComment(
-    metadataResult.values.priority,
-    scoring.score,
-    input.priorityRationale,
-  );
-  if (priorityComment) comments.push({ kind: 'priority-override', body: priorityComment });
 
   const needsInput =
     !kind ||
     !String(input.title ?? '').trim() ||
     renderedBody.missing.length > 0 ||
     metadataResult.errors.length > 0 ||
-    scoring.errors.length > 0 ||
     assessment.errors.length > 0 ||
     !actionable;
   const incompleteCapabilities =
@@ -134,16 +103,6 @@ export function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilit
     assessment,
     labels,
     relationships: input.relationships ?? {},
-    scoring: {
-      ...scoring,
-      auditComment: scoreComment,
-      auditPublication:
-        input.publishScoringAudit === false
-          ? 'suppressed'
-          : scoreComment
-            ? 'planned'
-            : 'not_applicable',
-    },
     comments,
     capabilities,
     questions: input.questions ?? [],

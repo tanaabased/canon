@@ -3,7 +3,7 @@ import { desiredOptionColor } from '../utils/desired-option-color.js';
 
 const TYPE_NAMES = Object.freeze(['Task', 'Bug', 'Feature']);
 const COLOR_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
-const PUBLIC_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact', 'Task score']);
+const PUBLIC_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
 
 function unpinnedIssueTypes() {
   return TYPE_NAMES.map((name) => ({ id: `type-${name}`, name, enabled: true, pinnedFields: [] }));
@@ -59,7 +59,7 @@ export function initialFields() {
 
 export function allManagedFields() {
   const desired = policy.issueFields.filter(({ name }) =>
-    ['Work size', 'Complexity', 'Impact', 'Task score'].includes(name),
+    ['Work size', 'Complexity', 'Impact'].includes(name),
   );
   return [
     ...initialFields(),

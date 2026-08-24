@@ -8,25 +8,20 @@ import fixtures, {
   organizationCapabilities,
 } from '../../../test/task-management-fixtures.js';
 
-describe('Task Author T01-T17 draft fixtures', () => {
+describe('skills/task-author/lib/task-draft-author', () => {
   for (const fixture of fixtures) {
     it(`should satisfy ${fixture.id} without mutating GitHub`, () => {
       const client = fakeClient(fixture.capabilities);
       const report = authorTaskDraft(fixture.input, { githubClient: client });
 
       assert.equal(report.mutatesGitHub, false);
-      assert.equal(report.scoring.score, fixture.expected.score);
       assert.equal(report.assessment.errors.length, 0);
-      assert.equal(report.assessment.values.taskScore.source, 'derived');
       assert.equal(report.metadata.native.fields.length, fixture.expected.nativeFields);
       assert.deepEqual(report.labels.apply, fixture.expected.labels);
       if (fixture.expected.fallback) {
         assert.deepEqual(report.metadata.fallback, fixture.expected.fallback);
       }
-      assert.equal(
-        report.comments.some((comment) => comment.kind === 'task-score'),
-        true,
-      );
+      assert.deepEqual(report.comments, []);
       assert.deepEqual(client.calls, [
         'ensureAvailable',
         `inspectRepository:${report.target.slug}`,
@@ -42,7 +37,7 @@ describe('Task Author T01-T17 draft fixtures', () => {
       assert.equal(report.metadata.native.type, null);
       assert.equal(report.metadata.native.fields.length, 0);
       assert.equal(report.metadata.fallback.type, fixture.input.kind.toLowerCase());
-      assert.match(report.body, /schema: tanaab\/task-metadata\/v1/);
+      assert.match(report.body, /schema: tanaab\/task-metadata\/v2/);
     }
   });
 
@@ -67,12 +62,11 @@ describe('Task Author T01-T17 draft fixtures', () => {
     assert.equal(report.taskKind, null);
     assert.equal(report.body, 'sync is annoying and should be improved');
     assert.deepEqual(report.metadata.values, {});
-    assert.equal(report.scoring.score, null);
     assert.deepEqual(report.labels.apply, ['needs triage']);
     assert.equal(report.questions.length, 4);
   });
 
-  it('should satisfy T08 without inventing reproduction, estimates, or score', () => {
+  it('should satisfy T08 without inventing reproduction or estimates', () => {
     const report = authorTaskDraft(
       {
         target: 'acme/widgets#82',
@@ -89,7 +83,6 @@ describe('Task Author T01-T17 draft fixtures', () => {
     assert.equal(report.status, 'needs_input');
     assert.equal(report.metadata.values.workSize, undefined);
     assert.equal(report.metadata.values.complexity, undefined);
-    assert.equal(report.scoring.score, null);
     assert.ok(report.assessment.errors.some((error) => error.includes('assessment.impact')));
     assert.deepEqual(report.labels.apply, ['needs triage', 'needs reproduction']);
     assert.match(report.body, /## Reproduction or evidence\n\n## Impact/);
@@ -131,7 +124,6 @@ describe('Task Author T01-T17 draft fixtures', () => {
     assert.deepEqual(report.metadata.fallback, {
       complexity: 'low',
       impact: 'medium',
-      'task-score': 37,
     });
     assert.doesNotMatch(report.body.split('fallback:\n')[1], /priority|work-size/);
   });
@@ -154,42 +146,14 @@ describe('Task Author T01-T17 draft fixtures', () => {
     assert.equal(report.status, 'partial');
   });
 
-  it('should satisfy T14 by previewing a durable Priority override comment', () => {
+  it('should satisfy T14 with policy-controlled Priority provenance', () => {
     const fixture = fixtures.find(({ id }) => id === 'T14');
     const report = authorTaskDraft(fixture.input, {
       githubClient: fakeClient(fixture.capabilities),
     });
-    const comment = report.comments.find(({ kind }) => kind === 'priority-override');
-    assert.match(comment.body, /contractual sequencing policy/);
-    assert.match(comment.body, /Task score remains 22/);
-  });
-
-  it('should satisfy T17 with policy-sourced Urgency None and no Priority default', () => {
-    const fixture = fixtures.find(({ id }) => id === 'T17');
-    const report = authorTaskDraft(fixture.input, {
-      githubClient: fakeClient(fixture.capabilities),
-    });
-
-    assert.equal(report.metadata.values.priority, undefined);
-    assert.equal(report.assessment.values.urgency.value, 'none');
-    assert.equal(report.assessment.values.urgency.source, 'policy');
-    assert.equal(report.scoring.score, 30);
-  });
-
-  it('should allow the scoring audit comment to be suppressed without suppressing the score', () => {
-    const fixture = fixtures.find(({ id }) => id === 'T01');
-    const report = authorTaskDraft(
-      { ...fixture.input, publishScoringAudit: false },
-      { githubClient: fakeClient(fixture.capabilities) },
-    );
-
-    assert.equal(report.scoring.score, fixture.expected.score);
-    assert.equal(report.scoring.auditPublication, 'suppressed');
-    assert.equal(report.scoring.auditComment, '');
-    assert.equal(
-      report.comments.some(({ kind }) => kind === 'task-score'),
-      false,
-    );
+    assert.equal(report.assessment.values.priority.source, 'policy');
+    assert.match(report.assessment.values.priority.rationale, /contractual sequencing policy/);
+    assert.deepEqual(report.comments, []);
   });
 
   it('should leave fallback eligibility unresolved when field inspection is unavailable', () => {
@@ -202,7 +166,7 @@ describe('Task Author T01-T17 draft fixtures', () => {
     });
 
     assert.deepEqual(report.metadata.fallback, {});
-    assert.equal(report.metadata.unresolved.length, 5);
+    assert.equal(report.metadata.unresolved.length, 4);
     assert.equal(report.status, 'partial');
   });
 });

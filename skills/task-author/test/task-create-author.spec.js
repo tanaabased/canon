@@ -15,7 +15,7 @@ function approve(input, preview) {
   };
 }
 
-describe('Task Author T01-T06 create fixtures', () => {
+describe('skills/task-author/lib/task-create-author', () => {
   for (const fixture of fixtures.filter(({ id }) => /^T0[1-6]$/.test(id))) {
     it(`should preview, create, and verify ${fixture.id}`, () => {
       const previewClient = fakeGitHubTaskClient(fixture.capabilities);
@@ -45,7 +45,7 @@ describe('Task Author T01-T06 create fixtures', () => {
       if (fixture.capabilities.repository.ownerType === 'User') {
         assert.equal(report.plannedMutation.issue.type, undefined);
         assert.equal(report.plannedMutation.issue.issue_field_values, undefined);
-        assert.match(report.plannedMutation.issue.body, /schema: tanaab\/task-metadata\/v1/);
+        assert.match(report.plannedMutation.issue.body, /schema: tanaab\/task-metadata\/v2/);
       } else {
         assert.equal(report.plannedMutation.issue.type, fixture.input.kind);
         assert.equal(
@@ -154,21 +154,5 @@ describe('Task Author T01-T06 create fixtures', () => {
     assert.ok(report.verification.mismatches.some(({ key }) => key === 'type'));
     assert.ok(report.verification.mismatches.some(({ key }) => key === 'labels'));
     assert.ok(report.verification.mismatches.some(({ key }) => key === 'field:Priority'));
-  });
-
-  it('should preserve the issue URL when a follow-up comment fails', () => {
-    const fixture = fixtures.find(({ id }) => id === 'T01');
-    const preview = createTask(fixture.input, {
-      githubClient: fakeGitHubTaskClient(fixture.capabilities),
-    });
-    const client = fakeGitHubTaskClient(fixture.capabilities, {
-      commentFailure: 'POST comment: HTTP 403',
-    });
-    const report = createTask(approve(fixture.input, preview), { githubClient: client });
-
-    assert.equal(report.status, 'partial');
-    assert.equal(report.issue.url, 'https://github.com/acme/widgets/issues/41');
-    assert.ok(report.writes.some(({ status }) => status === 'failed'));
-    assert.ok(report.verification.mismatches.some(({ key }) => key === 'comment:task-score'));
   });
 });

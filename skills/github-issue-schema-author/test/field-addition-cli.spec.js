@@ -29,7 +29,7 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
     );
   });
 
-  it('should render a no-write four-field plan', () => {
+  it('should render a no-write three-field plan', () => {
     const stdout = capture();
     const stderr = capture();
     const status = runFieldAdditionCli(['plan', 'tanaabased/big-test-bucket'], {
@@ -40,7 +40,7 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
 
     assert.equal(status, 0);
     assert.match(stdout.value(), /status: approval_required/);
-    assert.match(stdout.value(), /Work size, Complexity, Impact, Task score/);
+    assert.match(stdout.value(), /Work size, Complexity, Impact/);
     assert.match(stdout.value(), /updates: none/);
     assert.match(stdout.value(), /deletions: none/);
     assert.equal(stderr.value(), '');

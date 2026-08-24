@@ -27,7 +27,7 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Use when a user wants to inspect or compare GitHub issue schema for an explicit `OWNER/REPO`.
 - Use before planning issue-field, issue-type, pinning, visibility, or canonical-label alignment.
 - Use to determine whether a repository is aligned, missing definitions, drifted, needs a separately authorized migration, or cannot be fully inspected.
-- Use additive mode when an organization owner explicitly authorizes creation of the four missing canonical fields without changing any existing state.
+- Use additive mode when an organization owner explicitly authorizes creation of the three missing canonical fields without changing any existing state.
 - Use color mode when an organization owner explicitly authorizes the exact canonical color diff for the three managed single-select fields.
 - Use pinning mode when an organization owner explicitly authorizes the exact managed field-to-type associations for Task, Bug, and Feature.
 - Use visibility mode when an organization owner explicitly authorizes only the managed fields whose visibility differs from the canonical organization-members-only policy.
@@ -41,7 +41,7 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Do not update field or option names, descriptions, types, option order, or option membership; the only update path changes colors while retaining option IDs.
 - Do not change pinning for Effort or any other unmanaged field, pin managed fields to issues without a type, or change pinned-field ordering.
 - Do not call GitHub's private organization-settings endpoint from a script, CLI, or copied browser request.
-- Do not create issue types, Priority, Start date, Target date, or any field outside Work size, Complexity, Impact, and Task score. Label mode may create only canonical repository labels.
+- Do not create issue types, Priority, Start date, Target date, or any field outside Work size, Complexity, and Impact. Label mode may create only canonical repository labels.
 - Do not infer a repository from the working directory. Require an explicit target.
 
 ## Prerequisites
@@ -75,9 +75,10 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Report organization issue types separately from repository-effective issue types.
 - Report managed fields, options, visibility, Task/Bug/Feature pinning, canonical labels, unmanaged labels, automation-owned labels, and association counts.
 - Classify GitHub's default `Effort` field as `preserved_unmanaged`. `Work size` is a distinct managed field; never rename, map, delete, or infer it from Effort.
+- Classify any still-observed retired Task score field as `unmanaged` pending its separately authorized deletion; never create, synchronize, pin, migrate, or delete it through this skill.
 - Report organization-default labels as `manual`: GitHub exposes the setting to humans but has no public API that lists its current definitions.
 - Inspect mode produces no GitHub changes and no mutation plan.
-- Additive planning returns `approval_required` with four or fewer exact POST operations, an organization-bound digest, and empty update and deletion lists.
+- Additive planning returns `approval_required` with three or fewer exact POST operations, an organization-bound digest, and empty update and deletion lists.
 - Additive apply returns `added` only after every created definition verifies; `partial` preserves successful additions after a later failure; `failed` means no field is known to have been created; and `aligned` is an idempotent no-op.
 - Color planning returns `approval_required` with zero to three exact PATCH operations, empty create and deletion lists, all retained option identities, and each current-to-canonical color change.
 - Color apply returns `updated` only after every field and option property verifies; `partial` preserves an earlier successful recolor after a later failure; `failed` means no field is known to have changed; and `aligned` is an idempotent no-op.

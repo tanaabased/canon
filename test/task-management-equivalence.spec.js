@@ -81,7 +81,6 @@ describe('task-management cross-skill intake boundary', () => {
       for (const evidence of sourceEvidence(fixture.input)) {
         assert.match(normalized.intakeEvidence.rawMarkdown, new RegExp(escapeRegex(evidence)));
       }
-      assert.deepEqual(normalized.scoring, {});
       assert.deepEqual(normalized.signals, {});
       if (repositoryMode === 'organization') {
         assert.deepEqual(normalized.metadata, fixture.input.metadata);

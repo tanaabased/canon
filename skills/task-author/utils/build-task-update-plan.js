@@ -1,9 +1,5 @@
 import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
 import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
-import {
-  isTaskScoreAuditComment,
-  markTaskScoreCommentSuperseding,
-} from './render-task-comments.js';
 
 function issueTypeName(issue) {
   return typeof issue?.type === 'string' ? issue.type : (issue?.type?.name ?? null);
@@ -49,13 +45,7 @@ function nativeValue(field) {
 export function buildTaskUpdatePlan(draft, current, { revisionSummary = '' } = {}) {
   const errors = [];
   const labels = reconciledLabels(current.issue, draft.labels.apply);
-  const hasPreviousScoreAudit = current.comments.some(({ body }) => isTaskScoreAuditComment(body));
-  const desiredComments = draft.comments.map(({ kind, body }) => ({
-    kind,
-    body:
-      kind === 'task-score' && hasPreviousScoreAudit ? markTaskScoreCommentSuperseding(body) : body,
-  }));
-  const comments = desiredComments
+  const comments = draft.comments
     .filter(({ body }) => !current.comments.some((comment) => comment.body === body))
     .map(({ kind, body }) => ({ kind, body }));
   if (revisionSummary.trim()) {

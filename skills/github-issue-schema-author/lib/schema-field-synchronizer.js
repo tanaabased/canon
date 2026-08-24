@@ -143,7 +143,7 @@ function unavailableFieldListReport(inspection, error, { includeOperations, poli
   );
 }
 
-/** Preview or apply only missing Work size, Complexity, Impact, and Task score fields. */
+/** Preview or apply only missing Work size, Complexity, and Impact fields. */
 export function addMissingGitHubIssueFields(
   input,
   { authorization = {}, client = new GitHubIssueFieldClient(), policy = taskManagementSchema } = {},
