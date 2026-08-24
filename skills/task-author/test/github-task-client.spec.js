@@ -41,6 +41,37 @@ describe('Task Author GitHub task client', () => {
     assert.match(result.error, /POST \/repos\/acme\/widgets\/issues.*Forbidden/);
   });
 
+  it('should retain a runner error when stderr is present but empty', () => {
+    const client = new GitHubTaskClient({
+      runner: () => ({
+        status: null,
+        stdout: '',
+        stderr: '',
+        error: new Error('spawnSync gh ENOBUFS'),
+      }),
+    });
+
+    const result = client.readIssue({ slug: 'acme/widgets' }, 41);
+
+    assert.equal(result.ok, false);
+    assert.match(result.error, /spawnSync gh ENOBUFS/);
+  });
+
+  it('should paginate and flatten managed field and comment reads', () => {
+    const calls = [];
+    const client = new GitHubTaskClient({
+      runner: (args) => {
+        calls.push(args);
+        return success([[{ id: 1 }], [{ id: 2 }]]);
+      },
+    });
+    const target = { slug: 'acme/widgets' };
+
+    assert.equal(client.readIssueFieldValues(target, 41).value.length, 2);
+    assert.equal(client.readComments(target, 41).value.length, 2);
+    assert.ok(calls.every((args) => args.includes('--paginate') && args.includes('--slurp')));
+  });
+
   it('should PATCH an existing issue through stdin', () => {
     const calls = [];
     const client = new GitHubTaskClient({

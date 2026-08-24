@@ -15,6 +15,7 @@ This reference is the shared semantic contract for GitHub-backed task authoring.
 The initial consumers are:
 
 - **Task Author**, which owns one task and its directly managed values;
+- **Task Decomposer**, which owns keep-or-split review plus one approved shallow child-task and relationship lifecycle;
 - **GitHub Issue Schema Author**, which owns organization issue types and fields plus repository label definitions;
 - **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms;
 - **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence; and
@@ -453,6 +454,15 @@ Minor wording, formatting, or typo corrections do not require a history comment.
 - Propose metadata and labels only when supported.
 - Apply `needs triage` when essential classification or actionability remains unresolved.
 - Remove `needs triage` only after the normalized task has a supported kind, actionable scope, and checkable acceptance criteria.
+
+### Decompose
+
+- Inspect one exact canonical parent plus its metadata, comments, linked work, existing sub-issues, dependencies, and repository task candidates before proposing a split.
+- Work size `13` requires explicit keep-or-decompose review and Work size `21` normally recommends decomposition; neither threshold authorizes mutation.
+- Keep recommendation read-only. A decomposition requires distinct independently completable canonical children, complete non-overlapping parent-criterion coverage, retained source constraints, one shallow acyclic native relationship graph, and an exact digest-gated plan.
+- Reuse an existing exact task rather than creating a duplicate. Never move a child from another parent, create depth beyond one, or treat preferred ordering as a dependency.
+- Create and verify missing children and relationships in resumable order, then revise the parent into an open outcome rollup without claiming acceptance or completion.
+- Preserve partial success and report completed, failed, and remaining operations. Never delete or detach created work to simulate rollback.
 
 ### Fallback Migration
 
