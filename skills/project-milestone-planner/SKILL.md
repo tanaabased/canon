@@ -38,7 +38,7 @@ This version is read-only. It does not create milestones or tasks, change relati
 
 - Do not create, revise, close, or synchronize a milestone; route those changes to [Project Milestone Author](../project-milestone-author/SKILL.md).
 - Do not create or revise tasks, assign milestone membership, create sub-issues, or change dependencies in this version.
-- Do not decompose one oversized task as the primary request; use Task Decomposer when that skill exists.
+- Do not decompose one oversized task as the primary request; use [Task Decomposer](../task-decomposer/SKILL.md).
 - Do not manage a GitHub Projects board. A board is an optional view, not the project or milestone source of truth.
 - Do not treat a milestone as proof that its tasks or outcome are complete.
 - Do not change `task-score/v1` because a task joins a milestone or appears strategically relevant.
