@@ -31,21 +31,10 @@ describe('skills/task-author/lib/task-fallback-migrator', () => {
   it('should preserve current fields while verifying native values before capsule removal', () => {
     const capabilities = organizationCapabilities();
     const priorityField = capabilities.issueFields.values.find(({ name }) => name === 'Priority');
-    const body = `## Context
-
-Migration fixture.
-
-### Task metadata
-
-\`\`\`yaml
-schema: tanaab/task-metadata/v1
-mode: fallback
-fallback:
-  complexity: medium
-  impact: high
-  task-score: 52
-\`\`\`
-`;
+    const body = `## Context\n\nMigration fixture.\n\n${renderFallbackMetadata({
+      complexity: 'medium',
+      impact: 'high',
+    })}`;
     const options = {
       initialIssue: issue(body),
       initialFields: [
@@ -57,7 +46,7 @@ fallback:
           single_select_option: { name: 'Medium' },
         },
       ],
-      initialComments: [{ id: 1, body: 'Task score: 52 (`task-score/v1`)\n' }],
+      initialComments: [{ id: 1, body: 'Earlier implementation discussion must remain.' }],
     };
     const input = { target: 'acme/widgets#91' };
     const preview = migrateTaskFallback(input, {
@@ -66,7 +55,6 @@ fallback:
 
     assert.equal(preview.status, 'approval_required');
     assert.deepEqual(preview.plannedMutation.removableKeys, ['complexity', 'impact']);
-    assert.deepEqual(preview.plannedMutation.retiredKeys, ['task-score']);
     assert.equal(preview.plannedMutation.phases[0].mutation.issue_field_values.length, 3);
 
     const client = fakeGitHubTaskClient(capabilities, options);

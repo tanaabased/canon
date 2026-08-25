@@ -103,7 +103,7 @@ describe('Task Author deterministic utilities', () => {
     assert.equal(renderFallbackMetadata({}), '');
   });
 
-  it('should read a retired v1 key without treating it as supported metadata', () => {
+  it('should reject older schemas and unsupported fallback keys', () => {
     const parsed = parseFallbackMetadata(`## Context
 
 Legacy capsule.
@@ -115,13 +115,15 @@ schema: tanaab/task-metadata/v1
 mode: fallback
 fallback:
   complexity: medium
-  task-score: 52
+  obsolete-key: 52
 \`\`\`
 `);
 
-    assert.deepEqual(parsed.errors, []);
+    assert.deepEqual(parsed.errors, [
+      'Unsupported fallback key: obsolete-key.',
+      'Fallback schema must be tanaab/task-metadata/v2.',
+    ]);
     assert.deepEqual(parsed.fallback, { complexity: 'medium' });
-    assert.deepEqual(parsed.retired, { 'task-score': 52 });
   });
 
   it('should enforce canonical label eligibility and avoid creating missing definitions', () => {

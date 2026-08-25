@@ -9,6 +9,7 @@ import {
   completeTaskSections,
   fakeClient,
   organizationCapabilities,
+  personalCapabilities,
 } from '../../../test/task-management-fixtures.js';
 
 function approve(input, preview) {
@@ -50,6 +51,49 @@ function observedFields(draft, capabilities) {
 }
 
 describe('Task Author existing-issue modes', () => {
+  it('should revise personal-repository fallback metadata without reading issue fields', () => {
+    const capabilities = personalCapabilities();
+    const originalInput = {
+      target: 'octo-user/widgets#80',
+      title: 'document the supported setup',
+      kind: 'Task',
+      sections: completeTaskSections,
+      metadata: { workSize: 3, complexity: 'medium', impact: 'medium' },
+      assessment: {
+        workSize: { source: 'agent', rationale: 'The documentation change is bounded.' },
+        complexity: { source: 'agent', rationale: 'The setup has several interacting steps.' },
+        impact: { source: 'agent', rationale: 'The guidance improves a common setup path.' },
+      },
+    };
+    const originalDraft = authorTaskDraft(originalInput, {
+      githubClient: fakeClient(capabilities),
+    });
+    const options = {
+      initialIssue: initialIssue(80, originalDraft.title, originalDraft.body),
+      fieldReadFailure: 'Issue fields are unavailable for user-owned repositories.',
+    };
+    const input = {
+      ...originalInput,
+      mode: 'revise',
+      title: 'document the supported installation setup',
+      revisionSummary: 'Clarified that the task covers the supported installation path.',
+    };
+    const preview = updateTask(input, {
+      githubClient: fakeGitHubTaskClient(capabilities, options),
+    });
+
+    assert.equal(preview.status, 'approval_required');
+    const client = fakeGitHubTaskClient(capabilities, options);
+    const report = updateTask(approve(input, preview), { githubClient: client });
+
+    assert.equal(report.status, 'updated');
+    assert.equal(report.verification.status, 'verified');
+    assert.equal(
+      client.calls.some(({ operation } = {}) => operation === 'readIssueFieldValues'),
+      false,
+    );
+  });
+
   it('should normalize T07 without guessing missing evidence', () => {
     const capabilities = organizationCapabilities();
     const input = {
@@ -200,7 +244,7 @@ describe('Task Author existing-issue modes', () => {
     const initialFields = observedFields(originalDraft, capabilities);
     initialFields.push({
       issue_field_id: 999,
-      issue_field_name: 'Task score',
+      issue_field_name: 'External metric',
       data_type: 'number',
       value: 30,
       single_select_option: null,

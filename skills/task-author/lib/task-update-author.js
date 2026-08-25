@@ -92,7 +92,8 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
     { ...input, target: draftTarget, title: input.title ?? 'read-current-title' },
     { githubClient },
   );
-  const current = readTaskState(githubClient, provisional.target);
+  const fields = provisional.capabilities.issueFields.status !== 'not_applicable';
+  const current = readTaskState(githubClient, provisional.target, { fields });
   if (current.errors.length > 0 || !current.issue) {
     return {
       mode,
@@ -199,7 +200,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
     );
   }
 
-  const observed = readTaskState(githubClient, draft.target);
+  const observed = readTaskState(githubClient, draft.target, { fields });
   const verification = observed.issue
     ? verifyCreatedTask(plan, observed)
     : { status: 'unavailable', checks: [], mismatches: [] };
