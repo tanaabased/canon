@@ -39,9 +39,6 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 
 ## Constraints
 
-- Prefer the smallest change that solves the task.
-- Preserve existing style and local patterns unless the task clearly requires a change.
-- Avoid unrelated refactors.
 - Prefer Vue 3 and SCSS defaults unless the repo or user explicitly requires another stack.
 - When a component supports a VitePress or docs-site Markdown page, apply the shared VitePress Markdown page rules before normalizing a docs-only component.
 - Only introduce new HTML structure or new styling when there is no obvious existing site-level choice to reuse.
@@ -146,22 +143,11 @@ bun run build
 ## Validation
 
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
-- Confirm Vue 3 remained the frontend framework unless the repo or user explicitly requires another path.
-- Confirm project-local examples were preferred before using bundled fallback examples.
-- Confirm any canonized project pattern keeps reusable structure and docs contracts while excluding target-project visual, brand, and control-labeling choices.
-- Confirm docs-site Markdown page component work followed the shared Markdown page reference before creating bespoke docs-only components.
-- Confirm missing shared patterns were called out explicitly instead of being silently invented locally.
-- Confirm component docs playgrounds cover meaningful slots as well as props when slots are part of the public API.
-- Confirm component docs playgrounds cover boolean and enum states without hard-coding target-project visual doctrine into the fallback examples.
-- Confirm component docs pages use a top Usage playground rather than duplicating separate Basic Usage and Demo sections when the playground covers both.
-- Confirm generated code examples include an adjacent source-file link when the project has a stable source path or URL.
-- Confirm new Vue component docs pages in VitePress component docs surfaces follow the shared page reachability rules.
-- Confirm native semantics were preferred before ARIA and that ARIA attributes are driven by real component state or relationships.
-- Confirm custom interactive controls are keyboard usable and preserve visible focus.
-- Confirm form controls, icon-only buttons, media controls, and interactive regions have labels or accessible names.
-- Confirm component docs or playgrounds expose meaningful accessibility behavior when it is part of the component contract.
-- Confirm the SFC block order stayed `template` then `script setup` then `style`.
-- Confirm SCSS remains the styling default when a preprocessor is in play.
-- Confirm direct validation stays on build- and lint-first component checks rather than drifting into a separate frontend test doctrine.
-- Confirm `GitHub Actions` maps Vue validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
+- Confirm Vue 3, the canonical SFC block order, and SCSS defaults remain unless the repository or user requires another path.
+- Confirm project-local components, docs, playgrounds, theme styles, and shared Markdown-page patterns were preferred before bundled fallbacks or bespoke docs-only UI.
+- Confirm canonized examples preserve reusable structure and public contracts while excluding target-project visual, brand, and labeling doctrine.
+- Confirm component docs expose the meaningful props, slots, states, Usage playground, generated example, source link, and navigation reachability that apply without duplicating equivalent sections.
+- Confirm native semantics, state-driven ARIA, accessible names, keyboard behavior, and visible focus cover the component's real interaction contract.
+- Confirm missing shared styling or component patterns were surfaced instead of hidden behind one-off markup or SCSS.
+- Confirm direct validation remains build- and lint-first and GitHub Actions maps it to the shared build-checks workflow without absorbing general topology.
 - Run the narrowest relevant lint, test, build, or smoke checks for the touched Vue surface.

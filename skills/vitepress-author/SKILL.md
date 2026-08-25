@@ -43,9 +43,6 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 ## Constraints
 
-- Prefer the smallest change that solves the task.
-- Preserve existing style and local patterns unless the task clearly requires a change.
-- Avoid unrelated refactors.
 - Prefer VitePress 1 and SCSS defaults unless the repo or user explicitly requires another stack.
 - Apply the shared VitePress Markdown page rules for Markdown-heavy docs surfaces.
 - Treat page-local `<style>`, bespoke markup, and page-specific components as narrow exceptions rather than defaults.

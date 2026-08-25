@@ -47,11 +47,8 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 
 ## Constraints
 
-- Prefer the smallest change that solves the task.
 - Prefer one main exported function, one utility file, and one focused spec when a helper can be expressed that way honestly.
 - Do not force `utils/` extraction when the logic is tightly coupled to surface vocabulary, orchestration, or state.
-- Preserve existing style and local patterns unless the task clearly requires a change.
-- Avoid unrelated refactors.
 
 ## Change Strategy
 

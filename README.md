@@ -5,7 +5,7 @@
 <h1 align="center">Tanaab Canon</h1>
 
 <p align="center">
-  This project is the canonical home for Tanaab engineering, brand, marketing, and other operating guidance, plus the Codex plugin used to execute and enforce the live agent-facing slice of that canon.
+  This project is the canonical home for shared Tanaab operating guidance and the Codex plugin used to execute the live agent-facing slice of that canon.
 </p>
 
 <p align="center">
@@ -67,7 +67,7 @@ Example personal marketplace entry:
 
 ## Skills
 
-Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json). The plugin currently bundles the live skills below plus a stub [`.mcp.json`](./.mcp.json) registry reserved for a future shared MCP surface.
+Canon is executed through the Codex plugin rooted at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json), which bundles the live skills below.
 
 ### Project and task management
 
@@ -125,8 +125,6 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 ```
 
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
-- Sync policy for live plugin surfaces is owned by [`AGENTS.md`](./AGENTS.md).
-- The repo-local entrypoint for direct cache sync checks is `./bin/codexsync.js`; the public command label remains `codexsync`.
 - For managed plugin or `codexsync` changes, run `bun run test`, `bun run lint`, `bun run codex:validate`, and `bun run codex:check`; if cache drift is reported, run `bun run codex:sync` and then `bun run codex:check` again.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 

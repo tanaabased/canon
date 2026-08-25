@@ -14,6 +14,7 @@
 
 ### Policy and Guidance
 
+- Tightened README and skill-authoring guidance to preserve complete references while reducing duplicated implementation narration.
 - Updated `tanaab-task-author` to keep task payloads out of shell commands and approval rules. [#22](https://github.com/tanaabased/canon/pull/22)
 
 ## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)
