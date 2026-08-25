@@ -31,6 +31,7 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 - Inspect one exact milestone, including its complete description, state, due date, tasks, and pull requests.
 - Draft or apply one desired milestone state using an exact repository or milestone target.
 - Create a milestone with a model-authored title and complete Markdown description.
+- Accept a complete read-only milestone-reframing handoff from Task Decomposer, then independently draft an exact create or revision plan.
 - Revise title, description, state, or due date while preserving omitted values.
 - Add or remove explicitly selected existing tasks without changing unrelated membership.
 - Audit an existing milestone before an authorized alignment.
@@ -61,6 +62,7 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 - Optional `membership.add` and `membership.remove` contain explicit task numbers. Moving a task from another milestone requires `allowMoveFromOtherMilestones: true`.
 - Milestone fields and task membership require separate drafts, digests, and approvals. Never send `desired` and `membership` in the same request, and create the milestone before planning membership.
 - `apply` repeats the draft request with `publication.safetyReviewed: true`, `publication.approvedTarget`, and `publication.approvedDigest` copied from the fresh draft.
+- A Task Decomposer reframe is semantic evidence, not an Author request or mutation approval. Resolve create versus revision, require an exact revision target, author the complete description from the handoff, and preserve the source task unchanged unless its disposition is separately authorized through its owning skill.
 - Prefer `--input -`. If standard input is unavailable, use only a repository-local ignored scratch path after confirming it with `git check-ignore`.
 
 ## Outputs
@@ -77,6 +79,7 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 - Treat descriptions as complete opaque Markdown. Inspect first, let the model preserve any important existing content in the proposed full replacement, and expose the exact before and after strings in the plan.
 - Fail closed when publication safety is not attested, the approved target differs, the digest is stale, or public title or description text resembles a credential.
 - Apply only explicitly selected task membership and never create a missing task.
+- Never treat a Task Decomposer handoff as approval to create or revise a milestone, change membership, or dispose of the source task.
 - Treat successful responses as provisional. Re-read the milestone and every selected task, report silently dropped values, and never compensate or roll back remote state to hide partial success.
 - Keep the desired-state logic behind the injected GitHub client so an Agent System transport can replace that boundary without changing authorization semantics.
 

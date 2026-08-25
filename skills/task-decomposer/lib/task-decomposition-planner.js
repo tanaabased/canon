@@ -8,6 +8,8 @@ import validateDecompositionProposal from '../utils/validate-decomposition-propo
 import verifyReusableChild from '../utils/verify-reusable-child.js';
 import { inspectTaskDecompositionEvidence } from './task-decomposition-inspector.js';
 
+const TASK_DECOMPOSITION_CONTRACT = 'tanaab/task-decomposition/v2';
+
 function parentRead(client, target, issueNumber) {
   const result = client.readParent(target, issueNumber);
   if (result.ok) return { error: null, value: result.value };
@@ -229,6 +231,7 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
   const validation = validateDecompositionProposal(input, evidence);
   const blockers = [...evidence.errors, ...validation.errors];
   const base = {
+    contract: TASK_DECOMPOSITION_CONTRACT,
     mode: 'decompose',
     target: evidence.target,
     evidence,
@@ -246,6 +249,18 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
       status: blockers.length > 0 ? 'blocked' : 'keep_intact',
       mutatesGitHub: false,
       blockers,
+      milestoneHandoff: null,
+      plan: null,
+      publication: null,
+    };
+  }
+  if (validation.decision === 'reframe_as_milestone') {
+    return {
+      ...base,
+      status: blockers.length > 0 ? 'blocked' : 'reframe_as_milestone',
+      mutatesGitHub: false,
+      blockers,
+      milestoneHandoff: blockers.length > 0 ? null : validation.milestoneHandoff,
       plan: null,
       publication: null,
     };
@@ -281,6 +296,7 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
       status: 'blocked',
       mutatesGitHub: false,
       blockers,
+      milestoneHandoff: null,
       plan: null,
       publication: null,
     };
@@ -311,13 +327,14 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
       status: 'blocked',
       mutatesGitHub: false,
       blockers: parent.errors,
+      milestoneHandoff: null,
       plan: null,
       publication: null,
     };
   }
 
   const plan = {
-    contract: 'tanaab/task-decomposition/v1',
+    contract: TASK_DECOMPOSITION_CONTRACT,
     target: `${evidence.target.slug}#${evidence.target.issueNumber}`,
     recommendation: base.recommendation,
     analysis: input.analysis ?? { gaps: [], overlaps: [], duplicates: [] },
@@ -343,6 +360,7 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
         : 'approval_required',
     mutatesGitHub: false,
     blockers: [],
+    milestoneHandoff: null,
     plan,
     publication,
   };

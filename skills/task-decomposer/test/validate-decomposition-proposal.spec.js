@@ -6,6 +6,7 @@ import validateDecompositionProposal from '../utils/validate-decomposition-propo
 import { fakeGitHubTaskDecomposerClient } from './fake-github-task-decomposer-client.js';
 import {
   decompositionProposal,
+  milestoneReframingProposal,
   parentAcceptanceCriteria,
   parentFields,
   parentIssue,
@@ -58,6 +59,63 @@ describe('Task Decomposer recommendation and graph validation', () => {
     assert.deepEqual(report.errors, []);
     assert.deepEqual(report.findings.gaps, []);
     assert.deepEqual(report.findings.overlaps, []);
+  });
+
+  it('should accept one complete milestone-reframing handoff with non-size evidence', () => {
+    const report = validateDecompositionProposal(milestoneReframingProposal(), evidence());
+
+    assert.equal(report.decision, 'reframe_as_milestone');
+    assert.deepEqual(report.errors, []);
+    assert.equal(report.milestoneHandoff.sourceTask.target, 'acme/widgets#1');
+    assert.equal(report.milestoneHandoff.sourceTaskDisposition.status, 'decision_required');
+    assert.equal(
+      report.milestoneHandoff.routing.projectMilestonePlanner.status,
+      'blocked_until_exact_milestone',
+    );
+  });
+
+  it('should reject Work-size-only milestone classification and unresolved cases', () => {
+    const workSizeOnly = milestoneReframingProposal();
+    workSizeOnly.recommendation.classificationEvidence = [
+      { signal: 'work_size', evidence: 'The observed Work size is 21.' },
+    ];
+    workSizeOnly.recommendation.classificationUncertainties = [
+      'The source may still be one bounded executable task.',
+    ];
+
+    const report = validateDecompositionProposal(workSizeOnly, evidence());
+
+    assert.ok(report.errors.some((error) => error.includes('Work size alone')));
+    assert.ok(report.errors.some((error) => error.includes('remains unresolved')));
+  });
+
+  it('should reject an incomplete milestone handoff and source-constraint loss', () => {
+    const proposal = milestoneReframingProposal();
+    proposal.milestoneHandoff.proposedMilestone.outcome = '';
+    proposal.milestoneHandoff.proposedMilestone.completionConditions = [];
+    proposal.milestoneHandoff.proposedMilestone.constraints = [];
+    delete proposal.milestoneHandoff.proposedMilestone.openQuestions;
+    delete proposal.recommendation.classificationUncertainties;
+
+    const report = validateDecompositionProposal(proposal, evidence());
+
+    assert.ok(report.errors.some((error) => error.includes('requires an outcome')));
+    assert.ok(report.errors.some((error) => error.includes('completion conditions')));
+    assert.ok(report.errors.some((error) => error.includes('source-task constraint')));
+    assert.ok(report.errors.some((error) => error.includes('openQuestions')));
+    assert.ok(report.errors.some((error) => error.includes('classificationUncertainties')));
+  });
+
+  it('should reject publication or task-graph surfaces on a milestone reframe', () => {
+    const proposal = milestoneReframingProposal({
+      children: decompositionProposal().children,
+      publication: { safetyReviewed: true },
+    });
+
+    const report = validateDecompositionProposal(proposal, evidence());
+
+    assert.ok(report.errors.some((error) => error.includes('cannot contain child')));
+    assert.ok(report.errors.some((error) => error.includes('publication approval')));
   });
 
   it('should identify coverage gaps, overlaps, duplicate criteria, and dependency cycles', () => {

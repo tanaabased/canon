@@ -1,13 +1,13 @@
 # Task Decomposition Contract
 
-Contract version: `tanaab/task-decomposition/v1`
+Contract version: `tanaab/task-decomposition/v2`
 
-This contract defines the model-authored semantic request and deterministic publication boundary for decomposing one canonical task. The shared [task-management contract](../../../references/task-management-contract.md) remains authoritative for every child Task, Bug, or Feature.
+This contract defines the model-authored recommendation, milestone-reframing handoff, and deterministic decomposition-publication boundary for one canonical task. The shared [task-management contract](../../../references/task-management-contract.md) remains authoritative for every child Task, Bug, or Feature.
 
 ## Modes and Authority
 
 - **Inspect** reads one exact parent, metadata, evidence, relationships, child depth, and a bounded set of recently updated repository task candidates. It never writes. Planning adds a targeted exact-title search for each proposed child so an older reusable issue is not missed.
-- **Recommend** returns `keep_intact` or `decompose`. Work size `13` requires explicit review and Work size `21` normally suggests `decompose`; neither threshold authorizes mutation.
+- **Recommend** returns exactly one of `keep_intact`, `decompose`, or `reframe_as_milestone`. Work size `13` requires explicit review and Work size `21` normally suggests `decompose`; neither threshold authorizes mutation or supports milestone reframing by itself. Unsupported classification remains unresolved.
 - **Preview** builds every child payload, relationship, parent diff, operation, publication finding, and digest without writing.
 - **Publish** requires an explicit decomposition imperative for the exact target plus a fresh matching safety attestation and digest. Planning or recommendation intent never authorizes publication.
 
@@ -65,7 +65,54 @@ Send the request as JSON through `decompose-task.js --input -`. The model suppli
 
 `task` accepts the same semantic child input as Task Author, including supported metadata, assessment provenance, and signals. `reuseIssueNumber` may identify one expected existing issue, but the planner still requires it to match the generated canonical child exactly.
 
-A `keep_intact` request contains the recommendation only. It must not contain children, dependencies, or a parent revision.
+A `keep_intact` request contains the recommendation only. It must not contain children, dependencies, a parent revision, or a milestone handoff.
+
+A `reframe_as_milestone` request is also recommendation-only and uses this executable read-only shape:
+
+```json
+{
+  "target": "OWNER/REPO#NUMBER",
+  "recommendation": {
+    "decision": "reframe_as_milestone",
+    "rationale": ["The source describes an aggregate project outcome."],
+    "explicitReviewAcknowledged": true,
+    "classificationEvidence": [
+      {
+        "signal": "aggregate_outcome",
+        "evidence": "The completion conditions require multiple independently completable tasks."
+      },
+      {
+        "signal": "coverage_or_membership_required",
+        "evidence": "Completion depends on selecting task coverage for the outcome."
+      }
+    ],
+    "classificationUncertainties": []
+  },
+  "milestoneHandoff": {
+    "proposedMilestone": {
+      "title": "Bounded project outcome",
+      "outcome": "The useful project result is delivered.",
+      "scope": ["Included delivery surface"],
+      "completionConditions": ["Observable aggregate condition"],
+      "constraints": ["Exact source-task constraint"],
+      "openQuestions": ["Decision still needed before milestone authoring"]
+    }
+  }
+}
+```
+
+Send that request to `decompose-task.js --input -`. The result has status `reframe_as_milestone`, `mutatesGitHub: false`, no plan or publication digest, and no writes.
+
+## Milestone Reframing Invariants
+
+- Classify one bounded executable outcome as `keep_intact`; classify one task-shaped outcome with multiple independently completable results as `decompose`; classify an aggregate outcome or timebox that requires task coverage or membership planning as `reframe_as_milestone`.
+- Every milestone reframe requires structured source evidence using `aggregate_outcome`, `multiple_independently_completable_tasks`, `coverage_or_membership_required`, or `timebox`. `work_size` may be recorded but cannot be the only supported signal.
+- Classification uncertainties must be empty before returning a reframe. Otherwise return `blocked` without a milestone handoff.
+- The proposed milestone requires a title, outcome, nonempty scope, nonempty completion conditions, an explicit constraints array that preserves every observed source-task constraint, and an explicit open-questions array.
+- The deterministic result derives source-task repository, number, URL, title, and body digest from the exact inspected task. Model-supplied provenance is not accepted.
+- The source-task disposition remains `{ "status": "decision_required", "decision": null }`; the handoff records that the task is unchanged and never closes, revises, relates, or otherwise mutates it.
+- A reframe cannot contain children, dependencies, a parent revision, publication approval, digest, or mutation plan.
+- Project Milestone Author must independently resolve whether to create or revise, build a fresh exact plan and digest, obtain separate authorization, and verify the milestone. Project Milestone Planner remains blocked until that step returns an exact existing milestone.
 
 ## Child and Coverage Invariants
 
@@ -132,6 +179,7 @@ Stop after the first failed write. Never close, delete, detach, or otherwise com
 ## Statuses
 
 - `keep_intact`: complete read-only recommendation with no mutation plan.
+- `reframe_as_milestone`: complete read-only Project Milestone Author handoff with the source task unchanged and no mutation plan.
 - `blocked`: evidence or semantic/graph validation is incomplete or unsafe.
 - `publication_blocked`: public text fails publication safety.
 - `approval_required`: complete preview with no matching exact publication approval.
@@ -141,6 +189,8 @@ Stop after the first failed write. Never close, delete, detach, or otherwise com
 - `failed`: no remote effect is known to have succeeded before failure.
 - `partial`: some remote effect succeeded but a later write or exact verification failed.
 
-## Milestone Planning Handoff
+## Owner Handoffs
 
-Task Decomposer returns a verified shallow task graph. Project Milestone Planner may request an approved decomposition, consume the verified child references, and later recommend them for milestone membership. Task Decomposer never creates or selects a milestone, and Project Milestone Planner must not bypass this skill by inventing children for an oversized task.
+For `decompose`, Task Decomposer returns a verified shallow task graph. Project Milestone Planner may request an approved decomposition, consume the verified child references, and later recommend them for milestone membership. The planner must not bypass this skill by inventing children for an oversized task.
+
+For `reframe_as_milestone`, Task Decomposer returns a bounded semantic handoff to Project Milestone Author. The author independently creates or revises the milestone after separate authorization. Only then may Project Milestone Planner begin from the exact milestone. Task Decomposer never creates or selects a milestone, invokes milestone planning, or decides the source task's disposition.

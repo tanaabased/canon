@@ -3,7 +3,12 @@ import assert from 'node:assert/strict';
 import { prepareTaskDecomposition } from '../lib/task-decomposition-planner.js';
 import { publishTaskDecomposition } from '../lib/task-decomposition-publisher.js';
 import { fakeGitHubTaskDecomposerClient } from './fake-github-task-decomposer-client.js';
-import { decompositionProposal, parentFields, parentIssue } from './task-decomposition-fixtures.js';
+import {
+  decompositionProposal,
+  milestoneReframingProposal,
+  parentFields,
+  parentIssue,
+} from './task-decomposition-fixtures.js';
 
 function clientFixture(options = {}) {
   return fakeGitHubTaskDecomposerClient({
@@ -31,6 +36,7 @@ describe('Task Decomposer exact planning', () => {
 
     assert.equal(preview.status, 'approval_required');
     assert.equal(preview.mutatesGitHub, false);
+    assert.equal(preview.plan.contract, 'tanaab/task-decomposition/v2');
     assert.match(preview.publication.digest, /^sha256:[a-f0-9]{64}$/);
     assert.equal(preview.publication.target, 'acme/widgets#1');
     assert.deepEqual(
@@ -114,6 +120,66 @@ describe('Task Decomposer exact planning', () => {
     assert.equal(report.status, 'keep_intact');
     assert.equal(report.mutatesGitHub, false);
     assert.equal(report.plan, null);
+  });
+
+  it('should return a complete milestone handoff without changing the source task', () => {
+    const client = clientFixture();
+    const sourceBefore = structuredClone(client.state.issues.get(1));
+
+    const report = publishTaskDecomposition(milestoneReframingProposal(), { client });
+
+    assert.equal(report.contract, 'tanaab/task-decomposition/v2');
+    assert.equal(report.status, 'reframe_as_milestone');
+    assert.equal(report.mutatesGitHub, false);
+    assert.equal(report.plan, null);
+    assert.equal(report.publication, null);
+    assert.deepEqual(report.writes, []);
+    assert.equal(report.milestoneHandoff.sourceTask.target, 'acme/widgets#1');
+    assert.equal(report.milestoneHandoff.sourceTask.url, sourceBefore.html_url);
+    assert.match(report.milestoneHandoff.sourceTask.bodyDigest, /^sha256:[a-f0-9]{64}$/);
+    assert.deepEqual(report.milestoneHandoff.proposedMilestone.scope, [
+      'Deliver normalized decomposition inspection',
+      'Deliver resumable decomposition publication',
+    ]);
+    assert.deepEqual(report.milestoneHandoff.sourceTaskDisposition, {
+      status: 'decision_required',
+      decision: null,
+      sourceTaskUnchanged: true,
+    });
+    assert.equal(
+      report.milestoneHandoff.routing.projectMilestoneAuthor.requiresSeparateAuthorization,
+      true,
+    );
+    assert.equal(
+      report.milestoneHandoff.routing.projectMilestonePlanner.status,
+      'blocked_until_exact_milestone',
+    );
+    assert.deepEqual(client.state.issues.get(1), sourceBefore);
+    assert.equal(
+      client.calls.some(({ operation } = {}) =>
+        ['createIssue', 'updateIssue', 'addComment', 'addSubIssue', 'addBlockedBy'].includes(
+          operation,
+        ),
+      ),
+      false,
+    );
+  });
+
+  it('should leave ambiguous milestone classification unresolved without a handoff', () => {
+    const input = milestoneReframingProposal();
+    input.recommendation.decision = null;
+    input.recommendation.classificationUncertainties = [
+      'The source may still be one bounded executable task.',
+    ];
+    const client = clientFixture();
+
+    const report = publishTaskDecomposition(input, { client });
+
+    assert.equal(report.status, 'blocked');
+    assert.equal(report.mutatesGitHub, false);
+    assert.equal(report.milestoneHandoff, null);
+    assert.equal(report.plan, null);
+    assert.deepEqual(report.writes, []);
   });
 
   it('should block a same-title task that is not an exact reusable child', () => {

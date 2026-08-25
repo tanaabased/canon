@@ -33,6 +33,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 - Plan a release-shaped milestone around a primary capability plus compatible maintenance work.
 - Apply a human- or policy-supplied total Work size limit to an otherwise evidence-supported selection.
 - Draft missing work and, when explicitly requested, hand approved changes to the skills that own them.
+- Begin coverage planning for a Task Decomposer milestone reframe only after Project Milestone Author returns one exact existing milestone.
 
 ## When Not to Use
 
@@ -48,6 +49,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 
 - Require one explicit milestone URL or `OWNER/REPO#MILESTONE_NUMBER`. Never infer a target from a directory name or recent activity.
 - The milestone must already express a usable bounded outcome and completion conditions. Route missing or materially incomplete milestone authoring to Project Milestone Author before planning.
+- A Task Decomposer `reframe_as_milestone` handoff is not a planner target. Route it to Project Milestone Author and require the resulting exact milestone URL or `OWNER/REPO#MILESTONE_NUMBER` before beginning this workflow.
 - Establish a bounded candidate pool before selection. Use explicit task numbers or one narrow repository query with stated filters and a result limit; record the resulting task numbers before semantic analysis.
 - Use relevant checked-in repository files as evidence when they materially define the outcome or show delivered behavior. Inspect only the bounded files needed for the completion argument.
 - Apply [the project-management model](../../references/project-management-model.md) and [task-management contract](../../references/task-management-contract.md).
@@ -66,7 +68,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 2. State one completion argument: the milestone outcome, the conditions that would make it deliverable, and the evidence supporting each condition.
 3. Classify coverage as `delivered`, `reusable`, `missing`, `overlapping`, or `uncertain`. A task may cover more than one condition, but do not count the same work twice or hide competing ownership.
 4. Recommend an existing task only when its current supported semantics materially advance a named condition. Keep ambiguous, stale, duplicate, weakly related, or already delivered work out of automatic selection and explain the exclusion.
-5. Draft complete canonical Task, Bug, or Feature inputs only for genuine missing coverage. Recommend Task Decomposer only when an existing selected task is too large to remain independently deliverable; do not invent a hierarchy in the planner.
+5. Draft complete canonical Task, Bug, or Feature inputs only for genuine missing coverage. Recommend Task Decomposer only when an existing selected task is too large to remain independently deliverable; do not invent a hierarchy in the planner. If Task Decomposer returns `reframe_as_milestone` instead of a verified child graph, stop the current plan and route that handoff to Project Milestone Author.
 6. If the user supplied a Work size ceiling, sum supported Work size for every proposed member. Treat missing or conflicting estimates as uncertainty, never infer them, and offer explicit tradeoffs when complete coverage exceeds capacity.
 7. Present one reviewable proposal containing the completion argument, coverage map, proposed membership, exclusions, missing-task drafts, optional decomposition handoffs, capacity total, uncertainties, and recommended order. Stop here unless the user explicitly asks to apply it.
 8. On an explicit apply request, invoke owners sequentially: Task Author for approved missing tasks or required revisions; Task Decomposer for approved oversized tasks; then Project Milestone Author with exact resolved task numbers for membership. Let every owner independently re-inspect, preview, digest-gate, mutate, and read back its surface.
@@ -78,6 +80,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 - Keep an ambiguous existing task out of recommended membership. Stop before applying a proposed task that lacks canonical acceptance or delivery evidence, or a decomposition that is not independently reviewable.
 - Stop when capacity depends on missing Work size, exceeds the supplied ceiling without an explicit tradeoff, or would require inventing or changing human-controlled Priority.
 - Stop before an owner handoff when coverage is uncertain, overlap is unresolved, or inspected evidence changed materially.
+- Stop when a Task Decomposer result reframes the source as a project milestone. Do not treat the proposed milestone as existing, consume it as a task graph, or continue to membership planning.
 - Preserve unrelated milestone membership, task state, schema, labels, comments, relationships, and release state.
 - Never infer or report milestone completion from issue closure, merged pull requests, selected membership, or this workflow's status.
 
@@ -88,6 +91,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 - Every recommended task contributes material coverage, exclusions are explained, and supported Work size stays within any supplied ceiling.
 - Missing-task drafts and decomposition recommendations are specific enough for their owning skills to assess independently.
 - Any authorized writes occur only through the owning skills' fresh plans and verified read-backs.
+- A milestone-reframing path records the exact milestone returned by Project Milestone Author before a new planner invocation begins.
 - The final report distinguishes proposed, verified, and still-uncertain state without reporting milestone completion.
 
 ## Bundled Resources
