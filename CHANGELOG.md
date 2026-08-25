@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.9.0 - [August 25, 2026](https://github.com/tanaabased/canon/releases/tag/v0.9.0)
+
 ### Breaking Changes
 
 - Removed Task score, its diagnostics, audit comments, and schema ownership from the canonical task model. [#27](https://github.com/tanaabased/canon/issues/27) [#29](https://github.com/tanaabased/canon/pull/29)
