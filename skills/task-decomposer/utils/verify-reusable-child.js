@@ -1,17 +1,8 @@
-function issueTypeName(issue) {
-  return typeof issue?.type === 'string' ? issue.type : (issue?.type?.name ?? null);
-}
-
-function labelNames(issue) {
-  return (issue?.labels ?? [])
-    .map((label) => (typeof label === 'string' ? label : label.name))
-    .filter(Boolean)
-    .map((label) => label.toLowerCase());
-}
-
-function observedFieldValue(field) {
-  return field?.single_select_option?.name ?? field?.value?.name ?? field?.value ?? null;
-}
+import {
+  observedIssueFieldValue,
+  observedIssueTypeName,
+  observedLabelNames,
+} from '../../task-author/lib/task-observation.js';
 
 /** Verify that an existing issue is an exact reusable child without rejecting unmanaged extras. */
 export default function verifyReusableChild(plan, { issue, fields = [], comments = [] }) {
@@ -19,13 +10,15 @@ export default function verifyReusableChild(plan, { issue, fields = [], comments
   if (issue?.title !== plan.issue.title) errors.push('title differs from the proposed child.');
   if (issue?.body !== plan.issue.body) errors.push('body differs from the proposed child.');
 
-  const observedLabels = new Set(labelNames(issue));
+  const observedLabels = new Set(
+    observedLabelNames(issue?.labels).map((label) => label.toLowerCase()),
+  );
   for (const expected of plan.expected.labels) {
     if (!observedLabels.has(expected.toLowerCase())) errors.push(`label ${expected} is missing.`);
   }
   if (
     plan.expected.type &&
-    issueTypeName(issue)?.toLowerCase() !== plan.expected.type.toLowerCase()
+    observedIssueTypeName(issue)?.toLowerCase() !== plan.expected.type.toLowerCase()
   ) {
     errors.push(`issue type differs from ${plan.expected.type}.`);
   }
@@ -34,7 +27,8 @@ export default function verifyReusableChild(plan, { issue, fields = [], comments
       (field) => Number(field.issue_field_id ?? field.field_id ?? field.id) === expected.id,
     );
     const expectedValue = String(expected.value).toLowerCase();
-    const actualValue = String(observedFieldValue(observed)).toLowerCase();
+    const rawValue = observedIssueFieldValue(observed);
+    const actualValue = String(rawValue?.name ?? rawValue ?? null).toLowerCase();
     if (expectedValue !== actualValue) errors.push(`field ${expected.name} differs.`);
   }
 

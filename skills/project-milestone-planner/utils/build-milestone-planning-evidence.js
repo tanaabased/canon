@@ -1,12 +1,11 @@
+import {
+  normalizeObservedComment,
+  normalizeObservedIssueField,
+  observedIssueTypeName,
+  observedLabelNames,
+  observedWorkSize,
+} from '../../task-author/lib/task-observation.js';
 import { parseFallbackMetadata } from '../../task-author/utils/parse-fallback-metadata.js';
-
-function labelNames(labels) {
-  if (!Array.isArray(labels)) return [];
-  return labels
-    .map((label) => (typeof label === 'string' ? label : label?.name))
-    .filter(Boolean)
-    .sort();
-}
 
 function milestoneIdentity(milestone) {
   if (!milestone || milestone.number === undefined || milestone.number === null) return null;
@@ -17,58 +16,26 @@ function milestoneIdentity(milestone) {
   };
 }
 
-function normalizeField(field) {
-  return {
-    id: Number(field.issue_field_id ?? field.field_id ?? field.id) || null,
-    name: field.issue_field_name ?? field.name ?? field.field?.name ?? '',
-    type: field.data_type ?? field.type ?? field.field?.data_type ?? '',
-    value:
-      field.single_select_option?.name ??
-      field.value?.name ??
-      field.value ??
-      field.number_value ??
-      field.date_value ??
-      null,
-  };
-}
-
-function normalizedWorkSize(fields, fallback) {
-  const native = fields.find(({ name }) => name.trim().toLowerCase() === 'work size');
-  const nativeValue = native ? Number(native.value) : null;
-  const fallbackValue = fallback['work-size'] === undefined ? null : Number(fallback['work-size']);
-  if (Number.isInteger(nativeValue)) return { source: 'native', value: nativeValue };
-  if (Number.isInteger(fallbackValue)) return { source: 'fallback', value: fallbackValue };
-  return { source: 'unavailable', value: null };
-}
-
-function normalizeComment(comment) {
-  return {
-    author: comment.user?.login ?? comment.author?.login ?? '',
-    body: comment.body || '',
-    createdAt: comment.created_at || comment.createdAt || '',
-    url: comment.html_url || comment.url || '',
-  };
-}
-
 function normalizeTask(item, details = {}) {
-  const fields = (details.fields ?? item.issue_field_values ?? []).map(normalizeField);
+  const fields = (details.fields ?? item.issue_field_values ?? []).map(normalizeObservedIssueField);
   const fallback = parseFallbackMetadata(item.body || '');
+  const { source, value } = observedWorkSize(fields, fallback.fallback);
   return {
     body: item.body || '',
-    comments: (details.comments ?? []).map(normalizeComment),
+    comments: (details.comments ?? []).map(normalizeObservedComment),
     id: `issue:${item.number}`,
-    labels: labelNames(item.labels),
+    labels: observedLabelNames(item.labels).sort(),
     metadata: {
       fallback: fallback.fallback,
       fallbackErrors: fallback.errors,
       fields,
-      workSize: normalizedWorkSize(fields, fallback.fallback),
+      workSize: { source, value },
     },
     milestone: milestoneIdentity(item.milestone),
     number: String(item.number),
     state: String(item.state || '').toLowerCase(),
     title: item.title || '',
-    type: typeof item.type === 'string' ? item.type : (item.type?.name ?? null),
+    type: observedIssueTypeName(item),
     updatedAt: item.updated_at || item.updatedAt || '',
     url: item.html_url || item.url || '',
   };

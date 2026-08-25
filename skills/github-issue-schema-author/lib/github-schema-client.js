@@ -1,4 +1,8 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, {
+  githubCliResultDetail,
+  githubCliResultStatus,
+} from '../../../lib/run-github-cli.js';
+import normalizeSchemaVisibility from '../utils/normalize-schema-visibility.js';
 
 export const SCHEMA_INSPECTION_QUERY = `
   query SchemaInspection($owner: String!, $repo: String!, $labelCursor: String) {
@@ -87,17 +91,8 @@ export const SCHEMA_INSPECTION_QUERY = `
   }
 `;
 
-function defaultRunner(command, args) {
-  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
-  return runGitHubCli(args);
-}
-
-function resultStatus(result) {
-  return result.returncode ?? result.status ?? 1;
-}
-
 function resultError(result, fallback) {
-  return String(result.stderr ?? result.error?.message ?? result.stdout ?? '').trim() || fallback;
+  return githubCliResultDetail(result) || fallback;
 }
 
 function normalizeDataType(value) {
@@ -106,22 +101,13 @@ function normalizeDataType(value) {
     .replaceAll('-', '_');
 }
 
-function normalizeVisibility(value) {
-  const normalized = String(value ?? '').toLowerCase();
-  if (normalized === 'all') return 'all';
-  if (['org_only', 'organization_only', 'organization_members_only'].includes(normalized)) {
-    return 'organization_members_only';
-  }
-  return normalized || null;
-}
-
 function normalizeField(field) {
   return {
     id: field.id ?? null,
     name: field.name,
     dataType: normalizeDataType(field.dataType),
     description: field.description ?? '',
-    visibility: normalizeVisibility(field.visibility),
+    visibility: normalizeSchemaVisibility(field.visibility),
     options: (field.options ?? []).map((option) => ({
       id: option.id ?? null,
       name: option.name,
@@ -187,12 +173,12 @@ function partialReason(payload, rootName, surfaceName, fallback) {
 export class GitHubSchemaClient {
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
   }
 
   #run(args) {
-    return this.#runner('gh', args);
+    return this.#runner(args);
   }
 
   ensureAvailable() {
@@ -200,12 +186,12 @@ export class GitHubSchemaClient {
     if (version.error?.code === 'ENOENT') {
       throw new Error('GitHub CLI (gh) is required for schema inspection.');
     }
-    if (resultStatus(version) !== 0) {
+    if (githubCliResultStatus(version) !== 0) {
       throw new Error(resultError(version, 'GitHub CLI availability check failed.'));
     }
 
     const auth = this.#run(['auth', 'status']);
-    return resultStatus(auth) === 0
+    return githubCliResultStatus(auth) === 0
       ? []
       : [
           'GitHub CLI authentication could not be verified; public reads may still succeed, but private or organization schema reads can fail.',

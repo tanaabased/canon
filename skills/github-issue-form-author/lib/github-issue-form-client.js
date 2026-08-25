@@ -1,7 +1,10 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, {
+  GITHUB_API_VERSION_HEADER,
+  githubCliResultDetail,
+  githubCliResultStatus,
+} from '../../../lib/run-github-cli.js';
 import { parseRepositoryTarget } from '../utils/parse-repository-target.js';
 
-const API_VERSION = '2026-03-10';
 const TEMPLATE_DIRECTORY = '.github/ISSUE_TEMPLATE';
 export const MANAGED_ISSUE_FORM_PATHS = Object.freeze([
   `${TEMPLATE_DIRECTORY}/task.yml`,
@@ -9,19 +12,6 @@ export const MANAGED_ISSUE_FORM_PATHS = Object.freeze([
   `${TEMPLATE_DIRECTORY}/feature.yml`,
   `${TEMPLATE_DIRECTORY}/config.yml`,
 ]);
-
-function defaultRunner(command, args, options = {}) {
-  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
-  return runGitHubCli(args, options);
-}
-
-function resultStatus(result) {
-  return result.returncode ?? result.status ?? 1;
-}
-
-function resultDetail(result) {
-  return String(result.stderr ?? result.error?.message ?? result.stdout ?? '').trim();
-}
 
 function parseJson(result, context) {
   try {
@@ -32,11 +22,17 @@ function parseJson(result, context) {
 }
 
 function notFound(result) {
-  return resultStatus(result) !== 0 && /(?:HTTP\s+404|Not Found)/i.test(resultDetail(result));
+  return (
+    githubCliResultStatus(result) !== 0 &&
+    /(?:HTTP\s+404|Not Found)/i.test(githubCliResultDetail(result))
+  );
 }
 
 function failure(result, method, endpoint) {
-  return { ok: false, error: `${method} ${endpoint}: ${resultDetail(result) || 'unknown error'}` };
+  return {
+    ok: false,
+    error: `${method} ${endpoint}: ${githubCliResultDetail(result) || 'unknown error'}`,
+  };
 }
 
 function contentEndpoint(slug, path, branch) {
@@ -47,12 +43,12 @@ function contentEndpoint(slug, path, branch) {
 export class GitHubIssueFormClient {
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
   }
 
   #run(args, options = {}) {
-    return this.#runner('gh', args, options);
+    return this.#runner(args, options);
   }
 
   ensureAvailable() {
@@ -60,20 +56,20 @@ export class GitHubIssueFormClient {
     if (version.error?.code === 'ENOENT') {
       throw new Error('GitHub CLI (gh) is required for issue-form repository alignment.');
     }
-    if (resultStatus(version) !== 0) {
-      throw new Error(resultDetail(version) || 'GitHub CLI availability check failed.');
+    if (githubCliResultStatus(version) !== 0) {
+      throw new Error(githubCliResultDetail(version) || 'GitHub CLI availability check failed.');
     }
     const auth = this.#run(['auth', 'status']);
-    return resultStatus(auth) === 0
+    return githubCliResultStatus(auth) === 0
       ? []
       : ['GitHub CLI authentication could not be verified; repository reads or writes can fail.'];
   }
 
   #readFile(slug, path, branch) {
     const endpoint = contentEndpoint(slug, path, branch);
-    const result = this.#run(['api', endpoint, '-H', `X-GitHub-Api-Version: ${API_VERSION}`]);
+    const result = this.#run(['api', endpoint, '-H', GITHUB_API_VERSION_HEADER]);
     if (notFound(result)) return { path, status: 'missing', sha: null, content: null };
-    if (resultStatus(result) !== 0) {
+    if (githubCliResultStatus(result) !== 0) {
       return {
         path,
         status: 'unavailable',
@@ -113,9 +109,9 @@ export class GitHubIssueFormClient {
       'api',
       repositoryEndpoint,
       '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
+      GITHUB_API_VERSION_HEADER,
     ]);
-    if (resultStatus(repositoryResult) !== 0) {
+    if (githubCliResultStatus(repositoryResult) !== 0) {
       throw new Error(failure(repositoryResult, 'GET', repositoryEndpoint).error);
     }
     const repository = parseJson(repositoryResult, `GET ${repositoryEndpoint}`);
@@ -124,16 +120,11 @@ export class GitHubIssueFormClient {
     if (!defaultBranch) throw new Error(`Repository ${target.slug} has no default branch.`);
 
     const directoryEndpoint = contentEndpoint(target.slug, TEMPLATE_DIRECTORY, defaultBranch);
-    const directoryResult = this.#run([
-      'api',
-      directoryEndpoint,
-      '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
-    ]);
+    const directoryResult = this.#run(['api', directoryEndpoint, '-H', GITHUB_API_VERSION_HEADER]);
     let directoryEntries = [];
     const warnings = [];
     if (!notFound(directoryResult)) {
-      if (resultStatus(directoryResult) !== 0) {
+      if (githubCliResultStatus(directoryResult) !== 0) {
         warnings.push(failure(directoryResult, 'GET', directoryEndpoint).error);
       } else {
         const payload = parseJson(directoryResult, `GET ${directoryEndpoint}`);
@@ -175,12 +166,12 @@ export class GitHubIssueFormClient {
       '--method',
       'PUT',
       '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
+      GITHUB_API_VERSION_HEADER,
       '--input',
       '-',
     ];
     const result = this.#run(args, { input: JSON.stringify(payload) });
-    if (resultStatus(result) !== 0) return failure(result, 'PUT', endpoint);
+    if (githubCliResultStatus(result) !== 0) return failure(result, 'PUT', endpoint);
     try {
       const payload = parseJson(result, `PUT ${endpoint}`);
       return {

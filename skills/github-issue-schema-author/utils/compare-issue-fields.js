@@ -1,18 +1,7 @@
-import { highestSchemaStatus } from './schema-status.js';
 import { desiredOptionColor } from './desired-option-color.js';
-
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
-
-function normalizeVisibility(value) {
-  const normalized = String(value ?? '').toLowerCase();
-  if (normalized === 'all') return 'all';
-  if (['org_only', 'organization_only', 'organization_members_only'].includes(normalized)) {
-    return 'organization_members_only';
-  }
-  return normalized || null;
-}
+import findNamed from './find-named.js';
+import { highestSchemaStatus } from './schema-status.js';
+import normalizeSchemaVisibility from './normalize-schema-visibility.js';
 
 function names(values) {
   return (values ?? []).map((value) => (typeof value === 'string' ? value : value.name));
@@ -109,7 +98,7 @@ export function compareIssueFields(desiredFields, observedFields, observedTypes,
       }
     }
 
-    const currentVisibility = normalizeVisibility(current.visibility);
+    const currentVisibility = normalizeSchemaVisibility(current.visibility);
     if (currentVisibility !== desired.visibility) {
       differences.push({
         property: 'visibility',

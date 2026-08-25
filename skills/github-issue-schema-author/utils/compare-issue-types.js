@@ -1,6 +1,4 @@
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+import findNamed from './find-named.js';
 
 function compareSurface(desiredTypes, observed) {
   if (observed.status !== 'ok') {

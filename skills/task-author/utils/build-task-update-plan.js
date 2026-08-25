@@ -1,20 +1,10 @@
 import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
+import {
+  observedIssueFieldValue,
+  observedIssueTypeName,
+  observedLabelNames,
+} from '../lib/task-observation.js';
 import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
-
-function issueTypeName(issue) {
-  return typeof issue?.type === 'string' ? issue.type : (issue?.type?.name ?? null);
-}
-
-function labelNames(issue) {
-  return (issue?.labels ?? [])
-    .map((label) => (typeof label === 'string' ? label : label.name))
-    .filter(Boolean);
-}
-
-function observedFieldValue(field) {
-  if (field?.data_type === 'single_select') return field.single_select_option?.name ?? field.value;
-  return field?.value;
-}
 
 function comparable(value) {
   return typeof value === 'string' ? value.toLowerCase() : value;
@@ -27,7 +17,7 @@ function sameLabels(left, right) {
 
 function reconciledLabels(issue, desired) {
   const canonical = new Set(Object.keys(CANONICAL_LABELS));
-  const retained = labelNames(issue).filter(
+  const retained = observedLabelNames(issue?.labels).filter(
     (name) => !canonical.has(name.toLowerCase()) || desired.includes(name.toLowerCase()),
   );
   for (const name of desired) {
@@ -67,17 +57,17 @@ export function buildTaskUpdatePlan(draft, current, { revisionSummary = '' } = {
     const observed = current.fields.find(
       (field) => Number(field.issue_field_id ?? field.field_id ?? field.id) === expected.id,
     );
-    return comparable(observedFieldValue(observed)) !== comparable(expected.value);
+    return comparable(observedIssueFieldValue(observed)) !== comparable(expected.value);
   });
 
   const desiredType = draft.metadata.native.type?.name ?? null;
   const mutation = {};
   if (draft.title !== current.issue.title) mutation.title = draft.title;
   if (draft.body !== current.issue.body) mutation.body = draft.body;
-  if (desiredType && comparable(issueTypeName(current.issue)) !== comparable(desiredType)) {
+  if (desiredType && comparable(observedIssueTypeName(current.issue)) !== comparable(desiredType)) {
     mutation.type = desiredType;
   }
-  if (!sameLabels(labelNames(current.issue), labels)) mutation.labels = labels;
+  if (!sameLabels(observedLabelNames(current.issue?.labels), labels)) mutation.labels = labels;
   if (changedFields.length > 0) {
     mutation.issue_field_values = buildReplacementIssueFieldValues(
       current.fields,
@@ -91,9 +81,9 @@ export function buildTaskUpdatePlan(draft, current, { revisionSummary = '' } = {
       property === 'issue_field_values'
         ? current.fields
         : property === 'labels'
-          ? labelNames(current.issue)
+          ? observedLabelNames(current.issue?.labels)
           : property === 'type'
-            ? issueTypeName(current.issue)
+            ? observedIssueTypeName(current.issue)
             : current.issue[property],
     after,
   }));

@@ -1,6 +1,4 @@
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+import findNamed from './find-named.js';
 
 function labelWithUse(label, classification) {
   return {

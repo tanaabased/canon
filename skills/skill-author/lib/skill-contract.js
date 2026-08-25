@@ -12,7 +12,6 @@ import workflowTemplateText from '../templates/workflow.md' with { type: 'text' 
 import { splitLeadingSkillFrontmatter } from '../utils/parse-skill-frontmatter.js';
 import {
   DEFAULT_SKILL_NAMESPACE,
-  SKILL_CONTAINER_IDS,
   formatSkillContainerIds,
   getSkillNamespacePrefix,
   isPluginSkillContainer,
@@ -37,7 +36,6 @@ export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
 export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
 
 export {
-  SKILL_CONTAINER_IDS,
   formatSkillContainerIds,
   getSkillNamespacePrefix,
   isPluginSkillContainer,
@@ -71,7 +69,7 @@ function buildTemplateDefinition(templateContent) {
   };
 }
 
-export const SKILL_TEMPLATES = Object.freeze(
+const SKILL_TEMPLATES = Object.freeze(
   Object.fromEntries(
     TEMPLATE_TEXT_IMPORTS.map((templateContent) => {
       const definition = buildTemplateDefinition(templateContent);
@@ -80,7 +78,7 @@ export const SKILL_TEMPLATES = Object.freeze(
   ),
 );
 
-export const SKILL_TYPE_IDS = Object.keys(SKILL_TEMPLATES);
+const SKILL_TYPE_IDS = Object.keys(SKILL_TEMPLATES);
 
 export function getSkillType(type) {
   const normalizedType = String(type ?? '')

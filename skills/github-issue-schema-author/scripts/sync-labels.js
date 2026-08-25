@@ -3,6 +3,7 @@
 import { synchronizeGitHubIssueLabels } from '../lib/schema-label-synchronizer.js';
 import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
 import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
+import renderSchemaMutationReport from '../utils/render-schema-mutation-report.js';
 
 function usage() {
   return `Usage:
@@ -14,20 +15,16 @@ It never renames or deletes labels and never changes issue or pull-request assoc
 }
 
 function render(report) {
-  const lines = [
-    'GitHub Issue Schema Author: canonical labels',
-    `target: ${report.target.slug}`,
-    `status: ${report.status}`,
-    `mutates GitHub: ${report.mutatesGitHub ? 'yes' : 'no'}`,
-    `digest: ${report.authorization.digest}`,
-    `creates: ${report.plannedMutation.creates.map(({ body }) => body.name).join(', ') || 'none'}`,
-    `updates: ${report.plannedMutation.updates.map(({ label }) => label).join(', ') || 'none'}`,
-    'renames: none',
-    'deletions: none',
-  ];
-  for (const blocker of report.blockers) lines.push(`blocker: ${blocker}`);
-  if (report.verification) lines.push(`verification: ${report.verification.status}`);
-  return `${lines.join('\n')}\n`;
+  return renderSchemaMutationReport(report, {
+    title: 'GitHub Issue Schema Author: canonical labels',
+    summaryLines: [
+      `digest: ${report.authorization.digest}`,
+      `creates: ${report.plannedMutation.creates.map(({ body }) => body.name).join(', ') || 'none'}`,
+      `updates: ${report.plannedMutation.updates.map(({ label }) => label).join(', ') || 'none'}`,
+      'renames: none',
+      'deletions: none',
+    ],
+  });
 }
 
 export function runLabelSyncCli(argv, dependencies = {}) {

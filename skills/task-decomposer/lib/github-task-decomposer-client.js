@@ -1,7 +1,8 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, {
+  flattenGitHubPages,
+  GITHUB_API_VERSION_HEADER,
+} from '../../../lib/run-github-cli.js';
 import { GitHubTaskClient } from '../../task-author/lib/github-task-client.js';
-
-const API_VERSION = '2026-03-10';
 
 function failureMessage(result, context) {
   const detail =
@@ -18,11 +19,6 @@ function parseJson(result, context) {
   } catch (error) {
     throw new Error(`${context} returned invalid JSON: ${error.message}`, { cause: error });
   }
-}
-
-function flattenPages(value) {
-  if (!Array.isArray(value)) return value;
-  return value.every(Array.isArray) ? value.flat() : value;
 }
 
 /**
@@ -57,14 +53,7 @@ export class GitHubTaskDecomposerClient {
   }
 
   #request(method, endpoint, payload = null, { paginate = false } = {}) {
-    const args = [
-      'api',
-      endpoint,
-      '--method',
-      method,
-      '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
-    ];
+    const args = ['api', endpoint, '--method', method, '-H', GITHUB_API_VERSION_HEADER];
     const options = {};
     if (paginate) args.push('--paginate', '--slurp');
     if (payload !== null) {
@@ -80,7 +69,7 @@ export class GitHubTaskDecomposerClient {
     try {
       return {
         ok: true,
-        value: flattenPages(parseJson(result, `${method} ${endpoint}`)),
+        value: flattenGitHubPages(parseJson(result, `${method} ${endpoint}`)),
       };
     } catch (error) {
       return { ok: false, error: error.message };

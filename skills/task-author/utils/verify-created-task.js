@@ -1,20 +1,8 @@
-function issueTypeName(issue) {
-  if (typeof issue?.type === 'string') return issue.type;
-  return issue?.type?.name ?? null;
-}
-
-function labelNames(issue) {
-  return (issue?.labels ?? [])
-    .map((label) => (typeof label === 'string' ? label : label.name))
-    .filter(Boolean)
-    .map((label) => label.toLowerCase())
-    .sort();
-}
-
-function observedFieldValue(field) {
-  if (field?.data_type === 'single_select') return field.single_select_option?.name ?? field.value;
-  return field?.value;
-}
+import {
+  observedIssueFieldValue,
+  observedIssueTypeName,
+  observedLabelNames,
+} from '../lib/task-observation.js';
 
 function check(key, expected, actual) {
   return {
@@ -33,13 +21,19 @@ export function verifyCreatedTask(plan, { issue, fields = [], comments = [] } = 
     check(
       'labels',
       [...plan.expected.labels].map((label) => label.toLowerCase()).sort(),
-      labelNames(issue),
+      observedLabelNames(issue?.labels)
+        .map((label) => label.toLowerCase())
+        .sort(),
     ),
   ];
 
   if (plan.expected.type) {
     checks.push(
-      check('type', plan.expected.type.toLowerCase(), issueTypeName(issue)?.toLowerCase() ?? null),
+      check(
+        'type',
+        plan.expected.type.toLowerCase(),
+        observedIssueTypeName(issue)?.toLowerCase() ?? null,
+      ),
     );
   }
 
@@ -47,7 +41,7 @@ export function verifyCreatedTask(plan, { issue, fields = [], comments = [] } = 
     const observed = fields.find(
       (field) => Number(field.issue_field_id ?? field.field_id ?? field.id) === expected.id,
     );
-    const actual = observedFieldValue(observed);
+    const actual = observedIssueFieldValue(observed);
     const normalizedExpected =
       expected.type === 'single_select' ? String(expected.value).toLowerCase() : expected.value;
     const normalizedActual =
