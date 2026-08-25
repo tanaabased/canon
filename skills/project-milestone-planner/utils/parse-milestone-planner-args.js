@@ -2,18 +2,25 @@
  * Parses the read-only milestone planning evidence command arguments.
  *
  * @param {string[]} argv Raw argument tokens.
- * @returns {{help?: boolean, json: boolean, milestone: string | null}} Parsed options.
+ * @returns {{help?: boolean, input: string | null, json: boolean, milestone: string | null}} Parsed options.
  */
 export default function parseMilestonePlannerArgs(argv) {
-  const parsed = { json: false, milestone: null };
+  const parsed = { input: null, json: false, milestone: null };
 
-  for (const arg of argv) {
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
     if (arg === '-h' || arg === '--help') {
       parsed.help = true;
       continue;
     }
     if (arg === '--json') {
       parsed.json = true;
+      continue;
+    }
+    if (arg === '--input') {
+      if (!argv[index + 1]) throw new Error('--input requires a path or -.');
+      parsed.input = argv[index + 1];
+      index += 1;
       continue;
     }
     if (arg.startsWith('--')) throw new Error(`Unknown option: ${arg}`);

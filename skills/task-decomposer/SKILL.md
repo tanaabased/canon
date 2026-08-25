@@ -33,7 +33,7 @@ Recommendation is always read-only. Publication reuses Task Author's canonical c
 - Propose non-overlapping canonical children that collectively cover the parent's acceptance criteria.
 - Reuse existing exact child tasks and add only missing shallow native relationships.
 - Materialize one explicitly authorized decomposition and revise the original task into an outcome rollup.
-- Accept an oversized-task handoff from Project Milestone Planner; return the resulting task graph for later milestone planning without changing milestone membership here.
+- Accept an oversized-task handoff from Project Milestone Planner; return verified child references for the planner's later milestone-membership phase without changing membership here.
 
 ## When Not to Use
 

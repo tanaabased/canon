@@ -1,7 +1,7 @@
 interface:
   display_name: 'Project Milestone Planner'
-  short_description: 'Tanaab-based milestone gap and task-graph planning'
+  short_description: 'Tanaab-based milestone coverage and task selection'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-project-milestone-planner to inspect one project milestone, compare it with existing tasks and delivered evidence, and produce a read-only gap-and-overlap plan.'
+  default_prompt: 'Use $tanaab-project-milestone-planner to compare one existing project milestone with a bounded candidate pool, recommend conservative capacity-aware membership, and hand explicitly approved changes to their owning skills.'

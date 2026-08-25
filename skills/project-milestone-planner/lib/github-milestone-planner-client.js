@@ -31,12 +31,24 @@ function flattenPages(pages) {
   return pages.every(Array.isArray) ? pages.flat() : pages;
 }
 
+function fetchPaged(runGh, endpoint, context) {
+  const result = runGh(['api', '--method', 'GET', '--paginate', '--slurp', endpoint]);
+  if (result.returncode !== 0) throw new Error(errorMessage(result, context));
+  const pages = parseJson(
+    result,
+    `unable to parse ${context} JSON.`,
+    `unexpected ${context} JSON shape.`,
+    Array.isArray,
+  );
+  return flattenPages(pages);
+}
+
 /**
  * Creates a read-only GitHub milestone-planning client with an injectable bare-gh boundary.
  *
  * @param {object} [options] Client dependencies.
  * @param {Function} [options.runner=defaultCommandRunner] Command execution boundary.
- * @returns {object} Repository, milestone, issue, and pull-request inspection operations.
+ * @returns {object} Bounded repository, milestone, issue, and pull-request inspection operations.
  */
 export function createGitHubMilestonePlannerClient({ runner = defaultCommandRunner } = {}) {
   const runGh = (args) => runner('gh', args);
@@ -99,30 +111,76 @@ export function createGitHubMilestonePlannerClient({ runner = defaultCommandRunn
     );
   }
 
-  function fetchIssueLikeItems(target) {
+  function fetchMilestoneItems(target) {
+    return fetchPaged(
+      runGh,
+      `repos/${target.owner}/${target.repo}/issues?milestone=${target.number}&state=all&per_page=100`,
+      `milestone membership for ${target.slug}#${target.number}`,
+    );
+  }
+
+  function fetchIssue(target, issueNumber) {
     const result = runGh([
       'api',
       '--method',
       'GET',
-      '--paginate',
-      '--slurp',
-      `repos/${target.owner}/${target.repo}/issues`,
-      '-f',
-      'state=all',
-      '-f',
-      'per_page=100',
+      `repos/${target.owner}/${target.repo}/issues/${issueNumber}`,
     ]);
     if (result.returncode !== 0) {
-      throw new Error(errorMessage(result, `unable to inspect tasks for ${target.slug}.`));
+      throw new Error(errorMessage(result, `unable to inspect task #${issueNumber}.`));
     }
-    const pages = parseJson(
+    return parseJson(
       result,
-      'unable to parse repository issue JSON.',
-      'unexpected repository issue JSON shape.',
-      Array.isArray,
+      'unable to parse task JSON.',
+      'unexpected task JSON shape.',
+      (data) => data && typeof data === 'object' && !Array.isArray(data),
     );
-    return flattenPages(pages);
   }
 
-  return { ensureAvailable, fetchIssueLikeItems, fetchMilestone, fetchRepository };
+  function fetchIssueComments(target, issueNumber) {
+    return fetchPaged(
+      runGh,
+      `repos/${target.owner}/${target.repo}/issues/${issueNumber}/comments?per_page=100`,
+      `comments for task #${issueNumber}`,
+    );
+  }
+
+  function fetchIssueFieldValues(target, issueNumber) {
+    return fetchPaged(
+      runGh,
+      `repos/${target.owner}/${target.repo}/issues/${issueNumber}/issue-field-values?per_page=100`,
+      `field values for task #${issueNumber}`,
+    );
+  }
+
+  function fetchPullRequest(target, pullRequestNumber) {
+    const result = runGh([
+      'api',
+      '--method',
+      'GET',
+      `repos/${target.owner}/${target.repo}/pulls/${pullRequestNumber}`,
+    ]);
+    if (result.returncode !== 0) {
+      throw new Error(
+        errorMessage(result, `unable to inspect pull request #${pullRequestNumber}.`),
+      );
+    }
+    return parseJson(
+      result,
+      'unable to parse pull-request JSON.',
+      'unexpected pull-request JSON shape.',
+      (data) => data && typeof data === 'object' && !Array.isArray(data),
+    );
+  }
+
+  return {
+    ensureAvailable,
+    fetchIssue,
+    fetchIssueComments,
+    fetchIssueFieldValues,
+    fetchMilestone,
+    fetchMilestoneItems,
+    fetchPullRequest,
+    fetchRepository,
+  };
 }

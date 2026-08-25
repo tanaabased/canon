@@ -60,7 +60,7 @@ describe('skills/project-milestone-planner/lib/github-milestone-planner-client',
     ]);
   });
 
-  it('should flatten paginated repository issue and pull-request evidence', () => {
+  it('should flatten bounded milestone membership evidence', () => {
     let argsSeen;
     const client = createGitHubMilestonePlannerClient({
       runner: (_command, args) => {
@@ -70,12 +70,30 @@ describe('skills/project-milestone-planner/lib/github-milestone-planner-client',
     });
 
     assert.deepEqual(
-      client.fetchIssueLikeItems(target).map((item) => item.number),
+      client.fetchMilestoneItems(target).map((item) => item.number),
       [1, 2],
     );
     assert.ok(argsSeen.includes('--paginate'));
     assert.ok(argsSeen.includes('--slurp'));
     assert.equal(argsSeen[argsSeen.indexOf('--method') + 1], 'GET');
+    assert.match(argsSeen.at(-1), /milestone=3/);
+  });
+
+  it('should inspect only explicit tasks, pull requests, fields, and comments', () => {
+    const calls = [];
+    const client = createGitHubMilestonePlannerClient({
+      runner: (_command, args) => {
+        calls.push(args);
+        if (args.includes('--slurp')) return result(JSON.stringify([[{ id: 1 }]]));
+        return result(JSON.stringify({ number: 7 }));
+      },
+    });
+
+    assert.equal(client.fetchIssue(target, 7).number, 7);
+    assert.equal(client.fetchPullRequest(target, 8).number, 7);
+    assert.deepEqual(client.fetchIssueFieldValues(target, 7), [{ id: 1 }]);
+    assert.deepEqual(client.fetchIssueComments(target, 7), [{ id: 1 }]);
+    assert.ok(calls.every((args) => !args.some((arg) => String(arg).endsWith('/issues'))));
   });
 
   it('should preserve GitHub read failures as caller-facing errors', () => {
@@ -84,6 +102,6 @@ describe('skills/project-milestone-planner/lib/github-milestone-planner-client',
     });
 
     assert.throws(() => client.fetchMilestone(target), /milestone missing/);
-    assert.throws(() => client.fetchIssueLikeItems(target), /milestone missing/);
+    assert.throws(() => client.fetchMilestoneItems(target), /milestone missing/);
   });
 });

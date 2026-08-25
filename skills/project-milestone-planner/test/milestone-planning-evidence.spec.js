@@ -6,8 +6,12 @@ import renderMilestonePlanningEvidence from '../utils/render-milestone-planning-
 function createClient(overrides = {}) {
   return {
     ensureAvailable: () => ({ authenticated: true, ok: true }),
-    fetchIssueLikeItems: () => [],
+    fetchIssue: (_target, number) => ({ number, state: 'open', title: `Task ${number}` }),
+    fetchIssueComments: () => [],
+    fetchIssueFieldValues: () => [],
     fetchMilestone: () => ({ number: 3, state: 'open', title: 'Planner' }),
+    fetchMilestoneItems: () => [],
+    fetchPullRequest: (_target, number) => ({ number, state: 'open', title: `PR ${number}` }),
     fetchRepository: () => ({ nameWithOwner: 'tanaabased/canon' }),
     ...overrides,
   };
@@ -36,6 +40,34 @@ describe('skills/project-milestone-planner/lib/milestone-planning-evidence', () 
     assert.equal(report.status, 'partial');
     assert.equal(report.repository.nameWithOwner, 'tanaabased/canon');
     assert.deepEqual(report.errors, ['milestone: forbidden']);
+  });
+
+  it('should inspect only the explicit manifest plus current membership', () => {
+    const issueReads = [];
+    const report = inspectMilestonePlanningEvidence(
+      'tanaabased/canon#3',
+      createClient({
+        fetchIssue: (_target, number) => {
+          issueReads.push(number);
+          return { body: 'Bounded task', number, state: 'open', title: `Task ${number}` };
+        },
+        fetchMilestoneItems: () => [
+          { body: 'Member', number: 4, state: 'open', title: 'Member task' },
+        ],
+      }),
+      { taskNumbers: [9] },
+    );
+
+    assert.equal(report.status, 'ready');
+    assert.deepEqual(issueReads, [9]);
+    assert.deepEqual(
+      report.existingTasks.map(({ number }) => number),
+      ['4', '9'],
+    );
+    assert.deepEqual(
+      report.memberTasks.map(({ number }) => number),
+      ['4'],
+    );
   });
 
   it('should stop before reads when gh is unavailable', () => {

@@ -30,7 +30,9 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
         state: 'open',
         title: 'Milestone planning',
       },
-      items: [
+      memberTaskNumbers: [10],
+      memberPullRequestNumbers: [12],
+      tasks: [
         {
           body: 'Implement inspection.',
           labels: [{ name: 'task' }, { name: 'planning' }],
@@ -40,13 +42,39 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
           title: 'Inspect milestone',
         },
         {
-          body: 'Historical related work.',
+          body: `Historical related work.
+
+### Task metadata
+
+\`\`\`yaml
+schema: tanaab/task-metadata/v2
+mode: fallback
+fallback:
+  work-size: 5
+\`\`\``,
           labels: [],
           milestone: null,
           number: 11,
           state: 'closed',
           title: 'Document task model',
         },
+      ],
+      taskDetails: new Map([
+        [
+          '10',
+          {
+            comments: [{ body: 'Current delivery note.', user: { login: 'pirog' } }],
+            fields: [
+              {
+                data_type: 'number',
+                issue_field_name: 'Work size',
+                number_value: 8,
+              },
+            ],
+          },
+        ],
+      ]),
+      pullRequests: [
         {
           body: 'Delivery evidence.',
           labels: [],
@@ -83,6 +111,13 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
     assert.equal(report.pullRequests.length, 2);
     assert.deepEqual(report.memberTasks[0].labels, ['planning', 'task']);
     assert.equal(report.repository.defaultBranch, 'main');
+    assert.deepEqual(report.memberTasks[0].metadata.workSize, { source: 'native', value: 8 });
+    assert.equal(report.memberTasks[0].comments[0].author, 'pirog');
+    assert.deepEqual(report.candidateTasks[0].metadata.workSize, {
+      source: 'fallback',
+      value: 5,
+    });
+    assert.deepEqual(report.evidenceIds, ['issue:10', 'issue:11', 'milestone:3', 'pr:12', 'pr:13']);
   });
 
   it('should preserve a read-only empty evidence shape', () => {
@@ -95,5 +130,6 @@ describe('skills/project-milestone-planner/utils/build-milestone-planning-eviden
     assert.deepEqual(report.closedTasks, []);
     assert.deepEqual(report.pullRequests, []);
     assert.deepEqual(report.mergedPullRequests, []);
+    assert.deepEqual(report.evidenceIds, []);
   });
 });
