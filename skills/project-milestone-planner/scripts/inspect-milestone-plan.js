@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
 
+import { readFileSync } from 'node:fs';
+
 import { bold, dim, fail, renderCliHelp, writeLine } from '../../../lib/bun-cli-support.js';
 import { createGitHubMilestonePlannerClient } from '../lib/github-milestone-planner-client.js';
 import { inspectMilestonePlanningEvidence } from '../lib/milestone-planning-evidence.js';
@@ -16,6 +18,7 @@ function renderUsage(stream = process.stdout) {
       summary:
         'Collect repository, milestone, task, and pull-request evidence for read-only project milestone planning.',
       options: [
+        '  --input <path|->        bounded evidence manifest JSON',
         '  --json                  emit JSON instead of text output',
         '  -h, --help              show this message',
       ],
@@ -31,9 +34,13 @@ async function main() {
     return true;
   }
 
+  const manifest = options.input
+    ? JSON.parse(readFileSync(options.input === '-' ? 0 : options.input, 'utf8'))
+    : {};
   const report = inspectMilestonePlanningEvidence(
     options.milestone,
     createGitHubMilestonePlannerClient(),
+    manifest,
   );
   writeLine(
     process.stdout,

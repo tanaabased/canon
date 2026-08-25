@@ -143,4 +143,4 @@ Stop after the first failed write. Never close, delete, detach, or otherwise com
 
 ## Milestone Planning Handoff
 
-Task Decomposer returns a verified shallow task graph. Project Milestone Planner may later compare that graph with a milestone completion argument, reuse the children, and propose membership. Task Decomposer never creates or selects a milestone, and Project Milestone Planner must not bypass this skill by inventing children for an oversized task.
+Task Decomposer returns a verified shallow task graph. Project Milestone Planner may request an approved decomposition, consume the verified child references, and later recommend them for milestone membership. Task Decomposer never creates or selects a milestone, and Project Milestone Planner must not bypass this skill by inventing children for an oversized task.

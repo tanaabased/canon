@@ -16,8 +16,9 @@ The initial consumers are:
 - **Task Decomposer**, which owns keep-or-split review plus one approved shallow child-task and relationship lifecycle;
 - **GitHub Issue Schema Author**, which owns organization issue types and fields plus repository label definitions;
 - **GitHub Issue Form Author**, which owns checked-in Task, Bug, and Feature forms;
-- **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence; and
-- **Project Milestone Author**, which owns one repository milestone and explicitly selected task membership without changing task semantics.
+- **Task Completion Check**, which owns read-only assessment of acceptance and completion-pull-request evidence;
+- **Project Milestone Author**, which owns one repository milestone and explicitly selected task membership without changing task semantics; and
+- **Project Milestone Planner**, which compares one bounded milestone outcome with delivery and task evidence, recommends conservative membership, and hands approved work to its owning skills without redefining canonical task semantics.
 
 Those skills keep separate provider, authorization, and failure boundaries. They must not restate or independently reinterpret this contract. Changes to task shapes, metadata authority, fallback keys, field options, label semantics, or completion evidence must update the shared [fixture corpus](./task-management-fixtures.md).
 
@@ -383,6 +384,15 @@ Minor wording, formatting, or typo corrections do not require a history comment.
 - Reuse an existing exact task rather than creating a duplicate. Never move a child from another parent, create depth beyond one, or treat preferred ordering as a dependency.
 - Create and verify missing children and relationships in resumable order, then revise the parent into an open outcome rollup without claiming acceptance or completion.
 - Preserve partial success and report completed, failed, and remaining operations. Never delete or detach created work to simulate rollback.
+
+### Plan a Project Milestone
+
+- Start from one exact existing milestone plus a bounded evidence manifest; do not search an unbounded backlog or infer a cross-project goal.
+- Define traceable completion conditions before selecting work. Distinguish delivered evidence, reusable tasks, missing coverage, uncertainty, and overlap.
+- Use observed Priority only as human- or policy-controlled evidence. An optional total Work size limit constrains a supported selection but does not authorize changing task metadata.
+- Recommend existing tasks only from their supported current semantics, draft canonical tasks for genuine gaps, and route oversized existing work to Task Decomposer.
+- On explicit authorization, invoke Task Author, Task Decomposer when needed, and Project Milestone Author sequentially. Each owner independently re-inspects, plans, digest-gates, writes, and verifies its surface.
+- After a failure, preserve verified work, re-inspect, and prepare a fresh remaining proposal. Final membership verification confirms state, not task or milestone completion.
 
 ### Fallback Migration
 

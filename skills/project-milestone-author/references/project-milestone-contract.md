@@ -25,6 +25,7 @@ Project Milestone Author owns one repository-scoped GitHub milestone: its title,
 ## Membership
 
 - Membership accepts only explicit existing task numbers from the milestone repository.
+- Project Milestone Planner may recommend membership, but it must hand this skill explicit existing task numbers after any missing tasks or decompositions are independently created and verified.
 - Reject unknown membership fields. Membership is a separate mutation boundary and cannot share a request, plan, digest, or approval with milestone fields.
 - Add and remove lists are disjoint, de-duplicated, and sorted. Pull requests are preserved but cannot be selected as tasks.
 - Adding an already assigned task and removing an already absent task are zero-operation results.

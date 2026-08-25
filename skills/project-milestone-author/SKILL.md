@@ -38,7 +38,7 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 ## When Not to Use
 
 - Do not delete milestones.
-- Do not determine which work a milestone needs; use [Project Milestone Planner](../project-milestone-planner/SKILL.md) for read-only completion arguments, coverage maps, and proposed task graphs. Require explicit task selection before milestone-membership writes.
+- Do not determine which work a milestone needs; use [Project Milestone Planner](../project-milestone-planner/SKILL.md) for bounded completion arguments, capacity-aware coverage, and explicit task selection. The planner may hand an approved selection to this skill, but this skill independently owns the membership plan, digest, write, and verification boundary.
 - Do not create, normalize, score, revise, decompose, complete, close, or relate tasks through this skill.
 - Do not infer completion or a due date from task state, pull requests, checks, dates, or agent judgment.
 - Do not manage GitHub Projects boards, cross-repository goals, releases, repository settings, issue schema, or labels.
