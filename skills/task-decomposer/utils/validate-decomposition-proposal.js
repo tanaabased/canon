@@ -2,9 +2,10 @@ import evaluateDecompositionThreshold from './evaluate-decomposition-threshold.j
 import { normalizeTaskKind } from '../../task-author/utils/normalize-task-kind.js';
 import { renderTaskBody } from '../../task-author/utils/render-task-body.js';
 import extractTaskConstraints from './extract-task-constraints.js';
+import validateMilestoneReframingHandoff from './validate-milestone-reframing-handoff.js';
 
 const CHILD_KEY = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DECISIONS = new Set(['keep_intact', 'decompose']);
+const DECISIONS = new Set(['keep_intact', 'decompose', 'reframe_as_milestone']);
 
 function nonemptyStrings(value) {
   return Array.isArray(value) ? value.map((item) => String(item).trim()).filter(Boolean) : [];
@@ -59,7 +60,7 @@ export default function validateDecompositionProposal(proposal = {}, evidence) {
   const threshold = evaluateDecompositionThreshold(evidence.metadata.workSize.value);
 
   if (!DECISIONS.has(decision)) {
-    errors.push('Recommendation decision must be keep_intact or decompose.');
+    errors.push('Recommendation decision must be keep_intact, decompose, or reframe_as_milestone.');
   }
   if (rationale.length === 0) errors.push('Recommendation requires evidence-based rationale.');
   if (threshold.explicitReviewRequired && recommendation.explicitReviewAcknowledged !== true) {
@@ -73,13 +74,46 @@ export default function validateDecompositionProposal(proposal = {}, evidence) {
 
   const children = Array.isArray(proposal.children) ? proposal.children : [];
   const dependencies = Array.isArray(proposal.dependencies) ? proposal.dependencies : [];
+  if (!DECISIONS.has(decision)) {
+    return { decision, errors, findings, threshold, warnings };
+  }
   if (decision === 'keep_intact') {
-    if (children.length > 0 || dependencies.length > 0 || proposal.parentRevision) {
+    if (
+      children.length > 0 ||
+      dependencies.length > 0 ||
+      proposal.parentRevision ||
+      proposal.milestoneHandoff
+    ) {
       errors.push(
-        'A keep_intact recommendation cannot contain child, relationship, or parent writes.',
+        'A keep_intact recommendation cannot contain child, relationship, parent, or milestone handoffs.',
       );
     }
     return { decision, errors, findings, threshold, warnings };
+  }
+
+  if (decision === 'reframe_as_milestone') {
+    if (children.length > 0 || dependencies.length > 0 || proposal.parentRevision) {
+      errors.push(
+        'A reframe_as_milestone recommendation cannot contain child, relationship, or parent writes.',
+      );
+    }
+    if (proposal.publication) {
+      errors.push('A reframe_as_milestone recommendation cannot contain publication approval.');
+    }
+    const milestone = validateMilestoneReframingHandoff(proposal, evidence);
+    errors.push(...milestone.errors);
+    return {
+      decision,
+      errors,
+      findings,
+      milestoneHandoff: milestone.handoff,
+      threshold,
+      warnings,
+    };
+  }
+
+  if (proposal.milestoneHandoff) {
+    errors.push('A decomposition cannot contain a milestone handoff.');
   }
 
   if (evidence.parent) {

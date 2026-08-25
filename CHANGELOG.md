@@ -7,6 +7,7 @@
 
 ### New Features
 
+- Added milestone-reframing recommendations and Project Milestone Author handoffs to `tanaab-task-decomposer`. [#26](https://github.com/tanaabased/canon/issues/26)
 - Added `tanaab-project-milestone-author` for model-led, verified milestone and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18)
 - Added `tanaab-project-milestone-planner` for bounded milestone coverage, optional capacity constraints, conservative task selection, and explicit owner handoffs. [#20](https://github.com/tanaabased/canon/issues/20) [#22](https://github.com/tanaabased/canon/pull/22)
 - Added `tanaab-task-decomposer` for keep-or-split review and verified shallow task-graph publication. [#19](https://github.com/tanaabased/canon/issues/19)

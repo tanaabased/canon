@@ -13,6 +13,14 @@ Project Milestone Author owns one repository-scoped GitHub milestone: its title,
 - Inspect before replacement. Preserve important existing human or provider content deliberately in the proposed string rather than relying on marker parsing or implicit merging.
 - The deterministic plan displays the exact current and desired strings, scans the desired public text, binds it to the digest, and verifies the complete stored value after writing.
 
+## Task Decomposer Handoff
+
+- A `reframe_as_milestone` result is bounded semantic evidence for authoring, not a provider request, exact target, digest, or mutation approval.
+- Preserve its proposed outcome, scope, completion conditions, constraints, open questions, and exact source-task provenance while authoring the complete milestone description.
+- Independently resolve create versus revision. Creation uses the exact repository target; revision requires one exact existing milestone target and must never be inferred from the source task's current milestone membership.
+- Keep the handoff's source-task disposition pending. This skill never closes, revises, relates, or otherwise mutates that task.
+- Project Milestone Planner begins only after this skill has created or verified one exact milestone.
+
 ## Target and Desired State
 
 - Require an exact `OWNER/REPO`, `OWNER/REPO#MILESTONE_NUMBER`, milestone URL, or repository plus exact title selector. Never infer a repository from the current directory.

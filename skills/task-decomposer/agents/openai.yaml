@@ -1,7 +1,7 @@
 interface:
   display_name: 'Task Decomposer'
-  short_description: 'Tanaab-based shallow task decomposition and verified publication.'
+  short_description: 'Tanaab-based task decomposition and milestone reframing.'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-task-decomposer to inspect one exact canonical task, recommend whether to keep or decompose it, and preview or apply one verified shallow decomposition plan.'
+  default_prompt: 'Use $tanaab-task-decomposer to inspect one exact canonical task, recommend whether to keep it intact, decompose it, or reframe it as a project milestone, and keep every recommendation read-only unless one exact decomposition is separately approved.'

@@ -115,6 +115,47 @@ export function decompositionProposal(overrides = {}) {
   };
 }
 
+export function milestoneReframingProposal(overrides = {}) {
+  return {
+    target: 'acme/widgets#1',
+    recommendation: {
+      decision: 'reframe_as_milestone',
+      rationale: [
+        'The source task describes an aggregate project outcome whose completion depends on multiple independently completable tasks.',
+      ],
+      explicitReviewAcknowledged: true,
+      classificationEvidence: [
+        {
+          signal: 'aggregate_outcome',
+          evidence:
+            'The desired outcome combines inspection and publication into one project result.',
+        },
+        {
+          signal: 'coverage_or_membership_required',
+          evidence:
+            'The acceptance criteria require separate delivery coverage before the outcome is complete.',
+        },
+      ],
+      classificationUncertainties: [],
+    },
+    milestoneHandoff: {
+      proposedMilestone: {
+        title: 'Deliver safe oversized-task handling',
+        outcome:
+          'One safe task-decomposition workflow is available from inspection through publication.',
+        scope: [
+          'Deliver normalized decomposition inspection',
+          'Deliver resumable decomposition publication',
+        ],
+        completionConditions: [...parentAcceptanceCriteria],
+        constraints: [sharedConstraint],
+        openQuestions: ['Confirm the separately approved disposition of the source task.'],
+      },
+    },
+    ...overrides,
+  };
+}
+
 export function parentFields(workSize = 21) {
   return [
     {

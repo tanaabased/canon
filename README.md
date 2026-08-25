@@ -81,7 +81,7 @@ Canon is executed and enforced through the Codex plugin rooted at [`.codex-plugi
 | [`tanaab-project-optimizer`](./skills/project-optimizer/)                   | Read-only project audits, convergence reports, and staged improvement plans.                            |
 | [`tanaab-task-author`](./skills/task-author/)                               | Canonical Task, Bug, and Feature assessment, creation, revision, normalization, and fallback migration. |
 | [`tanaab-task-completion-check`](./skills/task-completion-check/)           | Read-only completion assessment from criteria, linked pull requests, reviews, checks, and failures.     |
-| [`tanaab-task-decomposer`](./skills/task-decomposer/)                       | Keep-or-split review plus verified shallow child-task and relationship publication.                     |
+| [`tanaab-task-decomposer`](./skills/task-decomposer/)                       | Keep, split, or milestone-reframe review plus verified shallow task-graph publication.                  |
 
 ### Code and interface authoring
 
