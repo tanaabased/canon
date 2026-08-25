@@ -2,18 +2,26 @@
 
 ### Breaking Changes
 
-- Removed legacy Task metadata fallback compatibility. [#28](https://github.com/tanaabased/canon/issues/28)
-- Removed Task score, its diagnostics, audit comments, and schema ownership from the canonical task model. [#27](https://github.com/tanaabased/canon/issues/27)
+- Removed Task score, its diagnostics, audit comments, and schema ownership from the canonical task model. [#27](https://github.com/tanaabased/canon/issues/27) [#29](https://github.com/tanaabased/canon/pull/29)
+- Removed the organization `Task score` field and legacy `tanaab/task-metadata/v1` fallback compatibility. [#28](https://github.com/tanaabased/canon/issues/28) [#30](https://github.com/tanaabased/canon/pull/30)
 
 ### New Features
 
-- Added milestone-reframing recommendations and Project Milestone Author handoffs to `tanaab-task-decomposer`. [#26](https://github.com/tanaabased/canon/issues/26)
-- Added `tanaab-project-milestone-author` for model-led, verified milestone and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18)
-- Added `tanaab-project-milestone-planner` for bounded milestone coverage, optional capacity constraints, conservative task selection, and explicit owner handoffs. [#20](https://github.com/tanaabased/canon/issues/20) [#22](https://github.com/tanaabased/canon/pull/22)
-- Added `tanaab-task-decomposer` for keep-or-split review and verified shallow task-graph publication. [#19](https://github.com/tanaabased/canon/issues/19)
+- Added `tanaab-project-milestone-author` for verified milestone lifecycle, scheduling, and task-membership changes. [#18](https://github.com/tanaabased/canon/issues/18) [#24](https://github.com/tanaabased/canon/pull/24)
+- Added `tanaab-project-milestone-planner` for bounded coverage analysis, capacity-aware task selection, and owner handoffs. [#20](https://github.com/tanaabased/canon/issues/20) [#22](https://github.com/tanaabased/canon/pull/22) [#31](https://github.com/tanaabased/canon/pull/31)
+- Added `tanaab-task-decomposer` for keep-or-split review, shallow child graphs, and verified publication. [#19](https://github.com/tanaabased/canon/issues/19) [#25](https://github.com/tanaabased/canon/pull/25)
+
+### Improvements
+
+- Expanded `tanaab-task-decomposer` with milestone-reframing recommendations and `tanaab-project-milestone-author` handoffs. [#26](https://github.com/tanaabased/canon/issues/26) [#32](https://github.com/tanaabased/canon/pull/32)
+
+### Bug Fixes
+
+- Fixed unset or unsupported `Work size` values being interpreted as `0` during task observation and decomposition.
 
 ### Policy and Guidance
 
+- Tightened README and skill-authoring guidance to preserve complete references while removing redundant implementation detail.
 - Updated `tanaab-task-author` to keep task payloads out of shell commands and approval rules. [#22](https://github.com/tanaabased/canon/pull/22)
 
 ## v0.8.0 - [August 14, 2026](https://github.com/tanaabased/canon/releases/tag/v0.8.0)

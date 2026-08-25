@@ -50,11 +50,8 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 ## Constraints
 
-- Prefer the smallest change that solves the task.
 - Keep the work baseline-led: structure, lint, format, and baseline script normalization.
 - Do not treat repo-structure normalization as permission for broad runtime refactors.
-- Preserve existing style and local patterns unless the task clearly requires a change.
-- Avoid unrelated refactors.
 
 ## Change Strategy
 
@@ -143,22 +140,11 @@ Use this section as a reference map from repo-baseline validation and npm-public
 ## Validation
 
 - Confirm the task stayed on repo baseline standardization rather than drifting into general JS or TS runtime work or implementation refactors.
-- Confirm repo-structure normalization followed [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md), including flat scope-local tests and equal hoisting rules for source and tests, without turning this skill into general code authorship.
-- Confirm ESLint and Prettier ownership remain separate.
-- Confirm durable baseline documentation stayed limited to repo policy notes, package scripts, config comments, or README notes that directly explain the standardized baseline.
-- Confirm the repo exposes the expected lint and format scripts unless an explicit repo-local reason overrides them.
-- Confirm `packageManager`, `.bun-version`, and the committed `bun.lock` are present in Bun-managed repositories.
-- Confirm all dependencies imported by the selected ESLint and Prettier layers are declared as development dependencies.
-- Confirm every Tanaab-owned npm package name, internal package reference, and package example uses `@tanaab`, including `package.json#name` for npm-distributed Codex and OpenClaw plugins.
-- Confirm third-party scopes, `github.com/tanaabased` repository metadata, and platform-native plugin identifiers were not rewritten as npm identities.
-- Confirm npm identity changes were made in owning manifests first and affected lockfiles were refreshed and validated rather than treated as standalone sources of truth.
-- Confirm repositories with owned TypeScript source expose `tsconfig.json`, `typecheck`, the TypeScript ESLint layer, TypeScript-capable test discovery, and the required development dependencies.
-- Confirm Bun workspace roots are private, use one lockfile, treat each package as an owning scope, and keep cross-package imports on declared package exports.
-- Confirm aggregate packages re-export leaf packages through declared workspace dependencies instead of duplicating or reaching into leaf implementations.
-- Confirm package inspection uses pack or publish dry runs and that repo standardization performs no live package publication.
-- Confirm each package scope's `private` setting follows its explicit release destination rather than its name or the mere presence of `package.json`.
-- Confirm publishable npm packages are checked for the canonical release-published lifecycle, trusted npm publication, conditional package builds, post-stamping format validation, package dry runs, and the `latest` or `edge` channel contract, with no long-lived token exposed to `npm publish`.
-- Confirm direct validation stays on lint, format, and targeted baseline inspection instead of drifting into unrelated smoke or scenario mechanisms.
-- Confirm the canonical linter workflow remains separate from an independently owned unit-test workflow unless a repo-specific shared runner, matrix, ownership, and status boundary justifies combining them.
-- Confirm `GitHub Actions` maps baseline validation to the linter template and npm publication to JavaScript Author without duplicating either owner's doctrine or absorbing general workflow topology.
+- Confirm repo structure keeps source and tests in their smallest owning scopes and applies the same hoisting test to both.
+- Confirm ESLint and Prettier remain separate, expected scripts exist, and every imported config dependency is declared.
+- Confirm Bun-managed repositories and workspaces carry the required runtime, lockfile, workspace-boundary, and TypeScript surfaces that actually apply.
+- Confirm package names and `private` settings follow their owning manifests and release destinations without rewriting third-party, repository, or platform identities.
+- Confirm manifest changes drive refreshed lockfiles, aggregate packages stay thin, and package inspection remains dry-run only.
+- Confirm publishable npm packages hand the canonical trusted publication lifecycle to JavaScript Author rather than duplicating it here.
+- Confirm durable documentation stays limited to the baseline choices maintainers need and automation maps to the canonical linter workflow without absorbing unit-test or general workflow ownership.
 - Run the narrowest repo-native lint, format, or baseline checks available for the touched surface.

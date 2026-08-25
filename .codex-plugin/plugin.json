@@ -1,7 +1,7 @@
 {
   "name": "tanaab",
   "version": "0.8.0",
-  "description": "Tanaab-based canon enforcement via AI.",
+  "description": "Tanaab canon and agent workflows.",
   "author": {
     "name": "Tanaab Maneuvering Systems LLC",
     "email": "emori@tanaab.dev",
@@ -15,22 +15,22 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Tanaab Maneuvering Systems",
-    "shortDescription": "Tanaab-based canon enforcement via AI",
-    "longDescription": "Tanaab-based canon enforcement as a Codex plugin, including installable skills plus a stub MCP registry for future canon resources.",
+    "shortDescription": "Tanaab canon and agent workflows",
+    "longDescription": "Installable Tanaab skills and supporting canon for consistent project, code, documentation, and delivery workflows.",
     "developerName": "@tanaabased",
     "category": "Tanaab-based",
     "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
+      "Use $tanaab-project-milestone-planner to assess the current milestone, identify coverage gaps, and recommend a conservative task set.",
+      "Use $tanaab-project-milestone-author to draft an exact verified milestone update after the desired plan is approved.",
+      "Use $tanaab-task-decomposer to decide whether tanaabased/example#12 should remain intact, split into child tasks, or become a project milestone.",
+      "Use $tanaab-task-author to draft one canonical GitHub task from the available evidence without publishing it yet.",
+      "Use $tanaab-project-optimizer to audit a project's checked-in repository surfaces against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
       "Use $tanaab-javascript-author to add Bun-run tests for TypeScript utility functions in utils/.",
       "Use $tanaab-javascript-repo-standardizer to standardize a JavaScript and TypeScript Bun workspace monorepo, including package boundaries, formatting, type-checking, and baseline scripts.",
-      "Use $tanaab-changelog-author to draft the next CHANGELOG.md release notes.",
-      "Use $tanaab-skill-author to create a skill for sending AgentMail email through cURL.",
-      "Use $tanaab-javascript-cli-author to build a TypeScript Bun CLI that lists open PRs for tanaabased/canon.",
-      "Use $tanaab-release-author to prepare a GitHub Release draft from CHANGELOG.md entries.",
-      "Use $tanaab-project-author to inspect or synchronize the managed repository settings for the tanaabased/example project.",
       "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow.",
-      "Use $tanaab-project-optimizer to audit a project's checked-in repository surfaces against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
-      "Use $tanaab-task-completion-check to assess whether tanaabased/example#12 is complete or ready from its acceptance criteria, linked pull requests, reviews, and checks."
+      "Use $tanaab-readme-author to tighten a repository README around its primary user journey while preserving complete reference material.",
+      "Use $tanaab-release-author to prepare a GitHub Release draft from CHANGELOG.md entries."
     ],
     "brandColor": "#00c88a",
     "composerIcon": "./assets/composer-icon.svg",

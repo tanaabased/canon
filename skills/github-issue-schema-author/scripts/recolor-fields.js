@@ -3,6 +3,7 @@
 import { synchronizeGitHubIssueFieldColors } from '../lib/schema-field-synchronizer.js';
 import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
 import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
+import renderSchemaMutationReport from '../utils/render-schema-mutation-report.js';
 
 function usage() {
   return `Usage:
@@ -28,27 +29,19 @@ function colorChanges(operation) {
 
 function render(report) {
   const names = report.plannedMutation.operations.map(({ field }) => field.name);
-  const lines = [
-    'GitHub Issue Schema Author: field colors',
-    `target: ${report.target.slug}`,
-    `organization: ${report.organization}`,
-    `status: ${report.status}`,
-    `mutates GitHub: ${report.mutatesGitHub ? 'yes' : 'no'}`,
-    `digest: ${report.authorization.digest}`,
-    'creates: none',
-    `updates: ${names.length > 0 ? names.join(', ') : 'none'}`,
-    'deletions: none',
-  ];
-  for (const operation of report.plannedMutation.operations) {
-    lines.push(`${operation.field.name}: ${colorChanges(operation)}`);
-  }
-  for (const blocker of report.blockers) lines.push(`blocker: ${blocker}`);
-  for (const write of report.writes) {
-    lines.push(`${write.status}: ${write.operation}`);
-    if (write.error) lines.push(`error: ${write.error}`);
-  }
-  if (report.verification) lines.push(`verification: ${report.verification.status}`);
-  return `${lines.join('\n')}\n`;
+  return renderSchemaMutationReport(report, {
+    title: 'GitHub Issue Schema Author: field colors',
+    summaryLines: [
+      `digest: ${report.authorization.digest}`,
+      'creates: none',
+      `updates: ${names.length > 0 ? names.join(', ') : 'none'}`,
+      'deletions: none',
+    ],
+    detailLines: report.plannedMutation.operations.map(
+      (operation) => `${operation.field.name}: ${colorChanges(operation)}`,
+    ),
+    includeWrites: true,
+  });
 }
 
 export function runFieldColorCli(argv, dependencies = {}) {

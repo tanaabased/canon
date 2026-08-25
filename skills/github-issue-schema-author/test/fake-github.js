@@ -88,11 +88,11 @@ export function organizationPayload({
 export function createQueuedRunner(responses) {
   const calls = [];
   const queue = [...responses];
-  const runner = (command, args) => {
-    calls.push({ command, args });
+  const runner = (args) => {
+    calls.push({ args });
     const next = queue.shift();
-    if (!next) throw new Error(`Unexpected command: ${command} ${args.join(' ')}`);
-    return typeof next === 'function' ? next(command, args) : next;
+    if (!next) throw new Error(`Unexpected command: gh ${args.join(' ')}`);
+    return typeof next === 'function' ? next(args) : next;
   };
   return { calls, runner };
 }

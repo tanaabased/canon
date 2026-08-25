@@ -19,8 +19,8 @@ function missing() {
 
 function createRunner() {
   const calls = [];
-  const runner = (command, args, options = {}) => {
-    calls.push({ command, args, options });
+  const runner = (args, options = {}) => {
+    calls.push({ args, options });
     if (args[0] === '--version') return success('gh version 2.0.0');
     if (args[0] === 'auth') return success('');
     const endpoint = args[1];

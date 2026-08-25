@@ -1,6 +1,4 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
-
-const API_VERSION = '2026-03-10';
+import runGitHubCli, { GITHUB_API_VERSION_HEADER } from '../../../lib/run-github-cli.js';
 
 function parseResult(result, context) {
   if (result.status !== 0) {
@@ -47,14 +45,7 @@ export class GitHubMilestoneClient {
   }
 
   #request(method, endpoint, payload = null, { paginate = false } = {}) {
-    const args = [
-      'api',
-      endpoint,
-      '--method',
-      method,
-      '-H',
-      `X-GitHub-Api-Version: ${API_VERSION}`,
-    ];
+    const args = ['api', endpoint, '--method', method, '-H', GITHUB_API_VERSION_HEADER];
     const options = {};
     if (paginate) args.push('--paginate', '--slurp');
     if (payload !== null) {

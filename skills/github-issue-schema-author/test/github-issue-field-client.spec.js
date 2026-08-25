@@ -5,8 +5,8 @@ import { GitHubIssueFieldClient } from '../lib/github-issue-field-client.js';
 describe('skills/github-issue-schema-author/lib/github-issue-field-client', () => {
   it('should read and normalize organization options in priority order', () => {
     const calls = [];
-    const runner = (command, args) => {
-      calls.push({ command, args });
+    const runner = (args) => {
+      calls.push({ args });
       return {
         status: 0,
         stdout: JSON.stringify([
@@ -34,7 +34,6 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
       result.value[0].options.map(({ id }) => id),
       [1, 2],
     );
-    assert.equal(calls[0].command, 'gh');
     assert.deepEqual(calls[0].args.slice(0, 2), ['api', '/orgs/tanaabased/issue-fields']);
   });
 
@@ -51,8 +50,8 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
 
   it('should PATCH only the complete retained option array', () => {
     const calls = [];
-    const runner = (command, args, options = {}) => {
-      calls.push({ command, args, input: options.input });
+    const runner = (args, options = {}) => {
+      calls.push({ args, input: options.input });
       return { status: 0, stdout: JSON.stringify({ id: 50 }), stderr: '' };
     };
     const client = new GitHubIssueFieldClient({ runner });
@@ -86,8 +85,8 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
 
   it('should POST only the additive field payload', () => {
     const calls = [];
-    const runner = (command, args, options = {}) => {
-      calls.push({ command, args, input: options.input ?? null });
+    const runner = (args, options = {}) => {
+      calls.push({ args, input: options.input ?? null });
       return { status: 0, stdout: JSON.stringify({ id: 512, name: 'Impact' }), stderr: '' };
     };
     const client = new GitHubIssueFieldClient({ runner });
@@ -145,8 +144,8 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
   it('should PATCH only field visibility', () => {
     const calls = [];
     const client = new GitHubIssueFieldClient({
-      runner: (command, args, options = {}) => {
-        calls.push({ command, args, input: options.input });
+      runner: (args, options = {}) => {
+        calls.push({ args, input: options.input });
         return { status: 0, stdout: JSON.stringify({ id: 50, visibility: 'all' }), stderr: '' };
       },
     });

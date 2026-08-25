@@ -21,119 +21,15 @@ Why:
 - local repo policy
 - small amounts of task-triggered repo context when that context is truly ambient
 
-## Layer Responsibilities
+## Ownership Contracts
 
-Repo-root canon buckets stay flat by default. Use hyphenated scoped filenames before adding nested folders inside `guidance/`, `ideas/`, `references/`, `prompts/`, `scripts/`, or `templates/`.
+This document owns the rationale for skill-led context loading and the packaging consequences below. The operational contracts live elsewhere:
 
-### Global `AGENTS.md`
+- [`../AGENTS.md`](../AGENTS.md) owns repository purpose, canon-bucket placement, and local-first hoisting rules.
+- [`../references/skill-standard.md`](../references/skill-standard.md) owns skill structure, metadata, and validation.
+- [`../references/javascript-repo-structure.md`](../references/javascript-repo-structure.md) owns code-bearing scope structure and source/test placement.
 
-Use for:
-
-- durable cross-repo agent behavior
-- commentary, validation, and change-discipline defaults
-- general rules for how repo-local `AGENTS.md` files should stay small and scoped
-
-Do not use for:
-
-- repo-specific routing
-- package-specific canon paths
-- required dependencies on installable skills or remote URLs
-
-### Repo `AGENTS.md`
-
-Use for:
-
-- repo purpose and boundaries
-- local folder ownership
-- ambient repo policy that applies regardless of which skill is active
-
-Do not use for:
-
-- detailed task workflows
-- large routing tables
-- logic that exists only to decide which broad skill should win
-
-### `SKILL.md`
-
-Use for:
-
-- one concrete owned task surface
-- the workflow for that surface
-- the canon references, guidance, templates, or scripts needed for that surface
-
-Examples:
-
-- a unit-function skill can load coding and testing references
-- a Vue component skill can load coding, frontend, and design references
-- a release-note skill can load release and changelog references
-
-### `guidance/`
-
-Use for:
-
-- decision-shaping material
-- architecture docs
-- audits
-- rationale and tradeoff writeups
-
-### `ideas/`
-
-Use for:
-
-- exploratory designs
-- draft packaging models
-- possible future automation or distribution approaches
-- proposals that are not yet stable enough to become guidance or reference
-
-### `references/`
-
-Use for:
-
-- stable lookup material
-- engineering standards
-- naming rules
-- contracts
-- field definitions
-- install or packaging reference material once it stabilizes
-
-### `prompts/`
-
-Use for:
-
-- reusable prompts
-- prompt fragments
-- starter prompt text with value beyond one skill
-
-### `templates/`
-
-Use for:
-
-- reusable scaffolds and fragments that have already proven reusable
-
-### `scripts/`
-
-Use for:
-
-- shared maintenance, validation, export, packaging, and install helpers
-
-## Hoisting Discipline
-
-The authoring default is local-first.
-
-Keep support material local to the owning skill unless it clearly earns repo-root placement.
-
-Hoist a file only when one of these is true:
-
-- it is used by 2+ live skills or 2+ live repo entrypoints
-- it is a true repo-wide contract or shared tooling surface
-- it is a cold-path human doc with standalone value even if it has one current live consumer
-
-Additional rules:
-
-- a hoisted file should reduce total complexity rather than merely move it
-- a hoisted file with one meaningful live consumer should enter demotion review
-- `guidance/` and `ideas/` are cold-path buckets and may remain hoisted with one live consumer
-- cold-path docs should not be pulled into live skill hot paths by default
+Keep those rules in their owning surfaces instead of restating them here. The durable distinction is that ambient policy belongs in `AGENTS.md`, one triggered workflow belongs in its `SKILL.md`, and deeper canon should load only through the active owner that needs it.
 
 ## Context Loading Model
 

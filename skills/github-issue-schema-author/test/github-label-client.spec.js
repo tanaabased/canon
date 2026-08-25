@@ -6,8 +6,8 @@ describe('skills/github-issue-schema-author/lib/github-label-client', () => {
   it('should create and definition-update labels through stdin', () => {
     const calls = [];
     const client = new GitHubLabelClient({
-      runner: (command, args, options = {}) => {
-        calls.push({ command, args, input: options.input });
+      runner: (args, options = {}) => {
+        calls.push({ args, input: options.input });
         return { status: 0, stdout: JSON.stringify({ id: 1 }), stderr: '' };
       },
     });

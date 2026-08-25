@@ -1,10 +1,7 @@
 import { desiredOptionColor } from './desired-option-color.js';
+import findNamed from './find-named.js';
 
 const COLOR_FIELD_NAMES = Object.freeze(['Work size', 'Complexity', 'Impact']);
-
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
 
 function optionIdentity(option) {
   return {

@@ -1,6 +1,4 @@
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+import findNamed from './find-named.js';
 
 /** Build a canonical repository-label create/update plan without renames or deletions. */
 export function buildLabelSyncPlan(inspection, policy) {

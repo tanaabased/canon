@@ -170,24 +170,11 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 ## Validation
 
-- Confirm the new or updated skill has a distinct owned surface.
-- Confirm the selected `type` is explicit and correct.
-- Confirm the public namespace and container match applicable project guidance, and that custom product identity does not inherit Tanaab naming or description branding accidentally.
-- Confirm project-management surfaces use domain-led names unless provider-specific mechanics are the owned product, without introducing another skill type.
-- Confirm the selected type order is correct.
-- Confirm `metadata.openclaw` has a skill-specific emoji and correct HTTPS homepage, with dependency gates only for hard runtime requirements.
-- Confirm `coding` skills include `Documentation` and `Testing` as canonical lifecycle sections plus `GitHub Actions` as their automation projection.
-- Confirm a retained coding-skill `Deployment` lifecycle owns one canonical delivery mechanism, remains surface-local, and hands independent workflow topology to the workflow owner.
-- Confirm `GitHub Actions` references the applicable lifecycle sections and owning templates without duplicating doctrine or embedding complete workflow YAML.
-- Confirm every mapped automation path names its canonical `.github/workflows/*.yml` target.
-- Confirm validation-only requests are handled by the same surface rather than a separate validator skill.
-- Confirm the surface is not better expressed as a repo template with the skill kept only as a thin discovery or adaptation layer, if needed.
-- Confirm any bundled repo `AGENTS.md` lines stay short, ambient, and worth copying into a project repo.
-- Confirm bundled resources stay local unless they clearly pass the hoist test.
-- Confirm skill-owned test files remain flat beneath the skill's `test/` directory unless an external tool requires a fixed nested path.
-- Confirm any repo-root resources still justify being hoisted.
-- Confirm `Optimization` is present and surface-specific when persistent alignment is owned, or intentionally omitted for incident-specific, event-specific, or execution-only workflows.
-- Confirm every retained `Optimization` facet names the owned surface's highest-value compliance checks and routes into the full relevant skill contract and linked canon instead of relying on generic labels.
-- When a collection is in scope, confirm every skill was reviewed individually and collectively for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior.
-- Confirm any portfolio recommendation uses an evidence-backed shared operation and preserves separate skills when tools, permissions, audiences, failure boundaries, or primary owners materially differ.
+- Confirm the skill has one distinct owned surface, the correct explicit type and section order, and domain- or provider-led naming that matches the shared standard.
+- Confirm namespace, container, public identity, and OpenClaw metadata match applicable project guidance without accidental Tanaab branding or unnecessary load-time gates.
+- Confirm coding skills keep their required lifecycle sections and map automation to named workflow paths without duplicating doctrine or absorbing another owner's topology.
+- Confirm a repo template or short ambient `AGENTS.md` projection was used instead when either is the more honest reusable artifact.
+- Confirm bundled resources and flat skill-local tests remain with their smallest justified owner, and recheck any affected hoisted surface.
+- Confirm `Optimization` is either surface-specific for persistent alignment or intentionally absent when it does not apply.
+- For portfolio work, confirm every skill was reviewed individually and collectively and that recommendations preserve materially different owners.
 - Run `validate-skill.js` and fix all `[error]` results before finishing.

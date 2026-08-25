@@ -1,6 +1,4 @@
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+import findNamed from './find-named.js';
 
 /** Verify canonical definitions while proving all preexisting noncanonical labels remain. */
 export function verifyLabelSync(plan, inspection, policy) {

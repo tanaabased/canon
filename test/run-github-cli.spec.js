@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 
-import runGitHubCli from '../lib/run-github-cli.js';
+import runGitHubCli, {
+  flattenGitHubPages,
+  GITHUB_API_VERSION_HEADER,
+  githubCliResultDetail,
+  githubCliResultStatus,
+} from '../lib/run-github-cli.js';
 
 describe('lib/run-github-cli', () => {
   it('should preserve the bare gh command contract for host-managed routing', () => {
@@ -31,5 +36,14 @@ describe('lib/run-github-cli', () => {
       () => runGitHubCli(['auth', 'status'], { env: {} }),
       /must inherit the active process env/,
     );
+  });
+
+  it('should expose the shared GitHub response contract', () => {
+    assert.equal(GITHUB_API_VERSION_HEADER, 'X-GitHub-Api-Version: 2026-03-10');
+    assert.equal(githubCliResultStatus({ returncode: 7, status: 0 }), 7);
+    assert.equal(githubCliResultStatus({ status: 0 }), 0);
+    assert.equal(githubCliResultDetail({ stderr: ' denied\n', stdout: 'ignored' }), 'denied');
+    assert.deepEqual(flattenGitHubPages([[{ id: 1 }], [{ id: 2 }]]), [{ id: 1 }, { id: 2 }]);
+    assert.deepEqual(flattenGitHubPages([{ id: 1 }]), [{ id: 1 }]);
   });
 });

@@ -1,6 +1,4 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
-
-const API_VERSION = '2026-03-10';
+import runGitHubCli, { GITHUB_API_VERSION_HEADER } from '../../../lib/run-github-cli.js';
 
 function commandFailure(result, context) {
   const detail = String(result.stderr ?? result.error?.message ?? 'unknown error').trim();
@@ -61,7 +59,7 @@ export class GitHubCapabilityClient {
   }
 
   getJson(endpoint, { paginate = false, keys = [] } = {}) {
-    const args = ['api', endpoint, '-H', `X-GitHub-Api-Version: ${API_VERSION}`];
+    const args = ['api', endpoint, '-H', GITHUB_API_VERSION_HEADER];
     if (paginate) args.push('--paginate', '--slurp');
     const result = this.#run(args);
     if (result.status !== 0) return { ok: false, error: commandFailure(result, `GET ${endpoint}`) };

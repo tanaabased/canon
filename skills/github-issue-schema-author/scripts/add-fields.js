@@ -3,6 +3,7 @@
 import { addMissingGitHubIssueFields } from '../lib/schema-field-synchronizer.js';
 import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
 import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
+import renderSchemaMutationReport from '../utils/render-schema-mutation-report.js';
 
 function usage() {
   return `Usage:
@@ -16,24 +17,16 @@ Run plan first and bind apply to its exact organization and digest.`;
 
 function render(report) {
   const names = report.plannedMutation.operations.map(({ body }) => body.name);
-  const lines = [
-    'GitHub Issue Schema Author: additive fields',
-    `target: ${report.target.slug}`,
-    `organization: ${report.organization}`,
-    `status: ${report.status}`,
-    `mutates GitHub: ${report.mutatesGitHub ? 'yes' : 'no'}`,
-    `digest: ${report.authorization.digest}`,
-    `creates: ${names.length > 0 ? names.join(', ') : 'none'}`,
-    'updates: none',
-    'deletions: none',
-  ];
-  for (const blocker of report.blockers) lines.push(`blocker: ${blocker}`);
-  for (const write of report.writes) {
-    lines.push(`${write.status}: ${write.operation}`);
-    if (write.error) lines.push(`error: ${write.error}`);
-  }
-  if (report.verification) lines.push(`verification: ${report.verification.status}`);
-  return `${lines.join('\n')}\n`;
+  return renderSchemaMutationReport(report, {
+    title: 'GitHub Issue Schema Author: additive fields',
+    summaryLines: [
+      `digest: ${report.authorization.digest}`,
+      `creates: ${names.length > 0 ? names.join(', ') : 'none'}`,
+      'updates: none',
+      'deletions: none',
+    ],
+    includeWrites: true,
+  });
 }
 
 export function runFieldAdditionCli(argv, dependencies = {}) {

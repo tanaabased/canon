@@ -1,6 +1,5 @@
 import taskManagementSchema from '../../../references/task-management-schema.json' with { type: 'json' };
 
-export const CONTRACT_VERSION = 'tanaab/task-management/v2';
 export const FALLBACK_SCHEMA_VERSION = 'tanaab/task-metadata/v2';
 
 export const TASK_KINDS = Object.freeze(

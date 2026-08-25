@@ -3,6 +3,7 @@
 import { planGitHubIssueFieldPinning } from '../lib/schema-field-pinning-planner.js';
 import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
 import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
+import renderSchemaMutationReport from '../utils/render-schema-mutation-report.js';
 
 function usage() {
   return `Usage:
@@ -14,29 +15,22 @@ This command never writes to GitHub and never calls GitHub's private web endpoin
 }
 
 function render(report) {
-  const lines = [
-    'GitHub Issue Schema Author: field pinning',
-    `target: ${report.target.slug}`,
-    `organization: ${report.organization}`,
-    `status: ${report.status}`,
-    'mutates GitHub: no',
-    `execution surface: ${report.plannedMutation.executionSurface}`,
-    `digest: ${report.authorization.digest}`,
-    'creates: none',
-    `updates: ${report.plannedMutation.operations.length}`,
-    'deletions: none',
-  ];
-  for (const operation of report.plannedMutation.operations) {
-    lines.push(
-      `${operation.field.name}: ${operation.before.pinnedIssueTypes.join(', ') || 'none'} -> ${operation.after.pinnedIssueTypes.map(({ name }) => name).join(', ')}`,
-    );
-    lines.push(`url: ${operation.url}`);
-  }
-  for (const blocker of report.blockers) lines.push(`blocker: ${blocker}`);
-  if (report.status === 'approval_required') {
-    for (const reason of report.authorization.reasons) lines.push(`authorization: ${reason}`);
-  }
-  return `${lines.join('\n')}\n`;
+  const detailLines = report.plannedMutation.operations.flatMap((operation) => [
+    `${operation.field.name}: ${operation.before.pinnedIssueTypes.join(', ') || 'none'} -> ${operation.after.pinnedIssueTypes.map(({ name }) => name).join(', ')}`,
+    `url: ${operation.url}`,
+  ]);
+  return renderSchemaMutationReport(report, {
+    title: 'GitHub Issue Schema Author: field pinning',
+    summaryLines: [
+      `execution surface: ${report.plannedMutation.executionSurface}`,
+      `digest: ${report.authorization.digest}`,
+      'creates: none',
+      `updates: ${report.plannedMutation.operations.length}`,
+      'deletions: none',
+    ],
+    detailLines,
+    includeAuthorization: true,
+  });
 }
 
 export function runFieldPinningCli(argv, dependencies = {}) {

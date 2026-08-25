@@ -1,8 +1,6 @@
-const MAX_PINNED_FIELDS_PER_TYPE = 10;
+import findNamed from './find-named.js';
 
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+const MAX_PINNED_FIELDS_PER_TYPE = 10;
 
 function sameSet(left, right) {
   return (

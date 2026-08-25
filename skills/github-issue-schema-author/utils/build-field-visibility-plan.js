@@ -1,6 +1,4 @@
-function findNamed(values, name) {
-  return values.find((value) => value.name.toLowerCase() === name.toLowerCase());
-}
+import findNamed from './find-named.js';
 
 /** Build a visibility-only plan for every managed organization issue field. */
 export function buildFieldVisibilityPlan(inspection, currentFields, policy) {

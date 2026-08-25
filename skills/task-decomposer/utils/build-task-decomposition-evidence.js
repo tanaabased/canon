@@ -1,14 +1,14 @@
 import extractAcceptanceCriteria from '../../task-completion-check/utils/extract-acceptance-criteria.js';
+import {
+  normalizeObservedComment,
+  normalizeObservedIssueField,
+  observedIssueTypeName,
+  observedLabelNames,
+  observedWorkSize,
+} from '../../task-author/lib/task-observation.js';
 import { parseFallbackMetadata } from '../../task-author/utils/parse-fallback-metadata.js';
 import extractTaskConstraints from './extract-task-constraints.js';
 import { stripParentRollup } from './render-parent-rollup.js';
-
-function labelNames(labels = []) {
-  return labels
-    .map((label) => (typeof label === 'string' ? label : label?.name))
-    .filter(Boolean)
-    .sort();
-}
 
 function normalizeIssue(issue) {
   if (!issue) return null;
@@ -19,8 +19,8 @@ function normalizeIssue(issue) {
     body: issue.body || '',
     state: String(issue.state || '').toLowerCase(),
     stateReason: issue.state_reason || null,
-    type: typeof issue.type === 'string' ? issue.type : (issue.type?.name ?? null),
-    labels: labelNames(issue.labels),
+    type: observedIssueTypeName(issue),
+    labels: observedLabelNames(issue.labels).sort(),
     assignees: (issue.assignees ?? [])
       .map(({ login }) => login)
       .filter(Boolean)
@@ -40,56 +40,8 @@ function normalizeRepositoryCandidate(issue) {
     title: issue.title || '',
     state: String(issue.state || '').toLowerCase(),
     stateReason: issue.state_reason || null,
-    type: typeof issue.type === 'string' ? issue.type : (issue.type?.name ?? null),
+    type: observedIssueTypeName(issue),
     url: issue.html_url || issue.url || '',
-  };
-}
-
-function normalizeField(field) {
-  const name =
-    field.name ?? field.issue_field_name ?? field.field?.name ?? field.issue_field?.name ?? '';
-  const type = field.data_type ?? field.type ?? field.field?.data_type ?? '';
-  const value =
-    field.single_select_option?.name ??
-    field.value?.name ??
-    field.value ??
-    field.number_value ??
-    field.date_value ??
-    null;
-  return {
-    id: Number(field.issue_field_id ?? field.field_id ?? field.id) || null,
-    name,
-    type,
-    value,
-  };
-}
-
-function normalizedWorkSize(fields, fallback) {
-  const native = fields.find((field) => field.name.trim().toLowerCase() === 'work size');
-  const nativeValue = native ? Number(native.value) : null;
-  const fallbackValue = fallback['work-size'] === undefined ? null : Number(fallback['work-size']);
-  if (Number.isInteger(nativeValue)) {
-    return {
-      value: nativeValue,
-      source: 'native',
-      conflict:
-        Number.isInteger(fallbackValue) && fallbackValue !== nativeValue
-          ? { native: nativeValue, fallback: fallbackValue }
-          : null,
-    };
-  }
-  if (Number.isInteger(fallbackValue)) {
-    return { value: fallbackValue, source: 'fallback', conflict: null };
-  }
-  return { value: null, source: 'unavailable', conflict: null };
-}
-
-function normalizeComment(comment) {
-  return {
-    author: comment.user?.login ?? comment.author?.login ?? '',
-    body: comment.body || '',
-    createdAt: comment.created_at || comment.createdAt || '',
-    url: comment.html_url || comment.url || '',
   };
 }
 
@@ -124,7 +76,7 @@ export default function buildTaskDecompositionEvidence({
 }) {
   const normalizedIssue = normalizeIssue(issue);
   const semanticBody = stripParentRollup(normalizedIssue?.body ?? '');
-  const normalizedFields = fields.map(normalizeField);
+  const normalizedFields = fields.map(normalizeObservedIssueField);
   const parsedFallback = parseFallbackMetadata(semanticBody);
   const acceptanceCriteria = extractAcceptanceCriteria(parsedFallback.body);
 
@@ -148,11 +100,11 @@ export default function buildTaskDecompositionEvidence({
       fields: normalizedFields,
       fallback: parsedFallback.fallback,
       fallbackErrors: parsedFallback.errors,
-      workSize: normalizedWorkSize(normalizedFields, parsedFallback.fallback),
+      workSize: observedWorkSize(normalizedFields, parsedFallback.fallback),
     },
     acceptanceCriteria,
     constraints: extractTaskConstraints(parsedFallback.body),
-    comments: comments.map(normalizeComment),
+    comments: comments.map(normalizeObservedComment),
     linkedWork: normalizeLinkedWork(timeline),
     parent: normalizeIssue(parent),
     subIssues: subIssues.map(normalizeIssue),

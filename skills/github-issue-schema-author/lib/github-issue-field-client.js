@@ -1,20 +1,9 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, {
+  GITHUB_API_VERSION_HEADER,
+  githubCliResultDetail,
+  githubCliResultStatus,
+} from '../../../lib/run-github-cli.js';
 import { GitHubSchemaClient } from './github-schema-client.js';
-
-const API_VERSION = '2026-03-10';
-
-function defaultRunner(command, args, options = {}) {
-  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
-  return runGitHubCli(args, options);
-}
-
-function resultStatus(result) {
-  return result.returncode ?? result.status ?? 1;
-}
-
-function resultDetail(result) {
-  return String(result.stderr ?? result.error?.message ?? result.stdout ?? '').trim();
-}
 
 function parseJson(result, method, endpoint) {
   try {
@@ -49,7 +38,7 @@ export class GitHubIssueFieldClient {
   #reader;
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
     this.#reader = new GitHubSchemaClient({ runner });
   }
@@ -66,16 +55,16 @@ export class GitHubIssueFieldClient {
     const args = ['api', endpoint];
     const options = {};
     if (method !== 'GET') {
-      args.push('--method', method, '-H', `X-GitHub-Api-Version: ${API_VERSION}`, '--input', '-');
+      args.push('--method', method, '-H', GITHUB_API_VERSION_HEADER, '--input', '-');
       options.input = JSON.stringify(payload);
     } else {
-      args.push('-H', `X-GitHub-Api-Version: ${API_VERSION}`);
+      args.push('-H', GITHUB_API_VERSION_HEADER);
     }
-    const result = this.#runner('gh', args, options);
-    if (resultStatus(result) !== 0) {
+    const result = this.#runner(args, options);
+    if (githubCliResultStatus(result) !== 0) {
       return {
         ok: false,
-        error: `${method} ${endpoint}: ${resultDetail(result) || 'unknown error'}`,
+        error: `${method} ${endpoint}: ${githubCliResultDetail(result) || 'unknown error'}`,
       };
     }
     return parseJson(result, method, endpoint);

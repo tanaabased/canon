@@ -3,6 +3,7 @@
 import { synchronizeGitHubIssueFieldVisibility } from '../lib/schema-field-synchronizer.js';
 import { runSchemaMutationCli } from '../lib/schema-mutation-cli.js';
 import { parseSchemaMutationArgs } from '../utils/parse-schema-mutation-args.js';
+import renderSchemaMutationReport from '../utils/render-schema-mutation-report.js';
 
 function usage() {
   return `Usage:
@@ -14,20 +15,15 @@ types, options, pinning, values, labels, unmanaged fields, and deletions remain 
 }
 
 function render(report) {
-  const lines = [
-    'GitHub Issue Schema Author: field visibility',
-    `target: ${report.target.slug}`,
-    `organization: ${report.organization}`,
-    `status: ${report.status}`,
-    `mutates GitHub: ${report.mutatesGitHub ? 'yes' : 'no'}`,
-    `digest: ${report.authorization.digest}`,
-    `updates: ${report.plannedMutation.operations.map(({ field }) => field.name).join(', ') || 'none'}`,
-    'creates: none',
-    'deletions: none',
-  ];
-  for (const blocker of report.blockers) lines.push(`blocker: ${blocker}`);
-  if (report.verification) lines.push(`verification: ${report.verification.status}`);
-  return `${lines.join('\n')}\n`;
+  return renderSchemaMutationReport(report, {
+    title: 'GitHub Issue Schema Author: field visibility',
+    summaryLines: [
+      `digest: ${report.authorization.digest}`,
+      `updates: ${report.plannedMutation.operations.map(({ field }) => field.name).join(', ') || 'none'}`,
+      'creates: none',
+      'deletions: none',
+    ],
+  });
 }
 
 export function runFieldVisibilityCli(argv, dependencies = {}) {

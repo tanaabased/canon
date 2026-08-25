@@ -27,6 +27,7 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Keep examples runnable and close to the surface they explain.
 - Keep common options, inputs, and configuration in the README even when the complete reference lives elsewhere.
 - Keep development guidance concise and distinguish safe local commands from CI-owned, generated, privileged, or machine-mutating workflows.
+- Preserve complete CLI and configuration references when they help readers work without switching surfaces. Derive them from current help, schemas, or defaults, and keep explanatory prose focused on selection, precedence, consequences, and non-obvious behavior instead of restating names or obvious command mechanics.
 - Do not mirror an entire docs-site sidebar into the README. Link only the key destinations readers actually need.
 - Avoid empty sections, placeholder headings with no guidance, or generic link farms without context.
 - Put support, changelog, maintainers, contributors, license, or policy links near the end unless the repository is itself a support or policy surface.
@@ -78,6 +79,8 @@ Use `ADVANCED.md` when the extracted material spans several less-common or highe
 - alternate execution modes, rare integrations, payload resolution, migrations, and upgrade internals
 
 Keep the common configuration and the most useful examples in `README.md`. A long reference is not automatically advanced when most users need it to succeed.
+
+Complete CLI and configuration inventories are valid companion material even when the executable surface also exposes help. Keep them synchronized with that source, prefer scan-friendly tables or lists, and add prose only where it helps readers choose, combine, or troubleshoot values.
 
 Use a topical guide when one substantial subject has its own audience or workflow:
 

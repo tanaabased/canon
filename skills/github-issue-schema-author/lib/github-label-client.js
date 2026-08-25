@@ -1,19 +1,12 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, { GITHUB_API_VERSION_HEADER } from '../../../lib/run-github-cli.js';
 import { GitHubSchemaClient } from './github-schema-client.js';
-
-const API_VERSION = '2026-03-10';
-
-function defaultRunner(command, args, options = {}) {
-  if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
-  return runGitHubCli(args, options);
-}
 
 /** GitHub boundary for repository-label reads, creates, and definition-only updates. */
 export class GitHubLabelClient {
   #reader;
   #runner;
 
-  constructor({ runner = defaultRunner } = {}) {
+  constructor({ runner = runGitHubCli } = {}) {
     this.#runner = runner;
     this.#reader = new GitHubSchemaClient({ runner });
   }
@@ -28,17 +21,7 @@ export class GitHubLabelClient {
 
   #request(method, endpoint, payload) {
     const result = this.#runner(
-      'gh',
-      [
-        'api',
-        endpoint,
-        '--method',
-        method,
-        '-H',
-        `X-GitHub-Api-Version: ${API_VERSION}`,
-        '--input',
-        '-',
-      ],
+      ['api', endpoint, '--method', method, '-H', GITHUB_API_VERSION_HEADER, '--input', '-'],
       { input: JSON.stringify(payload) },
     );
     if ((result.returncode ?? result.status ?? 1) !== 0) {

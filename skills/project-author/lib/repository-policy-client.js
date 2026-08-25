@@ -558,5 +558,3 @@ export class RepositoryPolicyClient {
     }
   }
 }
-
-export { canonicalPolicy };
