@@ -151,8 +151,6 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
   it('should retire only inputs owned by the previous canonical form projection', () => {
     const files = renderedFiles('organization');
     const task = parsedByBun(files['.github/ISSUE_TEMPLATE/task.yml']);
-    task.body[0].attributes.value =
-      'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.';
     task.body = [
       task.body[0],
       {

@@ -38,12 +38,6 @@ const RETIRED_MANAGED_INPUTS = Object.freeze({
   confidence: { type: 'dropdown', label: 'Confidence assessment' },
   'task-signals': { type: 'checkboxes', label: 'Task signals' },
 });
-const RETIRED_MANAGED_MARKDOWN = Object.freeze(
-  new Set([
-    'Provide supported evidence and leave uncertain estimates unset. Task score is calculated after submission; do not calculate it here.',
-  ]),
-);
-
 function contentDigest(content) {
   return `sha256:${createHash('sha256').update(content).digest('hex')}`;
 }
@@ -116,7 +110,7 @@ function mergeForm(desired, current, path) {
     }
     if (element.type === 'markdown') {
       const value = String(element.attributes?.value ?? '');
-      if (!desiredMarkdown.has(value) && !RETIRED_MANAGED_MARKDOWN.has(value)) {
+      if (!desiredMarkdown.has(value)) {
         extraMarkdown.push(element);
         preserved.push('additional markdown guidance');
       }

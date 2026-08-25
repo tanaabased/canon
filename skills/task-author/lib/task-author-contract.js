@@ -2,7 +2,6 @@ import taskManagementSchema from '../../../references/task-management-schema.jso
 
 export const CONTRACT_VERSION = 'tanaab/task-management/v2';
 export const FALLBACK_SCHEMA_VERSION = 'tanaab/task-metadata/v2';
-export const LEGACY_FALLBACK_SCHEMA_VERSION = 'tanaab/task-metadata/v1';
 
 export const TASK_KINDS = Object.freeze(
   Object.fromEntries(taskManagementSchema.issueTypes.map(({ key, name }) => [key, name])),

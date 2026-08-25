@@ -397,16 +397,16 @@ Expected behavior:
 
 Existing state:
 
-- An organization task body contains a legacy `tanaab/task-metadata/v1` capsule with Complexity Medium, Impact High, and the retired `task-score` key.
+- An organization task body contains a current `tanaab/task-metadata/v2` capsule with Complexity Medium and Impact High.
 - Complexity and Impact native fields have since become available and are unset.
 - An earlier automated assessment comment remains in issue history.
 
 Expected migration:
 
-1. Preview native writes for Complexity Medium and Impact High plus retirement of the unsupported legacy key.
+1. Preview native writes for Complexity Medium and Impact High.
 2. Write and re-read only the two supported native values.
-3. Remove the verified keys and retired key from the fallback capsule.
-4. Remove the entire capsule if no other fallback keys remain; otherwise render the remaining values as `tanaab/task-metadata/v2`.
+3. Remove the verified keys from the fallback capsule.
+4. Remove the entire capsule if no other fallback keys remain; otherwise render the remaining supported values as `tanaab/task-metadata/v2`.
 5. Preserve the existing automated assessment comment as historical discussion.
 
 If a native value already conflicts with fallback, preserve the native value, report the conflict, and do not overwrite it through automatic migration.
@@ -422,7 +422,7 @@ Observed state:
 - Effort options are High, Medium, and Low.
 - Start date and Target date exist.
 - Complexity and Impact are missing.
-- The retired Task score number field still exists pending a separately authorized organization-schema deletion.
+- An unrelated External metric number field exists.
 - Repository labels include GitHub's nine defaults plus `dependencies`, `javascript`, and `github_actions`.
 
 Expected read-only report:
@@ -432,7 +432,7 @@ Expected read-only report:
 - Effort: unmanaged and preserved; do not rename, delete, map, or treat it as Work size evidence.
 - Work size: missing managed field.
 - Complexity and Impact: missing managed fields.
-- Task score: unmanaged; do not create, synchronize, pin, validate, migrate, or delete it.
+- External metric: unmanaged and preserved.
 - Start date and Target date: aligned except for separately reported visibility or type-pinning drift.
 - Managed fields: compare organization-members-only visibility and Task, Bug, and Feature pinning with the desired contract.
 
@@ -484,7 +484,7 @@ For each of T01 through T06, the form handoff preserves every submitted response
 
 Existing state:
 
-- A Feature has an accepted body, native metadata, a retired unmanaged organization field value, an earlier automated assessment comment, and other discussion.
+- A Feature has an accepted body, native metadata, an unmanaged organization field value, an earlier automated assessment comment, and other discussion.
 - New compatibility evidence changes the desired outcome, removes one in-scope behavior, adds a breaking migration requirement, and increases Work size from `5` to `8`.
 
 Expected behavior:

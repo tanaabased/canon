@@ -444,7 +444,7 @@ The convergence loop may revise:
 - Complexity or Impact descriptions and option granularity;
 - fallback or label behavior when fixtures expose ambiguity.
 
-Any fallback-schema change that alters key meaning or representation requires a new schema version. Task Author may read the retired `tanaab/task-metadata/v1` format only to preserve supported values and remove retired keys through an exact authorized task mutation; all newly rendered capsules use `tanaab/task-metadata/v2`.
+Any fallback-schema change that alters key meaning or representation requires a new schema version. Task Author accepts and renders only the current `tanaab/task-metadata/v2` format; older schemas and unsupported keys require explicit correction before migration.
 
 Additional task types, Severity, Area, Confidence, workflow Status, arbitrary label expansion, and GitHub Projects board fields remain deferred until repeated evidence establishes a concrete need.
 

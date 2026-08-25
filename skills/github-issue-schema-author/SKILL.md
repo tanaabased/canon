@@ -75,7 +75,6 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Report organization issue types separately from repository-effective issue types.
 - Report managed fields, options, visibility, Task/Bug/Feature pinning, canonical labels, unmanaged labels, automation-owned labels, and association counts.
 - Classify GitHub's default `Effort` field as `preserved_unmanaged`. `Work size` is a distinct managed field; never rename, map, delete, or infer it from Effort.
-- Classify any still-observed retired Task score field as `unmanaged` pending its separately authorized deletion; never create, synchronize, pin, migrate, or delete it through this skill.
 - Report organization-default labels as `manual`: GitHub exposes the setting to humans but has no public API that lists its current definitions.
 - Inspect mode produces no GitHub changes and no mutation plan.
 - Additive planning returns `approval_required` with three or fewer exact POST operations, an organization-bound digest, and empty update and deletion lists.

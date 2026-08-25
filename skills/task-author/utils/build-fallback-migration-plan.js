@@ -130,7 +130,6 @@ export function buildFallbackMigrationPlan(target, capabilities, current, parsed
         { name: 'remove verified fallback keys', mutation: bodyMutation },
       ],
       removableKeys,
-      retiredKeys: Object.keys(parsed.retired ?? {}),
       conflicts,
       unavailable,
       comments: [],

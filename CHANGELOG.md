@@ -2,6 +2,7 @@
 
 ### Breaking Changes
 
+- Removed legacy Task metadata fallback compatibility. [#28](https://github.com/tanaabased/canon/issues/28)
 - Removed Task score, its diagnostics, audit comments, and schema ownership from the canonical task model. [#27](https://github.com/tanaabased/canon/issues/27)
 
 ### New Features

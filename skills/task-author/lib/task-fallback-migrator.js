@@ -17,7 +17,8 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
   const target = normalizeTaskTarget(input.target);
   if (!target.issueNumber) throw new Error('Fallback migration requires OWNER/REPO#NUMBER.');
   const capabilities = githubClient.inspectRepository(target);
-  const current = readTaskState(githubClient, target);
+  const fields = capabilities.issueFields.status !== 'not_applicable';
+  const current = readTaskState(githubClient, target, { fields });
   const parsed = parseFallbackMetadata(current.issue?.body ?? '');
   const { blockers: planBlockers, plan } = buildFallbackMigrationPlan(
     target,
@@ -90,7 +91,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
     }
   }
 
-  const nativeObserved = readTaskState(githubClient, target);
+  const nativeObserved = readTaskState(githubClient, target, { fields });
   const nativePlan = {
     ...plan,
     issue: { ...plan.issue, body: nativeObserved.issue?.body ?? null },
@@ -123,7 +124,7 @@ export function migrateTaskFallback(input = {}, { githubClient = new GitHubTaskC
         : { operation: bodyPhase.name, status: 'failed', error: result.error },
     );
   }
-  const observed = readTaskState(githubClient, target);
+  const observed = readTaskState(githubClient, target, { fields });
   const verification = observed.issue
     ? verifyCreatedTask(plan, observed)
     : { status: 'unavailable', checks: [], mismatches: [] };
