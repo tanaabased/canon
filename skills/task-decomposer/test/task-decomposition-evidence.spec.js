@@ -79,6 +79,24 @@ describe('Task Decomposer inspection evidence', () => {
     client.listBlockedBy = original;
   });
 
+  it('should keep an unset native Work size unavailable', () => {
+    const fields = parentFields();
+    fields[0].single_select_option = null;
+    const client = fakeGitHubTaskDecomposerClient({
+      issues: [parentIssue()],
+      fields: { 1: fields },
+    });
+
+    const report = inspectTaskDecompositionEvidence('acme/widgets#1', client);
+
+    assert.equal(report.status, 'ready');
+    assert.deepEqual(report.metadata.workSize, {
+      value: null,
+      source: 'unavailable',
+      conflict: null,
+    });
+  });
+
   it('should keep fallback metadata out of constraints and treat a native value as authoritative', () => {
     const parent = parentIssue();
     parent.body = `${parent.body.trimEnd()}\n\n${renderFallbackMetadata({ type: 'feature', 'work-size': 13 })}`;

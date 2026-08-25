@@ -1,3 +1,13 @@
+import { WORK_SIZES } from './task-author-contract.js';
+
+function canonicalWorkSize(value) {
+  if (typeof value !== 'number' && typeof value !== 'string') return null;
+  if (typeof value === 'string' && value.trim() === '') return null;
+
+  const numericValue = Number(value);
+  return WORK_SIZES.includes(numericValue) ? numericValue : null;
+}
+
 export function observedIssueTypeName(issue) {
   return typeof issue?.type === 'string' ? issue.type : (issue?.type?.name ?? null);
 }
@@ -39,19 +49,19 @@ export function normalizeObservedComment(comment) {
 
 export function observedWorkSize(fields, fallback = {}) {
   const native = fields.find(({ name }) => name.trim().toLowerCase() === 'work size');
-  const nativeValue = native ? Number(native.value) : null;
-  const fallbackValue = fallback['work-size'] === undefined ? null : Number(fallback['work-size']);
-  if (Number.isInteger(nativeValue)) {
+  const nativeValue = canonicalWorkSize(native?.value);
+  const fallbackValue = canonicalWorkSize(fallback['work-size']);
+  if (nativeValue !== null) {
     return {
       value: nativeValue,
       source: 'native',
       conflict:
-        Number.isInteger(fallbackValue) && fallbackValue !== nativeValue
+        fallbackValue !== null && fallbackValue !== nativeValue
           ? { native: nativeValue, fallback: fallbackValue }
           : null,
     };
   }
-  if (Number.isInteger(fallbackValue)) {
+  if (fallbackValue !== null) {
     return { value: fallbackValue, source: 'fallback', conflict: null };
   }
   return { value: null, source: 'unavailable', conflict: null };

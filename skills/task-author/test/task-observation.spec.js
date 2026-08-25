@@ -76,4 +76,27 @@ describe('skills/task-author/lib/task-observation', () => {
       conflict: null,
     });
   });
+
+  it('should reject unset and noncanonical Work size observations', () => {
+    assert.deepEqual(observedWorkSize([{ name: 'Work size', value: null }], { 'work-size': 5 }), {
+      value: 5,
+      source: 'fallback',
+      conflict: null,
+    });
+    assert.deepEqual(observedWorkSize([{ name: 'Work size', value: ' ' }], {}), {
+      value: null,
+      source: 'unavailable',
+      conflict: null,
+    });
+    assert.deepEqual(observedWorkSize([{ name: 'Work size', value: 4 }], { 'work-size': 3 }), {
+      value: 3,
+      source: 'fallback',
+      conflict: null,
+    });
+    assert.deepEqual(observedWorkSize([], { 'work-size': 4 }), {
+      value: null,
+      source: 'unavailable',
+      conflict: null,
+    });
+  });
 });
