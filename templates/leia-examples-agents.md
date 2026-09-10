@@ -49,8 +49,7 @@ This file is the compact ambient projection of the shared Leia scenario contract
 
 ## Generator and Package Boundaries
 
-- Use `@lando/leia` version `1.0.0-beta.9` or newer for executable Leia scenarios.
-- Write syntax valid for the selected shell directly in executable Leia blocks, including literal backticks, braced expansions such as `${VAR}`, command substitutions such as `$(command)`, octal escapes such as `\033`, and numeric backreferences such as `\1`. No Leia-specific escaping or helper extraction is needed.
+- Use `@lando/leia` version `1.0.0-beta.9` or newer. Follow the selected shell's normal syntax and quoting rules; no additional escaping, rewriting, or helper extraction is needed to work around Leia's former harness bug.
 - Treat Leia's generated `.js` test harness as CommonJS runtime code when it uses `require`.
 - In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
 - Do not require this boundary when the harness is outside the ESM package scope or already inherits a nearer CommonJS boundary.

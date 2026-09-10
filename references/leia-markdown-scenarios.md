@@ -126,10 +126,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Leia Version and Shell Syntax
 
-Use [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer for executable Leia scenarios; this release includes the shell-command serialization fix.
-
-- Write syntax valid for the selected shell directly in executable Leia blocks, including literal backticks, braced expansions such as `${VAR}` and `${VAR:-default}`, command substitutions such as `$(command)`, octal escapes such as `\033`, and numeric backreferences such as `\1`. No Leia-specific escaping or helper extraction is needed.
-- Prefer `$(command)` over backticks in new shell code for readability and nesting, not as a Leia compatibility workaround.
+Use [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer. Follow the selected shell's normal syntax and quoting rules; no additional escaping, rewriting, or helper extraction is needed to work around Leia's former harness bug.
 
 ## JavaScript Package Boundary
 
