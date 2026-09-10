@@ -79,6 +79,8 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Resolve the repository mode and load the shared task-management schema.
 2. Render all four desired files without touching the target repository:
 

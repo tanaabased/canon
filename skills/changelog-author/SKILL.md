@@ -49,6 +49,8 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the task is changelog-led rather than release-workflow- or implementation-led.
 2. Inspect the existing changelog format and gather the narrowest change evidence needed for the update.
 3. If the user did not specify the changelog scope or source, derive the default evidence set from the commit range between `HEAD` and the most recent versioned tag after refreshing tags when possible.

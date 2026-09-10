@@ -413,6 +413,7 @@ Every Task, Bug, and Feature requires at least one linked pull request before it
 
 - Keep the pull request in draft while work is in progress. Marking it ready for review requests completion assessment.
 - Link it through GitHub's supported closing or development relationship so Task Completion Check can discover it.
+- Apply the shared [commit-subject convention](./commit-subjects.md) when authoring commits for the task's delivery.
 - Map the task's acceptance criteria to safe supporting evidence in the pull-request body. The body may reference code, repository artifacts, external outcomes, checks, or approved private evidence without publishing sensitive material.
 - For a Bug, use the linked draft completion pull request as the red-to-green delivery envelope. Preserve the failing regression run against the affected baseline, add the fix to the same pull request, and show the same reproduction plus relevant surrounding checks passing before marking it ready. When automated reproduction is unsafe or infeasible, document the exception and equivalent evidence in the pull-request body.
 - Surface failing checks on a draft pull request but classify the path as `pending` while it remains work in progress. Once the pull request is ready for review, failing checks are `blocked` completion evidence.

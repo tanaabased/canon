@@ -151,6 +151,7 @@ skill-folder/
 - `[warn]` Prefer references for detailed facts, schemas, and long examples instead of stuffing them into `SKILL.md`.
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.
 - `[warn]` Keep bundled references one hop from `SKILL.md`; link to them directly instead of hiding them behind deeper navigation.
+- `[manual]` Skills that deliver issue-backed commits must link to the shared [commit-subject convention](./commit-subjects.md) from their authoring workflow rather than duplicating its rules.
 - `[manual]` For `coding` skills, load the [documentation change gate](./readme-standards.md#documentation-change-gate) before deciding whether prose needs to change. Keep documentation-specific guidance reachable from `## Documentation`; `## Bundled Resources` is an inventory, not the primary discovery path. A required lifecycle section is not a requirement to change docs on every task.
 - `[manual]` For `coding` skills, testing artifacts belong in `## Testing` even when they are README- or Markdown-backed, unless the skill explicitly treats them as durable user-facing examples.
 - `[manual]` For `coding` skills, `Documentation` and `Testing` should each describe one canonical mechanism and one minimal example when an example materially shapes the skill.

@@ -49,6 +49,8 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the task is shell-CLI-led rather than workflow-, hosted-distribution-, or release-led.
 2. Load only the entrypoint, wrapper, and CLI canon needed for the change.
 3. Keep the owned shell CLI contract explicit: help order, dimmed optional usage placeholders, dimmed displayed defaults, option precedence, output streams, and safety guards.

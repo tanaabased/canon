@@ -88,6 +88,8 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is native OpenClaw-code-plugin-led rather than bundle-, generic-JavaScript-, baseline-, workflow-, or host-operations-led.
 2. Classify the active surface as identity/manifest, SDK entry and registration, runtime behavior, configuration, plugin-owned commands, package proof, or deployment.
 3. Load only the relevant shared canon, local plugin files, installed SDK types, and current official OpenClaw references for that surface.

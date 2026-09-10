@@ -46,6 +46,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
 - Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired settings. Do not recapture policy from the live `tanaabased/canon` repository.
+- GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](../../references/commit-subjects.md) when authoring issue-backed commits.
 
 ## Inputs
 

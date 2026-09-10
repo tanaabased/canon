@@ -54,6 +54,8 @@ Tanaab-based authoring and standardization of true JavaScript or TypeScript Bun 
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is primarily about a true Bun CLI product surface.
 2. Load the CLI entrypoint plus only the shared and local canon needed for the touched help, parser, version, or packaging surface.
 3. Keep the package-level CLI contract explicit: help, dimmed optional usage placeholders, dimmed displayed defaults, precedence, streams, version, and package entrypoint behavior.

@@ -64,6 +64,8 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is VitePress-site-led and that the docs-site surface is already the chosen path.
 2. Classify the active surface as Markdown page implementation, site structure/config, local subtheme wiring, or a narrow combination of those surfaces.
 3. Load only the files and references needed for that surface: Markdown pages and navigation, config/theme files, or local subtheme entrypoints and styles.
