@@ -151,7 +151,7 @@ Use these headings in order:
 
 Use Feature for one bounded new or materially expanded capability. `Problem or opportunity` establishes the affected user or workflow, current experience or workaround, recurrence, and value. `Desired outcome` describes the useful capability and primary use case without prescribing unnecessary implementation. `Scope` defines the smallest coherent delivery and requires explicit in-scope and out-of-scope boundaries. If the request cannot be assessed as one independently observable capability, keep it unready and recommend decomposition instead of treating Feature as an informal epic.
 
-`Acceptance criteria` express the consumer-visible capability, important boundaries, and applicable compatibility, documentation, example, or migration conditions. `Delivery and verification` identifies the linked completion pull request, substantive repository artifacts, tests or executable examples, user-facing documentation, compatibility or migration evidence, relevant checks, and release evidence when applicable. A Feature does not require an intentionally failing draft check; its completion pull request remains draft during implementation and must provide green validation before it is marked ready.
+`Acceptance criteria` express the consumer-visible capability, important boundaries, and applicable compatibility, documentation, example, or migration conditions. `Delivery and verification` identifies the linked completion pull request, substantive repository artifacts, tests or executable examples, compatibility or migration evidence, relevant checks, and release evidence when applicable. Require new prose only when it passes the [documentation change gate](./readme-standards.md#documentation-change-gate). A Feature does not require an intentionally failing draft check; its completion pull request remains draft during implementation and must provide green validation before it is marked ready.
 
 `Alternatives and constraints` is optional when no material alternative or constraint is known. Record rejected approaches, dependencies, compatibility implications, security, privacy, accessibility, performance, approvals, and other meaningful boundaries without turning the issue into a speculative product specification.
 
@@ -335,7 +335,7 @@ Priority is an explicit human or policy override using Urgent, High, Medium, or 
 
 Label rules:
 
-- `documentation` applies when documentation is a primary delivery surface, not merely because every change needs some documentation.
+- `documentation` applies when documentation is a primary delivery surface; an incidental docs update does not make it primary, and a code change need not change docs.
 - `breaking change` applies when consumers must migrate or coordinate because of the delivered behavior.
 - `regression` applies only to a Bug with evidence that the behavior previously worked.
 - `blocked` applies while any documented blocker prevents progress. Use a native issue dependency for a GitHub task blocker; identify external blockers in the body or a comment. Remove the label when the final blocker clears.

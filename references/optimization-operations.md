@@ -3,7 +3,7 @@
 Use these operations as evidence-led lenses when optimizing a persistent surface. They are not mandatory output fields, and an aligned surface may need only **keep**. Do not manufacture a change so every operation appears.
 
 - **Keep:** Preserve intentional, aligned state and name why it should remain.
-- **Reconcile:** Resolve contradictions between implementation, configuration, documentation, generated artifacts, tests, or other representations by identifying the authoritative owner.
+- **Reconcile:** Resolve contradictions between implementation, configuration, documentation, generated artifacts, tests, or other representations by identifying the authoritative owner; this is not a checklist of files to change.
 - **Deduplicate:** Remove repeated logic or content while preserving genuinely distinct consumers and contexts.
 - **Consolidate/Merge:** Combine compatible material that has the same owner, contract, and change lifecycle.
 - **Split:** Separate an overloaded artifact when its parts have distinct owners, contracts, audiences, permissions, or change lifecycles.
@@ -12,4 +12,4 @@ Use these operations as evidence-led lenses when optimizing a persistent surface
 - **Tighten:** Reduce ambiguity, excess scope, accidental API, permissions, prose, or validation while preserving required behavior.
 - **Remove:** Delete obsolete, unreachable, contradicted, or redundant material only after confirming that no live consumer still depends on it.
 
-Reconcile contradictions before polishing their wording. Prefer deduplication, consolidation, extraction, movement, tightening, or removal over adding another parallel representation. Preserve behavior and external state unless the user authorizes a change, and verify the resulting single source of truth through the owning skill's full contract.
+Reconcile contradictions before polishing their wording. Apply the [documentation change gate](./readme-standards.md#documentation-change-gate) before recommending prose additions or extraction; remove unnecessary content before giving it another home. Prefer deduplication, consolidation, extraction, movement, tightening, or removal over adding another parallel representation. Preserve behavior and external state unless the user authorizes a change, and verify the resulting single source of truth through the owning skill's full contract.

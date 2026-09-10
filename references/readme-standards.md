@@ -6,6 +6,16 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Treat `README.md` as the repository entrypoint, not as a dumping ground for every possible detail.
 - Treat the line-count and guide-count thresholds below as authoring guidance and manual review prompts, not mechanical validation errors.
 
+## Documentation Change Gate
+
+Apply this gate before deciding to add or expand README prose, guides, API docs, or comments. A code change does not automatically require documentation changes; no documentation change is a valid outcome.
+
+- Identify the reader and the task, decision, or concrete mistake the proposed prose helps them address. Add prose only when that need is unmet.
+- Check existing docs, help, schemas, tests, and runtime instructions first. Prefer correcting, replacing, deleting, or linking existing material over adding sections or files.
+- Give each explanation one authoritative home. Keep machine contracts in schemas, tests, and runtime instructions; add a human explanation only when the reader needs it to act correctly.
+- Keep change-specific rationale and validation evidence in the pull request. Promote only reusable guidance that passes this gate into durable docs.
+- Apply the gate as an internal authoring and review decision, without a mandatory justification template, checklist response, or recurring boilerplate.
+
 ## Goals
 
 - Make the first screen answer what the project is, who it is for, how to start, and where to go next.
@@ -20,7 +30,7 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Keep badges limited to truthful, useful signals such as the latest release, build or deploy state, supported platform or runtime, and product classification.
 - Treat missing visual assets as an improvement opportunity, not a blocker. Do not fabricate decorative images, statuses, or compatibility claims.
 - Put critical compatibility, support, or safety notes immediately after the description when readers need them before starting.
-- Use the README for the common path and the needs of roughly 80 percent of readers. Move less-common, higher-context material into a companion guide.
+- Use the README for the common path and the needs of roughly 80 percent of readers. Move less-common, higher-context material into a companion guide only when it still passes the documentation change gate.
 - Put the primary install or usage path above deeper reference material.
 - If the repo has one truthful primary install or execution path, put that quickstart above local development or build steps. Do not invent a quickstart for a repository without a supported first-run path.
 - Keep section titles concrete and user-facing.
@@ -70,7 +80,7 @@ Typical fit:
 
 Use the companion guides mode when `README.md` can still serve as a strong primary entrypoint, but one or two linear, repository-scoped guides keep long-tail material from overwhelming the common path.
 
-Use `ADVANCED.md` when the extracted material spans several less-common or higher-context subjects. Strong extraction signals include:
+After correcting or removing unnecessary content, use `ADVANCED.md` when useful extracted material spans several less-common or higher-context subjects. These are placement signals for justified content, not requirements to write it:
 
 - complete CLI option, environment-variable, configuration-schema, or precedence references
 - installed-component inventories and platform-, host-, or environment-specific behavior
@@ -94,7 +104,7 @@ Use a topical guide when one substantial subject has its own audience or workflo
 | `UPGRADING.md`       | Version transitions, compatibility changes, and migrations                 |
 | `CONTRIBUTING.md`    | Contributor workflow that exceeds concise README development guidance      |
 
-These names are examples, not a required catalog. Add a guide only when real content justifies it, and choose a stable name that describes its owned subject.
+These names are examples, not a required catalog. Add a guide only when its reader need passes the documentation change gate, and choose a stable name that describes its owned subject.
 
 Every companion guide should:
 
@@ -106,8 +116,8 @@ Every companion guide should:
 
 Treat README length as a review signal rather than a limit:
 
-- Around 250 source lines, review whether long-tail content wants a companion guide.
-- Around 400 source lines, prefer extraction unless the length is intrinsic to the primary contract, such as a GitHub Action's inputs and examples.
+- Around 250 source lines, review whether long-tail content should be corrected, removed, or moved.
+- Around 400 source lines, prefer extraction of still-useful content unless the length is intrinsic to the primary contract, such as a GitHub Action's inputs and examples.
 - Never pad, truncate, or split documentation only to satisfy a line count.
 
 ### GitHub Action README

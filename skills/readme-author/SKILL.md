@@ -37,7 +37,7 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 ## Workflow
 
 1. Confirm the request is README-led rather than frontend, release, or CI-led.
-2. Load [`../../references/readme-standards.md`](../../references/readme-standards.md) and use it to choose the README mode intentionally.
+2. Load [`../../references/readme-standards.md`](../../references/readme-standards.md), apply its documentation change gate before proposing prose or structural additions, and choose a README mode only when restructuring is needed.
 3. Inventory the repository's existing README, root-level guides, docs site, real entrypoints, visual assets, and meaningful status signals before choosing a structure.
 4. Keep the common path and roughly 80 percent of reader needs in the README. Treat 250 and 400 source lines as review signals, not validation limits.
 5. Preserve complete CLI and configuration references when they provide a useful standalone lookup surface. Reconcile them with current help, schemas, and defaults, while keeping prose focused on selection, precedence, consequences, and non-obvious behavior rather than narrating the inventory line by line.
@@ -49,7 +49,7 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 ## Optimization
 
 - **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, primary entrypoints, supported commands, configuration, and other repository evidence that can confirm or contradict documentation claims.
-- **Compare:** Reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, complete reference inventories that drift from their executable sources, line-specific example prose that belongs in a short code comment, and the canonical `ADVANCED.md`, topical-guide, or docs-site extraction signals.
+- **Compare:** Apply the documentation change gate, then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful explanations that belong closer to their point of use. Treat extraction signals as placement guidance for content that remains necessary.
 - **Recommend:** Keep the truthful common path; correct contradictions; deduplicate or consolidate repeated guidance; split overloaded sections; move short line-specific explanation into language-appropriate comments above the relevant code; extract and move justified long-tail material; tighten prose and ordering; and remove stale claims without fabricating behavior.
 - **Apply:** After explicit authorization, perform those operations around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
 - **Verify:** Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.
@@ -68,6 +68,7 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 
 ## Validation
 
+- Confirm added prose and any new guide pass the documentation change gate; an unchanged README is valid when existing sources meet the reader's need.
 - Confirm the final README clearly fits one mode: full README, companion guides, GitHub Action README, or docs wrapper.
 - Confirm any quickstart is truthful and the primary usage path appears before deeper reference material.
 - Confirm complete CLI and configuration inventories match current help, schemas, and defaults without surrounding prose that merely repeats the inventory.

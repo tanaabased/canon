@@ -61,7 +61,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 ## Workflow
 
 1. Confirm the request is action-product-led rather than workflow-led or general-JS/TS-led.
-2. Load the local action conventions plus only the shared README, stack, JS/TS, inline-doc, and input-helper canon needed for the touched surface.
+2. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change, then load the local action conventions and only the shared canon needed for the touched surface.
 3. Keep the action contract coherent across `action.yml`, runtime entrypoint, committed artifact, README, and any dedicated input-normalization helper.
 4. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
 

@@ -207,6 +207,7 @@ Input evidence:
 
 - Explicit target: `octo-user/widgets`.
 - The feature adds an exportable task summary.
+- Existing help and output examples already cover how to use the export; no new reader decision or mistake needs prose.
 - Scope, output examples, compatibility constraints, and acceptance conditions are complete.
 - Maintainers explicitly welcome an outside contributor.
 - The work is larger than a good first issue.
@@ -228,7 +229,7 @@ Expected labels: `help wanted`.
 
 Do not apply `good first issue` because Work size exceeds `3`.
 
-The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, documentation, compatibility evidence, and validation beneath `Delivery and verification`.
+The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, compatibility evidence, and validation beneath `Delivery and verification`. Do not invent a documentation deliverable when the existing sources meet the reader's need; change-specific rationale and validation evidence belong in the pull request.
 
 ### T07: Underspecified External Submission
 

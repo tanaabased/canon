@@ -1,10 +1,10 @@
 # Inline Code and API Docs
 
-Use this reference when inline comments, API docs, or starter-file comments are in scope for a code-bearing surface.
+Before deciding whether inline comments, API docs, or starter-file comments need to change, apply the [documentation change gate](./readme-standards.md#documentation-change-gate). Use the rules below only for explanations that pass it.
 
 ## Default Rules
 
-- Document public contracts, non-obvious invariants, side effects, error cases, and important integration expectations.
+- Document public contracts, non-obvious invariants, side effects, error cases, and integration expectations when callers or maintainers need an explanation beyond the existing code, types, or executable contract.
 - Keep API docs clear about inputs, outputs, side effects, and failure behavior when those details are not already obvious from the code.
 - In reusable boilerplate or templates, allow a few terse inline comments when they explain a non-obvious contract, extension point, or shell or runtime edge case.
 - Keep comments sparse; prefer a small number of high-value teaching comments over comment-heavy files.

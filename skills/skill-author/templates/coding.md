@@ -60,7 +60,7 @@ metadata:
 
 ## Documentation
 
-- Describe how this skill documents the owned code surface.
+- Link and apply README Standards' documentation change gate before deciding whether prose needs to change, then describe how this skill documents the owned code surface when needed.
 - Keep documentation guidance focused on public contracts, user-facing examples, and durable repo-local surfaces that belong to this skill.
 - Link documentation-specific references here when they materially shape the owned surface.
 - Keep `## Bundled Resources` as an inventory, not the only discovery path for documentation guidance.

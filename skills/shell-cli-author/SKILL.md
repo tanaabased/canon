@@ -56,6 +56,7 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 ## Documentation
 
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat help output, version output, logging text, and error text as the maintained shell CLI's user-facing documentation.
 - Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, stream behavior, color, and displayed defaults.
 - Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) only for sparse inline comments around shell safety, quoting, platform differences, destructive operations, environment assumptions, and other non-obvious shell edge cases.
