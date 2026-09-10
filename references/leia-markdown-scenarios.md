@@ -124,17 +124,14 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Scope model credentials and model-specific environment to the model-backed scenario or matrix entry. Other scenarios must not receive them.
 - Review the repository default when model availability or pricing changes. Do not encode a current provider model identifier in shared Canon guidance.
 
-## Generator Safety
+## Leia Version and Shell Syntax
 
-Leia may embed parsed command text inside a JavaScript template literal while generating its harness. Within executable Leia blocks:
+The shell-command serialization fix for [lando/leia#57](https://github.com/lando/leia/issues/57) landed in [lando/leia#71](https://github.com/lando/leia/pull/71). It first reached npm in [`@lando/leia@1.0.0-beta.7`](https://www.npmjs.com/package/@lando/leia/v/1.0.0-beta.7). Canon requires [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer because beta.9 is the first retained GitHub release that documents the fix. Declare that floor in the consumer's development dependencies and lockfile, and use Node.js 24 or newer as required by the package.
 
-- Do not use literal backticks. Use `$(command)` for command substitution.
-- Do not use braced shell expansions such as `${VAR}`. Use `$VAR`, or quote it as `"$VAR"suffix` when text follows.
-- Do not use numeric backreferences `\0` through `\9`. JavaScript consumes or rejects those escapes before the shell receives them; rewrite the command without numeric backreferences or move it into a checked-in helper.
-- Move shell logic that genuinely requires braced parameter expansion into a checked-in helper and call that helper from the README.
-- Do not rely on escaping content through both JavaScript-template and shell layers.
-
-Markdown fence markers, inline-code backticks outside executable blocks, `$(...)`, `$VAR`, `[ ... ]`, and `[[ ... ]]` remain safe.
+- Write shell syntax that is valid for the selected shell directly in executable Leia blocks. Leia preserves the command text while generating its harness and shell scripts.
+- Literal backticks, braced expansions such as `${VAR}` and `${VAR:-default}`, command substitutions such as `$(command)`, octal escapes such as `\033`, and numeric backreferences such as `\1` may be used when they express the scenario clearly.
+- Prefer `$(command)` over backticks in new shell code for readability and nesting, not as a Leia compatibility workaround.
+- Keep shell quoting and escaping correct for the selected shell. Move logic into a checked-in helper only when its complexity or reuse justifies the helper, not to protect Leia's generated harness.
 
 ## JavaScript Package Boundary
 

@@ -1,0 +1,30 @@
+name: Leia Tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  leia-tests:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - macos-26
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Run template-sensitive shell fixture
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/canon-leia"
+          TMPDIR="$RUNNER_TEMP/canon-leia" npx --yes --package=@lando/leia@1.0.0-beta.9 leia test/leia-template-sensitive-shell.fixture.md --stdin
