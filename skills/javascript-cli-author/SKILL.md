@@ -61,6 +61,7 @@ Tanaab-based authoring and standardization of true JavaScript or TypeScript Bun 
 
 ## Documentation
 
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat `--help`, `--version`, displayed defaults, and maintained examples as the CLI's primary user-facing documentation.
 - Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, streams, color, optional placeholders, and displayed defaults.
 - Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) only for sparse inline comments around non-obvious parser behavior, option precedence, environment handling, build-artifact assumptions, or shell/runtime edge cases.

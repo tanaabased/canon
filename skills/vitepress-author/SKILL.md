@@ -51,7 +51,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
 - Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
-- Use [../../references/readme-standards.md](../../references/readme-standards.md) only to preserve the boundary that README-vs-docs-site selection is a different owned surface.
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before adding prose or pages; leave README-vs-docs-site selection to README Author.
 - Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy or generic Vue ownership.
 - Keep Markdown page implementation centered on existing global components and call out missing shared-system primitives instead of hiding them inside one page.
 
@@ -73,6 +73,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 ## Documentation
 
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat VitePress Markdown files as the primary documentation surface this skill writes and maintains.
 - Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for docs-site Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
 - For reusable component docs pages, follow the shared reference's playground-first Usage pattern and leave reusable playground behavior to `tanaab-vue-author`.

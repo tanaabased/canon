@@ -91,14 +91,14 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 1. Confirm the request is native OpenClaw-code-plugin-led rather than bundle-, generic-JavaScript-, baseline-, workflow-, or host-operations-led.
 2. Classify the active surface as identity/manifest, SDK entry and registration, runtime behavior, configuration, plugin-owned commands, package proof, or deployment.
 3. Load only the relevant shared canon, local plugin files, installed SDK types, and current official OpenClaw references for that surface.
-4. Reconcile the manifest, package metadata, runtime entry, documentation, tests, and built artifact before adding another representation.
+4. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change. Reconcile contradictions among the manifest, package metadata, runtime entry, existing documentation, tests, and built artifact without treating them as files that must all change.
 5. Make the smallest coherent plugin-owned change and run the narrowest repo-native lint, format, type-check, unit-test, build, and plugin-contract checks that apply.
 6. When package contents or delivery changed, create and inspect each pipeline's npm-pack artifact, then run that registry's dry run against the artifact its pipeline produced.
 7. Run installed-package, Gateway, model, or agent scenarios only when task scope explicitly requires operational proof.
 
 ## Documentation
 
-- Apply [README standards](../../references/readme-standards.md) and [README Author](../readme-author/SKILL.md) when the repository entry surface changes; keep first use short and move development, dogfooding, or proof-heavy flows into focused companion docs.
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work; use [README Author](../readme-author/SKILL.md) for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
 - Document the supported explicit install sources, such as `npm:` and `clawhub:`, with the npm package identity while using the platform plugin id for enable, inspect, configuration, and plugin-owned command examples.
 - State compatibility requirements, activation or configuration needs, one short first verification, and any meaningful permissions, side effects, trust assumptions, or safety limits.
 - Apply [inline code and API documentation](../../references/inline-code-and-api-docs.md) to exported plugin contracts and surprising SDK lifecycle or failure behavior without narrating obvious registration code.
