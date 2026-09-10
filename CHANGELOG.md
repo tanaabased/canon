@@ -2,7 +2,7 @@
 
 - Added shared issue-backed commit guidance with explicit Agent System prefix ownership. [#50](https://github.com/tanaabased/canon/pull/50)
 - Fixed PowerShell template tests hanging or timing out during help and version checks. [#49](https://github.com/tanaabased/canon/pull/49)
-- Removed obsolete Leia shell-syntax workarounds after adopting `@lando/leia@1.0.0-beta.9` and added executable coverage for template-sensitive syntax. [#52](https://github.com/tanaabased/canon/pull/52)
+- Updated Leia guidance for `@lando/leia@1.0.0-beta.9` or newer, removing obsolete special-character workarounds. [#52](https://github.com/tanaabased/canon/pull/52)
 - Updated authoring and optimization skills to require an unmet reader need before adding documentation. [#48](https://github.com/tanaabased/canon/pull/48)
 
 ## v0.9.0 - [August 25, 2026](https://github.com/tanaabased/canon/releases/tag/v0.9.0)

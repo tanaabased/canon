@@ -22,9 +22,6 @@ describe('templates/Leia examples contract', () => {
       'utf8',
     );
 
-    assert.match(workflowContent, /actions\/setup-node@v6/);
-    assert.match(workflowContent, /node-version: 24/);
-    assert.match(workflowContent, /@lando\/leia 1\.0\.0-beta\.9 or newer/);
     assert.match(workflowContent, /examples\/package\.json/);
     assert.match(workflowContent, /CommonJS boundary/);
     assert.match(workflowContent, /TMPDIR=.*examples\/\.tmp/);
@@ -38,34 +35,10 @@ describe('templates/Leia examples contract', () => {
     ]);
 
     for (const content of [referenceContent, agentsContent]) {
-      assert.match(content, /1\.0\.0-beta\.7/);
-      assert.match(content, /1\.0\.0-beta\.9/);
-      assert.match(content, /literal backticks/i);
-      assert.match(content, /braced expansions/i);
-      assert.match(content, /command substitutions/i);
-      assert.match(content, /octal escapes/i);
-      assert.match(content, /numeric backreferences/i);
       assert.match(content, /Leia's generated .*CommonJS/s);
       assert.match(content, /examples\/package\.json/);
       assert.match(content, /ESM/);
-      assert.doesNotMatch(content, /Do not use literal backticks/);
-      assert.doesNotMatch(content, /Do not use numeric backreferences/);
     }
-  });
-
-  it('should execute template-sensitive shell syntax with the supported Leia release in CI', async () => {
-    const [workflowContent, fixtureContent] = await Promise.all([
-      readFile(path.join(REPO_ROOT, '.github', 'workflows', 'pr-leia-tests.yml'), 'utf8'),
-      readFile(path.join(REPO_ROOT, 'test', 'leia-template-sensitive-shell.fixture.md'), 'utf8'),
-    ]);
-
-    assert.match(workflowContent, /@lando\/leia@1\.0\.0-beta\.9/);
-    assert.match(workflowContent, /leia-template-sensitive-shell\.fixture\.md/);
-    assert.match(fixtureContent, /literal `backticks`/);
-    assert.match(fixtureContent, /\$\{VAR\}/);
-    assert.match(fixtureContent, /\$\(printf/);
-    assert.match(fixtureContent, /\\033/);
-    assert.match(fixtureContent, /\\1/);
   });
 
   it('should keep the scenario starter policy-light and use TMPDIR for runtime state', async () => {

@@ -126,12 +126,10 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Leia Version and Shell Syntax
 
-The shell-command serialization fix for [lando/leia#57](https://github.com/lando/leia/issues/57) landed in [lando/leia#71](https://github.com/lando/leia/pull/71). It first reached npm in [`@lando/leia@1.0.0-beta.7`](https://www.npmjs.com/package/@lando/leia/v/1.0.0-beta.7). Canon requires [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer because beta.9 is the first retained GitHub release that documents the fix. Declare that floor in the consumer's development dependencies and lockfile, and use Node.js 24 or newer as required by the package.
+Use [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer for executable Leia scenarios; this release includes the shell-command serialization fix.
 
-- Write shell syntax that is valid for the selected shell directly in executable Leia blocks. Leia preserves the command text while generating its harness and shell scripts.
-- Literal backticks, braced expansions such as `${VAR}` and `${VAR:-default}`, command substitutions such as `$(command)`, octal escapes such as `\033`, and numeric backreferences such as `\1` may be used when they express the scenario clearly.
+- Write syntax valid for the selected shell directly in executable Leia blocks, including literal backticks, braced expansions such as `${VAR}` and `${VAR:-default}`, command substitutions such as `$(command)`, octal escapes such as `\033`, and numeric backreferences such as `\1`. No Leia-specific escaping or helper extraction is needed.
 - Prefer `$(command)` over backticks in new shell code for readability and nesting, not as a Leia compatibility workaround.
-- Keep shell quoting and escaping correct for the selected shell. Move logic into a checked-in helper only when its complexity or reuse justifies the helper, not to protect Leia's generated harness.
 
 ## JavaScript Package Boundary
 
