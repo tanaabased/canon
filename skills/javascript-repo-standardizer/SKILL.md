@@ -64,6 +64,8 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is specifically about JS/TS/Bun repo baseline standardization rather than implementation authorship.
 2. Load the local lint baseline reference, the workspace baseline when applicable, and the shared repo-structure and coding-stack canon needed for the target repo surface.
 3. Keep lint, format, type-check, npm package identity, npm deployment, and repo-structure ownership explicit while standardizing only the layers the repo actually needs.

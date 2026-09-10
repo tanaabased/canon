@@ -58,6 +58,8 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
 3. Inspect project-local component and docs examples before using bundled fallback examples.

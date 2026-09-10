@@ -110,6 +110,8 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `namespace` or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
 
 2. Load only the needed shared references.

@@ -76,6 +76,7 @@
 
 ## Change Discipline
 
+- Apply the shared [commit-subject convention](./references/commit-subjects.md) when authoring issue-backed commits.
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
 - Before rolling a new canon release, run [`prompts/optimize-canon-project.md`](./prompts/optimize-canon-project.md) as a planning pass and review the resulting staged optimization plan.

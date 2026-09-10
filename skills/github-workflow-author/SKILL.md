@@ -61,6 +61,8 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is workflow-authoring-led rather than triage- or runtime-led.
 2. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether comments or other prose need to change. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters. Load [Homebrew Freshness in GitHub Actions](references/homebrew-ci-freshness.md) when Homebrew-backed dependency installation is in scope.
 3. Keep workflow ownership on independent trigger or permission design, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Preserve canonical workflow filenames named by narrower skills, apply the shared pull-request gate defaults when multiple validation surfaces are present, and preserve those skills' surface-local lifecycles.

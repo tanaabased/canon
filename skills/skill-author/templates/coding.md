@@ -58,6 +58,8 @@ metadata:
 3. Make the smallest coherent change and validate it directly.
 4. Stop once the owned code path is complete and verified.
 
+- Link the shared Commit Subjects reference when the skill delivers issue-backed commits.
+
 ## Documentation
 
 - Link and apply README Standards' documentation change gate before deciding whether prose needs to change, then describe how this skill documents the owned code surface when needed.

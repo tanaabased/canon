@@ -66,6 +66,8 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is primarily JS- or TS-runtime-led or uses the canonical npm package deployment lifecycle rather than being CLI-, workflow-graph-, or broader release-system-led.
 2. Load only the relevant JavaScript or TypeScript files, or the package manifest and release workflow for npm deployment, plus the shared references that directly shape the change.
 3. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.

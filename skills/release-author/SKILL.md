@@ -85,7 +85,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 2. Check `git status --short`, check out and pull the latest target branch, fetch tags, and verify `gh auth status`.
 3. Inspect the root package, any workspace manifests, relevant package versions, matching tags, `CHANGELOG.md`, and `.github/workflows/release.yml`.
 4. Use `$tanaab-changelog-author` to update the unreleased changelog entries when they are incomplete for the upcoming release.
-5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release.
+5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release, applying the shared [commit-subject convention](../../references/commit-subjects.md) for issue-backed commits.
 6. Choose the release tag: explicit user version wins; otherwise default to patch, use minor for meaningful user or developer additions, and reserve major for explicit or unusually large incompatible changes.
 7. Confirm the proposed tag does not already exist on the remote before creating the release.
 8. Infer prerelease only when the final tag has a semver prerelease suffix such as `v1.0.0-beta.2`; never invent a prerelease suffix automatically.

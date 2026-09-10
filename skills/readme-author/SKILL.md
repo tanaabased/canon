@@ -36,6 +36,8 @@ Tanaab-based authoring and standardization of repository README surfaces. Use wh
 
 ## Workflow
 
+When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+
 1. Confirm the request is README-led rather than frontend, release, or CI-led.
 2. Load [`../../references/readme-standards.md`](../../references/readme-standards.md), apply its documentation change gate before proposing prose or structural additions, and choose a README mode only when restructuring is needed.
 3. Inventory the repository's existing README, root-level guides, docs site, real entrypoints, visual assets, and meaningful status signals before choosing a structure.
