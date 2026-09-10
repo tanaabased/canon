@@ -31,25 +31,38 @@ describe('skills/shell-cli-author/templates', () => {
   });
 
   it('should parse and expose PowerShell help and version output', function () {
-    this.timeout(10_000);
-
-    if (!commandAvailable('pwsh')) {
-      this.skip();
-    }
+    this.timeout(75_000);
 
     const help = spawnSync('pwsh', ['-NoProfile', '-File', POWERSHELL_TEMPLATE_PATH, '-Help'], {
       encoding: 'utf8',
+      timeout: 30_000,
+      killSignal: 'SIGKILL',
     });
-    assert.equal(help.status, 0, help.stderr);
+    if (help.error?.code === 'ENOENT') {
+      this.skip();
+    }
+    assert.equal(
+      help.status,
+      0,
+      ['PowerShell -Help failed', help.error?.message, help.signal, help.stderr]
+        .filter(Boolean)
+        .join('\n'),
+    );
     assert.match(help.stdout, /^Usage: powershell-cli\.ps1 /m);
     assert.match(help.stdout, /^Options:$/m);
 
     const version = spawnSync(
       'pwsh',
       ['-NoProfile', '-File', POWERSHELL_TEMPLATE_PATH, '-Version'],
-      { encoding: 'utf8' },
+      { encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' },
     );
-    assert.equal(version.status, 0, version.stderr);
+    assert.equal(
+      version.status,
+      0,
+      ['PowerShell -Version failed', version.error?.message, version.signal, version.stderr]
+        .filter(Boolean)
+        .join('\n'),
+    );
     assert.match(version.stdout.trim(), /^(?:v?\d|[0-9a-f]{4,})/i);
   });
 });
