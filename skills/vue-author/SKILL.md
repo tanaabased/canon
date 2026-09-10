@@ -94,6 +94,7 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 
 ## Documentation
 
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
 - Prefer existing target-project components, component docs pages, playgrounds, global registration patterns, and theme styles over bundled examples.
 - Document component APIs through props, meaningful public slots, boolean and enum states, a top Usage playground, generated code examples, and source links when the project has stable source paths or URLs.
 - Prefer component docs pages shaped as H1 and intro copy, `<script setup>` schema, `## Usage` playground, then API sections such as Props, Slots, Variables, and focused notes.

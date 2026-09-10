@@ -87,7 +87,7 @@ Audit a project's checked-in and contract-required repository surfaces against t
 
 - Every tracked local or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
 - Every live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
-- Every selected skill's high-value canonical checks are accounted for, including concrete documentation synchronization, structure, extraction, testing, and validation expectations when those surfaces are present.
+- Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/readme-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
 - Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
 - The report states either `optimization recommended` or `converged — no optimization pass recommended`.

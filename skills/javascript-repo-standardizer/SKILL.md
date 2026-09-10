@@ -72,6 +72,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 ## Documentation
 
+- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
 - Document durable repo baseline choices only when they affect future maintainers or future agents, such as repo-local `AGENTS.md`, README notes, package scripts, config comments, or template comments.
 - Prefer short repo-local policy notes over broad documentation rewrites when standardizing lint, format, script, or folder baselines.
 - Keep config comments sparse and limited to non-obvious extension points, generated-file exclusions, or project-specific deviations from the shared baseline.
