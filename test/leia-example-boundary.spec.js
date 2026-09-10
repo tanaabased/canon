@@ -53,26 +53,29 @@ describe('templates/Leia examples contract', () => {
     }
   });
 
-  it('should execute template-sensitive shell syntax with the supported Leia release in CI', async () => {
-    const [workflowContent, fixtureContent] = await Promise.all([
-      readFile(
-        path.join(REPO_ROOT, '.github', 'workflows', 'pr-leia-tests.yml'),
-        'utf8',
-      ),
-      readFile(
-        path.join(REPO_ROOT, 'test', 'leia-template-sensitive-shell.fixture.md'),
-        'utf8',
-      ),
-    ]);
+  it(
+    'should execute template-sensitive shell syntax with the supported Leia release in CI',
+    async () => {
+      const [workflowContent, fixtureContent] = await Promise.all([
+        readFile(
+          path.join(REPO_ROOT, '.github', 'workflows', 'pr-leia-tests.yml'),
+          'utf8',
+        ),
+        readFile(
+          path.join(REPO_ROOT, 'test', 'leia-template-sensitive-shell.fixture.md'),
+          'utf8',
+        ),
+      ]);
 
-    assert.match(workflowContent, /@lando\/leia@1\.0\.0-beta\.9/);
-    assert.match(workflowContent, /leia-template-sensitive-shell\.fixture\.md/);
-    assert.match(fixtureContent, /literal `backticks`/);
-    assert.match(fixtureContent, /\$\{VAR\}/);
-    assert.match(fixtureContent, /\$\(printf/);
-    assert.match(fixtureContent, /\\033/);
-    assert.match(fixtureContent, /\\1/);
-  });
+      assert.match(workflowContent, /@lando\/leia@1\.0\.0-beta\.9/);
+      assert.match(workflowContent, /leia-template-sensitive-shell\.fixture\.md/);
+      assert.match(fixtureContent, /literal `backticks`/);
+      assert.match(fixtureContent, /\$\{VAR\}/);
+      assert.match(fixtureContent, /\$\(printf/);
+      assert.match(fixtureContent, /\\033/);
+      assert.match(fixtureContent, /\\1/);
+    },
+  );
 
   it('should keep the scenario starter policy-light and use TMPDIR for runtime state', async () => {
     const readmeContent = await readFile(
