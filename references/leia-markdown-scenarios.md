@@ -124,17 +124,9 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Scope model credentials and model-specific environment to the model-backed scenario or matrix entry. Other scenarios must not receive them.
 - Review the repository default when model availability or pricing changes. Do not encode a current provider model identifier in shared Canon guidance.
 
-## Generator Safety
+## Leia Version and Shell Syntax
 
-Leia may embed parsed command text inside a JavaScript template literal while generating its harness. Within executable Leia blocks:
-
-- Do not use literal backticks. Use `$(command)` for command substitution.
-- Do not use braced shell expansions such as `${VAR}`. Use `$VAR`, or quote it as `"$VAR"suffix` when text follows.
-- Do not use numeric backreferences `\0` through `\9`. JavaScript consumes or rejects those escapes before the shell receives them; rewrite the command without numeric backreferences or move it into a checked-in helper.
-- Move shell logic that genuinely requires braced parameter expansion into a checked-in helper and call that helper from the README.
-- Do not rely on escaping content through both JavaScript-template and shell layers.
-
-Markdown fence markers, inline-code backticks outside executable blocks, `$(...)`, `$VAR`, `[ ... ]`, and `[[ ... ]]` remain safe.
+Use [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer. Follow the selected shell's normal syntax and quoting rules; no additional escaping, rewriting, or helper extraction is needed to work around Leia's former harness bug.
 
 ## JavaScript Package Boundary
 
