@@ -55,7 +55,10 @@ describe('templates/Leia examples contract', () => {
 
   it('should execute template-sensitive shell syntax with the supported Leia release in CI', async () => {
     const [workflowContent, fixtureContent] = await Promise.all([
-      readFile(path.join(REPO_ROOT, '.github', 'workflows', 'pr-leia-tests.yml'), 'utf8'),
+      readFile(
+        path.join(REPO_ROOT, '.github', 'workflows', 'pr-leia-tests.yml'),
+        'utf8',
+      ),
       readFile(
         path.join(REPO_ROOT, 'test', 'leia-template-sensitive-shell.fixture.md'),
         'utf8',
