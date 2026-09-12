@@ -11,7 +11,7 @@ describe('templates/task-completion-pull-request', () => {
     assert.match(content, /## Regression proof/);
     assert.match(content, /Affected baseline:/);
     assert.match(content, /Regression test or reproduction harness:/);
-    assert.match(content, /Disposable execution environment:/);
+    assert.match(content, /Execution environment:/);
     assert.match(content, /Failing run and expected failure:/);
     assert.match(content, /Passing run with the fix:/);
     assert.ok(content.indexOf('## Regression proof') < content.indexOf('## Acceptance evidence'));

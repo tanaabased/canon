@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import { authorIssueForm } from '../skills/github-issue-form-author/lib/issue-form-author.js';
 import { normalizeIssueFormSubmission } from '../skills/github-issue-form-author/lib/issue-form-normalizer.js';
 import { renderFormSubmission } from '../skills/github-issue-form-author/utils/render-form-submission.js';
+import { renderTaskBody } from '../skills/task-author/utils/render-task-body.js';
+import extractAcceptanceCriteria from '../skills/task-completion-check/utils/extract-acceptance-criteria.js';
+import classifyTaskCompletion from '../skills/task-completion-check/utils/classify-task-completion.js';
 import fixtures from './task-management-fixtures.js';
 
 function text(value) {
@@ -13,9 +16,12 @@ function intakeAnswers({ kind, sections }) {
   const normalizedKind = kind.toLowerCase();
   if (normalizedKind === 'task') {
     return {
-      work: [sections.context, sections.outcome, ...sections.scope].map(text).join('\n'),
+      work: [sections.context, sections.outcome, ...(sections.scope ?? [])]
+        .filter(Boolean)
+        .map(text)
+        .join('\n'),
       completion: [...sections.acceptanceCriteria, sections.delivery].map(text).join('\n'),
-      'task-context': [sections.constraints, ...sections.outOfScope]
+      'task-context': [sections.constraints, ...(sections.outOfScope ?? [])]
         .filter(Boolean)
         .map(text)
         .join('\n'),
@@ -36,10 +42,10 @@ function intakeAnswers({ kind, sections }) {
   }
   return {
     problem: sections.problem,
-    outcome: sections.desiredOutcome,
+    outcome: sections.desiredOutcome ?? sections.acceptanceCriteria.join('\n'),
     'additional-context': [
-      ...sections.inScope,
-      ...sections.outOfScope,
+      ...(sections.inScope ?? []),
+      ...(sections.outOfScope ?? []),
       ...sections.acceptanceCriteria,
       sections.alternatives,
     ]
@@ -59,6 +65,28 @@ function sourceEvidence({ kind, sections }) {
 }
 
 describe('task-management cross-skill intake boundary', () => {
+  it('should retain completion criteria and the linked-PR gate for a compact Feature', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T06');
+    const { body } = renderTaskBody('feature', fixture.input.sections);
+    const criteria = extractAcceptanceCriteria(body);
+    assert.deepEqual(
+      criteria.map(({ text }) => text),
+      fixture.input.sections.acceptanceCriteria,
+    );
+    assert.doesNotMatch(body, /## Scope|## Delivery and verification/);
+    const evidence = { criteria, errors: [], pullRequests: [], task: { state: 'OPEN' } };
+    assert.equal(classifyTaskCompletion(evidence).status, 'blocked');
+    const satisfied = {
+      ...evidence,
+      criteria: criteria.map((criterion) => ({ ...criterion, complete: true })),
+    };
+    assert.equal(classifyTaskCompletion(satisfied).status, 'pending');
+    assert.equal(
+      classifyTaskCompletion({ ...satisfied, pullRequests: [{ outcome: 'landed' }] }).status,
+      'ready',
+    );
+  });
+
   for (const fixture of fixtures.filter(({ id }) => /^T0[1-6]$/.test(id))) {
     it(`should preserve ${fixture.id} evidence without treating intake as canonical`, () => {
       const repositoryMode =

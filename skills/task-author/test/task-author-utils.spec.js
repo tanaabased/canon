@@ -52,8 +52,8 @@ describe('Task Author deterministic utilities', () => {
     assert.match(incomplete.body, /## Reproduction or evidence\n\n## Impact/);
 
     const withoutDelivery = renderTaskBody('bug', { ...completeBugSections, delivery: '' });
-    assert.deepEqual(withoutDelivery.missing, ['delivery']);
-    assert.match(withoutDelivery.body, /## Delivery and verification\n\n## Acceptance criteria/);
+    assert.deepEqual(withoutDelivery.missing, []);
+    assert.doesNotMatch(withoutDelivery.body, /## Delivery and verification/);
   });
 
   it('should render the broad Task delivery contract without requiring exclusions', () => {
@@ -71,7 +71,7 @@ describe('Task Author deterministic utilities', () => {
     assert.doesNotMatch(withoutExclusions.body, /### Out of scope/);
   });
 
-  it('should render one bounded Feature with required delivery evidence', () => {
+  it('should preserve a detailed Feature without requiring routine delivery prose', () => {
     const complete = renderTaskBody('feature', completeFeatureSections);
     assert.match(complete.body, /^## Problem or opportunity/);
     assert.match(complete.body, /## Scope\n\n### In scope/);
@@ -82,11 +82,25 @@ describe('Task Author deterministic utilities', () => {
       ...completeFeatureSections,
       delivery: '',
     });
-    assert.deepEqual(withoutDelivery.missing, ['delivery']);
-    assert.match(
-      withoutDelivery.body,
-      /## Delivery and verification\n\n## Alternatives and constraints/,
-    );
+    assert.deepEqual(withoutDelivery.missing, []);
+    assert.doesNotMatch(withoutDelivery.body, /## Delivery and verification/);
+  });
+
+  it('should omit empty sections while keeping the parent of a useful exclusion', () => {
+    for (const kind of ['task', 'feature']) {
+      const sections = {
+        [kind === 'task' ? 'context' : 'problem']: 'Export the existing task summary.',
+        acceptanceCriteria: ['The exported summary retains the existing fields'],
+      };
+      const compact = renderTaskBody(kind, sections);
+      assert.deepEqual(compact.missing, []);
+      assert.equal(compact.body.match(/^## /gm).length, 2);
+      assert.doesNotMatch(compact.body, /## Scope|## Delivery|## Desired outcome|## Outcome/);
+
+      const bounded = renderTaskBody(kind, { ...sections, outOfScope: ['Changing the fields'] });
+      assert.match(bounded.body, /## Scope\n\n### Out of scope\n\n- Changing the fields/);
+      assert.doesNotMatch(bounded.body, /### In scope/);
+    }
   });
 
   it('should render ordered fallback YAML without unset or native-only concepts', () => {

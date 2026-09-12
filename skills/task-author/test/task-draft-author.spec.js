@@ -4,11 +4,62 @@ import { authorTaskDraft } from '../lib/task-draft-author.js';
 import fixtures, {
   completeBugSections,
   completeFeatureSections,
+  compactFeatureSections,
   fakeClient,
   organizationCapabilities,
 } from '../../../test/task-management-fixtures.js';
 
 describe('skills/task-author/lib/task-draft-author', () => {
+  it('should accept compact tasks without inventing sections or delivery obligations', () => {
+    const { observedBehavior, expectedBehavior, reproduction, acceptanceCriteria } =
+      completeBugSections;
+    const cases = [
+      [
+        'Task',
+        {
+          context: 'Update the two Leia guidance files for the fixed release.',
+          acceptanceCriteria: [
+            'Both files require the fixed version and allow normal shell quoting',
+          ],
+        },
+      ],
+      ['Feature', compactFeatureSections],
+      [
+        'Bug',
+        {
+          observedBehavior,
+          expectedBehavior,
+          reproduction,
+          acceptanceCriteria,
+          environment: 'Disposable test directory; no live cache writes.',
+        },
+      ],
+    ];
+    for (const [kind, sections] of cases) {
+      const report = authorTaskDraft(
+        { target: 'acme/widgets', kind, title: 'Resolve the bounded request', sections },
+        { githubClient: fakeClient(organizationCapabilities()) },
+      );
+      assert.equal(report.status, 'ready');
+      assert.deepEqual(report.bodyEvidence.missing, []);
+      assert.deepEqual(report.comments, []);
+      assert.doesNotMatch(report.body, /## Delivery and verification|## Scope/);
+      if (kind === 'Bug') assert.ok(report.body.includes(sections.environment));
+
+      const incomplete = authorTaskDraft(
+        {
+          target: 'acme/widgets',
+          kind,
+          title: report.title,
+          sections: { ...sections, acceptanceCriteria: [] },
+        },
+        { githubClient: fakeClient(organizationCapabilities()) },
+      );
+      assert.equal(incomplete.status, 'needs_input');
+      assert.deepEqual(incomplete.bodyEvidence.missing, ['acceptanceCriteria']);
+    }
+  });
+
   for (const fixture of fixtures) {
     it(`should satisfy ${fixture.id} without mutating GitHub`, () => {
       const client = fakeClient(fixture.capabilities);

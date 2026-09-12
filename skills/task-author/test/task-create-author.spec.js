@@ -79,6 +79,34 @@ describe('skills/task-author/lib/task-create-author', () => {
     );
   });
 
+  it('should require a fresh digest after editing the final compact prose', () => {
+    const fixture = fixtures.find(({ id }) => id === 'T06');
+    const preview = createTask(fixture.input, {
+      githubClient: fakeGitHubTaskClient(fixture.capabilities),
+    });
+    const edited = {
+      ...approve(fixture.input, preview),
+      sections: {
+        ...fixture.input.sections,
+        problem: 'Export the existing task summary so automation can use it directly.',
+      },
+    };
+    const client = fakeGitHubTaskClient(fixture.capabilities);
+    const stale = createTask(edited, { githubClient: client });
+    assert.equal(stale.status, 'approval_required');
+    assert.notEqual(stale.publication.digest, preview.publication.digest);
+    assert.equal(
+      client.calls.some(({ operation }) => operation === 'createIssue'),
+      false,
+    );
+
+    const created = createTask(approve(edited, stale), { githubClient: client });
+    assert.equal(created.status, 'created');
+    assert.equal(client.state.issue.body, stale.plannedMutation.issue.body);
+    assert.ok(client.state.issue.body.includes(edited.sections.problem));
+    assert.doesNotMatch(client.state.issue.body, /## Scope|## Delivery and verification/);
+  });
+
   it('should block credential-shaped publication text before mutation', () => {
     const fixture = fixtures.find(({ id }) => id === 'T01');
     const input = {

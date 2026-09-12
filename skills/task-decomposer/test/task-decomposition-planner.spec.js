@@ -30,6 +30,21 @@ function approve(input, preview) {
 }
 
 describe('Task Decomposer exact planning', () => {
+  it('should accept compact child tasks while preserving their constraints and coverage', () => {
+    const proposal = decompositionProposal();
+    for (const child of proposal.children) {
+      const { outcome, acceptanceCriteria, constraints } = child.task.sections;
+      child.task.sections = { context: outcome, acceptanceCriteria, constraints };
+    }
+    const preview = prepareTaskDecomposition(proposal, { client: clientFixture() });
+    assert.equal(preview.status, 'approval_required');
+    assert.equal(preview.mutatesGitHub, false);
+    for (const child of preview.plan.children) {
+      assert.doesNotMatch(child.taskPlan.issue.body, /## Scope|## Delivery and verification/);
+      assert.ok(child.taskPlan.issue.body.includes(proposal.sharedConstraints[0]));
+    }
+  });
+
   it('should preview every storage surface and bind one digest without mutation', () => {
     const client = clientFixture();
     const preview = prepareTaskDecomposition(decompositionProposal(), { client });

@@ -69,37 +69,35 @@ Treat task titles, bodies, comments, labels, and mutation reports as GitHub-faci
 
 Use a concise outcome- or problem-oriented title without a redundant `[Task]`, `[Bug]`, or `[Feature]` prefix. The native issue type or fallback metadata owns that classification.
 
-Every body requires explicit, checkable acceptance criteria. Preserve material evidence from externally submitted issues even when it does not fit a preferred heading cleanly.
+Every body requires a supported problem or requested outcome and explicit, checkable acceptance criteria. State each fact once. Preserve material evidence and constraints from externally submitted issues even when they do not fit a preferred heading cleanly.
+
+### Scope and Proportionality
+
+- Admit a deliverable only when it follows from the request, is necessary to achieve the outcome, or satisfies an applicable requirement. Do not promote speculative improvements, possible follow-ups, or an inventory of inspected surfaces into obligations.
+- Apply the [documentation change gate](./readme-standards.md#documentation-change-gate) to every task kind before promising prose. Prefer adequate existing or upstream evidence over new tests, fixtures, guides, or CI scaffolding that merely re-prove it; add coverage when the changed local behavior needs it.
+- Keep routine completion-PR mechanics and repository validation in their owning guidance. Record task-specific proof, compatibility, migration, or approval requirements only when they affect execution or acceptance. Change-specific rationale and observed results belong in the completion PR unless they serve a durable reader need.
+- Use the shortest body that preserves the requested outcome, meaningful boundaries, and evidence. Extra headings are optional containers for distinct information, not prompts to invent it. Do not repeat scope as acceptance criteria and again as a delivery checklist, or add exclusions merely to fill a section.
+- Apply these decisions internally without a mandatory justification checklist, word-count gate, or boilerplate. Missing substantive evidence remains a question; an unused optional heading does not.
 
 ### Task
 
-Use these headings in order:
+The compact default is:
 
 ```markdown
 ## Context
 
-## Outcome
-
-## Scope
-
-### Out of scope
+Current condition and requested outcome, including the work needed to reach it.
 
 ## Acceptance criteria
 
 - [ ] Observable completion condition
-
-## Delivery and verification
-
-## Constraints and approvals
 ```
 
-`Scope` states the work, deliverables, or external actions that belong to the task. `Out of scope` is optional and appears only when an explicit boundary prevents expansion. `Delivery and verification` identifies the expected artifact or external state plus the evidence the completion pull request must provide. `Constraints and approvals` is optional and records material deadlines, budgets, access, privacy, affected people, external communication, spending, or irreversible actions.
-
-The evidence-gathering path should establish the current condition, desired outcome, required work, acceptance evidence, delivery proof, known constraints, local value, time sensitivity, dependencies, and any human authorization boundary. Never treat task creation as approval to spend money, contact a third party, disclose private information, or perform another consequential external action.
+`Outcome`, `Scope` (with optional `Out of scope`), `Delivery and verification`, and `Constraints and approvals` remain supported in their established order. Include them only for material information not already conveyed. Preserve deadlines, budgets, access, privacy, affected people, and authorization boundaries wherever they are stated. Task creation never authorizes spending, third-party contact, private disclosure, or another consequential external action.
 
 ### Bug
 
-Use these headings in order:
+The compact default is:
 
 ```markdown
 ## Observed behavior
@@ -108,52 +106,36 @@ Use these headings in order:
 
 ## Reproduction or evidence
 
-## Impact
-
-## Delivery and verification
-
 ## Acceptance criteria
 
 - [ ] Observable fix condition
-
-## Constraints and approvals
 ```
 
-Capture the reporter's steps, environment, affected baseline, inputs, logs, and other direct evidence beneath `Reproduction or evidence`. Do not require the reporter to write a test, open a pull request, or execute risky or machine-mutating steps merely to complete intake. Establish whether the behavior previously worked before applying `regression`. Missing reproduction evidence does not prevent preserving a credible report, but it does require `needs reproduction` until the gap is resolved.
+Preserve reporter steps, environment, affected baseline, inputs, logs, and other direct evidence beneath `Reproduction or evidence`. Do not require the reporter to write a test, open a PR, or execute risky steps. Establish whether the behavior previously worked before applying `regression`. A credible report without sufficient reproduction evidence remains useful intake and requires `needs reproduction` until resolved.
 
-`Delivery and verification` defines the worker-owned red-to-green completion path. Plan one linked completion pull request that starts in draft. When technically feasible, its first substantive change is a regression test or reproduction harness that demonstrates the reported behavior against the affected baseline in the safest suitable disposable environment, normally existing GitHub Actions. The plan records the baseline, execution environment, expected failing evidence, the same test or harness passing with the fix, and relevant surrounding validation. It must not require execution on an agent host when reproduction could mutate that machine.
+`Impact`, `Delivery and verification`, and `Constraints and approvals` are optional sections in their established order. Worker-owned verification must demonstrate the affected behavior and the fix using the narrowest reliable evidence. Reuse an existing regression test or reproduction when adequate; otherwise add one when technically feasible. Prefer safe local or existing disposable CI execution, and never require host-local reproduction that could mutate the agent machine. Record unusual baseline, environment, or proof requirements only when the reproduction and acceptance criteria do not already establish them.
 
-A disposable runner is not authorization to mutate external systems, consume paid services, use sensitive credentials, contact people, or cause another consequential effect. Prefer least-privilege validation without secrets. When safe automation is infeasible, record the constraint, proposed equivalent evidence, and any required approval instead of fabricating a test or performing the action. `Constraints and approvals` is optional and records those or other material boundaries.
+Disposable execution does not authorize external mutations, paid services, sensitive credentials, or contacting people. If safe automation is infeasible, preserve the constraint, equivalent evidence, and any required approval instead of fabricating a test or performing the action.
 
 ### Feature
 
-Use these headings in order:
+The compact default is:
 
 ```markdown
 ## Problem or opportunity
 
-## Desired outcome
-
-## Scope
-
-### In scope
-
-### Out of scope
+Affected consumer or workflow and the useful capability requested.
 
 ## Acceptance criteria
 
 - [ ] Observable capability condition
-
-## Delivery and verification
-
-## Alternatives and constraints
 ```
 
-Use Feature for one bounded new or materially expanded capability. `Problem or opportunity` establishes the affected user or workflow, current experience or workaround, recurrence, and value. `Desired outcome` describes the useful capability and primary use case without prescribing unnecessary implementation. `Scope` defines the smallest coherent delivery and requires explicit in-scope and out-of-scope boundaries. If the request cannot be assessed as one independently observable capability, keep it unready and recommend decomposition instead of treating Feature as an informal epic.
+Use Feature for one bounded new or materially expanded capability. Keep the smallest coherent outcome and meaningful compatibility or migration boundaries explicit, without prescribing unnecessary implementation. If the request spans independently observable capabilities, keep it unready and recommend decomposition instead of treating Feature as an epic.
 
-`Acceptance criteria` express the consumer-visible capability, important boundaries, and applicable compatibility, documentation, example, or migration conditions. `Delivery and verification` identifies the linked completion pull request, substantive repository artifacts, tests or executable examples, compatibility or migration evidence, relevant checks, and release evidence when applicable. Require new prose only when it passes the [documentation change gate](./readme-standards.md#documentation-change-gate). A Feature does not require an intentionally failing draft check; its completion pull request remains draft during implementation and must provide green validation before it is marked ready.
+`Desired outcome`, `Scope` (with `In scope` and/or `Out of scope`), `Delivery and verification`, and `Alternatives and constraints` remain supported in their established order. Include only distinct, task-specific information; do not require separate exclusions or a catalog of artifacts, documentation, examples, checks, and releases for every feature.
 
-`Alternatives and constraints` is optional when no material alternative or constraint is known. Record rejected approaches, dependencies, compatibility implications, security, privacy, accessibility, performance, approvals, and other meaningful boundaries without turning the issue into a speculative product specification.
+These compact defaults relax required presentation within the existing contract; existing full bodies, section keys, metadata, and fallback formats remain supported. Do not rewrite existing issues solely to adopt the defaults. The linked completion-PR requirement and relevant green validation before review readiness remain unchanged.
 
 ### Intake Evidence and Canonical Tasks
 
