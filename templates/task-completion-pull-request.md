@@ -6,13 +6,15 @@ Closes #ISSUE
 
 Describe what was completed and what changed.
 
+Keep each fact in one section. Omit unused sections rather than filling them with boilerplate.
+
 ## Regression proof
 
 For a Bug, complete this section. For other task kinds, remove it.
 
 - Affected baseline:
 - Regression test or reproduction harness:
-- Disposable execution environment:
+- Execution environment:
 - Failing run and expected failure:
 - Passing run with the fix:
 - Relevant surrounding validation:
@@ -32,4 +34,4 @@ List the checks performed and the results observed.
 
 ## Follow-ups or deviations
 
-List remaining work or caveats, or write `None`.
+Include only material remaining work or deviations; omit this section when none exist. Do not invent follow-up work to complete the template.

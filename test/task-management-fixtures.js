@@ -37,6 +37,14 @@ export const completeFeatureSections = Object.freeze({
   alternatives: 'The experimental output shape is not retained because it is ambiguous.',
 });
 
+export const compactFeatureSections = Object.freeze({
+  problem: 'Users need to export the existing task summary for automation.',
+  acceptanceCriteria: [
+    'The export retains the current summary fields and values',
+    'Existing help and output examples remain accurate',
+  ],
+});
+
 function singleSelect(id, name, options) {
   return {
     id,
@@ -231,7 +239,7 @@ const fixtures = [
       target: 'octo-user/widgets',
       title: 'export a task summary',
       kind: 'Feature',
-      sections: completeFeatureSections,
+      sections: compactFeatureSections,
       metadata: { priority: 'medium', workSize: 5, complexity: 'medium', impact: 'high' },
       signals: { helpWanted: true, goodFirstIssue: true },
     }),

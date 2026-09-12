@@ -77,7 +77,7 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 ## Checkpoints
 
 - Stop when the milestone outcome, a material completion condition, the candidate boundary, or repository target is unresolved.
-- Keep an ambiguous existing task out of recommended membership. Stop before applying a proposed task that lacks canonical acceptance or delivery evidence, or a decomposition that is not independently reviewable.
+- Keep an ambiguous existing task out of recommended membership. Stop before applying a proposed task that lacks supported acceptance conditions or material task-specific verification, or a decomposition that is not independently reviewable.
 - Stop when capacity depends on missing Work size, exceeds the supplied ceiling without an explicit tradeoff, or would require inventing or changing human-controlled Priority.
 - Stop before an owner handoff when coverage is uncertain, overlap is unresolved, or inspected evidence changed materially.
 - Stop when a Task Decomposer result reframes the source as a project milestone. Do not treat the proposed milestone as existing, consume it as a task graph, or continue to membership planning.

@@ -10,7 +10,7 @@ These fixtures are the shared comparison surface for Task Author, GitHub Issue F
 
 The cases are descriptive golden fixtures, not live GitHub operations. The shared executable fixture support and cross-skill equivalence spec live in the repository `test/` surface, while effect-specific fake-client coverage remains with each owning skill.
 
-Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, mutation boundary, and verification result are normative for the convergence loop.
+Fixture prose is illustrative. The expected task kind, body shape, metadata authority, fallback shape, labels, mutation boundary, and verification result are normative for the convergence loop. Detailed bodies remain compatibility cases; they are not minimum-length templates. Compact drafts must retain substantive evidence and acceptance criteria without acquiring optional sections or new deliverables.
 
 ## Shared Assertions
 
@@ -229,7 +229,7 @@ Expected labels: `help wanted`.
 
 Do not apply `good first issue` because Work size exceeds `3`.
 
-The canonical Feature remains one bounded capability and records its expected completion-pull-request artifacts, examples, compatibility evidence, and validation beneath `Delivery and verification`. Do not invent a documentation deliverable when the existing sources meet the reader's need; change-specific rationale and validation evidence belong in the pull request.
+The canonical Feature uses only `Problem or opportunity` and `Acceptance criteria`, followed by fallback metadata. The criteria require preservation of the current exported fields and accuracy of existing help and examples. Omit separate scope and delivery sections; do not invent documentation or migration work. Creation and exact read-back must succeed for this compact input.
 
 ### T07: Underspecified External Submission
 

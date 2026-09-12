@@ -117,7 +117,7 @@ Send that request to `decompose-task.js --input -`. The result has status `refra
 ## Child and Coverage Invariants
 
 - A decomposition contains at least two children and remains exactly one level deep.
-- Every child has a kebab-case key, one canonical Task Author input, supported source evidence, checkable acceptance criteria, and completion-pull-request delivery evidence. Every global shared constraint must appear in the canonical rendered body of every child and the parent revision.
+- Every child has a kebab-case key, one canonical Task Author input, supported source evidence, checkable acceptance criteria, and any task-specific verification requirements under the shared compact body contract. Do not add a separate delivery checklist merely because the task is a child. Every global shared constraint must appear in the canonical rendered body of every child and the parent revision.
 - `covers` values exactly reference the current parent's acceptance-criterion text. Every parent criterion has exactly one child owner.
 - Exact duplicate child acceptance criteria, uncovered parent criteria, multiple owners, and model-declared gaps, overlaps, or duplicate work block publication.
 - The parent must not itself have a parent. A reusable child must have no different parent and no sub-issues. The publication path never sends `replace_parent`.

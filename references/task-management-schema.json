@@ -8,8 +8,8 @@
   "bodyShapes": {
     "task": [
       { "heading": "Context", "key": "context", "level": 2, "required": true },
-      { "heading": "Outcome", "key": "outcome", "level": 2, "required": true },
-      { "heading": "Scope", "key": "scope", "level": 2, "required": true },
+      { "heading": "Outcome", "key": "outcome", "level": 2, "required": false },
+      { "heading": "Scope", "key": "scope", "level": 2, "required": false },
       { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": false },
       {
         "heading": "Acceptance criteria",
@@ -21,7 +21,7 @@
         "heading": "Delivery and verification",
         "key": "delivery",
         "level": 2,
-        "required": true
+        "required": false
       },
       {
         "heading": "Constraints and approvals",
@@ -49,12 +49,12 @@
         "level": 2,
         "required": true
       },
-      { "heading": "Impact", "key": "impactSummary", "level": 2, "required": true },
+      { "heading": "Impact", "key": "impactSummary", "level": 2, "required": false },
       {
         "heading": "Delivery and verification",
         "key": "delivery",
         "level": 2,
-        "required": true
+        "required": false
       },
       {
         "heading": "Acceptance criteria",
@@ -80,11 +80,11 @@
         "heading": "Desired outcome",
         "key": "desiredOutcome",
         "level": 2,
-        "required": true
+        "required": false
       },
       { "heading": "Scope", "key": null, "level": 2, "required": false },
-      { "heading": "In scope", "key": "inScope", "level": 3, "required": true },
-      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": true },
+      { "heading": "In scope", "key": "inScope", "level": 3, "required": false },
+      { "heading": "Out of scope", "key": "outOfScope", "level": 3, "required": false },
       {
         "heading": "Acceptance criteria",
         "key": "acceptanceCriteria",
@@ -95,7 +95,7 @@
         "heading": "Delivery and verification",
         "key": "delivery",
         "level": 2,
-        "required": true
+        "required": false
       },
       {
         "heading": "Alternatives and constraints",

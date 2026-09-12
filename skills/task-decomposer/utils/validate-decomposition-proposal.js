@@ -166,9 +166,6 @@ export default function validateDecompositionProposal(proposal = {}, evidence) {
     if (acceptanceCriteria.length === 0) {
       errors.push(`Child ${key} requires checkable acceptance criteria.`);
     }
-    if (!/pull request/i.test(String(child.task.sections?.delivery ?? ''))) {
-      errors.push(`Child ${key} delivery evidence must name its completion pull request.`);
-    }
     const duplicateWithinChild = acceptanceCriteria.filter(
       (criterion, criterionIndex) => acceptanceCriteria.indexOf(criterion) !== criterionIndex,
     );

@@ -1,9 +1,11 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added agent-owned voice guidance to task drafting before publication preview and approval.
 - Added shared issue-backed commit guidance with explicit Agent System prefix ownership. [#50](https://github.com/tanaabased/canon/pull/50)
 - Fixed PowerShell template tests hanging or timing out during help and version checks. [#49](https://github.com/tanaabased/canon/pull/49)
 - Updated Leia guidance for `@lando/leia@1.0.0-beta.9` or newer, removing obsolete special-character workarounds. [#52](https://github.com/tanaabased/canon/pull/52)
 - Updated authoring and optimization skills to require an unmet reader need before adding documentation. [#48](https://github.com/tanaabased/canon/pull/48)
+- Updated issue authoring to accept compact bodies and require only necessary, evidence-backed deliverables.
 
 ## v0.9.0 - [August 25, 2026](https://github.com/tanaabased/canon/releases/tag/v0.9.0)
 

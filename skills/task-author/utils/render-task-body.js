@@ -16,20 +16,24 @@ function renderValue(key, value) {
     : String(value).trim();
 }
 
+function hasChildContent(shape, index, sections) {
+  for (const child of shape.slice(index + 1)) {
+    if (child.level <= shape[index].level) break;
+    if (present(sections[child.key])) return true;
+  }
+  return false;
+}
+
 /** Render canonical Markdown headings while leaving unsupported evidence visibly missing. */
 export function renderTaskBody(kind, sections = {}) {
   if (!BODY_SHAPES[kind]) throw new Error(`Cannot render body for unsupported task kind: ${kind}`);
 
   const missing = [];
   const blocks = [];
-  for (const { heading, key, level = 2, required = true } of BODY_SHAPES[kind]) {
-    if (key === null) {
-      blocks.push(`${'#'.repeat(level)} ${heading}`);
-      continue;
-    }
-
-    const value = sections[key];
-    if (!required && !present(value)) continue;
+  const shape = BODY_SHAPES[kind];
+  for (const [index, { heading, key, level = 2, required = true }] of shape.entries()) {
+    const value = key === null ? undefined : sections[key];
+    if (!required && !present(value) && !hasChildContent(shape, index, sections)) continue;
     if (required && !present(value)) missing.push(key);
 
     let content = renderValue(key, value);
