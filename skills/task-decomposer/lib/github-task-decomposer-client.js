@@ -4,6 +4,9 @@ import runGitHubCli, {
 } from '../../../lib/run-github-cli.js';
 import { GitHubTaskClient } from '../../task-author/lib/github-task-client.js';
 
+const SEARCH_PAGE_SIZE = 100;
+const MAX_SEARCH_RESULTS = 1000;
+
 function failureMessage(result, context) {
   const detail =
     String(result.stderr ?? '').trim() ||
@@ -138,12 +141,52 @@ export class GitHubTaskDecomposerClient {
   searchIssuesByTitle(target, title) {
     const escapedTitle = String(title).replaceAll('"', '\\"');
     const query = encodeURIComponent(`repo:${target.slug} is:issue in:title "${escapedTitle}"`);
-    const result = this.#request('GET', `/search/issues?q=${query}&per_page=100`);
-    if (!result.ok) return result;
-    return {
-      ok: true,
-      value: Array.isArray(result.value?.items) ? result.value.items : [],
-    };
+    const items = [];
+    const seenIds = new Set();
+    let total = null;
+
+    for (let page = 1; page <= MAX_SEARCH_RESULTS / SEARCH_PAGE_SIZE; page += 1) {
+      const result = this.#request(
+        'GET',
+        `/search/issues?q=${query}&per_page=${SEARCH_PAGE_SIZE}&page=${page}`,
+      );
+      if (!result.ok) return result;
+      const payload = result.value;
+      if (
+        !Array.isArray(payload?.items) ||
+        !Number.isInteger(payload.total_count) ||
+        payload.total_count < 0 ||
+        payload.incomplete_results !== false
+      ) {
+        return { ok: false, error: 'Child title search did not return complete search evidence.' };
+      }
+      if (payload.total_count > MAX_SEARCH_RESULTS) {
+        return {
+          ok: false,
+          error: `Child title search exceeds the ${MAX_SEARCH_RESULTS}-result inspection limit.`,
+        };
+      }
+      total ??= payload.total_count;
+      if (payload.total_count !== total || payload.items.length > SEARCH_PAGE_SIZE) {
+        return {
+          ok: false,
+          error: 'Child title search changed while reading pages; retry inspection.',
+        };
+      }
+      for (const item of payload.items) {
+        if (!Number.isInteger(item?.id) || seenIds.has(item.id)) {
+          return {
+            ok: false,
+            error: 'Child title search returned invalid or repeated results; retry inspection.',
+          };
+        }
+        seenIds.add(item.id);
+        items.push(item);
+      }
+      if (items.length === total) return { ok: true, value: items };
+      if (items.length > total || payload.items.length < SEARCH_PAGE_SIZE) break;
+    }
+    return { ok: false, error: 'Child title search ended before all results were inspected.' };
   }
 
   createIssue(target, payload) {

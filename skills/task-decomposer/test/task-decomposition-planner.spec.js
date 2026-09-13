@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 
+import { GitHubTaskDecomposerClient } from '../lib/github-task-decomposer-client.js';
 import { prepareTaskDecomposition } from '../lib/task-decomposition-planner.js';
 import { publishTaskDecomposition } from '../lib/task-decomposition-publisher.js';
 import { fakeGitHubTaskDecomposerClient } from './fake-github-task-decomposer-client.js';
@@ -30,6 +31,50 @@ function approve(input, preview) {
 }
 
 describe('Task Decomposer exact planning', () => {
+  it('should block child creation when duplicate search is incomplete', () => {
+    const client = clientFixture();
+    const search = new GitHubTaskDecomposerClient({
+      runner: () => ({
+        status: 0,
+        stdout: JSON.stringify({ incomplete_results: true, total_count: 1, items: [] }),
+      }),
+    });
+    client.searchIssuesByTitle = (target, title) => search.searchIssuesByTitle(target, title);
+    const report = publishTaskDecomposition(decompositionProposal(), { client });
+    assert.equal(report.status, 'blocked');
+    assert.equal(report.mutatesGitHub, false);
+    assert.ok(report.blockers.some((error) => error.includes('complete search evidence')));
+    assert.equal(client.state.issues.size, 1);
+  });
+
+  it('should block a child title collision found on a later search page', () => {
+    const client = clientFixture();
+    client.searchIssuesByTitle = (target, title) => {
+      const search = new GitHubTaskDecomposerClient({
+        runner: (args) => ({
+          status: 0,
+          stdout: JSON.stringify({
+            incomplete_results: false,
+            total_count: 101,
+            items: args[1].endsWith('page=1')
+              ? Array.from({ length: 100 }, (_, index) => ({
+                  id: 1000 + index,
+                  number: 1000 + index,
+                  title: `${title} extra ${index}`,
+                  body: '',
+                }))
+              : [{ id: 2000, number: 2000, title, body: 'Different existing work' }],
+          }),
+        }),
+      });
+      return search.searchIssuesByTitle(target, title);
+    };
+    const report = publishTaskDecomposition(decompositionProposal(), { client });
+    assert.equal(report.status, 'blocked');
+    assert.ok(report.blockers.some((error) => error.includes('collides')));
+    assert.equal(client.state.issues.size, 1);
+  });
+
   it('should accept compact child tasks while preserving their constraints and coverage', () => {
     const proposal = decompositionProposal();
     for (const child of proposal.children) {
