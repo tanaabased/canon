@@ -1,3 +1,4 @@
+import { flattenGitHubPages } from '../../../lib/run-github-cli.js';
 import canonicalPolicy from '../references/canonical-repository-settings.json' with { type: 'json' };
 import diffManagedValues from '../utils/diff-managed-values.js';
 import normalizeBranchProtection from '../utils/normalize-branch-protection.js';
@@ -160,6 +161,7 @@ export class RepositoryPolicyClient {
     if (method !== 'GET') {
       args.push('--method', method);
     }
+    if (options.paginate) args.push('--paginate', '--slurp');
 
     const commandOptions = {};
     if (body !== undefined) {
@@ -169,8 +171,14 @@ export class RepositoryPolicyClient {
 
     const result = this.runner(args, commandOptions);
     if (!result.error && result.status === 0) {
+      const data = responseJson(result, `Invalid JSON from ${endpoint}`);
+      if (options.paginate && (!Array.isArray(data) || !data.every(Array.isArray))) {
+        throw new RepositoryPolicyError(`Invalid collection pages from ${endpoint}.`, {
+          step: options.step ?? endpoint,
+        });
+      }
       return {
-        data: responseJson(result, `Invalid JSON from ${endpoint}`),
+        data: options.paginate ? flattenGitHubPages(data) : data,
         missing: false,
       };
     }
@@ -211,7 +219,8 @@ export class RepositoryPolicyClient {
         }).data ?? [])
       : [mainResponse.data];
     const invitations =
-      this.request('GET', `/repos/${slug}/invitations`, undefined, {
+      this.request('GET', `/repos/${slug}/invitations?per_page=100`, undefined, {
+        paginate: true,
         step: 'inspect-invitations',
       }).data ?? [];
     const directCollaborators =
@@ -219,7 +228,7 @@ export class RepositoryPolicyClient {
         'GET',
         `/repos/${slug}/collaborators?affiliation=direct&per_page=100`,
         undefined,
-        { step: 'inspect-direct-collaborators' },
+        { paginate: true, step: 'inspect-direct-collaborators' },
       ).data ?? [];
     const mainExists = !mainResponse.missing;
     const collaborators = {};

@@ -19,6 +19,54 @@ function clientFor(remote) {
 }
 
 describe('skills/project-author/lib/repository-policy-client', () => {
+  it('should leave an aligned collaborator on a later page unchanged', () => {
+    const remote = createRemote({
+      directCollaborators: [
+        ...Array.from({ length: 100 }, (_, index) => ({
+          login: `person-${index}`,
+          role_name: 'read',
+        })),
+        { login: 'tanaabot', role_name: 'write' },
+      ],
+    });
+    const report = clientFor(remote).apply(TARGET);
+    assert.equal(report.status, 'aligned');
+    assert.deepEqual(report.changes, []);
+    assert.deepEqual(mutatingCommands(remote), []);
+  });
+
+  it('should retain a pending invitation found on a later page', () => {
+    const remote = createRemote({
+      invitations: [
+        ...Array.from({ length: 100 }, (_, index) => ({ invitee: { login: `person-${index}` } })),
+        { invitee: { login: 'tanaabot' } },
+      ],
+    });
+    const report = clientFor(remote).inspect(TARGET);
+    assert.equal(report.current.collaborators.tanaabot.pending_invitation, true);
+    assert.deepEqual(mutatingCommands(remote), []);
+  });
+
+  for (const endpoint of [
+    'invitations?per_page=100',
+    'collaborators?affiliation=direct&per_page=100',
+  ]) {
+    for (const [name, result] of [
+      ['failed pagination', { status: 1, stdout: '[[]]', stderr: 'later page unavailable' }],
+      ['malformed pages', { status: 0, stdout: '[[],{}]', stderr: '' }],
+      ['missing collection', { status: 0, stdout: 'null', stderr: '' }],
+    ]) {
+      it(`should stop policy writes on ${name} for ${endpoint}`, () => {
+        const remote = createRemote();
+        const runner = (args, options) =>
+          args[1] === `/repos/${TARGET}/${endpoint}` ? result : remote.runner(args, options);
+        const client = new RepositoryPolicyClient({ runner, sleep: () => {} });
+        assert.throws(() => client.apply(TARGET), RepositoryPolicyError);
+        assert.deepEqual(mutatingCommands(remote), []);
+      });
+    }
+  }
+
   it('should report canon-aligned managed state while preserving unmanaged settings', () => {
     const remote = createRemote();
     const report = clientFor(remote).inspect(TARGET);

@@ -20,6 +20,14 @@ function failure(status, message) {
   };
 }
 
+function collectionSuccess(values, args) {
+  const pages = [];
+  for (let index = 0; index < values.length; index += 100)
+    pages.push(values.slice(index, index + 100));
+  if (pages.length === 0) pages.push([]);
+  return success(args.includes('--paginate') && args.includes('--slurp') ? pages : pages[0]);
+}
+
 export function protectionResponse(
   payload = canonicalPolicy.branches.main.protection,
   signatures = false,
@@ -136,11 +144,11 @@ export function createRemote(overrides = {}) {
     if (endpoint === `/repos/${TARGET}/branches?per_page=100`) {
       return success(remote.branches);
     }
-    if (endpoint === `/repos/${TARGET}/invitations`) {
-      return success(remote.invitations);
+    if (endpoint === `/repos/${TARGET}/invitations?per_page=100`) {
+      return collectionSuccess(remote.invitations, args);
     }
     if (endpoint === `/repos/${TARGET}/collaborators?affiliation=direct&per_page=100`) {
-      return success(remote.directCollaborators);
+      return collectionSuccess(remote.directCollaborators, args);
     }
     if (endpoint === `/repos/${TARGET}/collaborators/tanaabot/permission`) {
       return remote.permission ? success(remote.permission) : failure(404, 'Not Found');

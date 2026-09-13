@@ -5,6 +5,81 @@ import { GitHubTaskDecomposerClient } from '../lib/github-task-decomposer-client
 const target = { slug: 'acme/widgets' };
 
 describe('GitHub Task Decomposer client', () => {
+  it('should collect title matches beyond the first search page', () => {
+    const items = Array.from({ length: 101 }, (_, index) => ({ id: index + 1, number: index + 1 }));
+    const calls = [];
+    const client = new GitHubTaskDecomposerClient({
+      runner: (args) => {
+        calls.push(args);
+        const page = Number(new URL(args[1], 'https://api.github.com').searchParams.get('page'));
+        return {
+          status: 0,
+          stdout: JSON.stringify({
+            incomplete_results: false,
+            total_count: items.length,
+            items: items.slice((page - 1) * 100, page * 100),
+          }),
+        };
+      },
+    });
+    assert.deepEqual(client.searchIssuesByTitle(target, 'Child').value, items);
+    assert.equal(calls.length, 2);
+  });
+
+  for (const [name, payload] of [
+    ['incomplete', { incomplete_results: true, total_count: 0, items: [] }],
+    ['missing completeness metadata', { items: [] }],
+    ['malformed', null],
+    ['over the inspection limit', { incomplete_results: false, total_count: 1001, items: [] }],
+    ['truncated', { incomplete_results: false, total_count: 2, items: [{ id: 1 }] }],
+    ['invalid items', { incomplete_results: false, total_count: 1, items: [null] }],
+  ]) {
+    it(`should reject ${name} search evidence instead of reporting no matches`, () => {
+      const client = new GitHubTaskDecomposerClient({
+        runner: () => ({ status: 0, stdout: JSON.stringify(payload) }),
+      });
+      const result = client.searchIssuesByTitle(target, 'Child');
+      assert.equal(result.ok, false);
+      assert.match(result.error, /search/);
+    });
+  }
+
+  it('should retain a failure from a later search page', () => {
+    let calls = 0;
+    const client = new GitHubTaskDecomposerClient({
+      runner: () =>
+        ++calls === 1
+          ? {
+              status: 0,
+              stdout: JSON.stringify({
+                incomplete_results: false,
+                total_count: 101,
+                items: Array.from({ length: 100 }, (_, id) => ({ id })),
+              }),
+            }
+          : { status: 1, stderr: 'rate limit exceeded' },
+    });
+    const result = client.searchIssuesByTitle(target, 'Child');
+    assert.equal(result.ok, false);
+    assert.match(result.error, /rate limit exceeded/);
+    assert.equal(calls, 2);
+  });
+
+  it('should reject repeated results across search pages', () => {
+    let calls = 0;
+    const client = new GitHubTaskDecomposerClient({
+      runner: () => ({
+        status: 0,
+        stdout: JSON.stringify({
+          incomplete_results: false,
+          total_count: 101,
+          items: ++calls === 1 ? Array.from({ length: 100 }, (_, id) => ({ id })) : [{ id: 0 }],
+        }),
+      }),
+    });
+    assert.equal(client.searchIssuesByTitle(target, 'Child').ok, false);
+  });
+
   it('should use current native relationship endpoints and structured standard input', () => {
     const calls = [];
     const runner = (args, options = {}) => {
@@ -64,7 +139,11 @@ describe('GitHub Task Decomposer client', () => {
     const runner = (args) => {
       calls.push(args);
       const value = args[1].startsWith('/search/issues')
-        ? { items: [{ id: 10, number: 2, title: 'Quoted "task"' }] }
+        ? {
+            incomplete_results: false,
+            total_count: 1,
+            items: [{ id: 10, number: 2, title: 'Quoted "task"' }],
+          }
         : [{ id: 11, number: 3 }];
       return { status: 0, stdout: JSON.stringify(value) };
     };
