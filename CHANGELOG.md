@@ -2,7 +2,10 @@
 
 - Added shared issue-backed commit guidance with explicit Agent System prefix ownership. [#50](https://github.com/tanaabased/canon/pull/50)
 - Added the authoring agent's voice guidance to task drafts before preview and approval. [#53](https://github.com/tanaabased/canon/pull/53)
+- Fixed incomplete child-title searches being treated as complete duplicate checks. [#54](https://github.com/tanaabased/canon/pull/54)
 - Fixed PowerShell template tests hanging or timing out during help and version checks. [#49](https://github.com/tanaabased/canon/pull/49)
+- Fixed repository-policy inspection missing collaborators and invitations beyond the first page. [#54](https://github.com/tanaabased/canon/pull/54)
+- Fixed unsafe overlapping cache paths and file, directory, and symlink replacement in `codexsync`. [#54](https://github.com/tanaabased/canon/pull/54)
 - Updated authoring and optimization skills to require an unmet reader need before adding documentation. [#48](https://github.com/tanaabased/canon/pull/48)
 - Updated issue authoring to default to compact bodies and include only necessary, evidence-backed deliverables. [#53](https://github.com/tanaabased/canon/pull/53)
 - Updated Leia guidance for `@lando/leia@1.0.0-beta.9` or newer, removing obsolete special-character workarounds. [#52](https://github.com/tanaabased/canon/pull/52)
