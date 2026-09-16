@@ -28,17 +28,14 @@ describe('templates/Leia examples contract', () => {
     assert.doesNotMatch(workflowContent, /\.\/node_modules\/\.bin\/leia/);
   });
 
-  it('should describe Leia module selection without claiming ownership of child runtimes', async () => {
+  it('should defer Leia mechanics upstream while retaining project runtime policy', async () => {
     const [referenceContent, agentsContent] = await Promise.all([
       readRepoFile('references', 'leia-markdown-scenarios.md'),
       readRepoFile('templates', 'leia-examples-agents.md'),
     ]);
 
     for (const content of [referenceContent, agentsContent]) {
-      assert.match(content, /\.leia\.cjs/);
-      assert.match(content, /\.leia\.mjs/);
-      assert.match(content, /invocation directory/);
-      assert.match(content, /nearest `package\.json`/);
+      assert.match(content, /github\.com\/lando\/leia\/blob\/v2\.0\.0\/ADVANCED\.md/);
       assert.match(content, /Node runtime/);
       assert.match(content, /repository-authored `\.js` scenario helpers/);
       assert.doesNotMatch(content, /generated `\.js`/);

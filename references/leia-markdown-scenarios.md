@@ -2,7 +2,9 @@
 
 Use this pattern when a repository needs end-to-end or operational coverage that is clearer as executable shell steps than as unit tests. A Leia scenario is both maintained example documentation and runnable contract coverage.
 
-Treat this reference as the authoritative Leia scenario contract. `templates/leia-examples-agents.md` is its compact ambient projection for repositories that need durable `examples/**` editing rules, while `templates/leia-markdown-example-readme.md` should remain a runnable scenario starter instead of restating the editing contract.
+This reference owns Tanaab's Leia usage policy: test scope, scenario organization, fixtures, and execution restrictions. Leia owns its syntax, CLI options, and harness behavior. `templates/leia-examples-agents.md` projects this policy into `examples/**`; `templates/leia-markdown-example-readme.md` is a runnable starter.
+
+Use the upstream [`leia-scenarios` skill](https://github.com/lando/leia/blob/v2.0.0/skills/scenarios/SKILL.md) when available, alongside this policy and repository guidance. Otherwise, consult Leia's [CLI](https://github.com/lando/leia/blob/v2.0.0/CLI.md) and [scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md). These links target the supported 2.0.0 baseline; use the documentation for the project's installed version when it differs. The agent plugin is optional and does not replace the project's CLI dependency or authorize local execution.
 
 ## When to Use
 
@@ -45,14 +47,10 @@ Use this decision order for setup state:
 
 Fixtures prepare inputs; they should not bypass the public surface being tested. Conversely, do not add a seed command or fixture-builder utility merely to recreate the same constant files on every run.
 
-## Leia Block Contract
+## Scenario Style
 
-- Put executable steps in fenced code blocks beneath Leia-recognized sections.
 - Start every test with one lowercase `# should ...` line.
 - Keep one observable behavior per `# should ...` block.
-- Put the commands immediately below the `# should ...` line with no blank line inside the block.
-- Separate tests with one blank line. Do not leave commands after a blank line without a new `# should ...` header.
-- Treat every blank-line-separated block as a new shell script. Variables, functions, shell options, and working-directory changes do not persist across blocks.
 - Prefer one command per line. Avoid `command && next-command` when the selected shell's fail-fast mode makes ordinary newline sequencing equivalent; retain conditional chaining when it is the behavior being expressed.
 - Preserve exact casing only for literals and conventional identifiers such as commands, flags, paths, environment variables, formats, product names, acronyms, HTTP methods, status codes, and expected output.
 - Split a block when it mixes unrelated contracts, needs `and` or `or` to describe its purpose, or grows beyond roughly 12 to 15 command lines without being one coherent multiline command.
@@ -126,7 +124,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Leia Version, Script, and Invocation
 
-Use the stable [`@lando/leia@2.0.0`](https://github.com/lando/leia/releases/tag/v2.0.0) baseline through the compatible `^2.0.0` dependency range. During a prerelease rollout, pin the selected beta exactly; move to the stable range only after `2.0.0` is published.
+Use the stable [`@lando/leia@2.0.0`](https://github.com/lando/leia/releases/tag/v2.0.0) baseline through the compatible `^2.0.0` dependency range. Use an exact beta only during a deliberate prerelease rollout.
 
 Expose Leia through the consuming repository's `package.json` instead of invoking the installed binary directly:
 
@@ -145,13 +143,7 @@ Invoke scenarios with `bun run leia`, including in CI. Follow [Leia's Bun CLI do
 
 Bun runs the Leia process; it does not replace runtimes selected by commands inside scenario blocks. An explicit `node` command or Node-based product entrypoint retains its Node runtime, while Bun-based and shell commands retain their own declared runtimes.
 
-## Generated Module Format and Helper Boundaries
-
-- Leia 2 generates a `.leia.cjs` or `.leia.mjs` harness from the module type visible to the invocation directory through its nearest `package.json`.
-- Invoke Leia from the package scope whose module type should govern the harness. Do not infer the format from the scenario README's directory or from `TMPDIR`.
-- Do not add `examples/package.json` solely for Leia's generated harness. The explicit harness extension carries its module format.
-- Retain a CommonJS package boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`; that boundary belongs to those helpers, not to Leia.
-- Follow the selected shell's normal syntax and quoting rules. Leia 2 needs no additional escaping, rewriting, or helper extraction for its generated harness.
+Do not add `examples/package.json` solely for Leia's generated harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers use `require` or `module.exports`. Consult Leia's scenario documentation for module selection and shell behavior.
 
 ## CI Guidance
 

@@ -1,13 +1,13 @@
 # Leia Example Guidance
 
-This file is the compact ambient projection of the shared Leia scenario contract. It applies when editing `examples/**`; scenario README files are executable specs that may be consumed in CI, and some scenarios may mutate hosted runners.
+This file applies Tanaab's Leia usage policy to `examples/**`. Scenario README files are executable specs that may run in CI and mutate hosted runners.
+
+Use the upstream `leia-scenarios` skill when available, following this policy and repository execution restrictions. Otherwise, consult [Leia's scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md) for syntax and harness behavior. Use documentation matching the project's installed version. The agent plugin is optional; it does not replace the project's CLI dependency.
 
 ## General Style
 
 - Prefer behavior-focused `# should` labels over scenario labels.
 - Keep each `# should` block focused on one observable contract. Split blocks whose title needs `and` or `or`, mixes unrelated domains, or grows past roughly 12 to 15 command lines unless the block is one coherent multiline command.
-- Treat each blank-line-separated Leia block as a separate script. Do not rely on shell variables, functions, or working-directory changes persisting across blocks.
-- Keep commands directly beneath their `# should ...` line and separate tests with one blank line.
 - Prefer one command per line. Avoid `command && next-command` when newline sequencing preserves the selected shell's fail-fast behavior.
 
 ## Scenario and Fixture Ownership
@@ -47,11 +47,10 @@ This file is the compact ambient projection of the shared Leia scenario contract
 - Keep one CI-configurable model default, minimize model calls, tokens, and retries, and document any need for a larger, specialized, or exact model.
 - Scope model credentials and model-specific environment to model-backed scenarios only.
 
-## Leia Invocation and Module Format
+## Leia Invocation and Execution
 
 - Use the compatible `@lando/leia` range `^2.0.0` with the consumer script `"leia": "bun ./node_modules/.bin/leia"`; use an exact beta only during a deliberate prerelease rollout.
 - Invoke scenarios with `bun run leia`. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options.
 - Treat Bun as Leia's runtime only. Explicit `node` commands and Node-based product entrypoints inside scenario blocks retain their Node runtime.
-- Leia 2 generates `.leia.cjs` or `.leia.mjs` from the module type visible through the invocation directory's nearest `package.json`; do not infer it from the README or `TMPDIR` location.
 - Do not add `examples/package.json` solely for Leia's harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`.
 - Run mutating, secret-backed, or platform-dependent scenarios in fresh CI by default; do not run them locally unless the user explicitly requests operational validation.
