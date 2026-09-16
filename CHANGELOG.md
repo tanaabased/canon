@@ -1,6 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Updated Leia scenarios for stable `@lando/leia@2.0.0`, explicit Bun execution, and module-aware harnesses. [#58](https://github.com/tanaabased/canon/issues/58)
+- Updated Leia scenarios for compatible `@lando/leia` 2.x releases, explicit Bun execution, and module-aware harnesses. [#58](https://github.com/tanaabased/canon/issues/58)
 
 ## v0.10.0 - [September 13, 2026](https://github.com/tanaabased/canon/releases/tag/v0.10.0)
 

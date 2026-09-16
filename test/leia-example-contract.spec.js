@@ -9,7 +9,7 @@ const REPO_ROOT = path.resolve(TEST_DIR, '..');
 const readRepoFile = (...segments) => readFile(path.join(REPO_ROOT, ...segments), 'utf8');
 
 describe('templates/Leia examples contract', () => {
-  it('should keep the stable Leia version and Bun consumer invocation aligned', async () => {
+  it('should keep the stable Leia range and Bun consumer invocation aligned', async () => {
     const [referenceContent, agentsContent, workflowContent] = await Promise.all([
       readRepoFile('references', 'leia-markdown-scenarios.md'),
       readRepoFile('templates', 'leia-examples-agents.md'),
@@ -17,7 +17,7 @@ describe('templates/Leia examples contract', () => {
     ]);
 
     for (const content of [referenceContent, agentsContent]) {
-      assert.match(content, /@lando\/leia(?:@|` version `)2\.0\.0/);
+      assert.match(content, /\^2\.0\.0/);
       assert.match(content, /"leia": "bun \.\/node_modules\/\.bin\/leia"/);
       assert.match(content, /bun run leia/);
       assert.match(content, /github\.com\/lando\/leia\/blob\/v2\.0\.0\/CLI\.md#bun/);

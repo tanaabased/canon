@@ -126,7 +126,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Leia Version, Script, and Invocation
 
-Use the exact stable [`@lando/leia@2.0.0`](https://github.com/lando/leia/releases/tag/v2.0.0) release. During a prerelease rollout, pin the selected beta exactly; move to stable `2.0.0` only after it is published.
+Use the stable [`@lando/leia@2.0.0`](https://github.com/lando/leia/releases/tag/v2.0.0) baseline through the compatible `^2.0.0` dependency range. During a prerelease rollout, pin the selected beta exactly; move to the stable range only after `2.0.0` is published.
 
 Expose Leia through the consuming repository's `package.json` instead of invoking the installed binary directly:
 
@@ -136,7 +136,7 @@ Expose Leia through the consuming repository's `package.json` instead of invokin
     "leia": "bun ./node_modules/.bin/leia"
   },
   "devDependencies": {
-    "@lando/leia": "2.0.0"
+    "@lando/leia": "^2.0.0"
   }
 }
 ```
