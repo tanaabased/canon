@@ -69,7 +69,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 - Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
-- Apply [the shared Leia scenario contract](../../references/leia-markdown-scenarios.md), including its conditional CommonJS boundary for generated harnesses inside an ESM package scope.
+- Apply [the shared Leia scenario contract](../../references/leia-markdown-scenarios.md), including its explicit Bun consumer script, child-runtime boundary, and invocation-directory module selection.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for maintained shell CLI surfaces, with `shellcheck` and PowerShell parse checks as narrow supporting validators rather than separate testing patterns.
 
@@ -110,7 +110,6 @@ test -n "$(./dist/my-script.sh --version)"
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
-- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` boundary for repository-authored helpers and Leia-generated CommonJS harnesses beneath an ESM package scope
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
@@ -121,6 +120,6 @@ test -n "$(./dist/my-script.sh --version)"
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.
-- Confirm scenario packaging follows the shared Leia contract, including its conditional CommonJS boundary and separate `examples/AGENTS.md` decision.
+- Confirm scenario execution follows the shared Leia contract, including its Bun script, child runtimes, module-format selection, and separate `examples/AGENTS.md` decision.
 - Confirm `GitHub Actions` maps the shell CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.
 - Confirm PowerShell coverage remains portable or opportunistic unless Windows CI was explicitly requested; if requested, confirm the workflow uses a versioned Windows runner label rather than `windows-latest`.

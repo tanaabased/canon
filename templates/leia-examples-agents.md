@@ -47,10 +47,11 @@ This file is the compact ambient projection of the shared Leia scenario contract
 - Keep one CI-configurable model default, minimize model calls, tokens, and retries, and document any need for a larger, specialized, or exact model.
 - Scope model credentials and model-specific environment to model-backed scenarios only.
 
-## Generator and Package Boundaries
+## Leia Invocation and Module Format
 
-- Use `@lando/leia` version `1.0.0-beta.9` or newer. Follow the selected shell's normal syntax and quoting rules; no additional escaping, rewriting, or helper extraction is needed to work around Leia's former harness bug.
-- Treat Leia's generated `.js` test harness as CommonJS runtime code when it uses `require`.
-- In an ESM repository, keep `examples/package.json` with `"type": "commonjs"` whenever Leia writes its generated harness beneath `examples/`, including through a repo-local `TMPDIR` such as `examples/.tmp`.
-- Do not require this boundary when the harness is outside the ESM package scope or already inherits a nearer CommonJS boundary.
+- Use exact `@lando/leia` version `2.0.0` with the consumer script `"leia": "bun ./node_modules/.bin/leia"`; use an exact beta only during a deliberate prerelease rollout.
+- Invoke scenarios with `bun run leia`. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options.
+- Treat Bun as Leia's runtime only. Explicit `node` commands and Node-based product entrypoints inside scenario blocks retain their Node runtime.
+- Leia 2 generates `.leia.cjs` or `.leia.mjs` from the module type visible through the invocation directory's nearest `package.json`; do not infer it from the README or `TMPDIR` location.
+- Do not add `examples/package.json` solely for Leia's harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`.
 - Run mutating, secret-backed, or platform-dependent scenarios in fresh CI by default; do not run them locally unless the user explicitly requests operational validation.

@@ -74,7 +74,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 - Prefer Leia-backed example scenarios when the main risk is observable CLI behavior such as help output, exit status, file effects, or release-shaped entrypoint behavior.
 - Keep one example flow per `examples/<scenario>/README.md` and assert the user-facing CLI contract rather than internal parser details.
-- Apply [the shared Leia scenario contract](../../references/leia-markdown-scenarios.md), including its conditional CommonJS boundary for generated harnesses inside an ESM package scope.
+- Apply [the shared Leia scenario contract](../../references/leia-markdown-scenarios.md), including its explicit Bun consumer script, child-runtime boundary, and invocation-directory module selection.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Treat Leia as the canonical direct-test pattern for true CLI product surfaces rather than layering multiple unrelated local test styles by default.
 - When the CLI ships as a built artifact, run Leia against the built CLI rather than the source entrypoint.
@@ -115,7 +115,6 @@ test -n "$(my-cli --version)"
 - [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
 - [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
 - [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
-- [../../templates/leia-examples-package.json](../../templates/leia-examples-package.json): shared `examples/package.json` boundary for repository-authored helpers and Leia-generated CommonJS harnesses beneath an ESM package scope
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
@@ -127,5 +126,5 @@ test -n "$(my-cli --version)"
 - Confirm help output, version output, and maintained examples remain the primary documentation surface for user-facing CLI behavior.
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
-- Confirm scenario packaging follows the shared Leia contract, including its conditional CommonJS boundary and separate `examples/AGENTS.md` decision.
+- Confirm scenario execution follows the shared Leia contract, including its Bun script, child runtimes, module-format selection, and separate `examples/AGENTS.md` decision.
 - Confirm `GitHub Actions` maps the CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.

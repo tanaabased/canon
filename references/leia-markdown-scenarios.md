@@ -124,18 +124,34 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Scope model credentials and model-specific environment to the model-backed scenario or matrix entry. Other scenarios must not receive them.
 - Review the repository default when model availability or pricing changes. Do not encode a current provider model identifier in shared Canon guidance.
 
-## Leia Version and Shell Syntax
+## Leia Version, Script, and Invocation
 
-Use [`@lando/leia@1.0.0-beta.9`](https://github.com/lando/leia/releases/tag/v1.0.0-beta.9) or newer. Follow the selected shell's normal syntax and quoting rules; no additional escaping, rewriting, or helper extraction is needed to work around Leia's former harness bug.
+Use the exact stable [`@lando/leia@2.0.0`](https://github.com/lando/leia/releases/tag/v2.0.0) release. During a prerelease rollout, pin the selected beta exactly; move to stable `2.0.0` only after it is published.
 
-## JavaScript Package Boundary
+Expose Leia through the consuming repository's `package.json` instead of invoking the installed binary directly:
 
-- Treat Leia's generated `.js` harness as CommonJS when the supported Leia version emits `require`.
-- In an ESM repository, commit an `examples/package.json` with `{ "type": "commonjs" }` whenever Leia writes its generated harness beneath `examples/` or another directory governed by the root ESM package.
-- Put the boundary at or above the generated harness and below the governing ESM package.
-- Do not add this boundary when the harness is outside the ESM package scope or already inherits a nearer CommonJS boundary.
-- Use the shared `templates/leia-examples-package.json` starter when the standard examples-level boundary applies.
-- Treat this as compatibility scaffolding and remove it only after the supported Leia version is verified to emit an ESM-compatible harness.
+```json
+{
+  "scripts": {
+    "leia": "bun ./node_modules/.bin/leia"
+  },
+  "devDependencies": {
+    "@lando/leia": "2.0.0"
+  }
+}
+```
+
+Invoke scenarios with `bun run leia`, including in CI. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
+
+Bun runs the Leia process; it does not replace runtimes selected by commands inside scenario blocks. An explicit `node` command or Node-based product entrypoint retains its Node runtime, while Bun-based and shell commands retain their own declared runtimes.
+
+## Generated Module Format and Helper Boundaries
+
+- Leia 2 generates a `.leia.cjs` or `.leia.mjs` harness from the module type visible to the invocation directory through its nearest `package.json`.
+- Invoke Leia from the package scope whose module type should govern the harness. Do not infer the format from the scenario README's directory or from `TMPDIR`.
+- Do not add `examples/package.json` solely for Leia's generated harness. The explicit harness extension carries its module format.
+- Retain a CommonJS package boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`; that boundary belongs to those helpers, not to Leia.
+- Follow the selected shell's normal syntax and quoting rules. Leia 2 needs no additional escaping, rewriting, or helper extraction for its generated harness.
 
 ## CI Guidance
 
