@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 const readWorkflow = (name) =>
   readFile(new URL(`../.github/workflows/${name}`, import.meta.url), 'utf8');
 
-const CATALOG_REF = 'v1.0.0-beta.1';
+const CATALOG_REF = 'v1';
 
 describe('GitHub Actions catalog contract', () => {
   it('should keep release publication split across independent catalog jobs', async () => {

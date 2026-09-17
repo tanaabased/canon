@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Install Bun
-        uses: tanaabased/actions/setup-bun@v1.0.0-beta.1
+        uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Run linter
@@ -21,6 +21,6 @@ jobs:
       - name: Validate canon
         run: bun run codex:validate
       - name: Validate Codex plugin
-        uses: tanaabased/actions/validate-codex-plugin@v1.0.0-beta.1
+        uses: tanaabased/actions/validate-codex-plugin@v1
         with:
           test-mode: true

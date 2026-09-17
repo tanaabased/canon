@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install Bun
-        uses: tanaabased/actions/setup-bun@v1.0.0-beta.1
+        uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Check canon
@@ -28,7 +28,7 @@ jobs:
           bun run lint
           bun run codex:validate
       - name: Prepare release-shaped build
-        uses: tanaabased/actions/prepare-release@v1.0.0-beta.1
+        uses: tanaabased/actions/prepare-release@v1
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
@@ -42,7 +42,7 @@ jobs:
         run: bun run format:check
       - name: Prepare Codex plugin archive
         id: publish
-        uses: tanaabased/actions/publish-codex-plugin@v1.0.0-beta.1
+        uses: tanaabased/actions/publish-codex-plugin@v1
         with:
           archive-name: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
           dependency-policy: include-production
@@ -83,7 +83,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Test repository publication
-        uses: tanaabased/actions/publish-repo@v1.0.0-beta.1
+        uses: tanaabased/actions/publish-repo@v1
         with:
           commands: |
             bun install --frozen-lockfile --ignore-scripts
