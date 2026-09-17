@@ -36,7 +36,6 @@ jobs:
             bun run codex:validate
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
-          test-mode: true
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check

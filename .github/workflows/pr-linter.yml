@@ -22,5 +22,3 @@ jobs:
         run: bun run codex:validate
       - name: Validate Codex plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
-        with:
-          test-mode: true

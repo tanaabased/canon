@@ -35,7 +35,7 @@ describe('GitHub Actions catalog contract', () => {
 
     assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
-    assert.equal(workflow.match(/test-mode: true/g)?.length, 3);
+    assert.equal(workflow.match(/test-mode: true/g)?.length, 2);
     assert.match(workflow, /ARCHIVE_PATH: \$\{\{ steps\.publish\.outputs\.archive-path \}\}/);
     assert.match(workflow, /test -f \.codex-plugin\/plugin\.json/);
     assert.match(workflow, /test -d node_modules\/mocha/);
@@ -56,6 +56,7 @@ describe('GitHub Actions catalog contract', () => {
     assert.match(lint, /run: bun run codex:validate/);
     assert.ok(lint.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
     assert.ok(lint.includes(`tanaabased/actions/validate-codex-plugin@${CATALOG_REF}`));
+    assert.doesNotMatch(lint, /test-mode:/);
 
     assert.match(unit, /^name: Unit Tests$/m);
     assert.match(unit, /^ {2}unit-tests:$/m);
