@@ -11,8 +11,8 @@ describe('GitHub Actions catalog contract', () => {
     const workflow = await readWorkflow('release.yml');
     const [archiveJob, repositoryJob] = workflow.split('\n  publish-repo:');
 
-    assert.match(workflow, /^  publish-codex-plugin:\n/m);
-    assert.match(workflow, /^  publish-repo:\n/m);
+    assert.match(workflow, /^ {2}publish-codex-plugin:\n/m);
+    assert.match(workflow, /^ {2}publish-repo:\n/m);
     assert.ok(workflow.includes(`tanaabased/actions/prepare-release@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
@@ -23,9 +23,9 @@ describe('GitHub Actions catalog contract', () => {
     assert.match(workflow, /dependency-policy: include-production/);
     assert.match(workflow, /github-token: \$\{\{ github\.token \}\}/);
     assert.match(workflow, /sync-token: \$\{\{ secrets\.TANAAB_COAXIUM_INJECTOR \}\}/);
-    assert.match(archiveJob, /permissions:\n      contents: write/);
+    assert.match(archiveJob, /permissions:\n {6}contents: write/);
     assert.doesNotMatch(archiveJob, /TANAAB_COAXIUM_INJECTOR/);
-    assert.match(repositoryJob, /permissions:\n      contents: read/);
+    assert.match(repositoryJob, /permissions:\n {6}contents: read/);
     assert.doesNotMatch(repositoryJob, /github-token:/);
     assert.doesNotMatch(workflow, /prepare-release-action/);
   });
@@ -54,20 +54,20 @@ describe('GitHub Actions catalog contract', () => {
     ]);
 
     assert.match(lint, /^name: Lint$/m);
-    assert.match(lint, /^  lint:$/m);
+    assert.match(lint, /^ {2}lint:$/m);
     assert.match(lint, /run: bun run lint/);
     assert.match(lint, /run: bun run codex:validate/);
     assert.ok(lint.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
     assert.ok(lint.includes(`tanaabased/actions/validate-codex-plugin@${CATALOG_REF}`));
 
     assert.match(unit, /^name: Unit Tests$/m);
-    assert.match(unit, /^  unit-tests:$/m);
+    assert.match(unit, /^ {2}unit-tests:$/m);
     assert.match(unit, /run: bun run test/);
     assert.match(unit, /ubuntu-24\.04/);
     assert.match(unit, /macos-26/);
     assert.ok(unit.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
 
     assert.match(release, /^name: Release Tests$/m);
-    assert.match(release, /^  release:$/m);
+    assert.match(release, /^ {2}release:$/m);
   });
 });
