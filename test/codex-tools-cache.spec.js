@@ -6,6 +6,7 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  realpath,
   rm,
   symlink,
   writeFile,
@@ -24,7 +25,7 @@ describe('Codex Tools cache safety', () => {
   let outside;
 
   beforeEach(async () => {
-    root = await mkdtemp(path.join(tmpdir(), 'canon-cache-test-'));
+    root = await realpath(await mkdtemp(path.join(tmpdir(), 'canon-cache-test-')));
     sourceRoot = path.join(root, 'source');
     targetRoot = path.join(root, 'cache');
     outside = path.join(root, 'outside');
