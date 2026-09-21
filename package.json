@@ -27,7 +27,8 @@
     "lint": "bun run lint:eslint && bun run format:check",
     "test:unit": "bun run --bun mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit",
-    "check:package": "bun scripts/check-package-cli.js"
+    "check:package": "bun scripts/check-package-cli.js",
+    "check:openclaw": "bun scripts/check-openclaw-cli.js"
   },
   "license": "MIT",
   "repository": {

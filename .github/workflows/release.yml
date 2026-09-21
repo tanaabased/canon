@@ -33,6 +33,7 @@ jobs:
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
       - name: Verify prepared formatting
         run: bun run format:check
@@ -63,6 +64,67 @@ jobs:
           tarball: ${{ steps.pack.outputs.tarball-path }}
           channel-token: ${{ secrets.TANAAB_NPM_DEPLOY }}
 
+  publish-clawhub:
+    name: Publish ClawHub
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Install Node.js
+        uses: tanaabased/actions/setup-node@v1
+      - name: Install Bun
+        uses: tanaabased/actions/setup-bun@v1
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Validate source
+        run: |
+          bun run lint
+          bun run test
+      - name: Prepare release
+        uses: tanaabased/actions/prepare-release@v1
+        with:
+          commands: |
+            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            bun run format:write
+      - name: Verify prepared formatting
+        run: bun run format:check
+      - name: Pack plugin
+        id: pack
+        uses: tanaabased/actions/npm-pack@v1
+      - name: Check extracted package
+        id: package
+        env:
+          TARBALL: ${{ steps.pack.outputs.tarball-path }}
+        run: |
+          package_root="$(mktemp -d)"
+          tar -xzf "$TARBALL" -C "$package_root" --strip-components=1
+          echo "path=$package_root" >> "$GITHUB_OUTPUT"
+          bun run check:package "$package_root"
+      - name: Validate extracted plugin
+        uses: tanaabased/actions/validate-codex-plugin@v1
+        with:
+          plugin-directory: ${{ steps.package.outputs.path }}
+      - name: Dry-run publication
+        uses: tanaabased/actions/publish-clawhub@v1
+        with:
+          tarball: ${{ steps.pack.outputs.tarball-path }}
+          owner: tanaab
+          tags: ${{ github.event.release.prerelease && 'edge' || 'latest,edge' }}
+          dry-run: true
+      - name: Publish ClawHub
+        uses: tanaabased/actions/publish-clawhub@v1
+        with:
+          tarball: ${{ steps.pack.outputs.tarball-path }}
+          owner: tanaab
+          tags: ${{ github.event.release.prerelease && 'edge' || 'latest,edge' }}
+          clawhub-token: ${{ secrets.TANAAB_LOBSTER_BOAT }}
+
   publish-repo:
     name: Publish repo
     runs-on: ubuntu-24.04
@@ -89,6 +151,7 @@ jobs:
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
+            version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
             bun run format:check
           sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}
