@@ -58,7 +58,7 @@ For upgrades, refresh the marketplace and installed plugin, then start a fresh t
 
 ### OpenClaw
 
-Requires OpenClaw 2026.9.4 or newer. Install from ClawHub:
+Requires OpenClaw 2026.9.5 or newer. Install from ClawHub:
 
 ```sh
 openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
