@@ -69,6 +69,8 @@ jobs:
           dry-run: true
       - name: Install OpenClaw
         uses: tanaabased/actions/setup-openclaw@v1
+        with:
+          package-field: openclaw.build.openclawVersion
       - name: Check OpenClaw installation
         env:
           TARBALL: ${{ steps.pack.outputs.tarball-path }}
