@@ -18,7 +18,7 @@ npm pack --ignore-scripts --pack-destination "$TMPDIR" --json > "$TMPDIR/pack.js
 ```bash
 # should load the packaged native plugin at its declared version
 tarball="$TMPDIR/$(jq -r '.[0].filename' "$TMPDIR/pack.json")"
-openclaw plugins install "$tarball" --accept-capabilities
+openclaw plugins install "$tarball" --force --accept-capabilities
 openclaw plugins inspect tanaab --runtime --json | jq -e \
   --arg version "$(jq -r '.version' "$GITHUB_WORKSPACE/package.json")" \
   '.plugin | .status == "loaded" and .format == "openclaw" and .version == $version'
