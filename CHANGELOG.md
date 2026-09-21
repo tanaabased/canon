@@ -1,11 +1,16 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Added Codex Plugin Author for npm packaging, artifact validation, and archive migration. [#67](https://github.com/tanaabased/canon/pull/67)
+- Added native OpenClaw 2026.9.5 installation, optional Canon skill guidance, and ClawHub publication. [#40](https://github.com/tanaabased/canon/issues/40)
 - Added preferred-tool guidance and optimizer adoption checks across skills. [#67](https://github.com/tanaabased/canon/pull/67)
+- Added repository description and topic alignment to Project Author. [#68](https://github.com/tanaabased/canon/pull/68)
+- Clarified Bun development and consumer-runtime checks, with explicit Bun execution in baseline scripts. [#68](https://github.com/tanaabased/canon/pull/68) [#69](https://github.com/tanaabased/canon/pull/69)
+- Clarified task titles to lead with the observable problem or outcome. [#69](https://github.com/tanaabased/canon/pull/69)
+- Limited documentation additions and repeated verification to justified gaps. [#68](https://github.com/tanaabased/canon/pull/68)
 - Moved Canon plugin distribution to npm with isolated package checks and updated installation guidance. [#67](https://github.com/tanaabased/canon/pull/67)
-
 - Replaced `codexsync` with direct Codex Tools commands and GitHub Action plugin validation. [#64](https://github.com/tanaabased/canon/pull/64)
-
+- Separated routine skill validation from implementation tests and cache maintenance. [#69](https://github.com/tanaabased/canon/pull/69)
+- Standardized parallel publication jobs with matching names and checkouts pinned to the release event SHA. [#68](https://github.com/tanaabased/canon/pull/68)
 - Updated Leia scenarios for compatible `@lando/leia` 2.x releases, explicit Bun execution, and module-aware harnesses. [#58](https://github.com/tanaabased/canon/issues/58)
 
 ## v0.10.0 - [September 13, 2026](https://github.com/tanaabased/canon/releases/tag/v0.10.0)

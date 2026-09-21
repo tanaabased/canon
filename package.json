@@ -6,6 +6,7 @@
   "description": "Tanaab-based canon, skills, and plugin surfaces.",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@lando/leia": "^2.0.0",
     "@tanaab/codex-tools": "^1.0.0",
     "ansis": "^4.4.0",
     "debug": "^4.4.3",
@@ -21,13 +22,14 @@
   "scripts": {
     "codex:check": "codex-tools cache check",
     "codex:sync": "codex-tools cache sync",
-    "format:check": "prettier . --check --ignore-unknown",
-    "format:write": "prettier . --write --ignore-unknown",
-    "lint:eslint": "eslint .",
+    "format:check": "bun run --bun prettier . --check --ignore-unknown",
+    "format:write": "bun run --bun prettier . --write --ignore-unknown",
+    "lint:eslint": "bun run --bun eslint .",
     "lint": "bun run lint:eslint && bun run format:check",
-    "test:unit": "mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
+    "test:unit": "bun run --bun mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit",
-    "check:package": "bun scripts/check-package-cli.js"
+    "check:package": "bun scripts/check-package-cli.js",
+    "leia": "bun ./node_modules/.bin/leia"
   },
   "license": "MIT",
   "repository": {
@@ -43,8 +45,12 @@
     ".mcp.json",
     ".bun-version",
     ".node-version",
+    "index.js",
+    "openclaw.plugin.json",
     "AGENTS.md",
     "CHANGELOG.md",
+    "INSTALLATION.md",
+    "DEVELOPMENT.md",
     "assets/",
     "guidance/",
     "ideas/",
@@ -56,5 +62,21 @@
     "templates/",
     "test/task-management-fixtures.js",
     "utils/"
-  ]
+  ],
+  "openclaw": {
+    "extensions": [
+      "./index.js"
+    ],
+    "runtimeExtensions": [
+      "./index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.9.5",
+      "minGatewayVersion": "2026.9.5"
+    },
+    "build": {
+      "openclawVersion": "2026.9.5",
+      "pluginSdkVersion": "2026.9.5"
+    }
+  }
 }

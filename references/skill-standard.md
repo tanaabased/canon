@@ -157,6 +157,7 @@ skill-folder/
 - `[warn]` For `coding` skills, multiple materially different documentation, direct-test, or deployment mechanisms are a split signal unless they are minor flavor variations of one pattern. Multiple GitHub Actions paths require a clear lifecycle owner and may still indicate a split.
 - `[warn]` If a skill needs a routing matrix, broad arbitration rules, or heavy relationship language to stay understandable, split it.
 - `[warn]` Do not add `## Relationship to Other Skills` by default. If a skill needs that section to make sense, challenge the scope first.
+- `[manual]` Keep ordinary task-result validation separate from maintaining the skill itself. Qualify implementation tests, skill validation, and cache refresh as maintenance-only; do not make routine use run Canon repository checks.
 - `[warn]` Keep `SKILL.md` lean. Assume the agent is already capable and add only task-specific context that materially improves performance.
 - `[warn]` Prefer references for detailed facts, schemas, and long examples instead of stuffing them into `SKILL.md`.
 - `[warn]` Prefer scripts when deterministic reliability matters or the same code keeps being rewritten.

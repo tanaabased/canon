@@ -69,6 +69,14 @@ Treat task titles, bodies, comments, labels, and mutation reports as GitHub-faci
 
 Use a concise outcome- or problem-oriented title without a redundant `[Task]`, `[Bug]`, or `[Feature]` prefix. The native issue type or fallback metadata owns that classification.
 
+Lead with the human-observable problem, outcome, or affected workflow when the evidence supports one. Keep implementation mechanisms and internal component names in the body unless they are the clearest way to distinguish the work. Apply this judgment to new tasks and explicitly authorized title revisions; do not enforce a fixed grammar or invent a user benefit.
+
+| Kind    | Before                           | After                                          |
+| ------- | -------------------------------- | ---------------------------------------------- |
+| Task    | Refactor setup documentation     | Make local setup instructions easier to follow |
+| Bug     | Fix cache pruning logic          | Remove stale skills during cache refresh       |
+| Feature | Add repository metadata mutation | Set repository descriptions and topics         |
+
 Every body requires a supported problem or requested outcome and explicit, checkable acceptance criteria. State each fact once. Preserve material evidence and constraints from externally submitted issues even when they do not fit a preferred heading cleanly.
 
 ### Scope and Proportionality

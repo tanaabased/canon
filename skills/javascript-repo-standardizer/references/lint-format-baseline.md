@@ -27,7 +27,7 @@ When a selected layer imports more packages, report those packages too. The Vue 
 When the repo owns `.ts` or `.tsx` source, excluding generated output, vendored code, and documentation templates, also report these missing items as drift:
 
 - file: `tsconfig.json`
-- script: `typecheck` using `tsc --noEmit`
+- script: `typecheck` using `bun run --bun tsc --noEmit`
 - development dependencies: `typescript`, `typescript-eslint`, and `@types/bun`
 - the TypeScript ESLint layer for `.ts` and `.tsx`
 - test discovery that includes `.spec.ts` when the repo owns TypeScript tests
@@ -53,9 +53,9 @@ When the repo owns `.ts` or `.tsx` source, excluding generated output, vendored 
 ```json
 {
   "scripts": {
-    "lint:eslint": "eslint .",
-    "format:check": "prettier . --check --ignore-unknown",
-    "format:write": "prettier . --write --ignore-unknown",
+    "lint:eslint": "bun run --bun eslint .",
+    "format:check": "bun run --bun prettier . --check --ignore-unknown",
+    "format:write": "bun run --bun prettier . --write --ignore-unknown",
     "lint": "bun run lint:eslint && bun run format:check"
   }
 }
@@ -68,7 +68,7 @@ When the repo owns TypeScript source, add this separate script without composing
 ```json
 {
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "bun run --bun tsc --noEmit"
   }
 }
 ```

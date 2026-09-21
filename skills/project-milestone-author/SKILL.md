@@ -113,7 +113,12 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 
 ## Validation
 
+- Confirm the milestone and selected task membership match the authorized plan through exact read-back.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Run `bun run test:unit -- --grep "project-milestone-author|utils/evaluate-publication"`.
 - Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/project-milestone-author --container codex-plugin --namespace tanaab`.
-- Run the repository test, lint, Codex validation, sync, and cache checks required by Canon.
 - Exercise live writes only against an explicitly approved disposable repository, using a fresh draft and exact authorization. Prove creation or revision, selected task membership, idempotent reinspection, and exact read-back without deleting evidence.

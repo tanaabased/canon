@@ -21,7 +21,7 @@ metadata:
 Tanaab-based authoring and standardization of shell CLI surfaces. Use when a user wants to build or update a Bash or PowerShell CLI entrypoint, wrapper, help output, logging, or shell safety behavior.
 
 - Keep this skill on maintained Bash or PowerShell CLI surfaces.
-- Let `tanaab-javascript-cli-author` own package-level Bun CLIs.
+- Let `tanaab-javascript-cli-author` own package-level JavaScript and TypeScript CLIs.
 
 ## When to Use
 

@@ -1,0 +1,18 @@
+{
+  "id": "tanaab",
+  "name": "Tanaab Canon",
+  "description": "Shared Tanaab skills and operating guidance.",
+  "version": "0.10.0",
+  "skills": ["./skills"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "guidance": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remind agents to prefer relevant Tanaab skills."
+      }
+    }
+  }
+}

@@ -91,23 +91,10 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
-- Apply [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) to separate Bun development checks from focused checks of Node-distributed artifacts and their public exports.
-- Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
-- Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
-- Keep test files narrow and inside the nearest owning scope, such as `feature/test/normalize-tags.spec.ts` for `feature/utils/normalize-tags.ts`.
-- Keep the scoped `test/` directory flat by default, including specs, fixtures, fakes, and support code; use descriptive filenames instead of mirrored source-role folders.
-- Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
+- Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
+- Use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and deterministic boundaries. Test wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
-- Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
-- Start Mocha test names with `should` so the spec reads as behavior rather than implementation narration.
-- Utility-first tests are preferred because they reduce coupling and fixture/setup churn.
-- Add `c8` only when coverage reporting or enforcement is explicitly part of the task.
-- Do not merge GitHub Action input-helper testing into this skill's default path; keep that with the narrower GitHub Action surface.
-- Match assertion strictness to contract strength: keep public, protocol, schema, and safety contracts exact, but avoid making incidental prose, ordering, timing, or third-party formatting contractual.
-- Keep complete message-format assertions with the formatter that owns them; callers should assert semantic context or structured failure identity.
-- Derive real version expectations from canonical package metadata and use synthetic versions for fixtures.
-- Prefer injected clocks and boundaries in unit tests; place genuine filesystem, process, network, or platform timing in explicitly invoked integration checks.
-- Apply [the function-test contract durability guidance](./references/javascript-function-tests.md#contract-durability) when choosing assertion strength or testing a runtime boundary.
+- Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
 
 Minimal generic example:
 
