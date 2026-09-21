@@ -6,6 +6,7 @@
   "description": "Tanaab-based canon, skills, and plugin surfaces.",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@lando/leia": "^2.0.0",
     "@tanaab/codex-tools": "^1.0.0",
     "ansis": "^4.4.0",
     "debug": "^4.4.3",
@@ -28,7 +29,7 @@
     "test:unit": "bun run --bun mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit",
     "check:package": "bun scripts/check-package-cli.js",
-    "check:openclaw": "bun scripts/check-openclaw-cli.js"
+    "leia": "bun ./node_modules/.bin/leia"
   },
   "license": "MIT",
   "repository": {

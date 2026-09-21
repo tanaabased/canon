@@ -48,7 +48,7 @@ describe('GitHub Actions catalog contract', () => {
     assert.match(workflow, /bun run check:package "\$package_root"/);
     assert.match(workflow, /plugin-directory: \$\{\{ steps\.package\.outputs\.path \}\}/);
     assert.ok(workflow.includes(`tanaabased/actions/publish-clawhub@${CATALOG_REF}`));
-    assert.match(workflow, /run: bun run check:openclaw/);
+
     assert.doesNotMatch(workflow, /github-token:|sync-token:|clawhub-token:/);
   });
 

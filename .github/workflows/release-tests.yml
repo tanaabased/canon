@@ -67,14 +67,6 @@ jobs:
           tags: edge
           source-commit: ${{ github.event.pull_request.head.sha }}
           dry-run: true
-      - name: Install OpenClaw
-        uses: tanaabased/actions/setup-openclaw@v1
-        with:
-          package-field: openclaw.build.openclawVersion
-      - name: Check OpenClaw installation
-        env:
-          TARBALL: ${{ steps.pack.outputs.tarball-path }}
-        run: bun run check:openclaw "$TARBALL"
 
   publish-repo:
     runs-on: ubuntu-24.04

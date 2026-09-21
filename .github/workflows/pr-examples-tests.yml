@@ -1,0 +1,40 @@
+name: Example Tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  examples:
+    name: ${{ matrix.example }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+        example:
+          - openclaw
+    env:
+      LEIA_TIMEOUT: '120'
+      OPENCLAW_HIDE_BANNER: '1'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Install Bun
+        uses: tanaabased/actions/setup-bun@v1
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install OpenClaw
+        if: matrix.example == 'openclaw'
+        uses: tanaabased/actions/setup-openclaw@v1
+        with:
+          package-field: openclaw.build.openclawVersion
+      - name: Run example
+        uses: tanaabased/actions/run-leia@v1
+        with:
+          scenarios: examples/${{ matrix.example }}/README.md
+          shell: bash
