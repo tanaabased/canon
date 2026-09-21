@@ -144,7 +144,7 @@ Expose Leia through the consuming repository's `package.json` instead of invokin
 
 Invoke scenarios with `bun run leia`. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
 
-Bun runs the Leia process; it does not replace runtimes selected by commands inside scenario blocks. An explicit `node` command or Node-based product entrypoint retains its Node runtime, while Bun-based and shell commands retain their own declared runtimes.
+Bun runs the Leia process; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
 
 Do not add `examples/package.json` solely for Leia's generated harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers use `require` or `module.exports`. Consult Leia's scenario documentation for module selection and shell behavior.
 

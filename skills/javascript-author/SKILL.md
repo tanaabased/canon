@@ -68,7 +68,7 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 ## Preferred Tools
 
 - **[@tanaab/merge 1.x](https://github.com/tanaabased/merge/blob/v1.0.0/README.md):** Prefer for deep object merging that needs explicit array strategies, on supported Bun or Node runtimes. It mutates its target, and `replace` merges arrays by index rather than replacing the whole array; preserve existing semantics and avoid adding a dependency for shallow composition.
-- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Prefer project-declared runtime discovery for CI; add Node only when the tested or published surface needs it. Keep dependency installation and test commands in the caller.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Select runtimes through [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes). Keep dependency installation and test commands in the caller.
 - **Tanaab Actions 1.x — [prepare-release](https://github.com/tanaabased/actions/blob/v1.0.1/prepare-release/README.md), [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md), [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md), and [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md):** Prefer for the single-package npm lifecycle below. Retain explicit workspace orchestration or unsupported-runner exceptions; independent workflow topology belongs to GitHub Workflow Author.
 
 ## Workflow
@@ -91,6 +91,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- Apply [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) to separate Bun development checks from focused checks of Node-distributed artifacts and their public exports.
 - Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
 - Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
 - Keep test files narrow and inside the nearest owning scope, such as `feature/test/normalize-tags.spec.ts` for `feature/utils/normalize-tags.ts`.

@@ -66,7 +66,7 @@ Prefer the [Tanaab Actions 1.x catalog](https://github.com/tanaabased/actions/tr
 | Action                                                                                                     | Use when                                                                       |
 | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md)                         | Discover and install the project Bun runtime.                                  |
-| [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md)                       | Discover and install Node when the product or tooling needs it.                |
+| [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md)                       | Install project-declared Node for consumer checks or Node-only tooling.        |
 | [setup-openclaw](https://github.com/tanaabased/actions/blob/v1.0.1/setup-openclaw/README.md)               | Install OpenClaw and optionally prepare isolated integration fixtures.         |
 | [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md)                           | Run installed Leia scenarios with temporary-state cleanup.                     |
 | [ssh-test-key](https://github.com/tanaabased/actions/blob/v1.0.1/ssh-test-key/README.md)                   | Create a local SSH fixture; does not register keys or connect remotely.        |
@@ -121,7 +121,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Confirm the skill did not absorb a narrower surface's canonical validation or deployment lifecycle when no independent trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
 - Confirm independent pull-request gates use separate workflow files when their commands, runners, matrices, failure owners, or required-check identities differ, with any combined exception justified by shared operational ownership.
 - Confirm Windows runners appear only when explicitly requested by the user or repository policy, and use a supported versioned runner label rather than `windows-latest`.
-- Confirm runtime setup follows [Preferred Tools](#preferred-tools), uses the correct package directory and project declarations, and preserves required upstream inputs when a wrapper is unsuitable. Keep `bun install --frozen-lockfile --ignore-scripts` caller-owned.
+- Confirm runtime setup follows [Preferred Tools](#preferred-tools) and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes), uses the correct package directory and project declarations, and preserves required upstream inputs when a wrapper is unsuitable. Keep `bun install --frozen-lockfile --ignore-scripts` caller-owned.
 - Confirm workflows that install through Homebrew set `HOMEBREW_NO_AUTO_UPDATE` to `1` at workflow or job scope and run `brew update-if-needed` with an empty command-scoped value on every Homebrew-using runner, unless Homebrew is separately pinned or refreshed.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.
