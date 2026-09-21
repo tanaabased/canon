@@ -69,7 +69,7 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 23 skills below.
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | [`tanaab-github-issue-form-author`](./skills/github-issue-form-author/)     | Task, Bug, and Feature issue forms and intake extraction.                    |
 | [`tanaab-github-issue-schema-author`](./skills/github-issue-schema-author/) | Organization issue fields and repository labels.                             |
-| [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation and managed settings.                             |
+| [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation, settings, descriptions, and topics.              |
 | [`tanaab-project-milestone-author`](./skills/project-milestone-author/)     | Milestone state, due dates, and verified task membership.                    |
 | [`tanaab-project-milestone-planner`](./skills/project-milestone-planner/)   | Milestone coverage, task selection, and owner handoffs.                      |
 | [`tanaab-project-optimizer`](./skills/project-optimizer/)                   | Read-only project audits and staged improvement plans.                       |
@@ -79,16 +79,16 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 23 skills below.
 
 ### Code and interface authoring
 
-| Skill                                                                           | Owns                                                                            |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.        |
-| [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                                 |
-| [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript Bun CLI entrypoints, help, versioning, and packaging. |
-| [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                           |
-| [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring and delivery.                                  |
-| [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety.       |
-| [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                               |
-| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components and Composition API implementation.                            |
+| Skill                                                                           | Owns                                                                      |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.  |
+| [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                           |
+| [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript CLI source, distribution, help, and versioning. |
+| [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                     |
+| [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring and delivery.                            |
+| [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety. |
+| [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                         |
+| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components and Composition API implementation.                      |
 
 ### GitHub and delivery
 
@@ -103,7 +103,7 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 23 skills below.
 | Skill                                                   | Owns                                                 |
 | ------------------------------------------------------- | ---------------------------------------------------- |
 | [`tanaab-changelog-author`](./skills/changelog-author/) | `CHANGELOG.md` authoring and maintenance.            |
-| [`tanaab-readme-author`](./skills/readme-author/)       | Repository README structure and content.             |
+| [`tanaab-readme-author`](./skills/readme-author/)       | Repository READMEs and companion guides.             |
 | [`tanaab-skill-author`](./skills/skill-author/)         | Skill scaffolding, validation, and portfolio review. |
 
 ## Development
