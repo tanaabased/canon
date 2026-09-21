@@ -77,7 +77,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - For action repos that ship committed artifacts or synchronize changelog changes, use `.github/workflows/release.yml` on `release.published` with the [preferred `publish-repo` action](#preferred-tools). Check out the event commit with full history; the action owns date formatting and verified Git synchronization.
 - Keep final lint, test, build, or smoke commands only where they validate the shipped action. Prepare committed artifacts in `commands`, stamp any version-bearing build inputs before building, then format and validate command-owned output before synchronization.
 - Keep `sync-tags` on the release's intended moving major alias, such as `v1` for `v1.2.3`. Use the established bot credential required by repository rules; the shared action owns the synchronization identity.
-- Follow [release composition](../github-workflow-author/SKILL.md#release-composition) when multiple destinations exist. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
+- Follow [release composition](../github-workflow-author/SKILL.md#release-composition) for checkout inputs, destination names, and independent jobs. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
 - Minimal example: [action release workflow](./templates/bun-javascript-action-release-workflow.yml).
 
 ## Optimization

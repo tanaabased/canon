@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish-npm:
+    name: Publish npm
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -39,7 +40,7 @@ jobs:
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
           dry-run: true
-      - name: Publish tested package
+      - name: Publish npm
         uses: tanaabased/actions/publish-npm@v1
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
@@ -48,6 +49,7 @@ jobs:
           channel-token: ${{ secrets.TANAAB_NPM_DEPLOY }}
 
   publish-repo:
+    name: Publish repo
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -61,7 +63,7 @@ jobs:
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
-      - name: Publish repository
+      - name: Publish repo
         uses: tanaabased/actions/publish-repo@v1
         with:
           commands: |

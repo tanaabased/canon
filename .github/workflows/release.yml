@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish-npm:
+    name: Publish npm
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -56,13 +57,14 @@ jobs:
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
           dry-run: true
-      - name: Publish tested package
+      - name: Publish npm
         uses: tanaabased/actions/publish-npm@v1
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
           channel-token: ${{ secrets.TANAAB_NPM_DEPLOY }}
 
   publish-repo:
+    name: Publish repo
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -82,7 +84,7 @@ jobs:
         run: bun run lint
       - name: Validate Codex plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
-      - name: Publish repository
+      - name: Publish repo
         uses: tanaabased/actions/publish-repo@v1
         with:
           commands: |
