@@ -18,7 +18,5 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Run linter
         run: bun run lint
-      - name: Validate canon
-        run: bun run codex:validate
       - name: Validate Codex plugin
         uses: tanaabased/actions/validate-codex-plugin@v1

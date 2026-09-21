@@ -20,7 +20,7 @@ describe('GitHub Actions catalog contract', () => {
       workflow,
       /archive-name: tanaab-\$\{\{ github\.event\.release\.tag_name \}\}\.tar\.gz/,
     );
-    assert.match(workflow, /dependency-policy: include-production/);
+    assert.match(workflow, /dependency-policy: exclude-node-modules/);
     assert.match(workflow, /github-token: \$\{\{ github\.token \}\}/);
     assert.match(workflow, /sync-token: \$\{\{ secrets\.TANAAB_COAXIUM_INJECTOR \}\}/);
     assert.match(archiveJob, /permissions:\n {6}contents: write/);
@@ -35,10 +35,11 @@ describe('GitHub Actions catalog contract', () => {
 
     assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
-    assert.equal(workflow.match(/test-mode: true/g)?.length, 2);
+    assert.equal(workflow.match(/dry-run: true/g)?.length, 2);
+    assert.doesNotMatch(workflow, /test-mode:/);
     assert.match(workflow, /ARCHIVE_PATH: \$\{\{ steps\.publish\.outputs\.archive-path \}\}/);
     assert.match(workflow, /test -f \.codex-plugin\/plugin\.json/);
-    assert.match(workflow, /test -d node_modules\/mocha/);
+    assert.match(workflow, /test -e node_modules/);
     assert.match(workflow, /plugin_version=.*\.codex-plugin\/plugin\.json/);
     assert.doesNotMatch(workflow, /github-token:|sync-token:/);
   });
@@ -53,7 +54,6 @@ describe('GitHub Actions catalog contract', () => {
     assert.match(lint, /^name: Lint$/m);
     assert.match(lint, /^ {2}lint:$/m);
     assert.match(lint, /run: bun run lint/);
-    assert.match(lint, /run: bun run codex:validate/);
     assert.ok(lint.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
     assert.ok(lint.includes(`tanaabased/actions/validate-codex-plugin@${CATALOG_REF}`));
     assert.doesNotMatch(lint, /test-mode:/);

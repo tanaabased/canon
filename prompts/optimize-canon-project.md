@@ -48,14 +48,15 @@ Do not return a generic checklist or restate the selected skills' Optimization s
 
 ## Canon Validation and Cache Handoff
 
-Derive targeted checks from the surfaces in the proposal. For a completed implementation that changes managed plugin or `codexsync` surfaces, the expected final baseline is:
+Derive targeted checks from the surfaces in the proposal. For a completed implementation that changes managed plugin surfaces, the expected final baseline is:
 
 ```sh
 bun run test
 bun run lint
-bun run codex:validate
 git diff --check
 bun run codex:check
 ```
+
+Plugin validation runs through `tanaabased/actions/validate-codex-plugin@v1` in GitHub Actions. The cache scripts invoke Codex Tools directly; use an isolated `--codex-home`, an explicit `--cache-path`, and `--missing-target create` for disposable verification.
 
 If the final cache check reports drift, include `bun run codex:sync`, repeat `bun run codex:check`, and note that Codex should be restarted so updated skills reload. Do not synchronize the cache during the read-only planning pass.
