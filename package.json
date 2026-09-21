@@ -43,6 +43,8 @@
     ".mcp.json",
     ".bun-version",
     ".node-version",
+    "index.js",
+    "openclaw.plugin.json",
     "AGENTS.md",
     "CHANGELOG.md",
     "assets/",
@@ -56,5 +58,21 @@
     "templates/",
     "test/task-management-fixtures.js",
     "utils/"
-  ]
+  ],
+  "openclaw": {
+    "extensions": [
+      "./index.js"
+    ],
+    "runtimeExtensions": [
+      "./index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.9.4",
+      "minGatewayVersion": "2026.9.4"
+    },
+    "build": {
+      "openclawVersion": "2026.9.4",
+      "pluginSdkVersion": "2026.9.4"
+    }
+  }
 }

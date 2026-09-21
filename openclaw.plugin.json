@@ -1,0 +1,12 @@
+{
+  "id": "tanaab",
+  "name": "Tanaab Canon",
+  "description": "Shared Tanaab skills and operating guidance.",
+  "version": "0.10.0",
+  "skills": ["./skills"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
