@@ -25,12 +25,10 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## npm Package Publishing
 
-- For a single publishable JS, TS, or Bun package, prefer a `.github/workflows/release.yml` workflow triggered by `release.published`; let JavaScript Author own the surface-local package lifecycle and use GitHub Workflow Author when the workflow graph itself is the primary artifact.
-- Prefer npm trusted publishing from a GitHub-hosted runner. Configure the npm trusted publisher for the exact GitHub organization, repository, and workflow filename; install Node 24 plus an npm CLI version at or above `11.5.1`; grant `id-token: write`; and publish with the npm CLI even when Bun remains the repo runtime and package manager.
-- Grant `contents: write` only when the release lifecycle syncs version, changelog, or generated artifacts back to the repository. Prefer the workflow's GitHub token for ordinary sync and use a separate credential only when branch protection or another repository rule requires it.
-- Publish stable releases to npm's default `latest` tag and prereleases to `edge`. Because npm trusted publishing does not authorize `npm dist-tag`, moving `edge` to a stable version requires a separately scoped granular npm token; isolate that token to the dist-tag step and omit the step when the alias is unnecessary.
-- Build only when the npm package ships generated output. Format command-owned release mutations before they are synced, then run format validation and an npm pack or publish dry run against the final prepared package before live publication; surface any release tool that cannot validate its own mutations before sync as a tooling limitation.
-- Do not add `--provenance` solely for public-package trusted publishing; npm supplies provenance for that supported path.
+- Keep the single-package `release.published` lifecycle with [JavaScript Author](../skills/javascript-author/SKILL.md#deployment), including shared preparation, exact-tarball validation and publication, and independent repository synchronization. Leave multi-package release orchestration explicit.
+- Prefer tokenless npm trusted publishing on a supported GitHub-hosted runner. Let the shared publisher select a compatible project Node/npm toolchain and grant `id-token: write` only to its job.
+- Stable releases publish to `latest` and update `edge` by default; prereleases update only `edge`. The shared publisher uses a separate channel token for stable aliasing; explicitly disable the update when the channels should stay separate.
+- Build only when the package ships generated output. Validate the final prepared artifact and preserve any release tool's stated limitations around mutation and synchronization.
 
 ## TypeScript
 
@@ -93,9 +91,8 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## GitHub Actions
 
 - Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
-- Replace `actions/setup-node` with `oven-sh/setup-bun` when migrating a workflow to Bun.
-- Retain `actions/setup-node` alongside Bun when npm trusted publishing needs the supported Node and npm CLI path.
-- Prefer `bun-version-file: .bun-version` over repeated Bun version literals in workflow jobs.
+- Prefer [Tanaab Actions runtime setup](../skills/github-workflow-author/SKILL.md#preferred-tools) using project declarations and the correct package directory. Add Node alongside Bun when the product or tooling needs it; retain direct upstream actions when required inputs or runners are unsupported.
+- Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
 - Use `.github/workflows/pr-examples-tests.yml` for Leia-backed CLI scenarios, `.github/workflows/pr-build-checks.yml` for the shared frontend lint-and-build path, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.

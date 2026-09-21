@@ -64,13 +64,19 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 - Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
 
+## Preferred Tools
+
+- **[@tanaab/merge 1.x](https://github.com/tanaabased/merge/blob/v1.0.0/README.md):** Prefer for deep object merging that needs explicit array strategies, on supported Bun or Node runtimes. It mutates its target, and `replace` merges arrays by index rather than replacing the whole array; preserve existing semantics and avoid adding a dependency for shallow composition.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Prefer project-declared runtime discovery for CI; add Node only when the tested or published surface needs it. Keep dependency installation and test commands in the caller.
+- **Tanaab Actions 1.x — [prepare-release](https://github.com/tanaabased/actions/blob/v1.0.1/prepare-release/README.md), [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md), [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md), and [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md):** Prefer for the single-package npm lifecycle below. Retain explicit workspace orchestration or unsupported-runner exceptions; independent workflow topology belongs to GitHub Workflow Author.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is primarily JS- or TS-runtime-led or uses the canonical npm package deployment lifecycle rather than being CLI-, workflow-graph-, or broader release-system-led.
 2. Load only the relevant JavaScript or TypeScript files, or the package manifest and release workflow for npm deployment, plus the shared references that directly shape the change.
-3. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.
+3. Check [Preferred Tools](#preferred-tools) when selecting merge behavior or lifecycle tooling. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.
 4. Keep any required package, module, or artifact edits coherent with that owned JS or TS surface.
 5. Validate the changed JS or TS surface with the repo's narrowest reliable checks, including the repo's type-check command when TypeScript changed.
 
@@ -117,15 +123,14 @@ describe('feature/utils/normalize-tags', () => {
 
 ## Deployment
 
-- Use [release destinations](../../references/release-destinations.md) to confirm that npm is an intended destination for the package scope before applying this lifecycle.
-- Canonical mechanism: for a single publishable JS, TS, or Bun package, use `.github/workflows/release.yml` on `release.published`, prepare the package with `tanaabased/prepare-release-action@v1`, and publish with the npm CLI through npm trusted publishing.
-- Configure npm's trusted publisher for the exact GitHub organization, repository, and workflow filename. Use a GitHub-hosted Ubuntu runner, Node 24, npm `>=11.5.1`, and `id-token: write`; keep Bun as the runtime and package manager, but do not substitute `bun publish` for the documented npm OIDC path.
-- Grant `contents: write` only because the canonical lifecycle syncs release-time version or changelog mutations. Prefer `${{ github.token }}` for ordinary sync; use a separate repository credential only when branch protection or another repo rule requires it.
-- Run lint and tests before preparation. Build after version stamping only when `package.json#files`, `main`, `bin`, or `exports` points at generated output; a docs-site `build` script alone is not evidence that the npm package needs a release build.
-- Put formatter writes after command-owned stamping or artifact generation and before `prepare-release-action` syncs those mutations. With `prepare-release-action@v1`, `commands` run before the action's own package and changelog mutations, so also run `format:check` afterward and do not claim the action exposes a post-mutation, pre-sync hook.
-- Run an npm publish dry run against the prepared package before live publication. Publish stable releases to `latest` and prereleases to `edge`.
-- Keep trusted publication tokenless. If stable releases must also move `edge`, isolate a granular npm token to the separate `npm dist-tag` step; remove that step when the alias is unnecessary.
-- Minimal example: [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml)
+- Use [release destinations](../../references/release-destinations.md) to confirm that npm is intended for this package scope. For a single package, use `.github/workflows/release.yml` on `release.published` with the [preferred release actions](#preferred-tools).
+- Run lint and tests before preparation. Use `prepare-release` without Git synchronization, build after stamping only when the package ships generated output, format generated changes, and validate the final prepared files. A docs-site build alone does not justify a package build.
+- Use `npm-pack` with lifecycle scripts disabled. Inspect and exercise its exact tarball with the package's relevant checks, then pass that same path to `publish-npm` for a native dry run and live publication; do not repack between validation and publishing.
+- Configure npm trusted publishing for the exact repository and workflow filename. Leave `registry-token` unset and grant the npm job `id-token: write`; the action installs the project-selected Node runtime and supported npm CLI. Verify that the selected runtime supports that npm version.
+- Stable releases publish to `latest` and update `edge` by default; prereleases update only `edge`. Supply a granular `channel-token` for stable aliasing, or explicitly set `update-prerelease-tag-on-stable: false` and omit it when the channels should stay separate. Keep npm publication itself tokenless.
+- When repository files or tags must be synchronized, use a peer `publish-repo` job with its own preparation from the original release commit. Follow [Workflow Author's release composition](../github-workflow-author/SKILL.md#release-composition) for immutable checkout inputs, independent jobs, and retry boundaries.
+- Format and validate command-owned changes within `publish-repo`'s preparation commands. Its upstream action stamps package/changelog files afterward and syncs internally; it has no post-stamping, pre-sync validation hook. Validate that path with a native dry run in PRs and report this limitation rather than claiming an after-sync check gates publication.
+- Minimal example: [npm release workflow](./templates/bun-npm-package-release-workflow.yml). Adapt package-specific build and tarball checks without widening this into workspace release orchestration.
 
 ## GitHub Actions
 
@@ -133,6 +138,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Pull Request Validation
 
+- Use the [preferred runtime setup actions](#preferred-tools) for CI, retaining caller-owned dependency installation and test commands.
 - For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow template](./templates/bun-unit-tests-workflow.yml).
 - Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](../javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow template](../javascript-repo-standardizer/templates/bun-pr-linter-workflow.yml).
 - For developer-machine code, CLIs, and plugin tooling, prefer the template's Ubuntu plus current macOS runner matrix.
@@ -146,7 +152,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 ## Optimization
 
 - **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, CI, and npm package deployment wiring; identify independently testable function logic embedded in entrypoints or larger libraries.
-- **Compare:** Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon.
+- **Compare:** Assess [Preferred Tools](#preferred-tools) against merge mutation/array semantics and current runtime, packing, and publication paths before proposing replacements. Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon.
 - **Recommend:** Keep cohesive stateful orchestration in `lib/`; deduplicate or consolidate repeated logic; split overloaded owners; extract honestly separable one-function utilities with narrow specs; move misplaced code; tighten boundaries; and remove proven dead code without forcing decomposition or style churn.
 - **Apply:** After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
 - **Verify:** Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.

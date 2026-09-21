@@ -58,6 +58,10 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 - Do not hide missing Bun tooling, missing committed artifacts, or drift between source and committed runtime output.
 - Surface when the requested change really belongs to the workflow-authoring surface instead of the action-product surface.
 
+## Preferred Tools
+
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md):** Prefer for smoke-workflow runtime setup and release-time repository publication. Retain action-local `uses: ./` smoke coverage; a repository-tag release does not imply npm publication. Use direct upstream setup when the shared wrapper cannot express required inputs.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
@@ -65,21 +69,21 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 1. Confirm the request is action-product-led rather than workflow-led or general-JS/TS-led.
 2. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change, then load the local action conventions and only the shared canon needed for the touched surface.
 3. Keep the action contract coherent across `action.yml`, runtime entrypoint, committed artifact, README, and any dedicated input-normalization helper.
-4. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
+4. Use [preferred runtime setup](#preferred-tools) in smoke workflows while testing the action itself through `uses: ./`. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
 
 ## Release Workflow
 
-- Use [release destinations](../../references/release-destinations.md) to keep repository refs and Marketplace delivery distinct from any separately declared npm package publication.
-- Canonical mechanism: for JavaScript-backed action repos that ship committed artifacts or sync `CHANGELOG.md`, use a `.github/workflows/release.yml` workflow triggered by `release.published`, check out full history, install Bun, export formatted `RELEASE_DATE`, and call `tanaabased/prepare-release-action@v1`.
-- Keep `Install deps and prep` only when the repo needs a final release-time lint, test, build, or smoke pass before syncing release artifacts.
-- Keep `sync-tags` aligned with the incoming release tag's major version line. For example, when `${{ github.event.release.tag_name }}` is `v1.2.3`, the workflow should sync the moving alias `v1`.
-- Keep release-time `commands` focused on action-product needs such as rebuilding or stamping committed `dist/` artifacts; hand broader workflow topology back to `tanaab-github-workflow-author`.
-- Minimal example: [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml)
+- Use [release destinations](../../references/release-destinations.md) to distinguish repository refs and Marketplace delivery from explicitly selected npm publication.
+- For action repos that ship committed artifacts or synchronize changelog changes, use `.github/workflows/release.yml` on `release.published` with the [preferred `publish-repo` action](#preferred-tools). Check out the event commit with full history; the action owns date formatting and verified Git synchronization.
+- Keep final lint, test, build, or smoke commands only where they validate the shipped action. Prepare committed artifacts in `commands`, stamp any version-bearing build inputs before building, then format and validate command-owned output before synchronization.
+- Keep `sync-tags` on the release's intended moving major alias, such as `v1` for `v1.2.3`. Use the established bot credential required by repository rules; the shared action owns the synchronization identity.
+- Follow [release composition](../github-workflow-author/SKILL.md#release-composition) when multiple destinations exist. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
+- Minimal example: [action release workflow](./templates/bun-javascript-action-release-workflow.yml).
 
 ## Optimization
 
 - **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
-- **Compare:** Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.
+- **Compare:** Compare runtime setup and repository publication with [Preferred Tools](#preferred-tools), preserving action smoke behavior and moving-tag policy. Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.
 - **Recommend:** Keep aligned runtime output; deduplicate or consolidate repeated contracts; extract testable units; move misplaced action-owned material; split only genuinely independent actions; and tighten or remove stale surfaces without creating unrelated workflow work.
 - **Apply:** After explicit authorization, make the smallest coherent action-product operations and preserve GitHub Workflow Author ownership of broader workflow graphs.
 - **Verify:** Rebuild and test the action, exercise its smoke path, and confirm committed runtime output remains aligned with source and metadata.
@@ -89,7 +93,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - [./references/javascript-action-conventions.md](./references/javascript-action-conventions.md): local product-surface rules for Bun-backed actions authored in JavaScript or TypeScript
 - [./references/action-input-helper-tests.md](./references/action-input-helper-tests.md): local pattern for focused GitHub Action input-helper tests
 - [./templates/bun-javascript-action-smoke-workflow.yml](./templates/bun-javascript-action-smoke-workflow.yml): starter workflow for `uses: ./` smoke coverage
-- [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml): starter `release.yml` for release-published action repos that sync `CHANGELOG.md` or committed artifacts through `prepare-release-action`
+- [./templates/bun-javascript-action-release-workflow.yml](./templates/bun-javascript-action-release-workflow.yml): starter `release.yml` for action artifact and repository publication
 - [./templates/get-inputs.spec.js](./templates/get-inputs.spec.js): starter Mocha spec for a focused action input helper
 - [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination routing
 - [../../references/readme-standards.md](../../references/readme-standards.md): GitHub Action README mode rules
@@ -104,4 +108,4 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Confirm input-helper tests cover both local-default and explicit GitHub Actions runtime behavior when that surface changed.
 - Confirm the README matches the GitHub Action README mode when the action contract changed.
 - Confirm action-local validation uses `uses: ./` and checks observable postconditions when that surface changed.
-- Confirm any release workflow uses `tanaabased/prepare-release-action@v1`, includes the required formatted `RELEASE_DATE` export, keeps `sync-tags` aligned with the incoming release tag's major version alias, and keeps `Install deps and prep` only when it materially validates or rebuilds the action product surface.
+- Confirm release workflows use the preferred repository publisher, prepare from the original event commit, and keep moving tags and release commands aligned with the shipped action surface.
