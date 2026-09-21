@@ -4,7 +4,9 @@ Use this pattern when a repository needs end-to-end or operational coverage that
 
 This reference owns Tanaab's Leia usage policy: test scope, scenario organization, fixtures, and execution restrictions. Leia owns its syntax, CLI options, and harness behavior. `templates/leia-examples-agents.md` projects this policy into `examples/**`; `templates/leia-markdown-example-readme.md` is a runnable starter.
 
-Use the upstream [`leia-scenarios` skill](https://github.com/lando/leia/blob/v2.0.0/skills/scenarios/SKILL.md) when available, alongside this policy and repository guidance. Otherwise, consult Leia's [CLI](https://github.com/lando/leia/blob/v2.0.0/CLI.md) and [scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md). These links target the supported 2.0.0 baseline; use the documentation for the project's installed version when it differs. The agent plugin is optional and does not replace the project's CLI dependency or authorize local execution.
+Use the upstream [`leia-scenarios` skill](https://github.com/lando/leia/blob/v2.0.0/skills/scenarios/SKILL.md) when available, alongside this policy and repository guidance. Otherwise, consult Leia's [CLI](https://github.com/lando/leia/blob/v2.0.0/CLI.md) and [scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md). These links target the supported 2.0.0 baseline; use the documentation for the project's installed version when it differs.
+
+For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenClaw plugin](https://github.com/lando/leia/blob/v2.0.0/PLUGINS.md) ships in [`@lando/leia`](https://www.npmjs.com/package/@lando/leia). Install the project's CLI dependency separately; the plugin does not authorize local execution.
 
 ## When to Use
 
