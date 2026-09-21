@@ -7,6 +7,12 @@
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
-    "properties": {}
+    "properties": {
+      "guidance": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remind agents to prefer relevant Tanaab skills."
+      }
+    }
   }
 }
