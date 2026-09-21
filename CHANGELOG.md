@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added Codex Plugin Author for npm packaging, artifact validation, and archive migration. [#67](https://github.com/tanaabased/canon/pull/67)
+- Added preferred-tool guidance and optimizer adoption checks across skills. [#67](https://github.com/tanaabased/canon/pull/67)
+- Moved Canon plugin distribution to npm with isolated package checks and updated installation guidance. [#67](https://github.com/tanaabased/canon/pull/67)
+
 - Replaced `codexsync` with direct Codex Tools commands and GitHub Action plugin validation. [#64](https://github.com/tanaabased/canon/pull/64)
 
 - Updated Leia scenarios for compatible `@lando/leia` 2.x releases, explicit Bun execution, and module-aware harnesses. [#58](https://github.com/tanaabased/canon/issues/58)

@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Codex Plugin Author'
+  short_description: 'Tanaab-based Codex plugin authoring and npm delivery.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-codex-plugin-author to author or migrate a Codex plugin, verify its packed resources, and prepare npm delivery.'

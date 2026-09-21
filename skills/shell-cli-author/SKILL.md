@@ -47,6 +47,11 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) only for shell-vs-JS boundary decisions, not as a substitute for CLI contract rules.
 - Use [./references/shell-cli-templates.md](./references/shell-cli-templates.md) and the bundled starters when the repo needs a reusable Bash or PowerShell CLI baseline.
 
+## Preferred Tools
+
+- **[Leia 2.x](https://github.com/lando/leia/blob/v2.0.0/README.md):** Prefer for observable CLI scenarios under [Tanaab's usage policy](../../references/leia-markdown-scenarios.md); the optional upstream skill assists authoring but does not replace the project's CLI dependency.
+- **Tanaab Actions 1.x — [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md):** Prefer in scenario CI after runtime, dependency, and artifact preparation. It owns temporary state and cleanup, not scenario setup or sandboxing; retain caller behavior that its inputs cannot express.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
@@ -85,6 +90,7 @@ test -n "$(./dist/my-script.sh --version)"
 
 ## GitHub Actions
 
+- Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
 - Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](../../templates/leia-pr-examples-tests.yml) when the shell CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
 - Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
@@ -93,7 +99,7 @@ test -n "$(./dist/my-script.sh --version)"
 ## Optimization
 
 - **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, Leia scenarios, and their packaging.
-- **Compare:** Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, stale paths, and scenario packaging drift.
+- **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, stale paths, and scenario packaging drift.
 - **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
 - **Apply:** After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
 - **Verify:** Run available static or parse checks, smoke help and version output, validate scenario packaging against the shared Leia contract, and execute the relevant Leia scenarios.

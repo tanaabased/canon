@@ -6,7 +6,7 @@
       "name": "@tanaab/canon",
       "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@tanaab/codex-tools": "^1.0.0-beta.1",
+        "@tanaab/codex-tools": "^1.0.0",
         "ansis": "^4.4.0",
         "debug": "^4.4.3",
         "eslint": "^10.10.0",
@@ -55,7 +55,7 @@
 
     "@keyv/serialize": ["@keyv/serialize@1.1.1", "", {}, "sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA=="],
 
-    "@tanaab/codex-tools": ["@tanaab/codex-tools@1.0.0-beta.1", "", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "sha512-sy5WkAhM1KihqhfJVqk1gstes9PQ9PUc3WW0ZIH4IFAIsSlJMnpkD2Jn+MvnijBKz0WKhR0c1ssSXgoCmzV/JQ=="],
+    "@tanaab/codex-tools": ["@tanaab/codex-tools@1.0.0", "", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "sha512-WCmIwRD+RMe2DOkpyFhuiYGNpugYSLRiITbkPwpFg0/Oxs7qrxcuoiZr+vcrhLjblw3XpnjAUc4c0wiA5kc8WQ=="],
 
     "@types/esrecurse": ["@types/esrecurse@4.3.1", "", {}, "sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw=="],
 

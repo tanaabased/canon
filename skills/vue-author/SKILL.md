@@ -120,7 +120,8 @@ bun run build
 
 ## GitHub Actions
 
-- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the shared Bun PR build-checks workflow template](../../templates/bun-pr-build-checks.yml).
+- Use [Repo Standardizer's preferred runtime setup](../javascript-repo-standardizer/SKILL.md#preferred-tools) while retaining the project's Vue build command; VitePress tooling applies only to VitePress sites.
+- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the Vue build-checks workflow template](./templates/bun-pr-build-checks.yml).
 - Keep this as an automation projection of the Vue build- and lint-first validation path rather than expanding into broader CI topology.
 
 ## Optimization
@@ -141,7 +142,7 @@ bun run build
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
-- [../../templates/bun-pr-build-checks.yml](../../templates/bun-pr-build-checks.yml): shared Bun workflow starter for lint- and build-first pull-request validation
+- [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): surface-owned workflow starter for lint- and build-first pull-request validation
 
 ## Validation
 

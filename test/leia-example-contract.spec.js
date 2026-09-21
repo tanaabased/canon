@@ -24,7 +24,9 @@ describe('templates/Leia examples contract', () => {
       assert.doesNotMatch(content, /1\.0\.0-beta\.9/);
     }
 
-    assert.match(workflowContent, /TMPDIR=.*bun run leia .* --stdin/);
+    assert.match(workflowContent, /uses: tanaabased\/actions\/run-leia@v1/);
+    assert.match(workflowContent, /scenarios: examples\/\$\{\{ matrix.example \}\}\/README\.md/);
+    assert.match(workflowContent, /shell: bash\n\s+retry: 0\n\s+stdin: true/);
     assert.doesNotMatch(workflowContent, /\.\/node_modules\/\.bin\/leia/);
   });
 

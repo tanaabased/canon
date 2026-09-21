@@ -52,6 +52,11 @@ Tanaab-based authoring and standardization of true JavaScript or TypeScript Bun 
 - Preserve the existing source language unless the repo or user selects TypeScript; Bun may execute a `.ts` entrypoint directly, while shipped build artifacts should keep their declared JavaScript output contract.
 - Use [./references/bun-cli-template.md](./references/bun-cli-template.md) and the bundled starter only when the repo actually needs a reusable Bun CLI baseline.
 
+## Preferred Tools
+
+- **[Leia 2.x](https://github.com/lando/leia/blob/v2.0.0/README.md):** Prefer for observable CLI scenarios under [Tanaab's usage policy](../../references/leia-markdown-scenarios.md); the optional upstream skill assists authoring but does not replace the project's CLI dependency.
+- **Tanaab Actions 1.x — [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md):** Prefer in scenario CI after runtime, dependency, and artifact preparation. It owns temporary state and cleanup, not scenario setup or sandboxing; retain caller behavior that its inputs cannot express.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
@@ -91,6 +96,7 @@ test -n "$(my-cli --version)"
 
 ## GitHub Actions
 
+- Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
 - Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](../../templates/leia-pr-examples-tests.yml) when the CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the built CLI artifact, placing it on `PATH`, and running one Leia README per matrix entry.
 - Keep this as an automation projection of the package-level CLI test contract, not as general workflow-topology ownership.
@@ -98,7 +104,7 @@ test -n "$(my-cli --version)"
 ## Optimization
 
 - **Inspect:** Inventory the package entrypoint, parser, help, version, environment precedence, build output, packaging metadata, scenarios, and observable CLI tests.
-- **Compare:** Reconcile parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and scenario packaging drift.
+- **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and scenario packaging drift.
 - **Recommend:** Keep aligned behavior; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.
 - **Apply:** After explicit authorization, make the smallest coherent CLI operations and preserve documented command behavior and package boundaries.
 - **Verify:** Build the entrypoint, smoke help and version output, validate scenario packaging against the shared Leia contract, run Leia-backed scenarios, and type-check when the repository owns TypeScript.

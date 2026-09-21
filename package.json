@@ -1,13 +1,12 @@
 {
   "name": "@tanaab/canon",
   "version": "0.10.0",
-  "private": true,
   "packageManager": "bun@1.3.14",
   "type": "module",
   "description": "Tanaab-based canon, skills, and plugin surfaces.",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@tanaab/codex-tools": "^1.0.0-beta.1",
+    "@tanaab/codex-tools": "^1.0.0",
     "ansis": "^4.4.0",
     "debug": "^4.4.3",
     "eslint": "^10.10.0",
@@ -27,6 +26,35 @@
     "lint:eslint": "eslint .",
     "lint": "bun run lint:eslint && bun run format:check",
     "test:unit": "mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
-    "test": "bun run test:unit"
-  }
+    "test": "bun run test:unit",
+    "check:package": "bun scripts/check-package-cli.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanaabased/canon.git"
+  },
+  "homepage": "https://github.com/tanaabased/canon",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    ".codex-plugin/plugin.json",
+    ".mcp.json",
+    ".bun-version",
+    ".node-version",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "assets/",
+    "guidance/",
+    "ideas/",
+    "lib/",
+    "prompts/",
+    "references/",
+    "scripts/",
+    "skills/",
+    "templates/",
+    "test/task-management-fixtures.js",
+    "utils/"
+  ]
 }

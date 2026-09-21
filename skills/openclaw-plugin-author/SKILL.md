@@ -86,6 +86,11 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Follow [shared CLI style rules](../../references/cli-style-rules.md) for human summaries, streams, machine-readable output, color, and errors. Use the public OpenClaw runtime output surface for primary output and the `PluginLogger` injected into the CLI registrar for diagnostics. Prefer those API surfaces directly; add a small plugin-local adapter only to apply shared styling to primary output or add diagnostic context, redaction, or test injection without changing stream, log-level, or machine-output semantics.
 - Keep JSON and JSONL modes free of human decoration and ANSI styling, derive them from the same command result as human output, and preserve child or command exit status across every output mode.
 
+## Preferred Tools
+
+- **Tanaab Actions 1.x — [setup-openclaw](https://github.com/tanaabased/actions/blob/v1.0.1/setup-openclaw/README.md) and [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md):** Prefer for justified installed-plugin or Gateway scenarios on isolated supported runners. Keep direct unit tests fake-backed; request Agent System, credentials, SSH fixtures, or unattended policy only when the scenario requires them.
+- **Tanaab Actions 1.x — [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md) and [publish-clawhub](https://github.com/tanaabased/actions/blob/v1.0.1/publish-clawhub/README.md):** Prefer for code-plugin artifact packing and ClawHub delivery. The publisher does not apply to skill-only bundles; npm delivery follows [JavaScript Author](../javascript-author/SKILL.md#deployment).
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
@@ -114,6 +119,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - For plugin-owned commands, fake the narrow host command interface and inject output, logger, and style dependencies. Assert the command namespace, subcommands, descriptions, options, human and no-color summaries, machine-output purity, diagnostic separation, and exit behavior that the plugin owns.
 - Keep build and plugin metadata checks in the validation path rather than inventing another direct-test framework.
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary. Use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
+- For justified CI runtime scenarios, use [preferred setup and Leia actions](#preferred-tools). Select the required OpenClaw version and isolated profile explicitly; Agent System and fixture options are conditional on the scenario.
 - When a fresh unattended CI scenario must exercise an OpenClaw tool call, synchronize no-approval exec policy inside the scenario setup with `openclaw exec-policy preset yolo`. Restrict this to isolated ephemeral state; CI or a missing TTY does not itself bypass approvals, and routine local validation must not apply the preset to a developer's normal profile.
 - Keep unit tests and Leia scenarios in separate commands and CI checks; do not require machine-mutating Leia or live OpenClaw flows for routine local validation.
 
@@ -124,8 +130,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Treat publication as one plugin-package contract with two independently operable destinations. npm and ClawHub may prepare, build, and pack in separate pipelines; require both to derive from the same release source and version and to validate the same manifest, built runtime entries, package-file contract, and compatibility metadata.
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
-- Pack with lifecycle scripts disabled, inspect required and excluded files, and prove runtime dependencies and built entries from the artifact rather than from the source checkout alone.
-- Run current ClawHub package validation plus npm and `clawhub package publish --dry-run` checks before live delivery; confirm resolved owner, family, source attribution, compatibility, and tags.
+- Use the [preferred `npm-pack` action](#preferred-tools) with lifecycle scripts disabled; inspect required/excluded files and prove runtime dependencies and built entries from its exact tarball.
+- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Confirm owner, code-plugin family, source commit, compatibility, and tags; retain package-specific validation alongside the action.
 - Publish from trusted automation, keep npm and ClawHub credentials scoped to their own steps, and re-check current ClawHub trusted-publisher support rather than assuming prior registry state.
 - Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to [GitHub Workflow Author](../github-workflow-author/SKILL.md).
 
@@ -148,14 +154,14 @@ Use this section as a reference map from the owned testing and deployment lifecy
 ### Release Publication
 
 - Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
-- Inspect the current official ClawHub reusable workflow when choosing publication topology, but let GitHub Workflow Author own whether a repository uses that workflow or a repo-local job and how it is pinned.
+- Use the shared publishers as independent destination jobs under [Workflow Author's release composition](../github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
 
 ## Optimization
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports and injected runtime calls, plugin trust and installation class, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery.
-- **Compare:** Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata. Check each SDK or runtime surface against the pinned installed contract and current official guidance for stability, intended audience, trust requirements, and lifecycle semantics; type visibility alone is insufficient. Identify protected or private calls, repository-owned duplicates of available host primitives, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
+- **Compare:** Assess [Preferred Tools](#preferred-tools) against isolated runtime setup, existing fixtures, registry destinations, and exact-tarball validation. Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata. Check each SDK or runtime surface against the pinned installed contract and current official guidance for stability, intended audience, trust requirements, and lifecycle semantics; type visibility alone is insufficient. Identify protected or private calls, repository-owned duplicates of available host primitives, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
 - **Recommend:** Prefer the narrowest compatible host-owned surface and remove repository-owned duplication when behavior and trust boundaries match. Keep documented product-specific ownership when the only apparent host equivalent is private, bundled-only, trusted-official-only, or behaviorally incompatible; otherwise keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner.
 - **Apply:** After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
 - **Verify:** Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inventory SDK imports and runtime calls and confirm every retained custom owner or protected-surface exclusion remains intentional.

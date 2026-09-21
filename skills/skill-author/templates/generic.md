@@ -2,6 +2,7 @@
 template_type: generic
 default_category_tag: workflow
 optional_top_level_headings:
+  - '## Preferred Tools'
   - '## Optimization'
 ---
 
@@ -37,6 +38,11 @@ metadata:
 - Add adjacent tasks that belong to a different skill or to general repo work.
 - Reject requests that would broaden this skill into multiple surfaces.
 
+## Preferred Tools
+
+- Retain only concrete recommendations for this surface; otherwise omit this section.
+- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+
 ## Workflow
 
 1. Confirm the request matches this skill's single owned surface.
@@ -49,7 +55,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this owned surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the existing files, state, and evidence that belong to this skill's singular surface.
-- **Compare:** Evaluate the observed surface against its durable local and shared contracts, including contradictions, duplication, overloaded artifacts, misplaced material, and obsolete state; classify unrelated areas as not applicable.
+- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Evaluate the observed surface against its durable local and shared contracts, including contradictions, duplication, overloaded artifacts, misplaced material, and obsolete state; classify unrelated areas as not applicable.
 - **Recommend:** Preserve aligned state; reconcile conflicting representations; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
 - **Apply:** After explicit authorization, make the smallest safe change within the owned surface and preserve unrelated state.
 - **Verify:** Run the narrowest checks that prove the surface is aligned, then report any remaining uncertainty.

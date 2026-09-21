@@ -19,9 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Install Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
+        uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Prepare release-shaped build
@@ -36,7 +34,9 @@ jobs:
         shell: bash
         run: echo "$PWD/dist" >> "$GITHUB_PATH"
       - name: Run Leia-backed example
-        shell: bash
-        run: |
-          mkdir -p examples/.tmp
-          TMPDIR="$PWD/examples/.tmp" bun run leia "examples/${{ matrix.example }}/README.md" --stdin
+        uses: tanaabased/actions/run-leia@v1
+        with:
+          scenarios: examples/${{ matrix.example }}/README.md
+          shell: bash
+          retry: 0
+          stdin: true

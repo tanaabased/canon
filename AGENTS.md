@@ -30,7 +30,7 @@
 - Hoisted files with only one meaningful live consumer should be reviewed for demotion.
 - `guidance/` and `ideas/` are cold-path canon and may remain hoisted with one live consumer, but should not be pulled into live skill hot paths by default.
 - Do not rely on `AGENTS.md` files inside skill storage paths to affect runtime behavior.
-- Assume Codex requires a restart after skill install or update unless proven otherwise in the target environment.
+- Verify skill discovery after installation or cache synchronization. [Codex detects skill changes automatically](https://learn.chatgpt.com/docs/build-skills); if updated guidance is unavailable, try a fresh task, then restart only if it remains unavailable. Cache equality alone does not prove runtime pickup.
 
 ## Skill Design
 
@@ -86,6 +86,6 @@
 
 - For skill work, check discovery shape, section structure, and bundled-resource paths.
 - When manual or GitHub-hosted integration testing requires a disposable live repository, use `tanaabased/big-test-bucket`; keep ordinary unit tests local or fake-backed and clean up test-created state.
-- For managed plugin changes, run `bun run test` and `bun run lint`. Plugin validation runs in GitHub Actions through `tanaabased/actions/validate-codex-plugin@v1`.
+- For managed plugin changes, run `bun run test` and `bun run lint`. For packaging or release changes, pack with lifecycle scripts disabled and run `bun run check:package <extracted-package-directory>` on that payload. GitHub Actions also validates the extracted plugin through `tanaabased/actions/validate-codex-plugin@v1`.
 - Use `bun run codex:check` for installed-cache inspection and `bun run codex:sync` for synchronization. For disposable verification, pass an isolated `--codex-home`, an explicit `--cache-path`, and `--missing-target create` to both commands.
-- If cache sync or agent restart is intentionally skipped, say so explicitly.
+- Report skipped cache synchronization and any unverified runtime pickup.

@@ -62,6 +62,10 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 - Local subtheme wiring is the frontend extension surface: theme entrypoints, layout extension, global component registration, styles, composables, and local theme overrides.
 - When work crosses surfaces, keep the smallest VitePress-owned path that makes the page or site coherent instead of turning the task into generic Vue, README, or JavaScript work.
 
+## Preferred Tools
+
+- **Tanaab Actions 1.x — [vitepress-build-check](https://github.com/tanaabased/actions/blob/v1.0.1/vitepress-build-check/README.md):** Prefer for VitePress CI build and optional preparation commands on Linux. Keep runtime setup, dependencies, caching, lint, and check identity in the caller; use the generic build path for Vue projects without VitePress.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
@@ -101,13 +105,14 @@ bun run build
 
 ## GitHub Actions
 
-- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the shared Bun PR build-checks workflow template](../../templates/bun-pr-build-checks.yml).
+- Use the [preferred build action](#preferred-tools), preserving caller-owned lint, preparation commands, dependencies, and check identity.
+- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the VitePress build-checks workflow template](./templates/bun-pr-build-checks.yml).
 - Keep this as an automation projection of the VitePress build- and lint-first validation path rather than expanding into broader CI topology.
 
 ## Optimization
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
-- **Compare:** Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
+- **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
 - **Recommend:** Keep coherent site structure; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
 - **Apply:** After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
 - **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
@@ -118,7 +123,7 @@ bun run build
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared VitePress Markdown page UI, global component reuse, and page-local glue rules
 - [../../references/readme-standards.md](../../references/readme-standards.md): boundary between README-only docs and a VitePress docs site
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend and docs-stack defaults
-- [../../templates/bun-pr-build-checks.yml](../../templates/bun-pr-build-checks.yml): shared Bun workflow starter for lint- and build-first pull-request validation
+- [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): surface-owned workflow starter for lint- and build-first pull-request validation
 
 ## Validation
 

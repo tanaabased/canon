@@ -14,7 +14,7 @@ This guide explains context loading and its packaging consequences. Keep operati
 
 ## Packaging
 
-Install the full repository layout: extract a release archive into the plugin directory, or symlink a development checkout there. Follow the [README installation](../README.md#installation) and [development](../README.md#development) instructions.
+Install the complete npm plugin or use a local development checkout; individual skill folders are not self-contained. Follow the [README installation](../README.md#installation) and [development](../README.md#development) instructions.
 
 This preserves shared canon paths. For example, `skills/readme-author/SKILL.md` links to `../../references/readme-standards.md`. Availability does not justify moving material to the root; the ownership rules above still apply.
 
