@@ -2,19 +2,10 @@
 
 Use these rules when deciding how much user-facing documentation should live in `README.md`, when a repository should add root-level companion guides, and when those guides should graduate into a VitePress docs site.
 
+- Apply [Documentation Standards](./documentation-standards.md) to the README and every companion guide before selecting content or structure.
 - Pair this reference with [coding-stack-preferences.md](./coding-stack-preferences.md) for default docs-stack choices.
 - Treat `README.md` as the repository entrypoint, not as a dumping ground for every possible detail.
 - Treat the line-count and guide-count thresholds below as authoring guidance and manual review prompts, not mechanical validation errors.
-
-## Documentation Change Gate
-
-Apply this gate before deciding to add or expand README prose, guides, API docs, or comments. A code change does not automatically require documentation changes; no documentation change is a valid outcome.
-
-- Identify the reader and the task, decision, or concrete mistake the proposed prose helps them address. Add prose only when that need is unmet.
-- Check existing docs, help, schemas, tests, and runtime instructions first. Prefer correcting, replacing, deleting, or linking existing material over adding sections or files.
-- Give each explanation one authoritative home. Keep machine contracts in schemas, tests, and runtime instructions; add a human explanation only when the reader needs it to act correctly.
-- Keep change-specific rationale and validation evidence in the pull request. Promote only reusable guidance that passes this gate into durable docs.
-- Apply the gate as an internal authoring and review decision, without a mandatory justification template, checklist response, or recurring boilerplate.
 
 ## Goals
 

@@ -104,6 +104,8 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Documentation Surface Defaults
 
+- Apply [Documentation Standards](./documentation-standards.md) before selecting or expanding any documentation surface; these placement defaults do not require new content.
+
 - Prefer a full `README.md` by default when one durable file can realistically carry the repo's user-facing contract.
 - Prefer a companion-guides README when the common path belongs in `README.md` but one or two linear root-level references keep advanced or topical material focused.
 - Prefer the GitHub Action README shape when the repository's primary product is a GitHub Action.

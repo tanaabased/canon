@@ -61,7 +61,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
 - Explain npm source selection and marketplace registration using the official packaging contract or Codex Tools setup guidance. Preserve existing marketplace identity during upgrades; publishing a package does not install or activate it.
 - Record any retained archive consumer and its supported install path. Keep developer cache commands separate from consumer installation.
 

@@ -51,7 +51,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 - Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
 - Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before adding prose or pages; leave README-vs-docs-site selection to README Author.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before adding prose or pages; leave README-vs-docs-site selection to README Author.
 - Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy or generic Vue ownership.
 - Keep Markdown page implementation centered on existing global components and call out missing shared-system primitives instead of hiding them inside one page.
 
@@ -79,7 +79,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat VitePress Markdown files as the primary documentation surface this skill writes and maintains.
 - Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for docs-site Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
 - For reusable component docs pages, follow the shared reference's playground-first Usage pattern and leave reusable playground behavior to `tanaab-vue-author`.
@@ -113,7 +113,7 @@ bun run build
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
-- **Recommend:** Keep coherent site structure; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
+- **Recommend:** Keep coherent site structure; remove prose or pages that fail the documentation change gate before splitting or relocating them; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
 - **Apply:** After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
 - **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
 

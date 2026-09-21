@@ -34,6 +34,8 @@ Use this reference for Markdown pages rendered inside VitePress or comparable do
 
 ## Markdown Writing
 
+- Apply [Documentation Standards](./documentation-standards.md) to page content before choosing headings, examples, callouts, or other presentation.
+
 - Treat Markdown as content structure first: headings, prose, lists, examples, and links should carry the user-facing explanation.
 - Do not turn Markdown into a layout language by stacking raw HTML wrappers when a shared component or theme style should own the presentation.
 - Keep headings and section order concrete to the reader's task; avoid visual-only sections whose purpose depends on styling to make sense.
