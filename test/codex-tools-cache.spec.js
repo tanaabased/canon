@@ -13,11 +13,11 @@ import {
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { collectEntries, inspectEntries, syncEntries } from '../lib/codexsync-cache.js';
+import { collectEntries, inspectTrees, syncEntries } from '@tanaab/codex-tools';
 
 const aligned = { changed: [], extra: [], missing: [] };
 
-describe('lib/codexsync-cache', () => {
+describe('Codex Tools cache safety', () => {
   let root;
   let sourceRoot;
   let targetRoot;
@@ -150,7 +150,7 @@ describe('lib/codexsync-cache', () => {
     await writeFile(path.join(targetRoot, 'extra', 'node_modules', 'keep'), 'untouched');
     await writeFile(path.join(targetRoot, 'extra', 'remove'), 'extra');
     assert.deepEqual(await syncEntries({ sourceRoot, targetRoot }), aligned);
-    assert.deepEqual((await inspectEntries({ sourceRoot, targetRoot })).diff, aligned);
+    assert.deepEqual((await inspectTrees({ sourceRoot, targetRoot })).diff, aligned);
     for (const ignored of ['.git', 'node_modules', '.DS_Store']) {
       assert.equal(
         await readFile(path.join(targetRoot, 'nested', ignored, 'keep'), 'utf8'),
@@ -185,7 +185,7 @@ describe('lib/codexsync-cache', () => {
     await chmod(path.join(targetRoot, 'run'), 0o700);
     await rm(path.join(targetRoot, 'link'));
     await symlink('run', path.join(targetRoot, 'link'));
-    assert.deepEqual((await inspectEntries({ sourceRoot, targetRoot })).diff.changed, [
+    assert.deepEqual((await inspectTrees({ sourceRoot, targetRoot })).diff.changed, [
       'link',
       'run',
     ]);

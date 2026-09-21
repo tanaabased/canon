@@ -54,7 +54,6 @@ describe('GitHub Actions catalog contract', () => {
     assert.match(lint, /^name: Lint$/m);
     assert.match(lint, /^ {2}lint:$/m);
     assert.match(lint, /run: bun run lint/);
-    assert.match(lint, /run: bun run codex:validate/);
     assert.ok(lint.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
     assert.ok(lint.includes(`tanaabased/actions/validate-codex-plugin@${CATALOG_REF}`));
     assert.doesNotMatch(lint, /test-mode:/);

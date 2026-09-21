@@ -19,17 +19,16 @@ jobs:
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
-      - name: Check canon
-        run: |
-          bun run lint
-          bun run codex:validate
+      - name: Run linter
+        run: bun run lint
       - name: Prepare release
         uses: tanaabased/actions/prepare-release@v1
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "${{ github.event.release.tag_name }}"
             bun run format:write
-            bun run codex:validate
+      - name: Validate Codex plugin
+        uses: tanaabased/actions/validate-codex-plugin@v1
       - name: Publish Codex plugin
         uses: tanaabased/actions/publish-codex-plugin@v1
         with:
@@ -51,15 +50,14 @@ jobs:
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
-      - name: Check canon
-        run: |
-          bun run lint
-          bun run codex:validate
+      - name: Run linter
+        run: bun run lint
+      - name: Validate Codex plugin
+        uses: tanaabased/actions/validate-codex-plugin@v1
       - name: Publish repository
         uses: tanaabased/actions/publish-repo@v1
         with:
           commands: |
             version-injector .codex-plugin/plugin.json --style json --version "${{ github.event.release.tag_name }}"
             bun run format:write
-            bun run codex:validate
           sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}

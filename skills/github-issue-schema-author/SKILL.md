@@ -156,7 +156,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 
 - Run `bunx mocha "skills/github-issue-schema-author/test/**/*.spec.js"`.
 - Run Skill Author validation against this directory.
-- Run repository test, lint, `codex:validate`, and `codex:check` gates.
+- Run repository test, lint, and `codex:check` gates; confirm plugin validation passes in GitHub Actions.
 - Before the first installed-cache invocation, run `bun run codex:sync` followed by `bun run codex:check`.
 - Perform one live read-only inspection of an explicit repository and verify `mutatesGitHub: false` and an empty `operations` array.
 - Exercise live additive mode only after an organization owner explicitly authorizes the complete digest-bound plan. Confirm it contains no updates or deletions, then verify the installed skill is idempotent after creation.
