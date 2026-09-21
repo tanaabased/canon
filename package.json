@@ -32,5 +32,8 @@
     "prettier": "^3.9.6",
     "vue-eslint-parser": "^10.4.1",
     "yargs-parser": "^22.0.0"
+  },
+  "dependencies": {
+    "@tanaab/codex-tools": "^1.0.0-beta.1"
   }
 }

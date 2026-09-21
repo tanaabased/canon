@@ -13,7 +13,7 @@ import {
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { collectEntries, syncEntries } from '../lib/codexsync-cache.js';
+import { collectEntries, inspectEntries, syncEntries } from '../lib/codexsync-cache.js';
 
 const aligned = { changed: [], extra: [], missing: [] };
 
@@ -121,5 +121,77 @@ describe('lib/codexsync-cache', () => {
       aligned,
     );
     assert.equal(await readFile(path.join(targetRoot, 'new', 'sentinel'), 'utf8'), 'source');
+  });
+
+  for (const code of ['EACCES', 'EIO', 'ENOTDIR']) {
+    it(`should propagate ${code} metadata errors before any mutation`, async () => {
+      await writeFile(path.join(targetRoot, 'extra'), 'keep until inspection succeeds');
+      const before = await collectEntries(targetRoot);
+      const statPath = async (file) => {
+        if (file === path.join(targetRoot, 'extra')) {
+          throw Object.assign(new Error('metadata unavailable'), { code });
+        }
+        return lstat(file);
+      };
+      await assert.rejects(syncEntries({ sourceRoot, targetRoot, statPath }), { code });
+      assert.deepEqual(await collectEntries(targetRoot), before);
+    });
+  }
+
+  it('should preserve recursively excluded content and converge around excluded-only directories', async () => {
+    for (const ignored of ['.git', 'node_modules', '.DS_Store']) {
+      for (const directory of [sourceRoot, targetRoot]) {
+        const parent = path.join(directory, 'nested', ignored);
+        await mkdir(parent, { recursive: true });
+        await writeFile(path.join(parent, 'keep'), directory);
+      }
+    }
+    await mkdir(path.join(targetRoot, 'extra', 'node_modules'), { recursive: true });
+    await writeFile(path.join(targetRoot, 'extra', 'node_modules', 'keep'), 'untouched');
+    await writeFile(path.join(targetRoot, 'extra', 'remove'), 'extra');
+    assert.deepEqual(await syncEntries({ sourceRoot, targetRoot }), aligned);
+    assert.deepEqual((await inspectEntries({ sourceRoot, targetRoot })).diff, aligned);
+    for (const ignored of ['.git', 'node_modules', '.DS_Store']) {
+      assert.equal(
+        await readFile(path.join(targetRoot, 'nested', ignored, 'keep'), 'utf8'),
+        targetRoot,
+      );
+    }
+    assert.equal(
+      await readFile(path.join(targetRoot, 'extra', 'node_modules', 'keep'), 'utf8'),
+      'untouched',
+    );
+    await assert.rejects(lstat(path.join(targetRoot, 'extra', 'remove')), { code: 'ENOENT' });
+  });
+
+  it('should refuse type replacement that would destroy excluded content before mutation', async () => {
+    await writeFile(path.join(sourceRoot, 'entry'), 'replacement');
+    await mkdir(path.join(targetRoot, 'entry', 'node_modules'), { recursive: true });
+    await writeFile(path.join(targetRoot, 'entry', 'node_modules', 'keep'), 'untouched');
+    const before = await collectEntries(root);
+    await assert.rejects(syncEntries({ sourceRoot, targetRoot }), /ignored content/);
+    assert.deepEqual(await collectEntries(root), before);
+    assert.equal(
+      await readFile(path.join(targetRoot, 'entry', 'node_modules', 'keep'), 'utf8'),
+      'untouched',
+    );
+  });
+
+  it('should detect mode-only and symlink-target drift and leave matching entries untouched', async () => {
+    await writeFile(path.join(sourceRoot, 'run'), 'same bytes');
+    await symlink('sentinel', path.join(sourceRoot, 'link'));
+    await syncEntries({ sourceRoot, targetRoot });
+    const before = await lstat(path.join(targetRoot, 'sentinel'));
+    await chmod(path.join(targetRoot, 'run'), 0o700);
+    await rm(path.join(targetRoot, 'link'));
+    await symlink('run', path.join(targetRoot, 'link'));
+    assert.deepEqual((await inspectEntries({ sourceRoot, targetRoot })).diff.changed, [
+      'link',
+      'run',
+    ]);
+    assert.deepEqual(await syncEntries({ sourceRoot, targetRoot }), aligned);
+    const after = await lstat(path.join(targetRoot, 'sentinel'));
+    assert.equal(after.ino, before.ino);
+    assert.equal(after.mtimeMs, before.mtimeMs);
   });
 });

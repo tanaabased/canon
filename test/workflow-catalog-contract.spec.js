@@ -35,7 +35,8 @@ describe('GitHub Actions catalog contract', () => {
 
     assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
-    assert.equal(workflow.match(/test-mode: true/g)?.length, 2);
+    assert.equal(workflow.match(/dry-run: true/g)?.length, 2);
+    assert.doesNotMatch(workflow, /test-mode:/);
     assert.match(workflow, /ARCHIVE_PATH: \$\{\{ steps\.publish\.outputs\.archive-path \}\}/);
     assert.match(workflow, /test -f \.codex-plugin\/plugin\.json/);
     assert.match(workflow, /test -d node_modules\/mocha/);

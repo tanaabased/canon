@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import diffEntries from '../utils/diff-entries.js';
+import { diffEntries } from '@tanaab/codex-tools';
 
 function fileEntry(content, mode = 0o644) {
   return {
@@ -17,7 +17,7 @@ function symlinkEntry(target) {
   };
 }
 
-describe('utils/diff-entries', () => {
+describe('Codex Tools diff parity', () => {
   it('should report changed, missing, and extra entries', () => {
     const source = new Map([
       ['content.txt', fileEntry('source')],

@@ -46,7 +46,7 @@ jobs:
           archive-name: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
           dependency-policy: include-production
           release-tag: ${{ env.STAMPED_VERSION }}
-          test-mode: true
+          dry-run: true
       - name: Verify release archive
         env:
           ARCHIVE_PATH: ${{ steps.publish.outputs.archive-path }}
@@ -68,6 +68,20 @@ jobs:
           test "$plugin_version" = "$STAMPED_VERSION"
           test "$cli_version" = "$STAMPED_VERSION"
           grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" CHANGELOG.md
+
+          ./bin/codexsync.js validate
+          cache_root="$(mktemp -d)"
+          cache_path="$cache_root/missing-cache"
+          if ./bin/codexsync.js check --cache-path "$cache_path"; then
+            echo 'missing cache must report drift' >&2
+            exit 1
+          fi
+          test ! -e "$cache_path"
+          ./bin/codexsync.js sync --cache-path "$cache_path"
+          ./bin/codexsync.js check --cache-path "$cache_path"
+          ./bin/codexsync.js sync --cache-path "$cache_path"
+          ./bin/codexsync.js check --cache-path "$cache_path"
+          rm -rf "$cache_root"
 
           if test -d node_modules/mocha; then
             echo 'release archive must not include dev dependencies' >&2
@@ -91,7 +105,7 @@ jobs:
             bun run codex:validate
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
-          test-mode: true
+          dry-run: true
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify prepared repository
         run: |
