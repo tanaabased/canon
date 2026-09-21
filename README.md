@@ -96,35 +96,7 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 
 ## Development
 
-Use the Node and Bun versions in [`.node-version`](./.node-version) and [`.bun-version`](./.bun-version):
-
-```sh
-git clone git@github.com:tanaabased/canon.git
-cd canon
-bun install --frozen-lockfile --ignore-scripts
-bun run test
-bun run lint
-```
-
-To load a checkout, use Codex Tools' [local installation](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md), or point the existing marketplace entry at it with `source: {"source":"local","path":"./path/to/canon"}`. Local paths are relative to the marketplace root. Preserve the marketplace name when switching sources, reinstall the plugin, and start a fresh task.
-
-Check the actual npm payload without installing dependencies into it:
-
-```sh
-npm pack --ignore-scripts --pack-destination /tmp
-version="$(bun -p '(await Bun.file("package.json").json()).version')"
-candidate="$(mktemp -d)"
-tar -xzf "/tmp/tanaab-canon-$version.tgz" -C "$candidate" --strip-components=1
-bun run check:package "$candidate"
-```
-
-The package check validates every skill and its resource links, loads executable entrypoints, scaffolds a skill, and renders issue forms outside the checkout. GitHub Actions also runs the shared plugin validator and npm/ClawHub publication dry runs against that payload. With OpenClaw installed, `bun run check:openclaw /path/to/package.tgz` verifies native loading, skill discovery, and the hook opt-out in a disposable profile.
-
-`bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md) for options.
-
-Release publication uses npm trusted publishing for `tanaabased/canon` and `.github/workflows/release.yml`. Before the first npm release, establish the package and configure that publisher in npm. `TANAAB_NPM_DEPLOY` supplies only stable-to-`edge` alias updates; package publication uses OIDC. ClawHub publication uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests.
-
-See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.
+See [Development](./DEVELOPMENT.md) for setup, unit and example tests, package checks, cache maintenance, and release preparation.
 
 ## Issues, Questions and Support
 
