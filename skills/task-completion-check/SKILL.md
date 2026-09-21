@@ -86,6 +86,11 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 - Confirm the task target is explicit and every GitHub operation is read-only.
 - Confirm passing checks alone never produce `ready` and missing acceptance criteria produce `uncertain`.
 - Confirm code and non-code tasks remain `pending` without a linked completion pull request even when their criteria are complete.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Confirm draft, review-required, pending-check, failed-check, conflict, non-default-target, merged, and closed-unmerged pull request paths classify correctly.
 - Confirm fake-client tests cover task and pull request API failures without live GitHub calls.
 - Build and smoke the bundled command, then run the skill validator and focused flat test suite.

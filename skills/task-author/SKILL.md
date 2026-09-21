@@ -135,7 +135,12 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 ## Validation
 
+- Confirm the issue and metadata match the authorized plan through the workflow's exact read-back; report partial results without repeating successful writes.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Run `bun run test:unit -- --grep "Task Author"` for the focused behavior checks.
 - Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/task-author --container codex-plugin --namespace tanaab`.
-- Run the repository test, lint, Codex validation, sync, and cache checks required by the Canon repository.
 - Exercise a live create only against an explicitly approved disposable repository, first showing the exact digest-bound plan. Verify the live issue through the installed skill and retain any partial result for diagnosis rather than deleting evidence automatically.

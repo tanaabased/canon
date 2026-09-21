@@ -128,9 +128,13 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Validation
 
+- Parse generated YAML and confirm the resulting forms preserve submitted evidence and match the authorized plan.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Run `bunx mocha "skills/github-issue-form-author/test/**/*.spec.js" "skills/task-author/test/**/*.spec.js"`.
-- Parse every generated `.yml` document with Bun's YAML parser.
 - Exercise missing, aligned, drifted, extended, invalid, stale-plan, SHA-conflict, and partial-write repository states through the fake client.
 - Run Skill Author validation against this directory.
-- Run repository tests, lint, and `codex:check`; confirm plugin validation passes in GitHub Actions and sync the cache before the installed skill is invoked.
 - Confirm F01 and T01-T06 preserve every submitted evidence item, avoid invented classifications, require Task Author semantic normalization, and map the accepted Task, Bug, and Feature prompts into their canonical evidence without loss.

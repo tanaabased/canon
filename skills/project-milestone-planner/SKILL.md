@@ -107,9 +107,14 @@ Use model judgment for semantic coverage and keep selection conservative. The pl
 
 ## Validation
 
+- Confirm the recommendation respects the agreed capacity, distinguishes missing evidence from incomplete work, and makes no GitHub changes.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Run `bunx mocha "skills/project-milestone-planner/test/*.spec.js"`.
 - Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/project-milestone-planner --container codex-plugin --namespace tanaab`.
 - Exercise the inspector's bounded task and pull-request reads, milestone membership, task fields and comments, Work size normalization, partial evidence, and read-only behavior through injected fakes.
 - Review semantic coverage, conservative selection, missing-task quality, overlap, uncertainty, and capacity in the separately agreed model-assisted test plan; do not make model-authored prose a brittle unit-test contract.
-- Run repository tests, lint, Codex validation, cache sync, and cache check required by Canon.
 - Design and review a separate live test plan before any disposable-repository mutation. Run it only against an explicitly approved `tanaabased/big-test-bucket` milestone and preserve the resulting tasks and relationships as evidence.
