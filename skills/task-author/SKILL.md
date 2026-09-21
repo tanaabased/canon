@@ -62,6 +62,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 ## Inputs
 
 - Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, a supported problem or requested outcome, and checkable acceptance criteria. Use the compact body defaults in the shared contract; separate outcome, scope, exclusions, and delivery sections are conditional, not readiness requirements.
+- Apply the shared [title guidance and examples](../../references/task-management-contract.md#task-kinds-and-body-shapes) when creating tasks or explicitly revising titles; retain the exact title in the publication preview and approval plan.
 - Apply the shared contract's [scope and proportionality rules](../../references/task-management-contract.md#scope-and-proportionality) before drafting obligations. Preserve material evidence, boundaries, and task-specific verification without copying routine PR mechanics or creating speculative deliverables.
 - For a Bug, preserve observed and expected behavior plus reporter reproduction or direct evidence. Keep worker-owned verification proportional and use the safest suitable environment; preserve unresolved reproduction gaps and approval boundaries.
 - For a Feature, identify one useful, bounded capability and its consumer-visible acceptance conditions. Keep an oversized or umbrella request unready and recommend decomposition rather than inventing a delivery checklist.
