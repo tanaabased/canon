@@ -24,55 +24,21 @@
 
 ## Installation
 
-Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work. Both hosts use the same `@tanaab/canon` package and skills, with separate native manifests.
+Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work. See [installation](./INSTALLATION.md) for prerequisites, upgrades, local checkouts, and optional OpenClaw guidance.
 
-> npm and ClawHub distribution start with the next Canon release. Until then, use Codex's existing [release archives](https://github.com/tanaabased/canon/releases) or a local checkout.
+> npm and ClawHub distribution start with the next release; use a local checkout until then.
 
-### Codex
+For Codex, install Node/npm and the supported Codex CLI listed in the [prerequisites](./INSTALLATION.md#codex), then run:
 
-Use npm-backed releases through Codex's plugin marketplace, with npm available for installation.
-
-Add this entry to your existing personal marketplace's `plugins` array in `~/.agents/plugins/marketplace.json`, preserving its name and other entries:
-
-```json
-{
-  "name": "tanaab",
-  "source": {
-    "source": "npm",
-    "package": "@tanaab/canon",
-    "version": "latest"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
-  "category": "Productivity"
-}
+```sh
+npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/canon
 ```
 
-If you do not have a marketplace, create one with `{"name":"personal","plugins":[]}` and add the entry above. Restart the app, open Plugins, install **Tanaab Maneuvering Systems**, and start a fresh Codex task. See the [official marketplace contract](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
-
-For upgrades, refresh the marketplace and installed plugin, then start a fresh task. Use an exact published version instead of `latest` when you need a fixed release. Existing archive users can replace their `tanaab` entry's `source` with the npm source above while retaining the marketplace name. Keep the previous local directory until the new installation works; do not install both copies.
-
-[Codex Tools 1.x](https://github.com/tanaabased/codex-tools/blob/v1.0.0/PLUGINS.md) offers an optional CLI installation path and setup/maintenance skills. Its install commands require the supported Codex CLI; npm publishing alone does not refresh an installed plugin.
-
-### OpenClaw
-
-Requires OpenClaw 2026.9.5 or newer. Install from ClawHub:
+For OpenClaw 2026.9.5 or newer:
 
 ```sh
 openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
 ```
-
-For direct npm installation, use `npm:@tanaab/canon` instead; for development, use `openclaw plugins install --link /path/to/canon` and follow the source-trust prompt. Apply the Gateway reload or restart requested by your installed OpenClaw version, then start a fresh session. See [OpenClaw's installation guide](https://docs.openclaw.ai/tools/plugin).
-
-The plugin exposes the skills without extra configuration. To enable its brief reminder to prefer relevant Canon skills, grant the hook conversation access:
-
-```sh
-openclaw config set plugins.entries.tanaab.hooks.allowConversationAccess true
-```
-
-The hook appends static guidance without replacing the prompt or overriding user and project instructions. It also respects OpenClaw's `allowPromptInjection` policy. Set `plugins.entries.tanaab.config.guidance` to `false` to disable the reminder while retaining the skills.
 
 ## Skills
 
