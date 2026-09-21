@@ -1,7 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Added Codex Plugin Author for npm packaging, artifact validation, and archive migration. [#67](https://github.com/tanaabased/canon/pull/67)
-- Added native OpenClaw installation, optional Canon skill guidance, and ClawHub publication. [#40](https://github.com/tanaabased/canon/issues/40)
+- Added native OpenClaw 2026.9.5 installation, optional Canon skill guidance, and ClawHub publication. [#40](https://github.com/tanaabased/canon/issues/40)
 - Added preferred-tool guidance and optimizer adoption checks across skills. [#67](https://github.com/tanaabased/canon/pull/67)
 - Added repository description and topic alignment to Project Author. [#68](https://github.com/tanaabased/canon/pull/68)
 - Clarified Bun development and consumer-runtime checks, with explicit Bun execution in baseline scripts. [#68](https://github.com/tanaabased/canon/pull/68) [#69](https://github.com/tanaabased/canon/pull/69)

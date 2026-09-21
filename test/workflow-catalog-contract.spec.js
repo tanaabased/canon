@@ -74,6 +74,9 @@ describe('GitHub Actions catalog contract', () => {
     assert.ok(unit.includes(`tanaabased/actions/setup-bun@${CATALOG_REF}`));
 
     assert.match(release, /^name: Release Tests$/m);
-    assert.match(release, /^ {2}release:$/m);
+    for (const destination of ['npm', 'clawhub', 'repo']) {
+      assert.ok(release.includes(`  publish-${destination}:`));
+    }
+    assert.doesNotMatch(release, /needs:|id-token: write|secrets\./);
   });
 });

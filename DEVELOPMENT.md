@@ -16,7 +16,7 @@ bun run lint
 
 ## Validation
 
-`bun run test` runs unit tests; `bun run lint` checks code and formatting. The [OpenClaw example](./examples/openclaw/README.md) owns packed installation, skill discovery, and guidance opt-out coverage. Its matrix-based [Examples workflow](./.github/workflows/pr-examples-tests.yml) supplies OpenClaw and runs Leia on isolated CI runners; do not run the mutating scenario against your normal profile.
+`bun run test` runs unit tests; `bun run lint` checks code and formatting. The [OpenClaw example](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md) owns packed installation, skill discovery, and guidance opt-out coverage. Its matrix-based [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) supplies OpenClaw and runs Leia on isolated CI runners; do not run the mutating scenario against your normal profile.
 
 Check the actual npm payload without installing dependencies into it:
 
