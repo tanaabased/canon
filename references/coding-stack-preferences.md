@@ -60,6 +60,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Testing Defaults
 
+- Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
 - Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
 - For JS/TS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
 - Add `c8` only when coverage reporting or enforcement is actually needed.

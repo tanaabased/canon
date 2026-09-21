@@ -59,6 +59,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Assertions and Output
 
+- Apply [verification boundaries](./verification-boundaries.md): assert the scenario's product contract without rechecking setup or publication already guaranteed by successful commands.
 - Assert observable user-facing behavior rather than internal implementation details.
 - Prefer filesystem state, installed tools, service status, permissions, generated config, exit status, protocol results, and existing lifecycle logs over assertions about internal argument assembly.
 - For one invocation with one output assertion, prefer a direct pipeline:

@@ -131,7 +131,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
 - Use the [preferred `npm-pack` action](#preferred-tools) with lifecycle scripts disabled; inspect required/excluded files and prove runtime dependencies and built entries from its exact tarball.
-- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Confirm owner, code-plugin family, source commit, compatibility, and tags; retain package-specific validation alongside the action.
+- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Supply the intended owner, code-plugin family, source commit, compatibility, and tags; retain package-specific checks only for contracts the action does not cover, under [verification boundaries](../../references/verification-boundaries.md).
 - Publish from trusted automation, keep npm and ClawHub credentials scoped to their own steps, and re-check current ClawHub trusted-publisher support rather than assuming prior registry state.
 - Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to [GitHub Workflow Author](../github-workflow-author/SKILL.md).
 
