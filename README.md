@@ -5,7 +5,7 @@
 <h1 align="center">Tanaab Canon</h1>
 
 <p align="center">
-  Shared Tanaab operating guidance, with a Codex plugin for planning work, authoring code, and preparing releases.
+  Shared Tanaab operating guidance, with Codex and OpenClaw plugins for planning work, authoring code, and preparing releases.
 </p>
 
 <p align="center">
@@ -24,9 +24,13 @@
 
 ## Installation
 
-Use npm-backed releases through Codex's plugin marketplace. Have npm available for installation, Bun for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work.
+Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work. Both hosts use the same `@tanaab/canon` package and skills, with separate native manifests.
 
-> npm distribution starts with the next Canon release. Until it is published, use the existing [release archives](https://github.com/tanaabased/canon/releases) or the local checkout below.
+> npm and ClawHub distribution start with the next Canon release. Until then, use Codex's existing [release archives](https://github.com/tanaabased/canon/releases) or a local checkout.
+
+### Codex
+
+Use npm-backed releases through Codex's plugin marketplace, with npm available for installation.
 
 Add this entry to your existing personal marketplace's `plugins` array in `~/.agents/plugins/marketplace.json`, preserving its name and other entries:
 
@@ -52,16 +56,34 @@ For upgrades, refresh the marketplace and installed plugin, then start a fresh t
 
 [Codex Tools 1.x](https://github.com/tanaabased/codex-tools/blob/v1.0.0/PLUGINS.md) offers an optional CLI installation path and setup/maintenance skills. Its install commands require the supported Codex CLI; npm publishing alone does not refresh an installed plugin.
 
+### OpenClaw
+
+Requires OpenClaw 2026.9.4 or newer. Install from ClawHub:
+
+```sh
+openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
+```
+
+For direct npm installation, use `npm:@tanaab/canon` instead; for development, use `openclaw plugins install --link /path/to/canon` and follow the source-trust prompt. Apply the Gateway reload or restart requested by your installed OpenClaw version, then start a fresh session. See [OpenClaw's installation guide](https://docs.openclaw.ai/tools/plugin).
+
+The plugin exposes the skills without extra configuration. To enable its brief reminder to prefer relevant Canon skills, grant the hook conversation access:
+
+```sh
+openclaw config set plugins.entries.tanaab.hooks.allowConversationAccess true
+```
+
+The hook appends static guidance without replacing the prompt or overriding user and project instructions. It also respects OpenClaw's `allowPromptInjection` policy. Set `plugins.entries.tanaab.config.guidance` to `false` to disable the reminder while retaining the skills.
+
 ## Skills
 
-In a Codex task opened in your project, invoke a skill by name. For a read-only first pass:
+In a Codex project task or OpenClaw chat, invoke a skill by name. For a read-only first pass:
 
 ```text
 Use $tanaab-project-optimizer to audit this project's documentation and propose
 only changes worth making. Keep the audit read-only.
 ```
 
-The [plugin manifest](./.codex-plugin/plugin.json) bundles all 23 skills below.
+The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) manifests expose all 23 skills below.
 
 ### Project and task management
 
@@ -130,11 +152,11 @@ tar -xzf "/tmp/tanaab-canon-$version.tgz" -C "$candidate" --strip-components=1
 bun run check:package "$candidate"
 ```
 
-The package check validates every skill and its resource links, loads executable entrypoints, scaffolds a skill, and renders issue forms outside the checkout. GitHub Actions also runs the shared plugin validator and npm publication dry run against that payload.
+The package check validates every skill and its resource links, loads executable entrypoints, scaffolds a skill, and renders issue forms outside the checkout. GitHub Actions also runs the shared plugin validator and npm/ClawHub publication dry runs against that payload. With OpenClaw installed, `bun run check:openclaw /path/to/package.tgz` verifies native loading, skill discovery, and the hook opt-out in a disposable profile.
 
 `bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md) for options.
 
-Release publication uses npm trusted publishing for `tanaabased/canon` and `.github/workflows/release.yml`. Before the first npm release, establish the package and configure that publisher in npm. `TANAAB_NPM_DEPLOY` supplies only stable-to-`edge` alias updates; package publication uses OIDC. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`.
+Release publication uses npm trusted publishing for `tanaabased/canon` and `.github/workflows/release.yml`. Before the first npm release, establish the package and configure that publisher in npm. `TANAAB_NPM_DEPLOY` supplies only stable-to-`edge` alias updates; package publication uses OIDC. ClawHub publication uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests.
 
 See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.
 
