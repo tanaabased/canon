@@ -2,6 +2,7 @@
 template_type: workflow
 default_category_tag: operations
 optional_top_level_headings:
+  - '## Preferred Tools'
   - '## Optimization'
 ---
 
@@ -42,6 +43,11 @@ metadata:
 - Confirm starting state, prerequisites, and blockers before beginning.
 - State required approvals or missing context early.
 
+## Preferred Tools
+
+- Retain only concrete recommendations for this surface; otherwise omit this section.
+- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+
 ## Workflow
 
 1. Confirm the request matches this skill's operational surface.
@@ -64,7 +70,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this workflow; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the current preconditions, sequence, checkpoints, handoffs, and completion evidence for this operational surface.
-- **Compare:** Evaluate the observed workflow against its durable contract, including contradictory steps, duplicated paths, overloaded stages, misplaced responsibilities, and obsolete handoffs; classify unsupported paths as not applicable.
+- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Evaluate the observed workflow against its durable contract, including contradictory steps, duplicated paths, overloaded stages, misplaced responsibilities, and obsolete handoffs; classify unsupported paths as not applicable.
 - **Recommend:** Preserve aligned stages; reconcile conflicting paths; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
 - **Apply:** After explicit authorization, change the smallest coherent part of the sequence while preserving required approvals and external boundaries.
 - **Verify:** Re-run the relevant checkpoints and confirm the documented completion criteria prove the optimized workflow is complete.

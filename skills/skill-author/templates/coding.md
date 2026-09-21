@@ -2,6 +2,7 @@
 template_type: coding
 default_category_tag: implementation
 optional_top_level_headings:
+  - '## Preferred Tools'
   - '## Deployment'
   - '## Optimization'
 ---
@@ -51,6 +52,11 @@ metadata:
 - Funnel the skill toward one dominant implementation pattern instead of treating every adjacent code path as equally owned.
 - Reuse existing patterns before adding new abstractions.
 
+## Preferred Tools
+
+- Retain only concrete recommendations for this surface; otherwise omit this section.
+- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+
 ## Workflow
 
 1. Confirm the request matches this skill's code-owned surface.
@@ -94,7 +100,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this code surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the existing implementation, owning scopes, public behavior, documentation, tests, and CI for this code surface.
-- **Compare:** Evaluate the observed surface against repository-local patterns and linked coding canon, including contradictions, duplicated logic, overloaded modules, misplaced code, dead paths, and unsupported layers.
+- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Evaluate the observed surface against repository-local patterns and linked coding canon, including contradictions, duplicated logic, overloaded modules, misplaced code, dead paths, and unsupported layers.
 - **Recommend:** Preserve aligned behavior; reconcile conflicting representations; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
 - **Apply:** After explicit authorization, make the smallest coherent code change; avoid style-only refactors, forced utility extraction, and unrequested language migration.
 - **Verify:** Run the narrowest relevant tests, lint, type-check, build, or smoke checks, then re-inspect the changed surface for remaining drift.

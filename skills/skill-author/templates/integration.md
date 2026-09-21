@@ -2,6 +2,7 @@
 template_type: integration
 default_category_tag: external-systems
 optional_top_level_headings:
+  - '## Preferred Tools'
   - '## Release Workflow'
   - '## Optimization'
 ---
@@ -58,6 +59,11 @@ metadata:
 - Call out partial failure modes, retry limits, and rollback boundaries.
 - Do not hide missing auth, missing tools, or remote errors.
 
+## Preferred Tools
+
+- Retain only concrete recommendations for this surface; otherwise omit this section.
+- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+
 ## Workflow
 
 1. Confirm the request matches this skill's external-system surface.
@@ -76,7 +82,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
-- **Compare:** Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
+- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
 - **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
 - **Apply:** After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
 - **Verify:** Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.

@@ -127,6 +127,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
 - Review the scaffolded `Optimization` section. Retain and tailor it when the skill can audit an existing persistent surface against durable canon; otherwise remove it.
+- Retain `Preferred Tools` only for concrete recommendations under the [shared contract](../../references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Optimization checks, and remove unused scaffold guidance. For an upstream recommendation review, use the [manual refresh prompt](../../prompts/refresh-preferred-tools.md).
 - Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
 - Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
@@ -144,7 +145,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Optimization
 
 - **Inspect:** Inventory every in-scope skill's discovery text, owned surface, type, metadata, section shape, bundled resources, code and test placement, Optimization applicability, and live consumers.
-- **Compare:** Evaluate each skill against the shared standard and selected type template, then compare the collection for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior; treat generic facet boilerplate as drift.
+- **Compare:** Evaluate each skill against the shared standard and selected type template, including [Preferred Tools](../../references/skill-standard.md#preferred-tools) ownership, applicability, and point-of-use consistency, then compare the collection for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior; treat generic facet boilerplate as drift.
 - **Recommend:** Label evidence-backed findings with the applicable shared operation. Preserve clear owners; reconcile contradictions; deduplicate or consolidate repeated doctrine; split overloaded skills; extract or move misplaced resources; tighten scope and discovery; and rename or remove only when identity or live use warrants it.
 - **Apply:** After explicit authorization, make the smallest contract-aligned individual and portfolio changes, deliberately retain and tailor or remove each Optimization facet, and update every affected skill ID, prompt, link, metadata reference, and consumer.
 - **Verify:** Run the existing validator for every surviving skill, review its manual checks, search for stale identities and references, and confirm the collection has clear non-contradictory ownership.

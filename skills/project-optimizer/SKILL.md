@@ -58,6 +58,12 @@ Audit a project's checked-in and contract-required repository surfaces against t
 9. If the gate is cleared, produce a dependency-ordered implementation plan with proportional, repo-native validation and reviewable commit boundaries. Otherwise report convergence and omit the plan.
 10. Stop without modifying files. A later explicit implementation request may invoke the owning skills against an approved plan.
 
+### Preferred Tool Adoption
+
+- During step 5, assess relevant entries in each selected owner's `Preferred Tools` under the [shared contract](../../references/skill-standard.md#preferred-tools). Compare repository usage and behavior with the documented supported baseline; a missing preferred dependency alone is not drift.
+- Report already adopted, worthwhile migration, retain existing implementation, or insufficient evidence with a brief reason for relevant candidates. Recommend migration only when compatibility and maintenance benefit justify the behavior changes, migration effort, and regression risk under the Convergence Gate.
+- Keep the default audit local and read-only. Record unavailable compatibility or release evidence as uncertainty. Review new upstream releases separately through the manually invoked [refresh prompt](../../prompts/refresh-preferred-tools.md), rather than scanning catalogs on every project pass.
+
 ### Dependency Ordering
 
 - Audit every applicable surface against the same initial repository snapshot before sequencing implementation; audit order must not decide the findings.
