@@ -58,7 +58,6 @@ node_modules/
 dist
 .cache
 .temp
-.cache
 
 # vitepress build output
 **/.vitepress/dist
