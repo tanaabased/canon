@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.11.0 - [September 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.11.0)
+
 ### Installation and Distribution
 
 - Added native OpenClaw 2026.9.5 installation, optional Canon skill guidance, and ClawHub publication. [#40](https://github.com/tanaabased/canon/issues/40)
