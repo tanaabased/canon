@@ -49,7 +49,7 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 ## Preferred Tools
 
-- **[Leia 2.x](https://github.com/lando/leia/blob/v2.0.0/README.md):** Prefer for observable CLI scenarios under [Tanaab's usage policy](../../references/leia-markdown-scenarios.md); the optional upstream skill assists authoring but does not replace the project's CLI dependency.
+- **[Leia 2.x](https://github.com/lando/leia/blob/v2.0.0/README.md):** Prefer for observable CLI scenarios; see [Tanaab's usage policy and optional agent-plugin guidance](../../references/leia-markdown-scenarios.md).
 - **Tanaab Actions 1.x — [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md):** Prefer in scenario CI after runtime, dependency, and artifact preparation. It owns temporary state and cleanup, not scenario setup or sandboxing; retain caller behavior that its inputs cannot express.
 
 ## Workflow
@@ -63,7 +63,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat help output, version output, logging text, and error text as the maintained shell CLI's user-facing documentation.
 - Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, stream behavior, color, and displayed defaults.
 - Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) only for sparse inline comments around shell safety, quoting, platform differences, destructive operations, environment assumptions, and other non-obvious shell edge cases.

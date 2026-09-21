@@ -17,6 +17,7 @@ describe('skills/project-author/utils/parse-repository-policy-args', () => {
         help: false,
         initialize: true,
         json: true,
+        metadataPath: null,
         renameDefault: true,
         slug: 'acme/widget',
       },
@@ -29,6 +30,7 @@ describe('skills/project-author/utils/parse-repository-policy-args', () => {
       help: true,
       initialize: false,
       json: false,
+      metadataPath: null,
       renameDefault: false,
       slug: null,
     });
@@ -46,6 +48,27 @@ describe('skills/project-author/utils/parse-repository-policy-args', () => {
     assert.throws(
       () => parseRepositoryPolicyArgs(['inspect', 'acme/widget', '--rename-default']),
       /valid only with apply/,
+    );
+  });
+
+  it('should require a metadata plan for creation and opt-in metadata writes', () => {
+    for (const command of ['create', 'apply-metadata']) {
+      assert.throws(
+        () => parseRepositoryPolicyArgs([command, 'acme/widget']),
+        /requires --metadata/,
+      );
+      assert.equal(
+        parseRepositoryPolicyArgs([command, 'acme/widget', '--metadata', 'plan.json']).metadataPath,
+        'plan.json',
+      );
+    }
+    assert.throws(
+      () => parseRepositoryPolicyArgs(['apply', 'acme/widget', '--metadata', 'plan.json']),
+      /valid only/,
+    );
+    assert.throws(
+      () => parseRepositoryPolicyArgs(['inspect-metadata', 'acme/widget', '--metadata']),
+      /requires one JSON file/,
     );
   });
 });

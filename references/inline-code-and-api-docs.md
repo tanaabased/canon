@@ -1,6 +1,6 @@
 # Inline Code and API Docs
 
-Before deciding whether inline comments, API docs, or starter-file comments need to change, apply the [documentation change gate](./readme-standards.md#documentation-change-gate). Use the rules below only for explanations that pass it.
+Before deciding whether inline comments, API docs, or starter-file comments need to change, apply the [documentation change gate](./documentation-standards.md#documentation-change-gate). Use the rules below only for explanations that pass it.
 
 ## Default Rules
 
@@ -12,14 +12,13 @@ Before deciding whether inline comments, API docs, or starter-file comments need
 
 ## JSDoc Shape
 
-- Use a summary-only block only when the signature already makes inputs and return value obvious, the helper has no meaningful defaults or accepted vocabulary, and it has no intentional throws or side effects.
-- For exported helpers, default to documenting meaningful parameters, non-void return values, and intentional caller-facing errors with `@param`, `@returns`, and `@throws`.
+- Omit JSDoc when the public contract is already clear; use a summary-only block when a short explanation closes the gap. Exporting a helper does not itself require documentation or a full set of tags.
 - Add `@param` when a parameter has non-obvious meaning, accepted vocabulary, fallback behavior, default behavior, or an object shape worth naming.
-- Add `@returns` when the output is a normalized value, status boolean, report object, diff object, or another shape that is not obvious from the function name.
+- Add `@returns` when the result's meaning or shape is not clear from the name and signature, such as a normalized value or structured report.
 - Add `@throws` only for intentional contract errors that callers can reasonably handle.
-- Describe side effects in prose when a function reads or writes files, mutates inputs, shells out, writes to streams, changes process state, or syncs external cache state.
+- Describe side effects when callers need information beyond the function's name and signature, such as unexpected input mutation or external state changes.
 - Do not require full tag coverage for tiny wrappers, obvious formatting helpers, tests, or local implementation details.
-- Treat omitted tags on exported helpers as an explicit choice. The doc should still make the public contract clear without forcing readers to infer accepted values, object shapes, return reports, or failure modes from implementation.
+- Keep non-obvious accepted values, object shapes, return reports, and caller-handled failure modes discoverable without requiring readers to inspect the implementation.
 - Do not add tags that only restate names or obvious primitive types without clarifying contract semantics.
 
 ## TypeScript Shape
@@ -70,8 +69,6 @@ export function booleanFromEnv(env, key, fallback = false) {
 ## Validation
 
 - Confirm inline comments or API docs explain contracts and non-obvious behavior rather than narrating obvious implementation.
-- Confirm exported helper docs use `@param`, `@returns`, and `@throws` by default when those tags clarify the public contract.
-- Confirm omitted JSDoc tags are justified by genuinely obvious signatures or prose that already explains the contract.
 - Confirm JSDoc tags are selective and explain useful semantics instead of repeating the JavaScript signature mechanically.
 - Confirm TypeScript documentation adds behavioral meaning instead of repeating static types already present in the signature.
 - Confirm boilerplate comments stay sparse and are limited to non-obvious contracts, extension points, or edge cases.

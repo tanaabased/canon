@@ -21,7 +21,7 @@ Use these notes when applying the local Bun CLI starter bundled with `tanaab-jav
 
 - Copy the starter into a repository `bin/` directory and declare it in `package.json` as a real CLI entrypoint.
 - For a TypeScript CLI, preserve the starter's observable contract while adding types at parser, environment, and runtime boundaries; do not maintain a separate copy of the full starter.
-- Keep the shebang and commit the copied entrypoint executable.
+- Keep the Bun source shebang and commit the copied entrypoint executable. For distribution, apply [Source and Distribution](../../../references/coding-stack-preferences.md#source-and-distribution) to the build target and emitted shebang; leave the source intact.
 - Keep the entrypoint and its dependencies friendly to `bun build` when the CLI is meant to ship as a built artifact.
 - Install helper dependencies such as `ansis`, `debug`, and `yargs-parser` only when the CLI surface actually justifies them.
 - Replace `CLI_NAME`, `DEBUG_NAMESPACE`, `getScriptVersion()`, `buildDefaults()`, `buildEnvironment()`, `buildRepeatableOptions()`, `buildEnvironmentVariables()`, and `runCli()` with project-specific behavior.

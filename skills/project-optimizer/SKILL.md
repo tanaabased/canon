@@ -78,6 +78,7 @@ Audit a project's checked-in and contract-required repository surfaces against t
 - Distinguish observable drift from action-worthy optimization. A project may contain minor drift while still being sufficiently aligned that another optimization pass is not worthwhile.
 - Recommend implementation only when repository evidence shows a durable benefit in correctness, user-facing truth, security, operability, or recurring maintenance cost, and that benefit materially exceeds the implementation, review, migration, and regression cost.
 - Treat isolated cosmetic, preference-only, speculative, or low-impact observations as opportunistic rather than action-worthy. Mention them only when they are useful context for adjacent authorized work.
+- Apply [verification boundaries](../../references/verification-boundaries.md) when recommending validation changes. Remove duplicate post-success checks; propose new checks only for concrete uncovered risks, not to make an aligned surface appear more thoroughly verified.
 - Do not combine unrelated low-impact observations merely to manufacture a larger recommendation. A repeated pattern may clear the gate only when the repetition itself creates a demonstrated maintenance cost, contradiction, or user-facing inconsistency.
 - If no finding independently or collectively clears this gate, report `converged — no optimization pass recommended`, briefly summarize any intentionally deferred minor drift, omit the implementation plan, and stop.
 - A later material project change may justify another optimization audit; repeated audits against substantially unchanged evidence should normally remain converged.
@@ -93,7 +94,7 @@ Audit a project's checked-in and contract-required repository surfaces against t
 
 - Every tracked local or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
 - Every live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
-- Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/readme-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
+- Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
 - Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
 - The report states either `optimization recommended` or `converged — no optimization pass recommended`.

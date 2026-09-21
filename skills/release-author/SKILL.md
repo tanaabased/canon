@@ -108,6 +108,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 
 ## Validation
 
+- Apply [verification boundaries](../../references/verification-boundaries.md). Retain the draft readback to confirm the publication gate and release target; successful downstream publishers do not need additional registry or installation probes by default.
 - Confirm the selected target branch was current before deriving the release tag and notes.
 - Confirm the release workflow uses `release.published` when draft publication is expected to trigger automation.
 - Confirm explicit versions override auto bump selection and are normalized to `v<semver>`.

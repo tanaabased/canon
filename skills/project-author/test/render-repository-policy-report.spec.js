@@ -24,4 +24,20 @@ describe('skills/project-author/utils/render-repository-policy-report', () => {
       `target: ${TARGET}\nstatus: aligned\nchanges:\n- none\n`,
     );
   });
+
+  it('should expose retained topics and private-topic visibility in metadata previews', () => {
+    const metadata = { description: 'Tanaab-based tooling', topics: ['retained-topic'] };
+    const text = renderRepositoryPolicyReport({
+      changes: [],
+      current: metadata,
+      desired: metadata,
+      operation: 'inspect-metadata',
+      status: 'aligned',
+      target: TARGET,
+      warnings: ['Topic names are public.'],
+    });
+    assert.match(text, /warning: Topic names are public/);
+    assert.ok(text.includes(`current: ${JSON.stringify(metadata)}`));
+    assert.ok(text.includes(`desired: ${JSON.stringify(metadata)}`));
+  });
 });

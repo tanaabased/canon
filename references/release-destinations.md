@@ -5,6 +5,7 @@ Use this reference to identify where Tanaab-owned release artifacts are delivere
 - Treat this as a routing map, not a replacement for the owning skill's `Deployment` or release workflow guidance.
 - A GitHub Release may be the approval event and metadata surface for any row; the release destination is where consumers obtain the supported artifact.
 - Decide destinations and npm privacy per package scope. A repository may intentionally use more than one destination.
+- Treat repository publication as a peer destination. Follow [release composition](../skills/github-workflow-author/SKILL.md#release-composition) for shared immutable checkouts and consistent job names across destinations.
 
 | Product surface                | Default release destination                      | Package and artifact contract                                                                                                                                                                                                    |
 | ------------------------------ | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

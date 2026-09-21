@@ -61,7 +61,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
 - Explain npm source selection and marketplace registration using the official packaging contract or Codex Tools setup guidance. Preserve existing marketplace identity during upgrades; publishing a package does not install or activate it.
 - Record any retained archive consumer and its supported install path. Keep developer cache commands separate from consumer installation.
 
@@ -77,7 +77,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Default to npm through [JavaScript Author's deployment lifecycle](../javascript-author/SKILL.md#deployment) and [release template](../javascript-author/templates/bun-npm-package-release-workflow.yml). Stamp the plugin and package together before packing, validate the extracted payload, and publish that exact tarball.
 - Keep GitHub release notes and repository synchronization where the project uses them. An npm destination replaces redundant archive publication, not the release's source/version record.
 - For an archive migration, prove package and install parity first, update marketplace/install references, then remove the redundant publisher. Keep historical release assets available; retain archive delivery only for a verified consumer need.
-- Check registry visibility and installed-version readback after publication. A local dry run establishes neither registry authentication nor host activation.
+- Apply [verification boundaries](../../references/verification-boundaries.md) after publication. Treat publisher success as completion; check registry visibility or installed behavior separately only when the requested outcome or a concrete uncovered failure mode requires it.
 
 ## GitHub Actions
 

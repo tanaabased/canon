@@ -98,14 +98,14 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 1. Confirm the request is native OpenClaw-code-plugin-led rather than bundle-, generic-JavaScript-, baseline-, workflow-, or host-operations-led.
 2. Classify the active surface as identity/manifest, SDK entry and registration, runtime behavior, configuration, plugin-owned commands, package proof, or deployment.
 3. Load only the relevant shared canon, local plugin files, installed SDK types, and current official OpenClaw references for that surface.
-4. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change. Reconcile contradictions among the manifest, package metadata, runtime entry, existing documentation, tests, and built artifact without treating them as files that must all change.
+4. Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change. Reconcile contradictions among the manifest, package metadata, runtime entry, existing documentation, tests, and built artifact without treating them as files that must all change.
 5. Make the smallest coherent plugin-owned change and run the narrowest repo-native lint, format, type-check, unit-test, build, and plugin-contract checks that apply.
 6. When package contents or delivery changed, create and inspect each pipeline's npm-pack artifact, then run that registry's dry run against the artifact its pipeline produced.
 7. Run installed-package, Gateway, model, or agent scenarios only when task scope explicitly requires operational proof.
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work; use [README Author](../readme-author/SKILL.md) for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work; use [README Author](../readme-author/SKILL.md) for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
 - Document the supported explicit install sources, such as `npm:` and `clawhub:`, with the npm package identity while using the platform plugin id for enable, inspect, configuration, and plugin-owned command examples.
 - State compatibility requirements, activation or configuration needs, one short first verification, and any meaningful permissions, side effects, trust assumptions, or safety limits.
 - Apply [inline code and API documentation](../../references/inline-code-and-api-docs.md) to exported plugin contracts and surprising SDK lifecycle or failure behavior without narrating obvious registration code.
@@ -131,7 +131,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
 - Use the [preferred `npm-pack` action](#preferred-tools) with lifecycle scripts disabled; inspect required/excluded files and prove runtime dependencies and built entries from its exact tarball.
-- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Confirm owner, code-plugin family, source commit, compatibility, and tags; retain package-specific validation alongside the action.
+- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Supply the intended owner, code-plugin family, source commit, compatibility, and tags; retain package-specific checks only for contracts the action does not cover, under [verification boundaries](../../references/verification-boundaries.md).
 - Publish from trusted automation, keep npm and ClawHub credentials scoped to their own steps, and re-check current ClawHub trusted-publisher support rather than assuming prior registry state.
 - Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to [GitHub Workflow Author](../github-workflow-author/SKILL.md).
 

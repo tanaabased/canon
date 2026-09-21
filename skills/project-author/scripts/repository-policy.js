@@ -1,17 +1,22 @@
+import { readFileSync } from 'node:fs';
+
 import { RepositoryPolicyClient, RepositoryPolicyError } from '../lib/repository-policy-client.js';
 import parseRepositoryPolicyArgs from '../utils/parse-repository-policy-args.js';
 import renderRepositoryPolicyReport from '../utils/render-repository-policy-report.js';
 
 function usage() {
-  return `Usage: bun repository-policy.js <inspect|apply|create> OWNER/REPO [options]
+  return `Usage: bun repository-policy.js <command> OWNER/REPO [options]
 
 Commands:
   inspect OWNER/REPO          Read managed settings and report canonical drift
   apply OWNER/REPO            Apply managed settings, then verify canonical state
   create OWNER/REPO           Create a public README-initialized repo, apply, and verify
+  inspect-metadata OWNER/REPO Read description/topics or preview a metadata plan
+  apply-metadata OWNER/REPO   Apply an approved description and complete topic set
 
 Options:
   --json                      Print machine-readable JSON
+  --metadata <path>           JSON plan; required for create and apply-metadata
   --initialize                Allow apply to initialize an existing empty repository
   --rename-default            Allow apply to rename the current default branch to main
   -h, --help                  Show this help
@@ -59,15 +64,22 @@ export function runCli(argv, dependencies = {}) {
   const client = dependencies.client ?? new RepositoryPolicyClient();
 
   try {
+    const metadata = parsed.metadataPath
+      ? JSON.parse((dependencies.readFile ?? readFileSync)(parsed.metadataPath, 'utf8'))
+      : null;
     const report =
       command === 'inspect'
         ? client.inspect(slug)
         : command === 'create'
-          ? client.create(slug)
-          : client.apply(slug, {
-              initialize: parsed.initialize,
-              renameDefault: parsed.renameDefault,
-            });
+          ? client.create(slug, metadata)
+          : command === 'inspect-metadata'
+            ? client.inspectMetadata(slug, metadata)
+            : command === 'apply-metadata'
+              ? client.applyMetadata(slug, metadata)
+              : client.apply(slug, {
+                  initialize: parsed.initialize,
+                  renameDefault: parsed.renameDefault,
+                });
     stdout.write(
       parsed.json ? `${JSON.stringify(report, null, 2)}\n` : renderRepositoryPolicyReport(report),
     );

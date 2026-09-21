@@ -10,9 +10,15 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Default Runtime
 
 - Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
-- Prefer Bun as both the runtime and package manager for those repositories.
+- Use Bun for dependency installation, source execution, lint, type-checking, unit tests, the Leia harness, and builds where the tools support it. The development toolchain does not determine the published runtime contract.
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
+
+### Source and Distribution
+
+- Use `#!/usr/bin/env bun` for executable JS/TS source entrypoints. Ordinary modules and scripts invoked explicitly through Bun need no shebang.
+- Build shipped CLI artifacts for their declared consumer runtime, usually Node for npm distribution; Bun remains valid when it is the supported runtime. Set the [Bun build target](https://bun.com/docs/bundler#target) explicitly and have the build emit or replace the artifact's shebang accordingly, preserving executable permissions and leaving source unchanged.
+- Keep Node-distributed code and dependencies Node-compatible; changing a shebang or build target does not translate Bun-only APIs. Align package `bin`, `exports`, and `engines` with the shipped artifacts, and generate only the ESM/CommonJS formats the package promises.
 
 ## npm Package Identity
 
@@ -60,6 +66,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Testing Defaults
 
+- Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
 - Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
 - For JS/TS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
@@ -73,13 +80,20 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone is not sufficient evidence.
 - When Windows CI is explicitly required, use a supported versioned runner label selected for that repository and never `windows-latest`.
 
+### Test Runtimes
+
+- Select [runtime setup actions](../skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
+- Make the tool runtime explicit in package scripts, for example `bun ./node_modules/mocha/bin/mocha.js`. `bun run` alone can honor a tool's Node shebang. [Bun's `--bun` override](https://bun.com/docs/runtime/bunfig#run-bun-auto-alias-node-to-bun) also redirects child `node` commands, so keep it and equivalent configuration out of Node compatibility checks.
+- Exercise the prepared or packed artifact under its declared runtime: the installed CLI through its executable entrypoint, and public library exports through the promised `import`/`require` paths. A Bun-hosted check may launch real Node subprocesses; its own runtime does not prove the consumer's runtime.
+- Keep compatibility checks focused on the package contract and supported runtime boundary. Do not repeat the full development suite across runtimes or add post-publish registry probes without a distinct gap to cover.
+
 ## Operational Scenario Testing
 
 - Prefer Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
 - Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
 - When a prepared `dist/` artifact is the real shipped surface, run operational scenario tests against that prepared artifact instead of raw source files.
-- For shipped Bun CLIs, prefer a build-first distribution path and treat the built CLI artifact as the Leia validation target when that artifact is the real user-facing surface.
+- For shipped JS/TS CLIs, build first and run Leia scenarios against the artifact in its declared consumer runtime, following [Test Runtimes](#test-runtimes).
 
 ## Shell and Scripting Exceptions
 
@@ -91,7 +105,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## GitHub Actions
 
 - Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
-- Prefer [Tanaab Actions runtime setup](../skills/github-workflow-author/SKILL.md#preferred-tools) using project declarations and the correct package directory. Add Node alongside Bun when the product or tooling needs it; retain direct upstream actions when required inputs or runners are unsupported.
+- Select [Tanaab Actions runtime setup](../skills/github-workflow-author/SKILL.md#preferred-tools) through [Test Runtimes](#test-runtimes), using project declarations and the correct package directory; retain direct upstream actions when required inputs or runners are unsupported.
 - Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
@@ -102,6 +116,8 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Keep the action contract in `README.md` when the repository's primary product is a GitHub Action.
 
 ## Documentation Surface Defaults
+
+- Apply [Documentation Standards](./documentation-standards.md) before selecting or expanding any documentation surface; these placement defaults do not require new content.
 
 - Prefer a full `README.md` by default when one durable file can realistically carry the repo's user-facing contract.
 - Prefer a companion-guides README when the common path belongs in `README.md` but one or two linear root-level references keep advanced or topical material focused.

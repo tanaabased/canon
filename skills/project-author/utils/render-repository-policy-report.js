@@ -14,6 +14,16 @@ export default function renderRepositoryPolicyReport(report) {
   if (report.operation) {
     lines.push(`operation: ${report.operation}`);
   }
+  for (const warning of report.warnings ?? []) {
+    lines.push(`warning: ${warning}`);
+  }
+  if (report.operation === 'inspect-metadata' || report.operation === 'apply-metadata') {
+    lines.push(`current: ${displayValue(report.current)}`);
+    if (report.desired) lines.push(`desired: ${displayValue(report.desired)}`);
+  }
+  if (report.metadata) {
+    lines.push(`metadata: ${displayValue(report.metadata.current)}`);
+  }
   if (report.branch_action) {
     const action = report.branch_action;
     const detail = action.from ? ` (${action.from} -> ${action.to})` : '';

@@ -1,6 +1,11 @@
 import canonicalPolicy from '../references/canonical-repository-settings.json' with { type: 'json' };
 
 export const TARGET = 'acme/widget';
+export const METADATA = {
+  description: 'Tanaab-based widget tooling',
+  topics: ['automation', 'developer-tools', 'javascript'],
+};
+export const CREATION_PLAN = { target: TARGET, current: null, desired: METADATA };
 
 function success(data = null) {
   return {
@@ -91,11 +96,14 @@ export function createRemote(overrides = {}) {
     exists: true,
     failAuth: false,
     failProtection: false,
+    failTopics: false,
+    ignoreTopics: false,
     invitations: [],
     mainExists: true,
     permission: { permission: 'write', role_name: 'write' },
     protection: protectionResponse(),
     repository: canonicalRepository(),
+    topics: [],
     ...overrides,
   };
 
@@ -114,7 +122,14 @@ export function createRemote(overrides = {}) {
       remote.exists = true;
       remote.mainExists = defaultBranch === 'main';
       remote.branches = [{ name: defaultBranch }];
-      remote.repository = canonicalRepository({ default_branch: defaultBranch, has_wiki: true });
+      remote.repository = canonicalRepository({
+        default_branch: defaultBranch,
+        description: args[args.indexOf('--description') + 1],
+        has_wiki: true,
+        private: false,
+        visibility: 'public',
+      });
+      remote.topics = [];
       remote.permission = null;
       remote.directCollaborators = [];
       remote.protection = null;
@@ -137,6 +152,13 @@ export function createRemote(overrides = {}) {
     }
     if (!remote.exists) {
       return failure(404, 'Not Found');
+    }
+    if (endpoint === `/repos/${TARGET}/topics`) {
+      if (method === 'PUT') {
+        if (remote.failTopics) return failure(403, 'Topic update forbidden');
+        if (!remote.ignoreTopics) remote.topics = [...body.names];
+      }
+      return success({ names: remote.topics });
     }
     if (endpoint === `/repos/${TARGET}/branches/main`) {
       return remote.mainExists ? success({ name: 'main' }) : failure(404, 'Not Found');

@@ -56,6 +56,7 @@
 - Shared coding-stack defaults for runtime, frameworks, and tooling live in `references/coding-stack-preferences.md`.
 - Shared JS/TS/Bun repo-structure guidance for code-bearing surfaces lives in `references/javascript-repo-structure.md`.
 - Shared JS/TS function-shape guidance lives in `references/javascript-function-data-flow.md`.
+- Apply [Documentation Standards](./references/documentation-standards.md) to all documentation changes, including supplementary guides, generated references, and docs-site pages.
 - Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
 - That repo-structure guidance applies inside every code-bearing owning scope, including individual skills, and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
 - Inside a code-bearing scope, use `bin/` for public human-facing commands, `scripts/` for internal machine- or agent-facing commands, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.

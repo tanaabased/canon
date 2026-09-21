@@ -67,7 +67,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is action-product-led rather than workflow-led or general-JS/TS-led.
-2. Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change, then load the local action conventions and only the shared canon needed for the touched surface.
+2. Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change, then load the local action conventions and only the shared canon needed for the touched surface.
 3. Keep the action contract coherent across `action.yml`, runtime entrypoint, committed artifact, README, and any dedicated input-normalization helper.
 4. Use [preferred runtime setup](#preferred-tools) in smoke workflows while testing the action itself through `uses: ./`. Validate the resulting action surface with the narrowest reliable local checks and any repo-native smoke paths.
 
@@ -77,7 +77,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - For action repos that ship committed artifacts or synchronize changelog changes, use `.github/workflows/release.yml` on `release.published` with the [preferred `publish-repo` action](#preferred-tools). Check out the event commit with full history; the action owns date formatting and verified Git synchronization.
 - Keep final lint, test, build, or smoke commands only where they validate the shipped action. Prepare committed artifacts in `commands`, stamp any version-bearing build inputs before building, then format and validate command-owned output before synchronization.
 - Keep `sync-tags` on the release's intended moving major alias, such as `v1` for `v1.2.3`. Use the established bot credential required by repository rules; the shared action owns the synchronization identity.
-- Follow [release composition](../github-workflow-author/SKILL.md#release-composition) when multiple destinations exist. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
+- Follow [release composition](../github-workflow-author/SKILL.md#release-composition) for checkout inputs, destination names, and independent jobs. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
 - Minimal example: [action release workflow](./templates/bun-javascript-action-release-workflow.yml).
 
 ## Optimization

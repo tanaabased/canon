@@ -2,6 +2,7 @@ import { flattenGitHubPages } from '../../../lib/run-github-cli.js';
 import canonicalPolicy from '../references/canonical-repository-settings.json' with { type: 'json' };
 import diffManagedValues from '../utils/diff-managed-values.js';
 import normalizeBranchProtection from '../utils/normalize-branch-protection.js';
+import normalizeRepositoryMetadataPlan from '../utils/normalize-repository-metadata-plan.js';
 import normalizeRepositorySlug from '../utils/normalize-repository-slug.js';
 import runGh from '../utils/run-gh.js';
 
@@ -295,6 +296,96 @@ export class RepositoryPolicyClient {
     };
   }
 
+  inspectMetadata(slugValue, proposal = null) {
+    const slug = normalizeRepositorySlug(slugValue);
+    const plan = proposal ? normalizeRepositoryMetadataPlan(proposal, slug) : null;
+    this.ensureReady();
+    const { data: repository, missing } = this.request('GET', `/repos/${slug}`, undefined, {
+      allowNotFound: true,
+      step: 'inspect-metadata',
+    });
+    const topics = missing
+      ? []
+      : this.request('GET', `/repos/${slug}/topics`, undefined, { step: 'inspect-topics' }).data
+          ?.names;
+    if (!Array.isArray(topics) || topics.some((topic) => typeof topic !== 'string')) {
+      throw new RepositoryPolicyError('GitHub returned invalid repository topics.', {
+        step: 'inspect-topics',
+      });
+    }
+    const current = missing
+      ? null
+      : {
+          description: repository.description ?? null,
+          topics: [...topics].sort(),
+        };
+    const desired = plan?.desired ?? null;
+    const changes = desired ? diffManagedValues(current, desired) : [];
+    return {
+      changes,
+      current,
+      desired,
+      operation: 'inspect-metadata',
+      status: missing ? 'missing' : desired ? (changes.length ? 'drifted' : 'aligned') : 'present',
+      target: slug,
+      warnings: repository?.private
+        ? ['GitHub topic names are public, including topics on private repositories.']
+        : [],
+    };
+  }
+
+  applyMetadata(slugValue, proposal) {
+    const slug = normalizeRepositorySlug(slugValue);
+    const plan = normalizeRepositoryMetadataPlan(proposal, slug);
+    const report = this.inspectMetadata(slug, plan);
+    if (!report.current || !plan.current) {
+      throw new RepositoryPolicyError(
+        'Existing metadata is required; use create for a missing repository.',
+        { report, step: 'apply-metadata' },
+      );
+    }
+    if (diffManagedValues(report.current, plan.current).length) {
+      throw new RepositoryPolicyError(
+        'Repository metadata changed since the preview; inspect and review a fresh plan.',
+        { report, step: 'check-metadata-plan' },
+      );
+    }
+    const applied = [];
+    try {
+      if (report.changes.some((change) => change.path === 'description')) {
+        this.request(
+          'PATCH',
+          `/repos/${slug}`,
+          { description: plan.desired.description },
+          { step: 'update-description' },
+        );
+        applied.push('update-description');
+      }
+      if (report.changes.some((change) => change.path === 'topics')) {
+        this.request(
+          'PUT',
+          `/repos/${slug}/topics`,
+          { names: plan.desired.topics },
+          { step: 'replace-topics' },
+        );
+        applied.push('replace-topics');
+      }
+      const verified = applied.length ? this.inspectMetadata(slug, plan) : report;
+      if (verified.status !== 'aligned') {
+        throw new RepositoryPolicyError('Metadata update completed with remaining drift.', {
+          report: verified,
+          step: 'verify-metadata',
+        });
+      }
+      return { ...verified, applied, operation: 'apply-metadata' };
+    } catch (error) {
+      throw new RepositoryPolicyError(error.message, {
+        report: { ...(error.report ?? report), applied },
+        step: error.step ?? 'apply-metadata',
+      });
+    }
+  }
+
   waitForMain(slug) {
     for (let attempt = 0; attempt < this.waitAttempts; attempt += 1) {
       const response = this.request('GET', `/repos/${slug}/branches/${MAIN_BRANCH}`, undefined, {
@@ -514,8 +605,12 @@ export class RepositoryPolicyClient {
     };
   }
 
-  create(slugValue) {
+  create(slugValue, proposal) {
     const slug = normalizeRepositorySlug(slugValue);
+    const plan = normalizeRepositoryMetadataPlan(proposal, slug);
+    if (plan.current !== null) {
+      throw new RepositoryPolicyError('Creation requires a metadata plan with current: null.');
+    }
     const report = this.inspect(slug);
     if (report.status !== 'missing') {
       throw new RepositoryPolicyError(
@@ -528,7 +623,14 @@ export class RepositoryPolicyClient {
     }
 
     const visibility = this.policy.creation.visibility;
-    const args = ['repo', 'create', slug, `--${visibility}`];
+    const args = [
+      'repo',
+      'create',
+      slug,
+      `--${visibility}`,
+      '--description',
+      plan.desired.description,
+    ];
     if (this.policy.creation.initialize_with_readme) {
       args.push('--add-readme');
     }
@@ -547,15 +649,20 @@ export class RepositoryPolicyClient {
         initialize: true,
         renameDefault: true,
       });
+      const metadata = this.applyMetadata(slug, {
+        ...plan,
+        current: { description: plan.desired.description, topics: [] },
+      });
       return {
         ...applied,
-        applied: ['create-repository', ...applied.applied],
+        applied: ['create-repository', ...applied.applied, ...metadata.applied],
+        metadata,
         operation: 'create',
       };
     } catch (error) {
       if (error instanceof RepositoryPolicyError) {
         throw new RepositoryPolicyError(
-          `Repository ${slug} was created, but policy synchronization is incomplete: ${error.message}`,
+          `Repository ${slug} was created, but configuration is incomplete: ${error.message}`,
           {
             report: error.report,
             step: error.step,

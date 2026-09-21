@@ -4,7 +4,9 @@ Use this pattern when a repository needs end-to-end or operational coverage that
 
 This reference owns Tanaab's Leia usage policy: test scope, scenario organization, fixtures, and execution restrictions. Leia owns its syntax, CLI options, and harness behavior. `templates/leia-examples-agents.md` projects this policy into `examples/**`; `templates/leia-markdown-example-readme.md` is a runnable starter.
 
-Use the upstream [`leia-scenarios` skill](https://github.com/lando/leia/blob/v2.0.0/skills/scenarios/SKILL.md) when available, alongside this policy and repository guidance. Otherwise, consult Leia's [CLI](https://github.com/lando/leia/blob/v2.0.0/CLI.md) and [scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md). These links target the supported 2.0.0 baseline; use the documentation for the project's installed version when it differs. The agent plugin is optional and does not replace the project's CLI dependency or authorize local execution.
+Use the upstream [`leia-scenarios` skill](https://github.com/lando/leia/blob/v2.0.0/skills/scenarios/SKILL.md) when available, alongside this policy and repository guidance. Otherwise, consult Leia's [CLI](https://github.com/lando/leia/blob/v2.0.0/CLI.md) and [scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md). These links target the supported 2.0.0 baseline; use the documentation for the project's installed version when it differs.
+
+For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenClaw plugin](https://github.com/lando/leia/blob/v2.0.0/PLUGINS.md) ships in [`@lando/leia`](https://www.npmjs.com/package/@lando/leia). Install the project's CLI dependency separately; the plugin does not authorize local execution.
 
 ## When to Use
 
@@ -57,6 +59,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 ## Assertions and Output
 
+- Apply [verification boundaries](./verification-boundaries.md): assert the scenario's product contract without rechecking setup or publication already guaranteed by successful commands.
 - Assert observable user-facing behavior rather than internal implementation details.
 - Prefer filesystem state, installed tools, service status, permissions, generated config, exit status, protocol results, and existing lifecycle logs over assertions about internal argument assembly.
 - For one invocation with one output assertion, prefer a direct pipeline:
@@ -141,7 +144,7 @@ Expose Leia through the consuming repository's `package.json` instead of invokin
 
 Invoke scenarios with `bun run leia`. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
 
-Bun runs the Leia process; it does not replace runtimes selected by commands inside scenario blocks. An explicit `node` command or Node-based product entrypoint retains its Node runtime, while Bun-based and shell commands retain their own declared runtimes.
+Bun runs the Leia process; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
 
 Do not add `examples/package.json` solely for Leia's generated harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers use `require` or `module.exports`. Consult Leia's scenario documentation for module selection and shell behavior.
 

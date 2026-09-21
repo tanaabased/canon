@@ -62,13 +62,13 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS or TS surface instead of the default authored pattern.
 - Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before deciding whether prose needs to change.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
 
 ## Preferred Tools
 
 - **[@tanaab/merge 1.x](https://github.com/tanaabased/merge/blob/v1.0.0/README.md):** Prefer for deep object merging that needs explicit array strategies, on supported Bun or Node runtimes. It mutates its target, and `replace` merges arrays by index rather than replacing the whole array; preserve existing semantics and avoid adding a dependency for shallow composition.
-- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Prefer project-declared runtime discovery for CI; add Node only when the tested or published surface needs it. Keep dependency installation and test commands in the caller.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Select runtimes through [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes). Keep dependency installation and test commands in the caller.
 - **Tanaab Actions 1.x — [prepare-release](https://github.com/tanaabased/actions/blob/v1.0.1/prepare-release/README.md), [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md), [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md), and [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md):** Prefer for the single-package npm lifecycle below. Retain explicit workspace orchestration or unsupported-runner exceptions; independent workflow topology belongs to GitHub Workflow Author.
 
 ## Workflow
@@ -83,7 +83,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/readme-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
 - Prefer JSDoc in JavaScript and contract-focused documentation in TypeScript for exported helpers, public wrappers, side effects, failure behavior, and non-obvious invariants when the code alone does not make the contract clear.
 - Keep inline comments sparse and focused on surprising runtime behavior, mutation boundaries, integration assumptions, or failure modes.
@@ -91,6 +91,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- Apply [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) to separate Bun development checks from focused checks of Node-distributed artifacts and their public exports.
 - Prefer focused Mocha tests for extracted utility logic, especially pure or mostly pure helpers and modules.
 - Test thin wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
 - Keep test files narrow and inside the nearest owning scope, such as `feature/test/normalize-tags.spec.ts` for `feature/utils/normalize-tags.ts`.
@@ -126,7 +127,7 @@ describe('feature/utils/normalize-tags', () => {
 
 - Use [release destinations](../../references/release-destinations.md) to confirm that npm is intended for this package scope. For a single package, use `.github/workflows/release.yml` on `release.published` with the [preferred release actions](#preferred-tools).
 - Run lint and tests before preparation. Use `prepare-release` without Git synchronization, build after stamping only when the package ships generated output, format generated changes, and validate the final prepared files. A docs-site build alone does not justify a package build.
-- Use `npm-pack` with lifecycle scripts disabled. Inspect and exercise its exact tarball with the package's relevant checks, then pass that same path to `publish-npm` for a native dry run and live publication; do not repack between validation and publishing.
+- Use `npm-pack` with lifecycle scripts disabled. Inspect and exercise its exact tarball with the package's relevant checks, then pass that same path to `publish-npm` for a native dry run and live publication; do not repack between validation and publishing. Apply [verification boundaries](../../references/verification-boundaries.md) to distinguish artifact checks from redundant publisher checks.
 - Configure npm trusted publishing for the exact repository and workflow filename. Leave `registry-token` unset and grant the npm job `id-token: write`; the action installs the project-selected Node runtime and supported npm CLI. Verify that the selected runtime supports that npm version.
 - Stable releases publish to `latest` and update `edge` by default; prereleases update only `edge`. Supply a granular `channel-token` for stable aliasing, or explicitly set `update-prerelease-tag-on-stable: false` and omit it when the channels should stay separate. Keep npm publication itself tokenless.
 - When repository files or tags must be synchronized, use a peer `publish-repo` job with its own preparation from the original release commit. Follow [Workflow Author's release composition](../github-workflow-author/SKILL.md#release-composition) for immutable checkout inputs, independent jobs, and retry boundaries.
