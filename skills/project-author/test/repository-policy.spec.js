@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { runCli } from '../scripts/repository-policy.js';
-import { TARGET } from './fake-github.js';
+import { CREATION_PLAN, TARGET } from './fake-github.js';
 
 function captureStream() {
   let content = '';
@@ -61,5 +61,55 @@ describe('skills/project-author/scripts/repository-policy', () => {
 
     assert.equal(status, 1);
     assert.match(stderr.read(), /Expected one command and one explicit OWNER\/REPO slug/);
+  });
+
+  it('should pass the JSON plan to creation and metadata commands', () => {
+    for (const [command, method] of [
+      ['create', 'create'],
+      ['inspect-metadata', 'inspectMetadata'],
+      ['apply-metadata', 'applyMetadata'],
+    ]) {
+      const stdout = captureStream();
+      const calls = [];
+      const client = {
+        [method]: (slug, plan) => {
+          calls.push({ slug, plan });
+          return { changes: [], status: 'aligned', target: slug };
+        },
+      };
+      const status = runCli([command, TARGET, '--metadata', 'plan.json', '--json'], {
+        client,
+        stdout,
+        readFile: () => JSON.stringify(CREATION_PLAN),
+      });
+      assert.equal(status, 0);
+      assert.deepEqual(calls, [{ slug: TARGET, plan: CREATION_PLAN }]);
+    }
+  });
+
+  it('should reject unreadable or malformed plans before mutation', () => {
+    for (const readFile of [
+      () => '{invalid',
+      () => {
+        throw new Error('unreadable');
+      },
+    ]) {
+      const stderr = captureStream();
+      let calls = 0;
+      assert.equal(
+        runCli(['create', TARGET, '--metadata', 'plan.json', '--json'], {
+          client: {
+            create: () => {
+              calls += 1;
+            },
+          },
+          readFile,
+          stderr,
+        }),
+        1,
+      );
+      assert.equal(calls, 0);
+      assert.ok(JSON.parse(stderr.read()).error);
+    }
   });
 });

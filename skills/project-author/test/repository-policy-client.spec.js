@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 import { RepositoryPolicyClient, RepositoryPolicyError } from '../lib/repository-policy-client.js';
 import {
+  CREATION_PLAN,
   TARGET,
   canonicalPolicy,
   canonicalRepository,
@@ -140,10 +141,19 @@ describe('skills/project-author/lib/repository-policy-client', () => {
 
   it('should create with public README initialization and converge through apply', () => {
     const remote = createRemote({ exists: false });
-    const report = clientFor(remote).create(TARGET);
+    const report = clientFor(remote).create(TARGET, CREATION_PLAN);
     const createCommand = remote.commands.find(({ args }) => args[0] === 'repo');
 
-    assert.deepEqual(createCommand.args, ['repo', 'create', TARGET, '--public', '--add-readme']);
+    assert.deepEqual(createCommand.args, [
+      'repo',
+      'create',
+      TARGET,
+      '--public',
+      '--description',
+      CREATION_PLAN.desired.description,
+      '--add-readme',
+    ]);
+    assert.deepEqual(report.metadata.current, CREATION_PLAN.desired);
     assert.equal(report.status, 'aligned');
     assert.ok(report.applied.includes('create-repository'));
     assert.ok(report.applied.includes('update-repository-settings'));
@@ -172,7 +182,7 @@ describe('skills/project-author/lib/repository-policy-client', () => {
 
   it('should establish main when the repository owner defaults new repositories to master', () => {
     const remote = createRemote({ creationDefaultBranch: 'master', exists: false });
-    const report = clientFor(remote).create(TARGET);
+    const report = clientFor(remote).create(TARGET, CREATION_PLAN);
     const renameCommand = remote.commands.find(
       ({ args }) => args[1] === `/repos/${TARGET}/branches/master/rename`,
     );

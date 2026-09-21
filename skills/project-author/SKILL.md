@@ -1,6 +1,6 @@
 ---
 name: tanaab-project-author
-description: Tanaab-based creation and canonical settings synchronization for GitHub-backed projects. Use when a user wants to create, inspect, or synchronize the repository that represents a project.
+description: Tanaab-based creation, canonical settings synchronization, and About metadata for GitHub-backed projects. Use when a user wants to create or synchronize a project repository, or explicitly normalize its description or topics.
 license: MIT
 metadata:
   type: integration
@@ -22,21 +22,22 @@ metadata:
 
 ## Overview
 
-Tanaab-based creation and canonical settings synchronization for GitHub-backed projects. Use when a user wants to create, inspect, or synchronize the repository that represents a project.
+Tanaab-based creation, canonical settings synchronization, and About metadata for GitHub-backed projects. Use when a user wants to create or synchronize a project repository, or explicitly normalize its description or topics.
 
-This skill owns one project-container policy surface implemented through GitHub repositories. Creation and synchronization are two modes over the same checked-in desired state, not separate skills.
+This skill owns one project-container policy surface implemented through GitHub repositories. Canonical settings use checked-in desired state; repository descriptions and topics use a separately reviewed, model-authored plan.
 
 ## When to Use
 
 - Create the explicit `OWNER/REPO` that represents a project with the canonical Tanaab GitHub settings.
 - Inspect an existing repository and show only managed-setting drift.
 - Synchronize an existing repository after the user reviews and confirms the exact diff.
+- Propose and apply repository descriptions and topics during creation or explicitly requested metadata normalization.
 
 ## When Not to Use
 
 - Do not use this skill for repository contents, templates, secrets, webhooks, environments, Actions policy, security settings, or rulesets.
 - Do not create or manage tasks, project milestones, releases, or GitHub Projects boards through this skill.
-- Do not change visibility, description, homepage, topics, template/archive state, Pages, other collaborators, or other unmanaged settings on an existing repository.
+- Do not change visibility, homepage, template/archive state, Pages, or unrelated collaborators. Keep description and topics unchanged during ordinary settings synchronization.
 - Do not use it for ordinary local Git initialization or cloning without GitHub repository-policy intent.
 
 ## Prerequisites
@@ -45,22 +46,23 @@ This skill owns one project-container policy surface implemented through GitHub 
 - Confirm `gh` is installed, authenticated to the intended GitHub host, and authorized to administer the target owner and repository.
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
-- Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired settings. Do not recapture policy from the live `tanaabased/canon` repository.
+- Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired managed settings; description and topic proposals remain repository-specific. Do not recapture policy from the live `tanaabased/canon` repository.
 - GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](../../references/commit-subjects.md) when authoring issue-backed commits.
 
 ## Inputs
 
-- Required: one explicit project slug in `OWNER/REPO` form and one intent: inspect, create, or synchronize.
+- Required: one explicit project slug in `OWNER/REPO` form and one intent: inspect, create, synchronize settings, or normalize metadata.
 - Resolve [the bundled entrypoint](./scripts/repository-policy.js) relative to this `SKILL.md`, then run `bun <resolved-path> inspect OWNER/REPO --json` to get normalized state and a stable diff.
 - After the user authorizes the displayed mutation, run the same entrypoint with `apply OWNER/REPO --json`; add `--initialize` only for an existing empty repository or `--rename-default` only after separate approval to rename a non-`main` default branch.
-- Run the entrypoint with `create OWNER/REPO --json` only when inspection reports `missing` and creation of that exact slug is authorized.
+- Run the entrypoint with `create OWNER/REPO --metadata <plan.json> --json` only when inspection reports `missing` and creation of that exact slug is authorized.
 
 ## Outputs
 
 - `inspect` returns `missing`, `aligned`, or `drifted`, plus sorted `current -> desired` changes and any required branch action. It never writes.
-- `create` creates a public repository with an initial `README.md`, then applies and verifies the policy.
+- `create` requires a metadata plan, creates a public repository with an initial `README.md` and description, then applies and verifies the policy and topics.
 - `apply` updates only managed General settings, `tanaabot` access, and classic `main` protection, then returns a fresh aligned report.
-- For user review, render every reported change before synchronization. Explicitly call out removals such as cleared required checks.
+- `inspect-metadata` reads or previews description and topics; `apply-metadata` changes only those fields and verifies the complete result.
+- For user review, render every reported change before synchronization. Explicitly call out removals such as cleared required checks or topics.
 
 ## Failure Handling
 
@@ -72,17 +74,26 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 ## Workflow
 
-1. Validate the explicit slug and prerequisites, then run read-only `inspect --json`.
+1. Validate the explicit slug and prerequisites. For metadata-only work, follow Repository Presentation below; otherwise run read-only `inspect --json`.
 2. If `aligned`, report that no write is needed. If the intent is audit-only, return the diff and stop.
-3. If `missing`, show the public-plus-README creation preview. Treat an unambiguous request to create that exact slug as authorization; otherwise confirm before `create`.
+3. If `missing`, prepare the description/topic plan below and show it with the public-plus-README creation preview. Treat an unambiguous request to create that exact slug as authorization; otherwise confirm before `create`.
 4. If `drifted`, show every managed change and ask whether to apply it. Never invoke `apply` before this post-diff confirmation.
 5. Resolve a reported branch action first and only with its dedicated flag and approval. The helper then patches General settings, grants `tanaabot` write access, applies classic protection, disables signature protection when needed, and re-inspects.
-6. Finish only when the fresh report is `aligned`; otherwise return the remaining drift and partial-operation details.
+6. Finish settings work only when the fresh report is `aligned`; otherwise return the remaining drift and partial-operation details.
+
+### Repository Presentation
+
+- During creation or explicitly requested normalization, research the repository's purpose from available docs, manifests, code, current metadata, relevant ecosystems, and nearby projects. Propose the shortest clear purpose phrase beginning with `Tanaab-based` and exactly three primary topics, with brief evidence for the choices. Omit slogans, feature lists, and runtime inventories unless essential to distinguish the project; clarity matters more than a word-count target. Keep recommendations model-led; do not use a fixed topic taxonomy.
+- Existing relevant topics can satisfy the three recommendations. Preserve additional existing topics unless their removal is separately proposed and approved. Follow [GitHub's topic format and limits](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics); warn for private repositories that topic names remain public.
+- Run `inspect-metadata OWNER/REPO --json` to obtain current description and topics. Save a JSON plan with exactly `target`, `current`, and `desired`; both metadata objects contain `description` and `topics`. Copy `current` from inspection, use `null` only for creation, and put the complete final topic set in `desired.topics`.
+- Preview with `inspect-metadata OWNER/REPO --metadata <plan.json> --json`. Show the description and every added, retained, or removed topic. After approval, use `apply-metadata OWNER/REPO --metadata <plan.json> --json` for an existing repository, or pass the same plan to `create`. These commands share the bundled `repository-policy.js` entrypoint.
+- GitHub's [topic update replaces the full set](https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics). The helper rejects target mismatches and changed snapshots, then verifies both fields after mutation. On stale or partial results, inspect and review a fresh plan; do not blindly retry the old one.
+- Prefer hiding the Packages section as a manual GitHub display preference. Keep it outside automated alignment and completion checks; do not add browser automation for it.
 
 ## Optimization
 
 - **Inspect:** Resolve an explicit `OWNER/REPO` and use the bundled read-only inspection path to collect managed repository settings; never infer a remote target.
-- **Compare:** Reconcile normalized current state with the checked-in canonical policy and report an exact managed diff, including contradictory or extra managed values, while leaving unmanaged settings out of scope.
+- **Compare:** Reconcile normalized current state with the checked-in canonical policy and report an exact managed diff, including contradictory or extra managed values, while leaving unmanaged settings out of scope. Assess presentation only when explicitly requested, using Repository Presentation above.
 - **Recommend:** Keep aligned and unmanaged state; correct confirmed managed drift; remove extra managed configuration where canonical exactness requires it; and treat content deduplication, consolidation, splitting, and extraction as not applicable to this remote policy surface.
 - **Apply:** After the user confirms the exact diff, mutate only approved managed fields and obtain separate confirmation for branch renames or other distinct effects.
 - **Verify:** Re-inspect the repository and report aligned, remaining, pending-invitation, or partial-failure state explicitly.
@@ -98,7 +109,8 @@ This skill owns one project-container policy surface implemented through GitHub 
 ## Validation
 
 - Confirm inspection is read-only and mutation commands never prompt on their own; the skill owns authorization.
-- Confirm existing unmanaged settings and unrelated collaborators remain untouched.
+- Confirm ordinary settings sync leaves description, topics, and unrelated settings untouched; metadata mutations match the reviewed complete plan.
+- Confirm creation includes the researched description and topics.
 - Confirm exact managed drift includes extra required checks and stricter managed protection as removals.
-- Run the focused unit spec and the skill validator before broader repo checks.
+- Run the focused unit specs and the skill validator before broader repo checks.
 - Run a read-only inspection of `tanaabased/canon`; it must report `aligned` against the checked-in policy.
