@@ -59,4 +59,4 @@ bun run codex:check
 
 Plugin validation runs through `tanaabased/actions/validate-codex-plugin@v1` in GitHub Actions. The cache scripts invoke Codex Tools directly; use an isolated `--codex-home`, an explicit `--cache-path`, and `--missing-target create` for disposable verification.
 
-If the final cache check reports drift, include `bun run codex:sync`, repeat `bun run codex:check`, and note that Codex should be restarted so updated skills reload. Do not synchronize the cache during the read-only planning pass.
+If the final cache check reports drift, include `bun run codex:sync`, repeat `bun run codex:check`, and verify skill discovery under the [runtime guidance](../AGENTS.md#runtime-boundaries). Do not synchronize the cache during the read-only planning pass.

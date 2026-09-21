@@ -31,53 +31,35 @@ jobs:
         uses: tanaabased/actions/prepare-release@v1
         with:
           commands: |
-            version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
+            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
-      - name: Validate prepared plugin
-        uses: tanaabased/actions/validate-codex-plugin@v1
-      - name: Prepare Codex plugin archive
-        id: publish
-        uses: tanaabased/actions/publish-codex-plugin@v1
-        with:
-          archive-name: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
-          dependency-policy: exclude-node-modules
-          release-tag: ${{ env.STAMPED_VERSION }}
-          dry-run: true
-      - name: Verify release archive
-        id: archive
+      - name: Pack plugin
+        id: pack
+        uses: tanaabased/actions/npm-pack@v1
+      - name: Check extracted package
+        id: package
         env:
-          ARCHIVE_PATH: ${{ steps.publish.outputs.archive-path }}
+          TARBALL: ${{ steps.pack.outputs.tarball-path }}
         run: |
-          archive_root="$(mktemp -d)"
-          tar -xzf "$ARCHIVE_PATH" -C "$archive_root"
-          echo "path=$archive_root" >> "$GITHUB_OUTPUT"
-          cd "$archive_root"
-
-          test "$(basename "$ARCHIVE_PATH")" = "tanaab-${STAMPED_VERSION}.tar.gz"
-          test -f .codex-plugin/plugin.json
-          test -f skills/github-workflow-author/SKILL.md
-
-          package_version="v$(bun --eval 'const pkg = JSON.parse(await Bun.file("package.json").text()); console.log(pkg.version)')"
-          plugin_version="v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')"
-          printf 'package=%s\nplugin=%s\n' "$package_version" "$plugin_version"
-          test "$package_version" = "$STAMPED_VERSION"
-          test "$plugin_version" = "$STAMPED_VERSION"
-          grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" CHANGELOG.md
-
-          if test -e node_modules; then
-            echo 'release archive must not include node_modules' >&2
-            exit 1
-          fi
-
+          package_root="$(mktemp -d)"
+          tar -xzf "$TARBALL" -C "$package_root" --strip-components=1
+          echo "path=$package_root" >> "$GITHUB_OUTPUT"
+          bun run check:package "$package_root"
+          grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" "$package_root/CHANGELOG.md"
       - name: Validate extracted plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
         with:
-          plugin-directory: ${{ steps.archive.outputs.path }}
+          plugin-directory: ${{ steps.package.outputs.path }}
+      - name: Dry-run publication
+        uses: tanaabased/actions/publish-npm@v1
+        with:
+          tarball: ${{ steps.pack.outputs.tarball-path }}
+          dry-run: true
 
   publish-repo:
     runs-on: ubuntu-24.04
@@ -91,7 +73,7 @@ jobs:
         with:
           commands: |
             bun install --frozen-lockfile --ignore-scripts
-            version-injector .codex-plugin/plugin.json --style json --version "${{ env.STAMPED_VERSION }}"
+            version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}

@@ -9,38 +9,39 @@ const CATALOG_REF = 'v1';
 describe('GitHub Actions catalog contract', () => {
   it('should keep release publication split across independent catalog jobs', async () => {
     const workflow = await readWorkflow('release.yml');
-    const [archiveJob, repositoryJob] = workflow.split('\n  publish-repo:');
+    const [npmJob, repositoryJob] = workflow.split('\n  publish-repo:');
 
-    assert.match(workflow, /^ {2}publish-codex-plugin:\n/m);
+    assert.match(workflow, /^ {2}publish-npm:\n/m);
     assert.match(workflow, /^ {2}publish-repo:\n/m);
     assert.ok(workflow.includes(`tanaabased/actions/prepare-release@${CATALOG_REF}`));
-    assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
+    assert.ok(workflow.includes(`tanaabased/actions/publish-npm@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
-    assert.match(
-      workflow,
-      /archive-name: tanaab-\$\{\{ github\.event\.release\.tag_name \}\}\.tar\.gz/,
+    assert.ok(workflow.includes(`tanaabased/actions/npm-pack@${CATALOG_REF}`));
+    assert.equal(
+      workflow.match(/tarball: \$\{\{ steps\.pack\.outputs\.tarball-path \}\}/g)?.length,
+      2,
     );
-    assert.match(workflow, /dependency-policy: exclude-node-modules/);
-    assert.match(workflow, /github-token: \$\{\{ github\.token \}\}/);
     assert.match(workflow, /sync-token: \$\{\{ secrets\.TANAAB_COAXIUM_INJECTOR \}\}/);
-    assert.match(archiveJob, /permissions:\n {6}contents: write/);
-    assert.doesNotMatch(archiveJob, /TANAAB_COAXIUM_INJECTOR/);
+    assert.match(npmJob, /id-token: write/);
+    assert.doesNotMatch(npmJob, /TANAAB_COAXIUM_INJECTOR|registry-token:/);
+    assert.match(npmJob, /channel-token: \$\{\{ secrets\.TANAAB_NPM_DEPLOY \}\}/);
+    assert.equal(workflow.match(/ref: \$\{\{ github\.sha \}\}/g)?.length, 2);
+    assert.doesNotMatch(workflow, /needs:|publish-codex-plugin/);
     assert.match(repositoryJob, /permissions:\n {6}contents: read/);
     assert.doesNotMatch(repositoryJob, /github-token:/);
     assert.doesNotMatch(workflow, /prepare-release-action/);
   });
 
-  it('should dry-run both publishers and inspect the real Codex archive', async () => {
+  it('should dry-run both publishers and check the extracted npm payload', async () => {
     const workflow = await readWorkflow('release-tests.yml');
 
-    assert.ok(workflow.includes(`tanaabased/actions/publish-codex-plugin@${CATALOG_REF}`));
+    assert.ok(workflow.includes(`tanaabased/actions/publish-npm@${CATALOG_REF}`));
     assert.ok(workflow.includes(`tanaabased/actions/publish-repo@${CATALOG_REF}`));
     assert.equal(workflow.match(/dry-run: true/g)?.length, 2);
     assert.doesNotMatch(workflow, /test-mode:/);
-    assert.match(workflow, /ARCHIVE_PATH: \$\{\{ steps\.publish\.outputs\.archive-path \}\}/);
-    assert.match(workflow, /test -f \.codex-plugin\/plugin\.json/);
-    assert.match(workflow, /test -e node_modules/);
-    assert.match(workflow, /plugin_version=.*\.codex-plugin\/plugin\.json/);
+    assert.match(workflow, /TARBALL: \$\{\{ steps\.pack\.outputs\.tarball-path \}\}/);
+    assert.match(workflow, /bun run check:package "\$package_root"/);
+    assert.match(workflow, /plugin-directory: \$\{\{ steps\.package\.outputs\.path \}\}/);
     assert.doesNotMatch(workflow, /github-token:|sync-token:/);
   });
 

@@ -39,6 +39,7 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 
 ## When Not to Use
 
+- Keep Codex plugin manifests, resource packaging, and archive migration with [Codex Plugin Author](../codex-plugin-author/SKILL.md); this skill owns its npm publication mechanics.
 - Do not use this skill for true package-level CLI product work; reserve that for the narrower CLI surface.
 - Do not use this skill for independent GitHub Actions topology or general workflow authoring beyond the canonical JS validation and npm package deployment lifecycles; hand graph-led trigger, permission, job, matrix, or reusable-workflow changes to GitHub Workflow Author.
 - Do not use this skill for GitHub Action product-surface work once that narrower skill exists.

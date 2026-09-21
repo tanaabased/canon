@@ -24,44 +24,33 @@
 
 ## Installation
 
-Have `git` available for repository work, Bun for bundled scripts, and an authenticated `gh` CLI for GitHub operations.
+Use npm-backed releases through Codex's plugin marketplace. Have npm available for installation, Bun for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work.
 
-Install from the [GitHub releases page](https://github.com/tanaabased/canon/releases):
+> npm distribution starts with the next Canon release. Until it is published, use the existing [release archives](https://github.com/tanaabased/canon/releases) or the local checkout below.
 
-1. Download the release archive for the version you want.
-2. Extract it into `~/.codex/plugins/tanaab`.
-3. Create or update `~/.agents/plugins/marketplace.json` so it points at that plugin directory.
-4. Restart the ChatGPT desktop app, open Plugins, and install `Tanaab Maneuvering Systems` from your personal marketplace.
-5. Start a new Codex task so the installed skills are available.
-
-Example personal marketplace entry:
+Add this entry to your existing personal marketplace's `plugins` array in `~/.agents/plugins/marketplace.json`, preserving its name and other entries:
 
 ```json
 {
-  "name": "personal",
-  "interface": {
-    "displayName": "Personal Plugins"
+  "name": "tanaab",
+  "source": {
+    "source": "npm",
+    "package": "@tanaab/canon",
+    "version": "latest"
   },
-  "plugins": [
-    {
-      "name": "tanaab",
-      "source": {
-        "source": "local",
-        "path": "./.codex/plugins/tanaab"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
+  "policy": {
+    "installation": "AVAILABLE",
+    "authentication": "ON_INSTALL"
+  },
+  "category": "Productivity"
 }
 ```
 
-- If `~/.agents/plugins/marketplace.json` already exists, add the `tanaab` plugin entry instead of replacing the whole file.
-- Codex resolves `source.path` relative to the marketplace root, so the `./.codex/plugins/tanaab` path is the important part.
-- For the underlying plugin and marketplace rules, see the official OpenAI docs for [using plugins](https://learn.chatgpt.com/docs/plugins) and [packaging plugins and local marketplaces](https://developers.openai.com/plugins/build/plugins).
+If you do not have a marketplace, create one with `{"name":"personal","plugins":[]}` and add the entry above. Restart the app, open Plugins, install **Tanaab Maneuvering Systems**, and start a fresh Codex task. See the [official marketplace contract](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
+
+For upgrades, refresh the marketplace and installed plugin, then start a fresh task. Use an exact published version instead of `latest` when you need a fixed release. Existing archive users can replace their `tanaab` entry's `source` with the npm source above while retaining the marketplace name. Keep the previous local directory until the new installation works; do not install both copies.
+
+[Codex Tools 1.x](https://github.com/tanaabased/codex-tools/blob/v1.0.0/PLUGINS.md) offers an optional CLI installation path and setup/maintenance skills. Its install commands require the supported Codex CLI; npm publishing alone does not refresh an installed plugin.
 
 ## Skills
 
@@ -72,7 +61,7 @@ Use $tanaab-project-optimizer to audit this project's documentation and propose
 only changes worth making. Keep the audit read-only.
 ```
 
-The [plugin manifest](./.codex-plugin/plugin.json) bundles all 22 skills below.
+The [plugin manifest](./.codex-plugin/plugin.json) bundles all 23 skills below.
 
 ### Project and task management
 
@@ -92,6 +81,7 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 22 skills below.
 
 | Skill                                                                           | Owns                                                                            |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.        |
 | [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                                 |
 | [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript Bun CLI entrypoints, help, versioning, and packaging. |
 | [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                           |
@@ -118,26 +108,33 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 22 skills below.
 
 ## Development
 
-For local development, use the Node version in [`.node-version`](./.node-version) and Bun version in [`.bun-version`](./.bun-version), install dependencies, and symlink a checkout into your Codex plugin directory:
+Use the Node and Bun versions in [`.node-version`](./.node-version) and [`.bun-version`](./.bun-version):
 
 ```sh
 git clone git@github.com:tanaabased/canon.git
 cd canon
-bun install
-
-mkdir -p ~/.codex/plugins
-ln -sfn "$PWD" ~/.codex/plugins/tanaab
+bun install --frozen-lockfile --ignore-scripts
+bun run test
+bun run lint
 ```
 
-- After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
-- For managed plugin changes, run `bun run test` and `bun run lint`. Plugin validation runs in GitHub Actions through `tanaabased/actions/validate-codex-plugin@v1`.
-- Codex Tools is a development dependency; release archives exclude `node_modules`. After `bun install`, `bun run codex:check` and `bun run codex:sync` invoke it directly. They use shared installed-cache discovery, not the former fixed `pirostore` path. Whole-tree selection excludes `.git`, `node_modules`, and `.DS_Store` recursively.
-- For a disposable raw target, pass `--cache-path /tmp/canon-cache --missing-target create` to either script. This synchronizes a directory; it does not install the plugin. See the [Codex Tools CLI](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for overrides and installation commands.
-- For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
+To load a checkout, use Codex Tools' [local installation](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md), or point the existing marketplace entry at it with `source: {"source":"local","path":"./path/to/canon"}`. Local paths are relative to the marketplace root. Preserve the marketplace name when switching sources, reinstall the plugin, and start a fresh task.
+
+Check the actual npm payload without installing dependencies into it:
 
 ```sh
-bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/javascript-author
+npm pack --ignore-scripts --pack-destination /tmp
+version="$(bun -p '(await Bun.file("package.json").json()).version')"
+candidate="$(mktemp -d)"
+tar -xzf "/tmp/tanaab-canon-$version.tgz" -C "$candidate" --strip-components=1
+bun run check:package "$candidate"
 ```
+
+The package check validates every skill and its resource links, loads executable entrypoints, scaffolds a skill, and renders issue forms outside the checkout. GitHub Actions also runs the shared plugin validator and npm publication dry run against that payload.
+
+`bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md) for options.
+
+Release publication uses npm trusted publishing for `tanaabased/canon` and `.github/workflows/release.yml`. Before the first npm release, establish the package and configure that publisher in npm. `TANAAB_NPM_DEPLOY` supplies only stable-to-`edge` alias updates; package publication uses OIDC. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`.
 
 See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.
 
