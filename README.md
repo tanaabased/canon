@@ -118,7 +118,7 @@ The [plugin manifest](./.codex-plugin/plugin.json) bundles all 22 skills below.
 
 ## Development
 
-For local development, install dependencies (Codex Tools requires Node `^24.15.0 || >=26.0.0`) and symlink a checkout into your Codex plugin directory:
+For local development, use the Node version in [`.node-version`](./.node-version) and Bun version in [`.bun-version`](./.bun-version), install dependencies, and symlink a checkout into your Codex plugin directory:
 
 ```sh
 git clone git@github.com:tanaabased/canon.git
@@ -131,7 +131,7 @@ ln -sfn "$PWD" ~/.codex/plugins/tanaab
 
 - After the symlink is in place, add the same `tanaab` entry shown above to `~/.agents/plugins/marketplace.json`, then install the plugin from the Codex UI.
 - For managed plugin changes, run `bun run test` and `bun run lint`. Plugin validation runs in GitHub Actions through `tanaabased/actions/validate-codex-plugin@v1`.
-- `bun run codex:check` and `bun run codex:sync` invoke Codex Tools directly. They use shared installed-cache discovery, not the former fixed `pirostore` path. Whole-tree selection excludes `.git`, `node_modules`, and `.DS_Store` recursively.
+- Codex Tools is a development dependency; release archives exclude `node_modules`. After `bun install`, `bun run codex:check` and `bun run codex:sync` invoke it directly. They use shared installed-cache discovery, not the former fixed `pirostore` path. Whole-tree selection excludes `.git`, `node_modules`, and `.DS_Store` recursively.
 - For a disposable raw target, pass `--cache-path /tmp/canon-cache --missing-target create` to either script. This synchronizes a directory; it does not install the plugin. See the [Codex Tools CLI](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for overrides and installation commands.
 - For targeted day-to-day validation, run the narrowest check that matches the surface you changed, such as:
 

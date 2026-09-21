@@ -21,8 +21,6 @@ jobs:
           fetch-depth: 0
       - name: Install Node.js
         uses: tanaabased/actions/setup-node@v1
-        with:
-          node-version: '26'
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
@@ -47,7 +45,7 @@ jobs:
         uses: tanaabased/actions/publish-codex-plugin@v1
         with:
           archive-name: tanaab-${{ env.STAMPED_VERSION }}.tar.gz
-          dependency-policy: include-production
+          dependency-policy: exclude-node-modules
           release-tag: ${{ env.STAMPED_VERSION }}
           dry-run: true
       - name: Verify release archive
@@ -63,32 +61,16 @@ jobs:
           test "$(basename "$ARCHIVE_PATH")" = "tanaab-${STAMPED_VERSION}.tar.gz"
           test -f .codex-plugin/plugin.json
           test -f skills/github-workflow-author/SKILL.md
-          test -x node_modules/.bin/codex-tools
 
           package_version="v$(bun --eval 'const pkg = JSON.parse(await Bun.file("package.json").text()); console.log(pkg.version)')"
           plugin_version="v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')"
-          node_modules/.bin/codex-tools --version
           printf 'package=%s\nplugin=%s\n' "$package_version" "$plugin_version"
           test "$package_version" = "$STAMPED_VERSION"
           test "$plugin_version" = "$STAMPED_VERSION"
           grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" CHANGELOG.md
 
-          cache_root="$(mktemp -d)"
-          cache_path="$cache_root/missing-cache"
-          export CODEX_TOOLS_CODEX_HOME="$cache_root/codex-home"
-          if bun run codex:check --cache-path "$cache_path" --missing-target create; then
-            echo 'missing cache must report drift' >&2
-            exit 1
-          fi
-          test ! -e "$cache_path"
-          bun run codex:sync --cache-path "$cache_path" --missing-target create
-          bun run codex:check --cache-path "$cache_path" --missing-target create
-          bun run codex:sync --cache-path "$cache_path" --missing-target create
-          bun run codex:check --cache-path "$cache_path" --missing-target create
-          rm -rf "$cache_root"
-
-          if test -d node_modules/mocha; then
-            echo 'release archive must not include dev dependencies' >&2
+          if test -e node_modules; then
+            echo 'release archive must not include node_modules' >&2
             exit 1
           fi
 

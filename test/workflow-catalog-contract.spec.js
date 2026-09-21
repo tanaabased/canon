@@ -20,7 +20,7 @@ describe('GitHub Actions catalog contract', () => {
       workflow,
       /archive-name: tanaab-\$\{\{ github\.event\.release\.tag_name \}\}\.tar\.gz/,
     );
-    assert.match(workflow, /dependency-policy: include-production/);
+    assert.match(workflow, /dependency-policy: exclude-node-modules/);
     assert.match(workflow, /github-token: \$\{\{ github\.token \}\}/);
     assert.match(workflow, /sync-token: \$\{\{ secrets\.TANAAB_COAXIUM_INJECTOR \}\}/);
     assert.match(archiveJob, /permissions:\n {6}contents: write/);
@@ -39,7 +39,7 @@ describe('GitHub Actions catalog contract', () => {
     assert.doesNotMatch(workflow, /test-mode:/);
     assert.match(workflow, /ARCHIVE_PATH: \$\{\{ steps\.publish\.outputs\.archive-path \}\}/);
     assert.match(workflow, /test -f \.codex-plugin\/plugin\.json/);
-    assert.match(workflow, /test -d node_modules\/mocha/);
+    assert.match(workflow, /test -e node_modules/);
     assert.match(workflow, /plugin_version=.*\.codex-plugin\/plugin\.json/);
     assert.doesNotMatch(workflow, /github-token:|sync-token:/);
   });

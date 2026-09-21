@@ -4,11 +4,9 @@
   "workspaces": {
     "": {
       "name": "@tanaab/canon",
-      "dependencies": {
-        "@tanaab/codex-tools": "^1.0.0-beta.1",
-      },
       "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@tanaab/codex-tools": "^1.0.0-beta.1",
         "ansis": "^4.4.0",
         "debug": "^4.4.3",
         "eslint": "^10.10.0",
