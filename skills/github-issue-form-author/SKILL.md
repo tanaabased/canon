@@ -134,7 +134,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 Run these checks only when changing the skill or its implementation, not during ordinary use.
 
-- Run `bunx mocha "skills/github-issue-form-author/test/**/*.spec.js" "skills/task-author/test/**/*.spec.js"`.
+- Run `bun run --bun mocha "skills/github-issue-form-author/test/**/*.spec.js" "skills/task-author/test/**/*.spec.js"`.
 - Exercise missing, aligned, drifted, extended, invalid, stale-plan, SHA-conflict, and partial-write repository states through the fake client.
 - Run Skill Author validation against this directory.
 - Confirm F01 and T01-T06 preserve every submitted evidence item, avoid invented classifications, require Task Author semantic normalization, and map the accepted Task, Bug, and Feature prompts into their canonical evidence without loss.

@@ -21,11 +21,11 @@
   "scripts": {
     "codex:check": "codex-tools cache check",
     "codex:sync": "codex-tools cache sync",
-    "format:check": "prettier . --check --ignore-unknown",
-    "format:write": "prettier . --write --ignore-unknown",
-    "lint:eslint": "eslint .",
+    "format:check": "bun run --bun prettier . --check --ignore-unknown",
+    "format:write": "bun run --bun prettier . --write --ignore-unknown",
+    "lint:eslint": "bun run --bun eslint .",
     "lint": "bun run lint:eslint && bun run format:check",
-    "test:unit": "mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
+    "test:unit": "bun run --bun mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit",
     "check:package": "bun scripts/check-package-cli.js"
   },

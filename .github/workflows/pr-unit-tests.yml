@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Install Node.js
-        uses: tanaabased/actions/setup-node@v1
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies

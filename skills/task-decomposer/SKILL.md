@@ -132,7 +132,7 @@ Recommendation is always read-only. A milestone reframe produces a bounded hando
 
 Run these checks only when changing the skill or its implementation, not during ordinary use.
 
-- Run `bunx mocha "skills/task-decomposer/test/*.spec.js"`.
+- Run `bun run --bun mocha "skills/task-decomposer/test/*.spec.js"`.
 - Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/task-decomposer --container codex-plugin --namespace tanaab`.
 - Confirm inspect and recommendation paths invoke no mutation method, every structured request uses standard input, and relationship routes match GitHub's current sub-issue and dependency REST contract.
 - Exercise all three recommendations, unresolved classification, Work-size-only rejection, complete and incomplete milestone handoffs, exact source provenance, zero-mutation routing, Work sizes `13` and `21`, gap and overlap findings, child independence, exact reuse, title collision, shallow and acyclic validation, stale digest, permission failure, partial creation, safe resume, dropped values, aligned reinspection, parent preservation, and exact relationship verification through injected fakes.
