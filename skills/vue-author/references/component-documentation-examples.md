@@ -23,12 +23,10 @@ Use these fallback artifacts only when the target project does not already have 
 ## Fallback Artifacts
 
 - [../templates/example-component.vue](../templates/example-component.vue): generic fallback Vue SFC with props, boolean and enum states, default content, and public slots.
-- [../templates/component-playground.vue](../templates/component-playground.vue): generic fallback VitePress component playground with `component`, `schema`, `source`, `initialState`, and `previewFit` contracts.
-- [../templates/component-playground-codegen.js](../templates/component-playground-codegen.js): generic fallback schema-to-usage helper for playground state, preview props, and generated HTML usage code.
 - [../templates/example-component.md](../templates/example-component.md): generic fallback VitePress component docs page with frontmatter, top Usage playground, props and slots tables, and behavior notes.
 
-Use the four files together only when the target project lacks an equivalent local component, playground primitive, playground codegen helper, and docs page pattern. If the project already has one of those pieces, keep that local piece and adapt only the missing fallback artifact.
+Use the component and docs-page templates only for missing local patterns. Install `@tanaab/component-playground` as a docs development dependency and import its public component and stylesheet as shown in the page template. Prefer global registration and a single theme stylesheet import when the site already uses them.
 
-The bundled playground is a plain fallback. Reuse project-local interactive code, highlighter, copy-button, or source-link primitives when they already exist.
+The package owns the playground, syntax highlighting, copy controls, and generated code. Keep Canon's example focused on the component schema and documentation. See the [upstream documentation](https://github.com/tanaabased/component-playground#readme) for its current API; check the selected release's exports before adopting an adapter from upstream development.
 
 The `.vue` files are full Vue single-file component examples. The Markdown docs template treats generated component usage code as HTML because it represents rendered template usage, not complete SFC source. Do not add separate Basic Usage and Demo sections when the top Usage playground already covers both jobs.

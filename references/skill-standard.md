@@ -107,7 +107,7 @@ skill-folder/
 - `[error]` Known lists beneath optional `metadata.openclaw.requires` must contain nonempty strings.
 - `[manual]` Add OpenClaw dependency gates only for hard load-time requirements. Do not require Bun universally for prose-only skills.
 - `[manual]` Preserve supported or custom OpenClaw fields that the canonical validator does not own.
-- `[manual]` Keep OpenClaw metadata in `SKILL.md`; do not duplicate it in `agents/openai.yaml` or add a native OpenClaw plugin manifest to a Codex-compatible plugin.
+- `[manual]` Keep OpenClaw skill metadata in `SKILL.md`, not `agents/openai.yaml`. Add a native OpenClaw plugin manifest only when the package also owns a native OpenClaw code-plugin surface.
 
 ## Required OpenAI Metadata
 

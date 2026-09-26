@@ -1,5 +1,10 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Updated Codex Tools to 1.0.2 and aligned plugin guidance with CLI provisioning, native discovery, hook boundaries, and npm payload handling.
+- Added Vue component testing and package-consumer examples, with shared defaults for runtime versions and deterministic scenario tests.
+- Replaced Canon's bundled playground with the preferred Component Playground package and a minimal documentation example.
+- Corrected published installation guidance and clarified native OpenClaw manifest ownership.
+
 ## v0.11.0 - [September 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.11.0)
 
 ### Installation and Distribution

@@ -7,7 +7,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@lando/leia": "^2.0.0",
-    "@tanaab/codex-tools": "^1.0.0",
+    "@tanaab/codex-tools": "^1.0.2",
     "ansis": "^4.4.0",
     "debug": "^4.4.3",
     "eslint": "^10.10.0",

@@ -46,7 +46,7 @@ Own the installable Codex plugin: its manifest, bundled resources, npm payload, 
 
 ## Preferred Tools
 
-- **[Codex Tools 1.x](https://github.com/tanaabased/codex-tools/blob/v1.0.0/PLUGINS.md):** Prefer its setup and maintenance skills for local/npm installation, inspection, and cache refresh. Follow its [runtime and Codex CLI requirements](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md); verify manifest compatibility and preserve supported native-host alternatives. Do not require consumers to install this development tool merely to use a plugin.
+- **[Codex Tools 1.0.2+](https://github.com/tanaabased/codex-tools/blob/v1.0.2/PLUGINS.md):** Prefer this complementary project for setup, maintenance, local/npm installation, inspection, and cache refresh. It provisions a verified Codex CLI; follow its [runtime requirements](https://github.com/tanaabased/codex-tools/blob/v1.0.2/CLI.md) instead of prescribing a separate CLI version. Verify manifest compatibility and preserve supported native-host alternatives. Do not require consumers to install this development tool merely to use a plugin.
 - **[validate-codex-plugin 1.x](https://github.com/tanaabased/actions/blob/v1.0.1/validate-codex-plugin/README.md):** Prefer generic ingestion checks on the extracted package; retain product-specific runtime and resource checks.
 - **[npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md) and [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md), 1.x:** Prefer the tested-tarball publication path in JavaScript Author. Reserve archive delivery for a named consumer requirement, such as offline distribution; do not add a second publisher by habit.
 
@@ -57,7 +57,11 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 1. Inspect the plugin manifest, package manifest, installed resource paths, current consumers, and release workflow. Establish host and tooling compatibility before selecting a manifest format.
 2. Apply [Preferred Tools](#preferred-tools) and the owning Skill Author contract for changed skills. Keep the plugin focused on its product surface.
 3. Define an explicit npm file allowlist covering manifests, skills, scripts, imported modules, shared references, templates, and assets actually needed at runtime. Exclude credentials, local state, and development-only outputs.
-4. Build before packing when necessary. Exercise the extracted package through [Testing](#testing), then use [Deployment](#deployment) for the same artifact.
+4. Build before packing when necessary and materialize linked assets into regular package files. Native Codex installation rejects payload symlinks. Exercise the extracted package through [Testing](#testing), then use [Deployment](#deployment) for the same artifact.
+
+Keep `package.json#files` authoritative for the npm payload. Codex Tools `managedPaths` controls cache reconciliation, not what native installation copies. See its [package and cache contract](https://github.com/tanaabased/codex-tools/blob/v1.0.2/ADVANCED.md).
+
+For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
 
 ## Documentation
 
@@ -67,10 +71,12 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- Select the smallest layers that cover the change: deterministic units for logic, extracted-package checks for distribution, and isolated native checks for installation or host behavior. Keep each check in one owning suite; do not repeat an operational suite in release checks without a distinct gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
 - For example, run an extracted authoring CLI against a temporary local fixture and verify its output. Keep GitHub mutations out of ordinary package smoke tests.
-- For installation checks, use an isolated Codex home and marketplace, inspect the installed version and resources, and distinguish that evidence from a fresh-session skill invocation. Do not modify the developer's live cache as a side effect of tests.
+- For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/v1.0.2/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
+- For hooks, test the packaged handler and its output directly. That does not prove native event delivery or trust: use the host's hook review/trust flow and a fresh session when that boundary is the feature under test. Keep ordinary tests out of the developer's live cache and credentials.
 
 ## Deployment
 
@@ -87,7 +93,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Optimization
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
-- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, version agreement, skill discovery, and whether archive publication serves a real consumer.
+- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer.
 - **Recommend:** Reconcile conflicting install paths, repair missing runtime resources, and replace redundant archive jobs with the existing npm lifecycle when parity is demonstrable. Keep justified exceptions and aligned implementations.
 - **Apply:** After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
 - **Verify:** Validate and exercise the exact packed artifact in isolation, run the publication dry run, and report separately any unverified live installation or publication.
