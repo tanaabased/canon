@@ -46,9 +46,9 @@ Own the installable Codex plugin: its manifest, bundled resources, npm payload, 
 
 ## Preferred Tools
 
-- **[Codex Tools 1.0.2+](https://github.com/tanaabased/codex-tools/blob/v1.0.2/PLUGINS.md):** Prefer this complementary project for setup, maintenance, local/npm installation, inspection, and cache refresh. It provisions a verified Codex CLI; follow its [runtime requirements](https://github.com/tanaabased/codex-tools/blob/v1.0.2/CLI.md) instead of prescribing a separate CLI version. Verify manifest compatibility and preserve supported native-host alternatives. Do not require consumers to install this development tool merely to use a plugin.
-- **[validate-codex-plugin 1.x](https://github.com/tanaabased/actions/blob/v1.0.1/validate-codex-plugin/README.md):** Prefer generic ingestion checks on the extracted package; retain product-specific runtime and resource checks.
-- **[npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md) and [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md), 1.x:** Prefer the tested-tarball publication path in JavaScript Author. Reserve archive delivery for a named consumer requirement, such as offline distribution; do not add a second publisher by habit.
+- **[Codex Tools 1.0.2+](https://github.com/tanaabased/codex-tools/blob/main/PLUGINS.md):** Prefer this complementary project for setup, maintenance, local/npm installation, inspection, and cache refresh. It provisions a verified Codex CLI; follow its [runtime requirements](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) instead of prescribing a separate CLI version. Verify manifest compatibility and preserve supported native-host alternatives. Do not require consumers to install this development tool merely to use a plugin.
+- **[validate-codex-plugin 1.x](https://github.com/tanaabased/actions/blob/main/validate-codex-plugin/README.md):** Prefer generic ingestion checks on the extracted package; retain product-specific runtime and resource checks.
+- **[npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md) and [publish-npm](https://github.com/tanaabased/actions/blob/main/publish-npm/README.md), 1.x:** Prefer the tested-tarball publication path in JavaScript Author. Reserve archive delivery for a named consumer requirement, such as offline distribution; do not add a second publisher by habit.
 
 ## Workflow
 
@@ -59,7 +59,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 3. Define an explicit npm file allowlist covering manifests, skills, scripts, imported modules, shared references, templates, and assets actually needed at runtime. Exclude credentials, local state, and development-only outputs.
 4. Build before packing when necessary and materialize linked assets into regular package files. Native Codex installation rejects payload symlinks. Exercise the extracted package through [Testing](#testing), then use [Deployment](#deployment) for the same artifact.
 
-Keep `package.json#files` authoritative for the npm payload. Codex Tools `managedPaths` controls cache reconciliation, not what native installation copies. See its [package and cache contract](https://github.com/tanaabased/codex-tools/blob/v1.0.2/ADVANCED.md).
+Keep `package.json#files` authoritative for the npm payload. Codex Tools `managedPaths` controls cache reconciliation, not what native installation copies. See its [package and cache contract](https://github.com/tanaabased/codex-tools/blob/main/ADVANCED.md).
 
 For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
 
@@ -75,7 +75,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
 - For example, run an extracted authoring CLI against a temporary local fixture and verify its output. Keep GitHub mutations out of ordinary package smoke tests.
-- For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/v1.0.2/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
+- For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/main/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
 - For hooks, test the packaged handler and its output directly. That does not prove native event delivery or trust: use the host's hook review/trust flow and a fresh session when that boundary is the feature under test. Keep ordinary tests out of the developer's live cache and credentials.
 
 ## Deployment

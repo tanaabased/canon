@@ -18,6 +18,12 @@ Common places to inspect when relevant to the change, including but not limited 
 
 Follow existing links and site navigation to find other documentation. This inventory does not require creating missing files or editing every surface inspected.
 
+## Compatibility and Links
+
+- Link to maintained upstream documentation or the upstream default branch for current guidance. Document minimum compatibility or a supported range only when it affects the reader's choice, such as `1.0.2+`, `^2.0.0`, or `2.x`; a range describes supported compatibility, not necessarily an open-ended minimum. Avoid release-tag and commit-pinned documentation links in ongoing guidance.
+- Read current runtime and dependency versions from project declarations rather than repeating them in prose. A current documentation link does not make unreleased features available in the installed package.
+- Preserve exact versions in release history, historical evidence, reproducible fixtures, lockfiles, and intentional execution pins. Record the release or commit inspected during an audit in its review report rather than turning that snapshot into a permanent guidance link.
+
 ## Documentation Change Gate
 
 Apply this gate before adding, expanding, or relocating documentation on any surface. A code change does not automatically require documentation changes; no documentation change is a valid outcome.

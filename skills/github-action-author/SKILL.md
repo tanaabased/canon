@@ -60,7 +60,7 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 
 ## Preferred Tools
 
-- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md):** Prefer for smoke-workflow runtime setup and release-time repository publication. Retain action-local `uses: ./` smoke coverage; a repository-tag release does not imply npm publication. Use direct upstream setup when the shared wrapper cannot express required inputs.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md) and [publish-repo](https://github.com/tanaabased/actions/blob/main/publish-repo/README.md):** Prefer for smoke-workflow runtime setup and release-time repository publication. Retain action-local `uses: ./` smoke coverage; a repository-tag release does not imply npm publication. Use direct upstream setup when the shared wrapper cannot express required inputs.
 
 ## Workflow
 

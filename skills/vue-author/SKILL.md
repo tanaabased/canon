@@ -59,7 +59,7 @@ Tanaab-based authoring, component testing, documentation, and npm packaging of V
 ## Preferred Tools
 
 - **[Vitest](https://vitest.dev/) and [Vue Test Utils 2.x](https://test-utils.vuejs.org/):** Prefer a Vitest release compatible with the project's Vite toolchain, with jsdom for component behavior in Vite projects, following [Vue's testing guidance](https://vuejs.org/guide/scaling-up/testing). Preserve an effective existing suite.
-- **[@tanaab/component-playground 0.0.x](https://github.com/tanaabased/component-playground/tree/v0.0.1):** Prefer this project for interactive component documentation, live previews, and generated usage examples. Reuse stronger project-local patterns; do not vendor a second playground into Canon. The [docs example](./templates/example-component.md) uses the released root and stylesheet exports. Adopt framework adapters only when the selected package version exports them.
+- **[@tanaab/component-playground](https://github.com/tanaabased/component-playground/tree/main):** Prefer this project for interactive component documentation, live previews, and generated usage examples. Reuse stronger project-local patterns; do not vendor a second playground into Canon. The [docs example](./templates/example-component.md) uses the released root and stylesheet exports. Adopt framework adapters only when the selected package version exports them.
 
 ## Workflow
 

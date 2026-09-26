@@ -88,8 +88,8 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 ## Preferred Tools
 
-- **Tanaab Actions 1.x — [setup-openclaw](https://github.com/tanaabased/actions/blob/v1.0.1/setup-openclaw/README.md) and [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md):** Prefer for justified installed-plugin or Gateway scenarios on isolated supported runners. Keep direct unit tests fake-backed; request Agent System, credentials, SSH fixtures, or unattended policy only when the scenario requires them.
-- **Tanaab Actions 1.x — [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md) and [publish-clawhub](https://github.com/tanaabased/actions/blob/v1.0.1/publish-clawhub/README.md):** Prefer for code-plugin artifact packing and ClawHub delivery. The publisher does not apply to skill-only bundles; npm delivery follows [JavaScript Author](../javascript-author/SKILL.md#deployment).
+- **Tanaab Actions 1.x — [setup-openclaw](https://github.com/tanaabased/actions/blob/main/setup-openclaw/README.md) and [run-leia](https://github.com/tanaabased/actions/blob/main/run-leia/README.md):** Prefer for justified installed-plugin or Gateway scenarios on isolated supported runners. Keep direct unit tests fake-backed; request Agent System, credentials, SSH fixtures, or unattended policy only when the scenario requires them.
+- **Tanaab Actions 1.x — [npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md) and [publish-clawhub](https://github.com/tanaabased/actions/blob/main/publish-clawhub/README.md):** Prefer for code-plugin artifact packing and ClawHub delivery. The publisher does not apply to skill-only bundles; npm delivery follows [JavaScript Author](../javascript-author/SKILL.md#deployment).
 
 ## Workflow
 

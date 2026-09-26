@@ -64,7 +64,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 ## Preferred Tools
 
-- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md):** Prefer project-declared runtime discovery in baseline CI. Select the owning package directory in workspaces; keep dependency installation, caching, lint, and type-check commands in the caller. Preserve direct upstream setup when required inputs or runners are unsupported.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/main/setup-node/README.md):** Prefer project-declared runtime discovery in baseline CI. Select the owning package directory in workspaces; keep dependency installation, caching, lint, and type-check commands in the caller. Preserve direct upstream setup when required inputs or runners are unsupported.
 
 ## Workflow
 

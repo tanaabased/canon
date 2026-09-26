@@ -64,7 +64,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 ## Preferred Tools
 
-- **Tanaab Actions 1.x — [vitepress-build-check](https://github.com/tanaabased/actions/blob/v1.0.1/vitepress-build-check/README.md):** Prefer for VitePress CI build and optional preparation commands on Linux. Keep runtime setup, dependencies, caching, lint, and check identity in the caller; use the generic build path for Vue projects without VitePress.
+- **Tanaab Actions 1.x — [vitepress-build-check](https://github.com/tanaabased/actions/blob/main/vitepress-build-check/README.md):** Prefer for VitePress CI build and optional preparation commands on Linux. Keep runtime setup, dependencies, caching, lint, and check identity in the caller; use the generic build path for Vue projects without VitePress.
 
 ## Workflow
 

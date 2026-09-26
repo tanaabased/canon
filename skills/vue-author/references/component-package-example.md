@@ -26,12 +26,13 @@ import { ExampleComponent } from '@tanaab/example-components';
 import '@tanaab/example-components/style.css';
 ```
 
-Have the existing Leia examples gate build the package once and pass the absolute candidate tarball path as `COMPONENT_PACKAGE`. The scenario copies the fixture outside the checkout and builds it against that tarball:
+Have the existing Leia examples gate build the package once and pass the absolute candidate tarball path as `COMPONENT_PACKAGE`. Put the following block under `## Testing` in `examples/vue/README.md`. Leia runs it from that scenario directory, copying the sibling fixture outside the checkout and building it against the tarball:
 
 ```sh
+# should build a consumer against the packed library
 fixture_dir="$(mktemp -d)"
 trap 'rm -rf "$fixture_dir"' EXIT
-cp -R examples/vue/fixture/. "$fixture_dir/"
+cp -R fixture/. "$fixture_dir/"
 cd "$fixture_dir"
 npm install --ignore-scripts --no-audit --no-fund --package-lock=false "${COMPONENT_PACKAGE:?set the candidate tarball path}"
 npm run build

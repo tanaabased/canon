@@ -61,23 +61,23 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 
 ## Preferred Tools
 
-Prefer the [Tanaab Actions 1.x catalog](https://github.com/tanaabased/actions/tree/v1.0.1) when its contracts fit. Use `tanaabased/actions/<action>@v1`; the links below document the reviewed 1.0.1 baseline. Follow repository pinning policy when immutable refs are required.
+Prefer the [Tanaab Actions 1.x catalog](https://github.com/tanaabased/actions/tree/main) when its contracts fit. Use `tanaabased/actions/<action>@v1`. The links below follow current upstream documentation; check inputs against the selected action release. Follow repository pinning policy for executable action refs when immutable refs are required.
 
-| Action                                                                                                     | Use when                                                                       |
-| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [setup-bun](https://github.com/tanaabased/actions/blob/v1.0.1/setup-bun/README.md)                         | Discover and install the project Bun runtime.                                  |
-| [setup-node](https://github.com/tanaabased/actions/blob/v1.0.1/setup-node/README.md)                       | Install project-declared Node for consumer checks or Node-only tooling.        |
-| [setup-openclaw](https://github.com/tanaabased/actions/blob/v1.0.1/setup-openclaw/README.md)               | Install OpenClaw and optionally prepare isolated integration fixtures.         |
-| [run-leia](https://github.com/tanaabased/actions/blob/v1.0.1/run-leia/README.md)                           | Run installed Leia scenarios with temporary-state cleanup.                     |
-| [ssh-test-key](https://github.com/tanaabased/actions/blob/v1.0.1/ssh-test-key/README.md)                   | Create a local SSH fixture; does not register keys or connect remotely.        |
-| [validate-codex-plugin](https://github.com/tanaabased/actions/blob/v1.0.1/validate-codex-plugin/README.md) | Check generic plugin ingestion; retain repository-specific policy checks.      |
-| [vitepress-build-check](https://github.com/tanaabased/actions/blob/v1.0.1/vitepress-build-check/README.md) | Run VitePress preparation and build commands.                                  |
-| [prepare-release](https://github.com/tanaabased/actions/blob/v1.0.1/prepare-release/README.md)             | Prepare release files without Git synchronization.                             |
-| [npm-pack](https://github.com/tanaabased/actions/blob/v1.0.1/npm-pack/README.md)                           | Produce the exact tarball to inspect, test, and publish.                       |
-| [publish-npm](https://github.com/tanaabased/actions/blob/v1.0.1/publish-npm/README.md)                     | Publish that tested tarball using selected registry channels.                  |
-| [publish-clawhub](https://github.com/tanaabased/actions/blob/v1.0.1/publish-clawhub/README.md)             | Publish a code-plugin tarball and wait for the result.                         |
-| [publish-codex-plugin](https://github.com/tanaabased/actions/blob/v1.0.1/publish-codex-plugin/README.md)   | Legacy archive delivery for a verified consumer; prefer npm for Codex plugins. |
-| [publish-repo](https://github.com/tanaabased/actions/blob/v1.0.1/publish-repo/README.md)                   | Prepare and synchronize repository files and release tags.                     |
+| Action                                                                                                   | Use when                                                                       |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md)                         | Discover and install the project Bun runtime.                                  |
+| [setup-node](https://github.com/tanaabased/actions/blob/main/setup-node/README.md)                       | Install project-declared Node for consumer checks or Node-only tooling.        |
+| [setup-openclaw](https://github.com/tanaabased/actions/blob/main/setup-openclaw/README.md)               | Install OpenClaw and optionally prepare isolated integration fixtures.         |
+| [run-leia](https://github.com/tanaabased/actions/blob/main/run-leia/README.md)                           | Run installed Leia scenarios with temporary-state cleanup.                     |
+| [ssh-test-key](https://github.com/tanaabased/actions/blob/main/ssh-test-key/README.md)                   | Create a local SSH fixture; does not register keys or connect remotely.        |
+| [validate-codex-plugin](https://github.com/tanaabased/actions/blob/main/validate-codex-plugin/README.md) | Check generic plugin ingestion; retain repository-specific policy checks.      |
+| [vitepress-build-check](https://github.com/tanaabased/actions/blob/main/vitepress-build-check/README.md) | Run VitePress preparation and build commands.                                  |
+| [prepare-release](https://github.com/tanaabased/actions/blob/main/prepare-release/README.md)             | Prepare release files without Git synchronization.                             |
+| [npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md)                           | Produce the exact tarball to inspect, test, and publish.                       |
+| [publish-npm](https://github.com/tanaabased/actions/blob/main/publish-npm/README.md)                     | Publish that tested tarball using selected registry channels.                  |
+| [publish-clawhub](https://github.com/tanaabased/actions/blob/main/publish-clawhub/README.md)             | Publish a code-plugin tarball and wait for the result.                         |
+| [publish-codex-plugin](https://github.com/tanaabased/actions/blob/main/publish-codex-plugin/README.md)   | Legacy archive delivery for a verified consumer; prefer npm for Codex plugins. |
+| [publish-repo](https://github.com/tanaabased/actions/blob/main/publish-repo/README.md)                   | Prepare and synchronize repository files and release tags.                     |
 
 Check each action's supported runners and inputs. Composed actions use `$/` references, which GitHub Enterprise Server does not support. Preserve direct upstream actions for unsupported features or platforms. Dependency installation, caching, unit tests, and lint remain caller-owned; the catalog has no generic unit-test or lint action.
 

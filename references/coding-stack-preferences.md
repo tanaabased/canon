@@ -11,7 +11,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
 - Use Bun for dependency installation, source execution, lint, type-checking, unit tests, the Leia harness, and builds where the tools support it. The development toolchain does not determine the published runtime contract.
-- Read runtime versions from project declarations such as `.node-version`, `.bun-version`, `packageManager`, and `engines`; link upstream tool requirements instead of copying changing versions into prose. Retain intentional compatibility floors, reproducible test pins, and versioned evidence links.
+- Read runtime versions from project declarations such as `.node-version`, `.bun-version`, `packageManager`, and `engines`; follow [compatibility and link guidance](./documentation-standards.md#compatibility-and-links) for upstream requirements and necessary minimums instead of copying changing versions into prose.
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
 
