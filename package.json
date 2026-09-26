@@ -1,6 +1,6 @@
 {
   "name": "@tanaab/canon",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "packageManager": "bun@1.4.2",
   "type": "module",
   "description": "Tanaab-based canon, skills, and plugin surfaces.",

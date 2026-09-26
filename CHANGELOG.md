@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.12.0 - [September 26, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.0)
+
 - Clarified machine-name and version formatting in `tanaab-changelog-author` and shared documentation guidance.
 - Clarified shared runtime-version, deterministic-testing, and native OpenClaw manifest guidance. [#71](https://github.com/tanaabased/canon/pull/71)
 - Corrected installation instructions and updated `@tanaab/codex-tools` to `1.0.2`. [#71](https://github.com/tanaabased/canon/pull/71)
