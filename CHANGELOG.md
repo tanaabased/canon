@@ -1,10 +1,13 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Added Vue component testing and package-consumer examples, with shared defaults for runtime versions and deterministic scenario tests. [#71](https://github.com/tanaabased/canon/pull/71)
-- Corrected published installation guidance and clarified native OpenClaw manifest ownership. [#71](https://github.com/tanaabased/canon/pull/71)
-- Replaced Canon's bundled playground with the preferred Component Playground package and a minimal documentation example. [#71](https://github.com/tanaabased/canon/pull/71)
-- Replaced version-pinned guidance links with maintained upstream documentation and explicit compatibility requirements. [#71](https://github.com/tanaabased/canon/pull/71)
-- Updated Codex Tools to 1.0.2 and aligned plugin guidance with CLI provisioning, native discovery, hook boundaries, and npm payload handling. [#71](https://github.com/tanaabased/canon/pull/71)
+- Clarified shared runtime-version, deterministic-testing, and native OpenClaw manifest guidance. [#71](https://github.com/tanaabased/canon/pull/71)
+- Corrected installation instructions and updated `@tanaab/codex-tools` to `1.0.2`. [#71](https://github.com/tanaabased/canon/pull/71)
+- Expanded `tanaab-vue-author` with component tests using `vitest` and `@vue/test-utils`, npm packaging, and consumer examples. [#71](https://github.com/tanaabased/canon/pull/71)
+- Replaced the bundled Vue playground with `@tanaab/component-playground` and a minimal documentation example. [#71](https://github.com/tanaabased/canon/pull/71)
+- Replaced version-pinned guidance links with maintained upstream documentation and compatibility requirements. [#71](https://github.com/tanaabased/canon/pull/71)
+- Updated `eslint` to `10.11.0`. [#70](https://github.com/tanaabased/canon/pull/70)
+- Updated `tanaab-codex-plugin-author` with native skill discovery, hook testing, and npm payload guidance. [#71](https://github.com/tanaabased/canon/pull/71)
+- Updated `tanaab-vitepress-author` to delegate component testing to `tanaab-vue-author`. [#71](https://github.com/tanaabased/canon/pull/71)
 
 ## v0.11.0 - [September 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.11.0)
 
