@@ -2,7 +2,7 @@
 
 This file applies Tanaab's Leia usage policy to `examples/**`. Scenario README files are executable specs that may run in CI and mutate hosted runners.
 
-Use the upstream `leia-scenarios` skill when available, following this policy and repository execution restrictions. Otherwise, consult [Leia's scenario documentation](https://github.com/lando/leia/blob/v2.0.0/ADVANCED.md) for syntax and harness behavior. Use documentation matching the project's installed version. The agent plugin is optional; it does not replace the project's CLI dependency.
+Use the upstream `leia-scenarios` skill when available, following this policy and repository execution restrictions. Otherwise, consult [Leia's scenario documentation](https://github.com/lando/leia/blob/main/ADVANCED.md) for syntax and harness behavior. Use documentation matching the project's installed version. The agent plugin is optional; it does not replace the project's CLI dependency.
 
 ## General Style
 
@@ -50,7 +50,7 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 ## Leia Invocation and Execution
 
 - Use the compatible `@lando/leia` range `^2.0.0` with the consumer script `"leia": "bun ./node_modules/.bin/leia"`; use an exact beta only during a deliberate prerelease rollout.
-- Invoke scenarios with `bun run leia`. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/v2.0.0/CLI.md#bun) for Leia-owned options.
+- Invoke scenarios with `bun run leia`. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options.
 - Treat Bun as Leia's runtime only. Explicit `node` commands and Node-based product entrypoints inside scenario blocks retain their Node runtime.
 - Do not add `examples/package.json` solely for Leia's harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`.
 - Run mutating, secret-backed, or platform-dependent scenarios in fresh CI by default; do not run them locally unless the user explicitly requests operational validation.

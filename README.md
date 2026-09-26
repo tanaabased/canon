@@ -26,8 +26,6 @@
 
 Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work. See [installation](./INSTALLATION.md) for prerequisites, upgrades, local checkouts, and optional OpenClaw guidance.
 
-> npm and ClawHub distribution start with the next release; use a local checkout until then.
-
 For Codex, install Node/npm and the supported Codex CLI listed in the [prerequisites](./INSTALLATION.md#codex), then run:
 
 ```sh
@@ -76,7 +74,7 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 | [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring and delivery.                            |
 | [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety. |
 | [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                         |
-| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components and Composition API implementation.                      |
+| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components, behavior tests, docs examples, and npm libraries.       |
 
 ### GitHub and delivery
 

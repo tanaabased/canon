@@ -64,7 +64,7 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 ## Preferred Tools
 
-- **Tanaab Actions 1.x — [vitepress-build-check](https://github.com/tanaabased/actions/blob/v1.0.1/vitepress-build-check/README.md):** Prefer for VitePress CI build and optional preparation commands on Linux. Keep runtime setup, dependencies, caching, lint, and check identity in the caller; use the generic build path for Vue projects without VitePress.
+- **Tanaab Actions 1.x — [vitepress-build-check](https://github.com/tanaabased/actions/blob/main/vitepress-build-check/README.md):** Prefer for VitePress CI build and optional preparation commands on Linux. Keep runtime setup, dependencies, caching, lint, and check identity in the caller; use the generic build path for Vue projects without VitePress.
 
 ## Workflow
 
@@ -92,8 +92,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
-- Use build- and lint-first validation for the owned VitePress surface until a shared frontend test framework is standardized.
-- Keep the direct validation path on the docs-site implementation surface rather than inventing a separate component-test doctrine here.
+- Use site builds and lint for the owned VitePress surface.
+- Delegate embedded Vue component behavior to [Vue Author's testing contract](../vue-author/SKILL.md#testing); keep site rendering and navigation checks here.
 - Treat repo-native `build` and `lint` commands as the canonical direct-test mechanism when they exist.
 
 Minimal generic example:
@@ -135,6 +135,6 @@ bun run build
 - Confirm Markdown page work followed the shared VitePress Markdown page reference before introducing page-local UI.
 - Confirm Markdown page work inspected globally available theme and subtheme components before adding markup, styles, or new Vue.
 - Confirm repeated or brand-significant Markdown page patterns were promoted or explicitly called out rather than silently embedded in one page.
-- Confirm direct validation stays on build- and lint-first site checks rather than drifting into a separate frontend test doctrine.
+- Confirm site builds and lint remain covered, with embedded component behavior delegated to Vue Author.
 - Confirm `GitHub Actions` maps VitePress validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
 - Run the narrowest relevant lint, build, or smoke checks for the touched VitePress surface.

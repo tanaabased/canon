@@ -8,7 +8,8 @@ description: Interactive example for the ExampleComponent Vue component.
 `ExampleComponent` renders a project-local content block with title, body, and optional action content.
 
 <script setup>
-import ComponentPlayground from './component-playground.vue';
+import { ComponentPlayground } from '@tanaab/component-playground';
+import '@tanaab/component-playground/style.css';
 import ExampleComponent from './example-component.vue';
 
 const examplePlaygroundSchema = {

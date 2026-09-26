@@ -11,6 +11,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
 - Use Bun for dependency installation, source execution, lint, type-checking, unit tests, the Leia harness, and builds where the tools support it. The development toolchain does not determine the published runtime contract.
+- Read runtime versions from project declarations such as `.node-version`, `.bun-version`, `packageManager`, and `engines`; follow [compatibility and link guidance](./documentation-standards.md#compatibility-and-links) for upstream requirements and necessary minimums instead of copying changing versions into prose.
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
 
@@ -68,7 +69,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
 - Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
-- For JS/TS/Bun repos, prefer Mocha plus built-in `node:` assertion and filesystem helpers before reaching for heavier test libraries.
+- For JS/TS/Bun helper tests, prefer Mocha plus built-in `node:` assertion and filesystem helpers. Vue component tests use [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing); existing pure-helper tests need not migrate.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a `test/` directory inside the nearest scope that owns the implementation.
 - Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support code.
@@ -91,6 +92,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Prefer Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
 - Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
+- Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
 - When a prepared `dist/` artifact is the real shipped surface, run operational scenario tests against that prepared artifact instead of raw source files.
 - For shipped JS/TS CLIs, build first and run Leia scenarios against the artifact in its declared consumer runtime, following [Test Runtimes](#test-runtimes).
@@ -109,7 +111,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
-- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed CLI scenarios, `.github/workflows/pr-build-checks.yml` for the shared frontend lint-and-build path, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
+- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed consumer scenarios, `.github/workflows/pr-component-tests.yml` for Vue component behavior, `.github/workflows/pr-build-checks.yml` for frontend lint and builds, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
 - Add separate files such as `pr-options-tests.yml` or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
 - Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
 - For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.

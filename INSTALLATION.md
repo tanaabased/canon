@@ -4,11 +4,9 @@ Install [Canon](./README.md) in Codex or OpenClaw from a published package or a 
 
 Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work.
 
-> npm and ClawHub distribution start with the next Canon release. Until then, use a local checkout or Codex's existing [release archives](https://github.com/tanaabased/canon/releases).
-
 ## Codex
 
-Requires Node `^24.15.0 || >=26.0.0`, npm, and Codex CLI `0.154.x` on `PATH`, as supported by [Codex Tools 1.x](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md#invocation). The desktop app alone does not provide that CLI prerequisite.
+Requires Node and npm supported by [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md#invocation). Codex Tools 1.0.2 or newer provisions its own verified Codex CLI; you do not need a separate CLI on `PATH` for this installation path.
 
 ```sh
 npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/canon
@@ -26,7 +24,7 @@ After [development setup](./DEVELOPMENT.md#setup), use the repository's installe
 bun run codex-tools install .
 ```
 
-When switching an existing installation from archives, npm, or another checkout, retain its marketplace identity and replace its source rather than installing a second copy. See [Codex Tools installation options](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md).
+When switching an existing installation from archives, npm, or another checkout, retain its marketplace identity and replace its source rather than installing a second copy. See [Codex Tools installation options](https://github.com/tanaabased/codex-tools/blob/main/CLI.md).
 
 ## OpenClaw
 
@@ -36,7 +34,7 @@ Requires OpenClaw 2026.9.5 or newer. Install from ClawHub:
 openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
 ```
 
-For direct npm installation, use `npm:@tanaab/canon` instead. Append `@edge` or `@<version>` to select a prerelease or fixed version. Follow the command's activation instructions; supported plugins can activate without a Gateway restart in 2026.9.5. See [OpenClaw installation and updates](https://docs.openclaw.ai/tools/plugin).
+For direct npm installation, use `npm:@tanaab/canon` instead. Append `@edge` or `@<version>` to select a prerelease or fixed version. Follow the command's activation instructions; supported plugins can activate without a Gateway restart. See [OpenClaw installation and updates](https://docs.openclaw.ai/tools/plugin).
 
 ### Local checkout
 

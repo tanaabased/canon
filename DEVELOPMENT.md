@@ -32,7 +32,7 @@ The package check validates skill/resource links, loads entrypoints, scaffolds a
 
 ## Codex cache
 
-`bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/v1.0.0/CLI.md) for options.
+`bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for options.
 
 ## Release preparation
 

@@ -1,6 +1,6 @@
 ---
 name: tanaab-vue-author
-description: Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+description: Tanaab-based authoring, component testing, documentation, and npm packaging of Vue 3 components. Use when creating or updating Vue SFCs, their public behavior tests, interactive examples, or publishable component libraries.
 license: MIT
 metadata:
   type: coding
@@ -18,9 +18,9 @@ metadata:
 
 ## Overview
 
-Tanaab-based authoring and standardization of Vue 3 single-file components. Use when a user wants to create or update Vue components, typed or untyped SFC structure, composition API flows, or Vue-specific frontend implementation in a Tanaab-managed repo.
+Tanaab-based authoring, component testing, documentation, and npm packaging of Vue 3 components. Use when creating or updating Vue SFCs, their public behavior tests, interactive examples, or publishable component libraries.
 
-- Keep this skill on Vue component and SFC implementation surfaces.
+- Keep this skill on Vue components, their tests, documentation examples, and library exports.
 - Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
 
 ## When to Use
@@ -56,13 +56,18 @@ Tanaab-based authoring and standardization of Vue 3 single-file components. Use 
 - When lifting lessons from a target project into canon, keep reusable structure, API shape, documentation sections, playground contracts, source-link hooks, and generated-code behavior; generalize project names, class names, paths, copy, and demo content.
 - Do not copy theme-specific color, spacing, typography, focus, utility-class, control-labeling, placeholder, or brand-token choices into bundled fallback guidance.
 
+## Preferred Tools
+
+- **[Vitest](https://vitest.dev/) and [Vue Test Utils 2.x](https://test-utils.vuejs.org/):** Prefer a Vitest release compatible with the project's Vite toolchain, with jsdom for component behavior in Vite projects, following [Vue's testing guidance](https://vuejs.org/guide/scaling-up/testing). Preserve an effective existing suite.
+- **[@tanaab/component-playground](https://github.com/tanaabased/component-playground/tree/main):** Prefer this project for interactive component documentation, live previews, and generated usage examples. Reuse stronger project-local patterns; do not vendor a second playground into Canon. The [docs example](./templates/example-component.md) uses the released root and stylesheet exports. Adopt framework adapters only when the selected package version exports them.
+
 ## Workflow
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
-3. Inspect project-local component and docs examples before using bundled fallback examples.
+3. Inspect project-local component and docs examples, review [Preferred Tools](#preferred-tools), and adapt bundled examples only for missing patterns.
 4. When the component supports a docs-site Markdown page, use the shared Markdown page reference to decide whether the real need is a shared primitive.
 5. When adding a Vue component docs page inside a VitePress component docs surface, update the component index, sidebar, or equivalent navigation so the page is reachable.
 6. Validate the touched Vue surface with the narrowest reliable repo-native checks.
@@ -107,27 +112,29 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
-- Use build- and lint-first validation for the owned Vue component surface until a shared frontend test framework is standardized.
-- Keep the direct validation path on the Vue implementation surface rather than inventing a separate test-tool doctrine here.
-- Treat repo-native `build` and `lint` commands as the canonical direct-test mechanism when they exist.
+- Use Vitest, Vue Test Utils, and jsdom for observable DOM behavior, props, slots, emitted events, and user actions. Assert the public contract rather than private methods or broad snapshots.
+- Await Vue updates and interactions. Unmount wrappers, remove test-owned DOM/teleports, and restore mocks and timers when used. Add browser API shims only for APIs the component actually calls; jsdom cannot establish layout, focus rendering, or real-browser behavior.
+- Keep pure-helper Mocha tests when they already work. If both runners exist, give them disjoint discovery patterns, such as Mocha `test/*.spec.js` and Vitest `test/*.test.js`.
+- Run Vitest under Node when its Vite toolchain requires native Node behavior; keep Bun for dependency installation and orchestration. A minimal script is `"test:components": "node ./node_modules/vitest/vitest.mjs run"`.
+- Copy the [Vitest config](./templates/vitest.config.js) to the repo root and [component test](./templates/example-component.test.js) to `test/`, adapting its component import. Declare `vitest`, `@vue/test-utils`, `jsdom`, `vite`, `@vitejs/plugin-vue`, and the component's preprocessor (such as `sass`) in development dependencies alongside Vue.
+- Keep existing lint and production builds. Add browser checks only for a consequential contract that component tests or builds cannot cover.
 
-Minimal generic example:
+## Deployment
 
-```bash
-bun run lint
-bun run build
-```
+- For npm component libraries, use Vite library mode, externalize Vue, and declare it as a peer dependency. Export only promised module formats and public entrypoints, including the generated stylesheet when present.
+- Keep framework adapters in separate exports with optional framework peers so ordinary Vue consumers do not load VitePress or another host accidentally.
+- Separate `build:package` from `build:docs`. Use [JavaScript Author](../javascript-author/SKILL.md#deployment) for npm publication and the [package example](./references/component-package-example.md) for a minimal consumer check against the prepared tarball.
 
 ## GitHub Actions
 
-- Use [Repo Standardizer's preferred runtime setup](../javascript-repo-standardizer/SKILL.md#preferred-tools) while retaining the project's Vue build command; VitePress tooling applies only to VitePress sites.
-- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the Vue build-checks workflow template](./templates/bun-pr-build-checks.yml).
-- Keep this as an automation projection of the Vue build- and lint-first validation path rather than expanding into broader CI topology.
+- Use [Repo Standardizer's preferred runtime setup](../javascript-repo-standardizer/SKILL.md#preferred-tools), adding Node for component tests where required.
+- Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./templates/bun-pr-component-tests.yml). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./templates/bun-pr-build-checks.yml).
+- For published libraries, add a prepared-tarball consumer build to `.github/workflows/pr-examples-tests.yml`. Test each supported host only where its import or rendering contract differs; avoid a second equivalent release smoke suite.
 
 ## Optimization
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
-- **Compare:** Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
+- **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
 - **Recommend:** Keep cohesive components; deduplicate or consolidate repeated logic and styles; split overloaded SFCs; extract composables or child components; move shared code to its owner; tighten public API; and remove stale paths without imposing unrelated visual doctrine.
 - **Apply:** After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
 - **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
@@ -136,13 +143,15 @@ bun run build
 
 - [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
 - [./templates/example-component.vue](./templates/example-component.vue): fallback generic Vue component SFC for projects without local component precedents
-- [./templates/component-playground.vue](./templates/component-playground.vue): fallback VitePress component-doc playground for projects without a local playground primitive
-- [./templates/component-playground-codegen.js](./templates/component-playground-codegen.js): fallback schema-to-usage helper for the component playground template
 - [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
 - [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
-- [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): surface-owned workflow starter for lint- and build-first pull-request validation
+- [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): lint and production-build workflow
+- [./templates/vitest.config.js](./templates/vitest.config.js): isolated component-test discovery
+- [./templates/example-component.test.js](./templates/example-component.test.js): public props and slots test
+- [./templates/bun-pr-component-tests.yml](./templates/bun-pr-component-tests.yml): component-test workflow
+- [./references/component-package-example.md](./references/component-package-example.md): library exports and prepared-package consumer example
 
 ## Validation
 
@@ -153,5 +162,6 @@ bun run build
 - Confirm component docs expose the meaningful props, slots, states, Usage playground, generated example, source link, and navigation reachability that apply without duplicating equivalent sections.
 - Confirm native semantics, state-driven ARIA, accessible names, keyboard behavior, and visible focus cover the component's real interaction contract.
 - Confirm missing shared styling or component patterns were surfaced instead of hidden behind one-off markup or SCSS.
-- Confirm direct validation remains build- and lint-first and GitHub Actions maps it to the shared build-checks workflow without absorbing general topology.
+- Confirm component tests cover changed public behavior and use separate discovery from helper tests; retain lint and production builds.
+- For published components, confirm public imports and styles survive packing and Vue remains external. Reuse the existing npm lifecycle and avoid duplicate consumer gates.
 - Run the narrowest relevant lint, test, build, or smoke checks for the touched Vue surface.

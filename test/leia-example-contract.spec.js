@@ -20,7 +20,7 @@ describe('templates/Leia examples contract', () => {
       assert.match(content, /\^2\.0\.0/);
       assert.match(content, /"leia": "bun \.\/node_modules\/\.bin\/leia"/);
       assert.match(content, /bun run leia/);
-      assert.match(content, /github\.com\/lando\/leia\/blob\/v2\.0\.0\/CLI\.md#bun/);
+      assert.match(content, /github\.com\/lando\/leia\/blob\/main\/CLI\.md#bun/);
       assert.doesNotMatch(content, /1\.0\.0-beta\.9/);
     }
 
@@ -37,7 +37,7 @@ describe('templates/Leia examples contract', () => {
     ]);
 
     for (const content of [referenceContent, agentsContent]) {
-      assert.match(content, /github\.com\/lando\/leia\/blob\/v2\.0\.0\/ADVANCED\.md/);
+      assert.match(content, /github\.com\/lando\/leia\/blob\/main\/ADVANCED\.md/);
       assert.match(content, /Node runtime/);
       assert.match(content, /repository-authored `\.js` scenario helpers/);
       assert.doesNotMatch(content, /generated `\.js`/);
