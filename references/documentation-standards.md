@@ -18,6 +18,10 @@ Common places to inspect when relevant to the change, including but not limited 
 
 Follow existing links and site navigation to find other documentation. This inventory does not require creating missing files or editing every surface inspected.
 
+## Machine Names and Versions
+
+Use backticks for concrete machine names: packages, skills, channels, tools, files, identifiers, CLI commands and flags, and literal versions or version ranges. Name the affected surface explicitly when it helps the reader identify what changed; retain normal prose for human-facing product names. For example: `tanaab-vue-author`, `@tanaab/component-playground`, `edge`, `bun run test`, and `1.2.3`.
+
 ## Compatibility and Links
 
 - Link to maintained upstream documentation or the upstream default branch for current guidance. Document minimum compatibility or a supported range only when it affects the reader's choice, such as `1.0.2+`, `^2.0.0`, or `2.x`; a range describes supported compatibility, not necessarily an open-ended minimum. Avoid release-tag and commit-pinned documentation links in ongoing guidance.

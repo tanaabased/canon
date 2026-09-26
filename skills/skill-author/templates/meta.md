@@ -56,7 +56,7 @@ metadata:
 ## Preferred Tools
 
 - Retain only concrete recommendations for this surface; otherwise omit this section.
-- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+- For each tool, link maintained upstream documentation and state only necessary compatibility minimums or ranges, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
 
 ## Workflow
 
@@ -70,7 +70,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this artifact family; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the existing artifact family, discovery metadata, structure, bundled resources, and validation evidence owned by this skill.
-- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Evaluate each artifact and the collection against the shared contract and canonical template, including contradictions, duplicated doctrine, fragmented variants, overloaded owners, misplaced resources, and obsolete identities.
+- **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Evaluate each artifact and the collection against the shared contract and canonical template, including contradictions, duplicated doctrine, fragmented variants, overloaded owners, misplaced resources, and obsolete identities.
 - **Recommend:** Preserve clear owners; reconcile conflicting contracts; and prioritize justified merging, splitting, extraction, movement, tightening, or removal without turning the skill into a router.
 - **Apply:** After explicit authorization, make the smallest contract-aligned change and keep reusable support at its nearest justified owner.
 - **Verify:** Run the existing validator, review manual checks, and confirm the optimized artifact still owns one clear surface.

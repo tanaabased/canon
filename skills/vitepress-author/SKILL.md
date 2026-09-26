@@ -111,6 +111,8 @@ bun run build
 
 ## Optimization
 
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
 - **Recommend:** Keep coherent site structure; remove prose or pages that fail the documentation change gate before splitting or relocating them; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.

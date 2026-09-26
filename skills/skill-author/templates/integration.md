@@ -62,7 +62,7 @@ metadata:
 ## Preferred Tools
 
 - Retain only concrete recommendations for this surface; otherwise omit this section.
-- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+- For each tool, link maintained upstream documentation and state only necessary compatibility minimums or ranges, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
 
 ## Workflow
 
@@ -82,7 +82,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
-- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
+- **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
 - **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
 - **Apply:** After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
 - **Verify:** Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.

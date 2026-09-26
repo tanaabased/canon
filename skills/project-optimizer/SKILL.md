@@ -21,7 +21,7 @@ metadata:
 
 ## Overview
 
-Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then either report convergence or produce a dependency-ordered improvement plan. The default pass is local, read-only, and complete when every observed or explicitly required surface is classified without modifying the project.
+Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, then either report convergence or produce a dependency-ordered improvement plan. The default pass inspects the local repository plus bounded public upstream release metadata, stays read-only, and is complete when every observed or explicitly required surface is classified without modifying the project.
 
 ## When to Use
 
@@ -52,7 +52,7 @@ Audit a project's checked-in and contract-required repository surfaces against t
 3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence or an explicit contract requirement and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
 4. When the repository contains multiple live `SKILL.md` files, always select Skill Author and review the skill collection individually and collectively even when no single skill has obvious drift.
 5. Use each selected skill's Optimization facet as the routing summary, then apply the skill's full relevant contract, directly linked canon, and the shared optimization operations to the observed surface. Do not limit the audit to the literal five facet bullets or skip high-value checks that the owning skill makes explicit elsewhere.
-6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces.
+6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces. Consolidate findings about the same source of truth and reuse existing validation evidence for an unchanged snapshot instead of repeating each owner's checks.
 7. Report every inventoried surface as aligned, drifted, or not applicable. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
 8. Apply the Convergence Gate across the complete finding set.
 9. If the gate is cleared, produce a dependency-ordered implementation plan with proportional, repo-native validation and reviewable commit boundaries. Otherwise report convergence and omit the plan.
@@ -60,9 +60,9 @@ Audit a project's checked-in and contract-required repository surfaces against t
 
 ### Preferred Tool Adoption
 
-- During step 5, assess relevant entries in each selected owner's `Preferred Tools` under the [shared contract](../../references/skill-standard.md#preferred-tools). Compare repository usage and behavior with the documented supported baseline; a missing preferred dependency alone is not drift.
-- Report already adopted, worthwhile migration, retain existing implementation, or insufficient evidence with a brief reason for relevant candidates. Recommend migration only when compatibility and maintenance benefit justify the behavior changes, migration effort, and regression risk under the Convergence Gate.
-- Keep the default audit local and read-only. Record unavailable compatibility or release evidence as uncertainty. Review new upstream releases separately through the manually invoked [refresh prompt](../../prompts/refresh-preferred-tools.md), rather than scanning catalogs on every project pass.
+- During step 5, apply the [shared adoption and freshness assessment](../../references/skill-standard.md#preferred-tools) to each relevant Preferred Tools entry. Check both missing preferred tools and newer compatible releases; meeting a minimum does not establish freshness.
+- Collect upstream release evidence once per tool project and release line, then share it across selected owners. Record current, update recommended, adoption recommended, retain with reason, or unverified; keep recommendations tied to concrete benefit, compatibility, and migration cost under the Convergence Gate.
+- Read-only public upstream checks are part of this assessment; they do not authorize GitHub-hosted target-repository settings inspection or changes. Honor local-only requests and mark freshness unverified when upstream evidence is unavailable. Use the [refresh prompt](../../prompts/refresh-preferred-tools.md) for broader discovery of new tools.
 
 ### Dependency Ordering
 
@@ -119,5 +119,6 @@ Audit a project's checked-in and contract-required repository surfaces against t
 - Confirm repositories with multiple live skills selected Skill Author for both individual and portfolio review.
 - Confirm every drift finding has one primary operation and that the audit did not force every operation onto every surface.
 - Confirm the report includes aligned and not-applicable results where supported instead of manufacturing drift.
+- Confirm relevant preferred tools were checked for adoption and newer compatible releases, with upstream uncertainty explicit and shared lookups deduplicated.
 - Confirm the report applies the Convergence Gate and states one project-level disposition.
 - Confirm a staged plan appears only when action-worthy findings clear the gate; otherwise confirm the report declares convergence, briefly accounts for deferred minor drift, and stops without proposing implementation.

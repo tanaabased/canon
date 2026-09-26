@@ -26,17 +26,19 @@ Keep that line exact so CI can stamp the unreleased section correctly.
 - Keep bullets as concise as possible. Aim for under 150 visible characters before any trailing issue or PR link markup.
 - Split a long change into multiple bullets when that reads more cleanly than one overloaded line.
 - If one unreleased list becomes too large to scan comfortably, group bullets under short `###` subsections such as `### New Features`, `### Bug Fixes`, or `### Developer Notes`.
-- Wrap machine-named surfaces such as files, flags, commands, inputs, outputs, and identifiers in backticks.
+- Identify the affected machine-named component and follow [machine-name formatting](../../../references/documentation-standards.md#machine-names-and-versions): backtick package, skill, channel, and tool names; CLI commands and flags; files, inputs, outputs, and identifiers; and literal versions or ranges.
 - Mine commit messages for issue or PR links when the scope comes from commit history.
 - When a bullet can be matched confidently to one or more PRs or issues, append all relevant linked references on the same line.
 
 ## Example Bullets
 
-These examples are mined from `/Users/pirog/tanaab/prepare-release-action/CHANGELOG.md` and reflect the intended shape.
+These examples show the intended shape, including release-action entries from the existing changelog contract.
 
 ```md
+- Added component testing guidance to `tanaab-vue-author`.
 - Added `PREPARE_RELEASE_VERSION` and the `resolved-version` action output so later steps can reuse the resolved release version.
 - Fixed `version=dev` to fall back to `package.json.version` or `v0.0.0-unreleased.<sha>` when no matching tags exist.
+- Updated `example-tool` to `1.2.3` and published it on the `edge` channel.
 - Updated sync test workflows to validate unsigned (`sync-test`) and verified (`sync-test-verified`) branch flows. [#6](https://github.com/tanaabased/prepare-release-action/pull/6)
 ```
 

@@ -46,7 +46,7 @@ metadata:
 ## Preferred Tools
 
 - Retain only concrete recommendations for this surface; otherwise omit this section.
-- For each tool, link its authoritative documentation and name the supported baseline, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
+- For each tool, link maintained upstream documentation and state only necessary compatibility minimums or ranges, when to prefer it, and material exceptions. Reference the recommendation where the workflow uses it.
 
 ## Workflow
 
@@ -70,7 +70,7 @@ metadata:
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this workflow; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the current preconditions, sequence, checkpoints, handoffs, and completion evidence for this operational surface.
-- **Compare:** Assess applicable Preferred Tools against current usage, compatibility, behavior, and migration cost. Evaluate the observed workflow against its durable contract, including contradictory steps, duplicated paths, overloaded stages, misplaced responsibilities, and obsolete handoffs; classify unsupported paths as not applicable.
+- **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Evaluate the observed workflow against its durable contract, including contradictory steps, duplicated paths, overloaded stages, misplaced responsibilities, and obsolete handoffs; classify unsupported paths as not applicable.
 - **Recommend:** Preserve aligned stages; reconcile conflicting paths; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
 - **Apply:** After explicit authorization, change the smallest coherent part of the sequence while preserving required approvals and external boundaries.
 - **Verify:** Re-run the relevant checkpoints and confirm the documented completion criteria prove the optimized workflow is complete.

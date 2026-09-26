@@ -104,6 +104,8 @@ test -n "$(my-cli --version)"
 
 ## Optimization
 
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+
 - **Inspect:** Inventory source and shipped entrypoints, their shebangs and runtime contracts, parser, help, version, environment precedence, build output, packaging metadata, scenarios, and observable CLI tests.
 - **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile source/build runtime selection, parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and scenario packaging drift.
 - **Recommend:** Keep aligned behavior; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.

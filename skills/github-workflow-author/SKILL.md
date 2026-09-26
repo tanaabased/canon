@@ -104,6 +104,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Optimization
 
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+
 - **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, runtime and package-manager freshness, job topology, release checkout refs and destination names, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
 - **Compare:** Compare [Preferred Tools](#preferred-tools) with current steps, required inputs, runners, permissions, and destination-specific recovery; keep compatible adoption or justified exceptions. Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, implicit Homebrew update behavior or disabled automatic updates without an explicit freshness check, and tracked-file mutations that lack post-mutation formatting or validation.
 - **Recommend:** Keep valid workflows; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.

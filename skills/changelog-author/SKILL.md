@@ -62,7 +62,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 9. Check previous released sections and avoid duplicating a bullet that is already captured there unless the user explicitly asked for historical cleanup or rewording.
 10. Within each touched version section, use `-` bullets only, start each entry with a past-tense verb such as `Added`, `Fixed`, `Removed`, or `Updated`, and sort the entries alphabetically by the full bullet text.
 11. Keep each bullet as concise as possible. Aim for under 150 visible characters before any trailing issue or PR link markup, and split longer changes into multiple bullets when that reads more cleanly.
-12. Wrap machine-named surfaces such as commands, inputs, outputs, files, flags, and identifiers in backticks when they appear in a bullet.
+12. Name the affected package, skill, channel, tool, or other machine-named component explicitly when known. Apply [machine-name formatting](../../references/documentation-standards.md#machine-names-and-versions): backtick those names, CLI commands and flags, files, inputs, outputs, identifiers, and literal versions or ranges.
 13. When a bullet can be matched confidently to one or more PRs or issues, suffix it with all relevant linked references on the same line.
 14. If the unreleased block becomes too large for one readable flat list, group the bullets under short `###` subsections such as `### New Features`, `### Bug Fixes`, or `### Developer Notes`.
 15. Stop once `CHANGELOG.md` is structurally correct, complete for the requested scope, and aligned with the current changelog contract.
@@ -90,7 +90,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Optimization
 
 - **Inspect:** Inventory the changelog, its leading unreleased block, the relevant tag or commit evidence, and the preserved release history.
-- **Compare:** Reconcile the unreleased heading and bullets with tag or commit evidence, then identify contradictions, duplicate or fragmented entries, weak ordering, missing links, and low-signal content against the changelog canon.
+- **Compare:** Reconcile the unreleased heading and bullets with tag or commit evidence, then identify contradictions, duplicate or fragmented entries, weak ordering, missing links, omitted component identities, unformatted machine names or versions, and low-signal content against the changelog canon.
 - **Recommend:** Keep evidence-backed entries; correct contradictions; deduplicate or consolidate related bullets; split overloaded bullets; move entries into justified subsections; and tighten or remove low-signal wording without manufacturing changes.
 - **Apply:** After explicit authorization, make those operations in the unreleased block only unless historical repair is separately requested; never rewrite released history by default.
 - **Verify:** Recheck heading shape, concise alphabetized bullets, deduplication, links, and the evidence boundary used for every entry.
@@ -109,7 +109,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Confirm low-signal non-breaking dependency updates, minor documentation edits, and non-material DevOps churn were filtered out by default.
 - Confirm each version section uses `-` bullets only and that the bullets are sorted alphabetically.
 - Confirm each bullet starts with a past-tense verb and stays concise, aiming for under 150 visible characters before any trailing issue or PR link markup.
-- Confirm machine-named surfaces are backticked where appropriate.
+- Confirm affected machine-named components are identified explicitly and their names, CLI commands, and literal versions or ranges are backticked.
 - Confirm issue or PR links are appended on the same line when a trustworthy mapping exists in the change evidence, including multiple links when warranted.
 - Confirm any `###` subsections are short, clear, and only used because the changelog would otherwise be too large to scan cleanly.
 - Confirm entries are concise, user-facing, and free of release-workflow or readiness drift.

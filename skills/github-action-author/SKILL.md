@@ -82,6 +82,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Optimization
 
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+
 - **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
 - **Compare:** Compare runtime setup and repository publication with [Preferred Tools](#preferred-tools), preserving action smoke behavior and moving-tag policy. Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.
 - **Recommend:** Keep aligned runtime output; deduplicate or consolidate repeated contracts; extract testable units; move misplaced action-owned material; split only genuinely independent actions; and tighten or remove stale surfaces without creating unrelated workflow work.

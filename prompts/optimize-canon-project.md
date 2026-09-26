@@ -20,11 +20,12 @@ Follow the Project Optimizer workflow and its dynamic skill discovery. In additi
 1. Account for every live skill and apply only the installed Tanaab skills whose owned surfaces are observed and whose instructions expose `## Optimization`.
 2. Because Canon contains multiple live skills, always select Skill Author and compare the collection as well as each skill for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior.
 3. Review top-level Canon ownership and hoisting against the flat-bucket and nearest-owner rules in `../AGENTS.md`.
-4. Check consistency across the plugin manifest, package metadata, README and companion documentation, changelog, workflows, public and internal commands, tests, prompts, references, templates, assets, and lock or lint configuration when present.
-5. Apply the shared optimization operations to each observed surface where appropriate, but do not manufacture work to exercise every operation.
-6. Preserve current skill IDs, ownership boundaries, language choices, and user changes unless concrete evidence supports a change.
-7. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
-8. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
+4. Apply the shared preferred-tool adoption and freshness assessment to relevant tools, reusing upstream release evidence across owners and distinguishing latest stable from latest compatible. Honor local-only requests and leave unverifiable freshness explicit.
+5. Check consistency across the plugin manifest, package metadata, README and companion documentation, changelog, workflows, public and internal commands, tests, prompts, references, templates, assets, and lock or lint configuration when present.
+6. Apply the shared optimization operations to each observed surface where appropriate, but do not manufacture work to exercise every operation.
+7. Preserve current skill IDs, ownership boundaries, language choices, and user changes unless concrete evidence supports a change.
+8. Prefer existing checks and supported commands. Do not propose a new validator or structural auditor for semantic placement judgments.
+9. Classify aligned and not-applicable surfaces explicitly instead of manufacturing cleanup.
 
 ## Disposition Requirements
 
