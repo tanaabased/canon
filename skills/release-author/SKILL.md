@@ -56,7 +56,7 @@ Use this skill to prepare a release from the repository's current changelog cont
 
 - Accept an explicit version or tag from the user when supplied; normalize it to a `v<semver>` tag for the release.
 - Accept an explicit release target branch when supplied; otherwise use the GitHub default branch.
-- Accept an explicit prerelease/latest override when supplied.
+- Accept an explicit GitHub status choice independently of the SemVer tag: prerelease, regular Latest, or regular non-Latest. GitHub prereleases cannot be Latest.
 - In a single-package repo, otherwise derive the base version from `package.json.version` and the latest matching `v*` tag.
 - In a workspace repo, derive package versions and tags only from its explicit release contract; never treat a private coordinator root's version as the publishable package version.
 - Use the unreleased `CHANGELOG.md` entries prepared by `$tanaab-changelog-author` as the release notes source.
@@ -88,16 +88,16 @@ Use this skill to prepare a release from the repository's current changelog cont
 5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release, applying the shared [commit-subject convention](../../references/commit-subjects.md) for issue-backed commits.
 6. Choose the release tag: explicit user version wins; otherwise default to patch, use minor for meaningful user or developer additions, and reserve major for explicit or unusually large incompatible changes.
 7. Confirm the proposed tag does not already exist on the remote before creating the release.
-8. Infer prerelease only when the final tag has a semver prerelease suffix such as `v1.0.0-beta.2`; never invent a prerelease suffix automatically.
+8. Select GitHub status independently of the tag. Honor an explicit status choice; otherwise default a SemVer prerelease tag such as `v1.0.0-beta.2` to GitHub prerelease and any other tag to regular Latest. Never invent a prerelease suffix automatically, and reject a request to make a GitHub prerelease Latest.
 9. Extract the release body from the current unreleased changelog block, preserving useful `###` subsections and bullets while stripping the tokenized release heading.
-10. Create the GitHub Release draft with `gh release create <tag> --target <target-branch> --title <tag> --draft --notes-file <file>` plus `--latest` for stable releases or `--prerelease --latest=false` for prereleases.
-11. Validate that `gh release view <tag> --json targetCommitish` reports the target branch, then confirm the expected draft, title, prerelease/latest state, and body source.
+10. Create the GitHub Release draft with `gh release create <tag> --target <target-branch> --title <tag> --draft --notes-file <file>`. Add `--prerelease --latest=false` for a GitHub prerelease, `--latest` for regular Latest, or `--latest=false` for regular non-Latest, regardless of SemVer syntax.
+11. Read back the draft's target branch, draft flag, title, prerelease flag, and body source with `gh release view <tag> --json targetCommitish,isDraft,name,isPrerelease,body`. A draft cannot report `isLatest: true`; record the selected Latest intent for the publication handoff. After publication, verify the resulting GitHub `isLatest` and `isPrerelease` fields through the release node in GraphQL (the `gh release view` JSON fields do not include `isLatest`). If publication is left to a human, make this a handoff check rather than claiming it was already verified.
 
 ## Release Workflow
 
 - Draft is the default because publication is the review gate that triggers repos using `release.published`.
 - Use tag and title equality exactly: `v0.2.1` tag means `v0.2.1` title.
-- Stable releases default to latest; prerelease tags default to prerelease and not latest.
+- SemVer tags supply only the default GitHub status: ordinary tags default to regular Latest, and prerelease-suffixed tags default to GitHub prerelease and non-Latest. An explicit GitHub status choice overrides that default; no first-release exception applies. See [npm publishing signals](../../references/coding-stack-preferences.md#npm-package-publishing) for how published GitHub status selects npm tags.
 - `prepare-release-action` owns release-time package and manifest version stamping after the draft is published.
 - For `prepare-release-action`-backed repos, the release tag should be the semver-valid value consumed by `github.event.release.tag_name`.
 - Do not assume that the single-package `prepare-release-action` contract covers multiple publishable workspaces; require explicit repo-local release wiring before using it for that shape.
@@ -118,3 +118,4 @@ Use this skill to prepare a release from the repository's current changelog cont
 - Confirm the release body is only the upcoming changelog entries and excludes the tokenized unreleased heading.
 - Confirm the GitHub Release is a draft unless immediate publication was explicitly requested.
 - Confirm the release's `targetCommitish` matches the selected target branch.
+- Confirm explicit GitHub status choices override SemVer defaults, draft readback checks only fields a draft can report, and the publication handoff calls for a published-status readback.
