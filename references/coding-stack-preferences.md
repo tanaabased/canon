@@ -34,7 +34,18 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 - Keep the single-package `release.published` lifecycle with [JavaScript Author](../skills/javascript-author/SKILL.md#deployment), including shared preparation, exact-tarball validation and publication, and independent repository synchronization. Leave multi-package release orchestration explicit.
 - Prefer tokenless npm trusted publishing on a supported GitHub-hosted runner. Let the shared publisher select a compatible project Node/npm toolchain and grant `id-token: write` only to its job.
-- Stable releases publish to `latest` and update `edge` by default; prereleases update only `edge`. The shared publisher uses a separate channel token for stable aliasing; explicitly disable the update when the channels should stay separate.
+- Keep three signals separate: a SemVer prerelease suffix (for example, `1.0.0-beta.2`) describes version syntax; GitHub reports whether a published release is Latest or a prerelease; npm `latest` and `edge` are distribution tags. npm `latest` is the default install tag, not a stability guarantee.
+- On `release.published`, `publish-npm` uses the reported GitHub status, regardless of SemVer syntax:
+
+  | Example                                         | GitHub status          | npm tag                                     |
+  | ----------------------------------------------- | ---------------------- | ------------------------------------------- |
+  | `v1.0.0-beta.2` deliberately selected as Latest | Regular Latest         | `latest`, optionally synchronized to `edge` |
+  | `v1.0.0-beta.2` marked as a GitHub prerelease   | Prerelease, non-Latest | `edge` only                                 |
+  | `v1.0.0` published without Latest status        | Regular non-Latest     | `edge` only                                 |
+
+  The same rule applies to a first release: a GitHub prerelease does not establish npm's default-install `latest` tag. Outside release events, the action falls back to SemVer syntax: versions with a prerelease suffix use `edge`, and other versions use `latest`.
+
+- Use the preferred `latest-tag`, `edge-tag`, and `sync-edge-tag` inputs when customizing channels. Latest-to-`edge` synchronization is enabled by default and needs a separate `channel-token` (or `registry-token`); set `sync-edge-tag: false` and omit `channel-token` when the channels should stay separate. Keep npm publication itself tokenless when using trusted publishing.
 - Build only when the package ships generated output. Validate the final prepared artifact and preserve any release tool's stated limitations around mutation and synchronization.
 
 ## TypeScript
