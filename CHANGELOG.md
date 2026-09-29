@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Clarified npm channel selection by GitHub release status in `tanaab-javascript-author` and `tanaab-github-workflow-author`. [#72](https://github.com/tanaabased/canon/issues/72) [#73](https://github.com/tanaabased/canon/pull/73)
+- Updated `tanaab-javascript-author`'s npm release template to use `sync-edge-tag`. [#72](https://github.com/tanaabased/canon/issues/72) [#73](https://github.com/tanaabased/canon/pull/73)
+- Updated `tanaab-release-author` to separate GitHub status from SemVer and verify Latest after publication. [#72](https://github.com/tanaabased/canon/issues/72) [#73](https://github.com/tanaabased/canon/pull/73)
+
 ## v0.12.0 - [September 26, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.0)
 
 - Clarified machine-name and version formatting in `tanaab-changelog-author` and shared documentation guidance.
