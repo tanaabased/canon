@@ -126,4 +126,5 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm runtime setup follows [Preferred Tools](#preferred-tools) and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes), uses the correct package directory and project declarations, and preserves required upstream inputs when a wrapper is unsuitable. Keep `bun install --frozen-lockfile --ignore-scripts` caller-owned.
 - Confirm workflows that install through Homebrew set `HOMEBREW_NO_AUTO_UPDATE` to `1` at workflow or job scope and run `brew update-if-needed` with an empty command-scoped value on every Homebrew-using runner, unless Homebrew is separately pinned or refreshed.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
+- Apply [Assertion Strength](../../references/verification-boundaries.md#assertion-strength) to workflow checks: validate parsed permissions, credential boundaries, artifact wiring, and check identities instead of freezing YAML layout or step text.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.

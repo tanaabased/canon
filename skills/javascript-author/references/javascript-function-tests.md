@@ -14,9 +14,7 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 ### Assert According to Contract Strength
 
-- Assert exact values for stable public, protocol, configuration, serialization, and safety contracts.
-- Do not make implementation order, internal collection shape, diagnostic copy, or formatting owned by another module exact unless that detail is itself the supported contract.
-- Prefer testing observable decisions and effects over reproducing implementation steps.
+- Apply [Assertion Strength](../../../references/verification-boundaries.md#assertion-strength): test observable decisions and effects against an independently defined contract, and reserve exact implementation details for cases where those details are contractual.
 - When order is not part of the contract, compare membership rather than array position.
 
 ### Keep Prose Assertions With Their Owner
