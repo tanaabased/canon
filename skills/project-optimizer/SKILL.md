@@ -29,7 +29,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before recommending documentation changes:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 
 ## When to Use
@@ -63,9 +63,10 @@ Read each applicable document in full, or the explicitly named section, before d
 5. Use each selected skill's Optimization facet as the routing summary, then apply the skill's full relevant contract, directly linked canon, and the shared optimization operations to the observed surface. Do not limit the audit to the literal five facet bullets or skip high-value checks that the owning skill makes explicit elsewhere.
 6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces. Consolidate findings about the same source of truth and reuse existing validation evidence for an unchanged snapshot instead of repeating each owner's checks.
 7. Report every inventoried surface as aligned, drifted, or not applicable. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
-8. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
-9. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
-10. Stop without modifying files. A later explicit implementation request may invoke the owning skills against an approved plan.
+8. Before finalizing findings, audit the in-scope documentation structure directly under [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review), including single READMEs, companion guides, or VitePress pages. Identify excessive edge-case detail and repetition; retain essential user requirements, move useful scenario-specific explanations to existing relevant Leia examples with discoverable links, and remove unnecessary prose. Name concrete sources and destinations. Do not rely on a selected owner's facet to make this review happen; let the documentation owner implement any approved corrections.
+9. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
+10. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
+11. Stop without modifying files. A later explicit implementation request may invoke the owning skills against an approved plan.
 
 ### Preferred Tool Adoption
 
@@ -106,6 +107,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Every tracked local or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
 - Every live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
 - Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
+- Documentation placement was reviewed explicitly; proposed moves identify an existing relevant example and its discovery link, while essential user requirements and useful general references retain their appropriate homes.
 - Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
 - The report groups substantial improvements, small concrete cleanup, deliberately retained decisions, and unverified areas, and states the disposition required by Finding Disposition.

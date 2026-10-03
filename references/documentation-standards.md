@@ -42,3 +42,12 @@ Apply this gate before adding, expanding, or relocating documentation on any sur
 - Preserve useful reference coverage and correct claims made inaccurate by behavior changes. Complete API, CLI, and configuration references can serve a real lookup need; explanatory prose should help readers choose, combine, or understand consequences rather than repeat the inventory.
 - Update generated references through their existing source and generator when their contract changes. Regeneration does not require an accompanying narrative, troubleshooting section, or new guide.
 - Apply the gate as an internal authoring and review decision, without a mandatory justification template, checklist response, or recurring boilerplate.
+
+## Documentation Placement Review
+
+During optimization, inspect the existing documentation structure, whether a single README, companion Markdown guides, or a VitePress site. Audit obscure informational detail, repetitive explanation, and lengthy edge cases against the reader's task, not a word-count target.
+
+- Keep essential installation, configuration, operation, recovery, and consequential limitations in product documentation. Keep useful general lookup material in its appropriate reference home.
+- Move useful scenario-specific explanation to an existing Leia example that actually demonstrates the behavior. Name the source passage and destination example in the proposal; do not create a test merely to store prose or force unrelated detail into an example.
+- Remove redundant narration and temporary debugging history instead of relocating it. Examples may explain more when that helps a reader understand the demonstrated behavior, but remain edited and coherent.
+- Link moved material from the relevant product documentation through a contextual link or a short Examples or Further Reading area when useful. Preserve navigation and discoverability without duplicating the explanation or requiring another section in every document.
