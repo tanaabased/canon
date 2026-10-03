@@ -14,6 +14,7 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 
 - Add coverage to the narrowest existing scenario that owns the behavior. Add a scenario only for incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
 - Keep scenario-specific setup, assertions, and cleanup in its README.
+- Put useful fixture rationale, regression context, and scenario limitations beside the relevant example steps. Explain only what the commands leave unclear; an issue link may add context but must not be required to understand the example. Keep essential user requirements in product docs and temporary debugging or validation history in the PR.
 - Prefer checked-in static inputs over commands or helpers that synthesize the same constant files on every run.
 - Keep scenario-owned fixture files and named input directories directly beside the README without a generic scenario-local `fixtures/` wrapper.
 - Hoist fixtures to root `fixtures/` only when two or more live scenarios share the same contract. Reuse repository-owned product assets directly when they are the intended input.

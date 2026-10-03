@@ -18,6 +18,8 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 ## Scenario Shape
 
 - Put each user-visible flow in `examples/<scenario>/README.md`.
+- Apply the [documentation change gate](./documentation-standards.md#documentation-change-gate): keep useful fixture rationale, regression context, and scenario limitations beside the relevant setup or assertions in this README. Explain what a maintainer needs to understand the scenario without repeating what its commands already make clear.
+- Link the resolving issue when it explains a non-obvious regression, but keep the example understandable without opening it. Essential user requirements remain in product docs; temporary debugging and validation history stay in the PR.
 - Keep one scenario per README. Add a new scenario when the flow requires incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
 - Prefer broad contract names such as `install`, `options`, `envvars`, `model`, or `agent` unless the scenario truly owns one narrow case.
 - Use this default README structure:
