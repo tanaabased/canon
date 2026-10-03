@@ -53,6 +53,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Preconditions
 
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
+
 - Require one explicit GitHub issue URL or `OWNER/REPO#NUMBER`. Never infer the target from a directory name.
 - Apply [the project-management model](../../references/project-management-model.md), [task-management contract](../../references/task-management-contract.md), and [GitHub CLI routing contract](../../references/github-cli-routing.md).
 - Require Bun and host-routed bare `gh`; preserve the inherited environment and working directory.
@@ -65,7 +67,7 @@ Read each applicable document in full, or the explicitly named section, before d
 1. Inspect one exact parent without mutation:
 
    ```bash
-   bun skills/task-decomposer/scripts/inspect-task-decomposition.js OWNER/REPO#NUMBER --json
+   bun <skill-path>/scripts/inspect-task-decomposition.js OWNER/REPO#NUMBER --json
    ```
 
    Require a complete normalized issue, native and fallback metadata, comments, acceptance criteria, constraints, linked work, parent, sub-issues, child depth, blocked-by and blocking relationships, and a bounded set of recently updated repository task candidates. Resolve every proposed child through a separate exact-title search before deciding create or reuse. Keep unavailable reads explicit.
@@ -83,7 +85,7 @@ Read each applicable document in full, or the explicitly named section, before d
 7. Preview the complete decomposition plan by sending the request without publication approval:
 
    ```bash
-   bun skills/task-decomposer/scripts/decompose-task.js --input -
+   bun <skill-path>/scripts/decompose-task.js --input -
    ```
 
    Review every child create or exact-reuse decision, native or fallback metadata, labels, managed comments, sub-issue edge, dependency edge, parent semantic and storage diff, preserved parent surfaces, ordered operation, target, publication finding, and SHA-256 digest.

@@ -54,6 +54,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Preconditions
 
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
+
 - Require one explicit milestone URL or `OWNER/REPO#MILESTONE_NUMBER`. Never infer a target from a directory name or recent activity.
 - The milestone must already express a usable bounded outcome and completion conditions. Route missing or materially incomplete milestone authoring to Project Milestone Author before planning.
 - A Task Decomposer `reframe_as_milestone` handoff is not a planner target. Route it to Project Milestone Author and require the resulting exact milestone URL or `OWNER/REPO#MILESTONE_NUMBER` before beginning this workflow.
@@ -68,7 +70,7 @@ Read each applicable document in full, or the explicitly named section, before d
 1. Resolve the candidate boundary, then inspect the exact milestone, its current membership, and explicit candidate task and pull-request numbers without mutation:
 
    ```bash
-   bun skills/project-milestone-planner/scripts/inspect-milestone-plan.js \
+   bun <skill-path>/scripts/inspect-milestone-plan.js \
      OWNER/REPO#MILESTONE_NUMBER --input - --json
    ```
 

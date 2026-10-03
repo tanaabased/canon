@@ -54,6 +54,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Prerequisites
 
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
+
 - Require Bun and the GitHub CLI (`gh`).
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Verify GitHub CLI availability and authentication without exposing credentials.
@@ -118,7 +120,7 @@ Read each applicable document in full, or the explicitly named section, before d
 4. For read-only inspection, run:
 
    ```bash
-   bun skills/github-issue-schema-author/scripts/inspect-schema.js inspect OWNER/REPO --json
+   bun <skill-path>/scripts/inspect-schema.js inspect OWNER/REPO --json
    ```
 
 5. Compare organization definitions, repository-effective definitions, fields, pinning, visibility, and all repository labels.

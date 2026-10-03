@@ -48,6 +48,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Prerequisites
 
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
+
 - Require Bun for the bundled render command and YAML validation.
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Treat GitHub issue forms as a public-preview schema and verify current official syntax before publication.
@@ -96,19 +98,19 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 2. Render all four desired files without touching the target repository:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js render --repository-mode organization --json
+   bun <skill-path>/scripts/render-issue-forms.js render --repository-mode organization --json
    ```
 
 3. Inspect and plan one explicit repository without writing:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js plan OWNER/REPO --json
+   bun <skill-path>/scripts/render-issue-forms.js plan OWNER/REPO --json
    ```
 
 4. Review creates, updates, preserved additions, unmanaged files, blockers, default branch, and digest. Apply only the exact approved plan:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js apply OWNER/REPO \
+   bun <skill-path>/scripts/render-issue-forms.js apply OWNER/REPO \
      --approved-repository OWNER/REPO --approved-branch BRANCH --approved-digest SHA256 --json
    ```
 
