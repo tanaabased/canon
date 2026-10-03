@@ -26,6 +26,13 @@ Inspect one canonical Task, Bug, or Feature; recommend whether it should remain 
 
 Recommendation is always read-only. A milestone reframe produces a bounded handoff for Project Milestone Author while leaving the source task unchanged. Decomposition publication reuses Task Author's canonical child payload, metadata, label, fallback, safety, and verification contracts while this skill owns the multi-issue ordering, sub-issue and dependency graph, parent rollup, and resumable partial-failure boundary.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Decomposition Contract](./references/task-decomposition-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+
 ## When to Use
 
 - Review an oversized task whose Work size or evidence suggests multiple independently completable outcomes.

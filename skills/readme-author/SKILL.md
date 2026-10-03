@@ -20,6 +20,15 @@ metadata:
 
 Tanaab-based authoring and standardization of repository READMEs and companion guides. Use when a user wants to write or trim a README, ADVANCED.md, or another supplementary guide, choose a README mode, or keep these docs aligned with the product.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Documentation Standards](../../references/documentation-standards.md) and [Readme Standards](../../references/readme-standards.md).
+- **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Structure or rewrite a repository `README.md` or its companion guides, including existing advanced, CLI, API, and configuration references.

@@ -22,6 +22,14 @@ Inspect one explicit GitHub repository's issue types, organization fields, type 
 
 Every mutation requires exact digest-bound authorization and post-write verification. Visibility and labels are separately authorized from other schema effects. Label sync preserves associations and every noncanonical label; field modes preserve unmanaged fields, including Effort. GitHub's public APIs expose pin state but no pin-assignment mutation, so never call the private web endpoint directly. This version exposes no deletion path.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+
 ## When to Use
 
 - Use when a user wants to inspect or compare GitHub issue schema for an explicit `OWNER/REPO`.
@@ -129,9 +137,9 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
-- **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
-- **Compare:** Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
-- **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
+- **Inspect:** Resolve the explicit repository and read organization and repository-effective issue types, managed fields, option IDs and colors, visibility, type pinning, and repository labels; keep inaccessible surfaces unresolved.
+- **Compare:** Compare the managed schema and label definitions with canonical policy. Distinguish missing fields from retained-option color drift, visibility drift, and Task/Bug/Feature pinning drift; preserve existing IDs, option membership and order, unmanaged pins, and Effort. Treat organization-default labels as a manual evidence gap.
+- **Recommend:** Plan additive fields, retained-option colors, visibility, labels, and browser-backed pinning as separately authorized effects. Preserve aligned and unmanaged state; do not propose deletion or renaming.
 - **Apply:** Add only proven-missing canonical fields, synchronize retained colors or managed visibility, synchronize canonical label definitions, or apply an exact browser-backed pin manifest after authorization. Keep deletion, renaming, option membership or order changes, issue types, unmanaged pinning, and pinned-field ordering unavailable.
 - **Verify:** Re-run the read-only inspection after an independently authorized change and report remaining drift or remote uncertainty.
 

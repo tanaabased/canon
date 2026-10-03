@@ -26,6 +26,13 @@ Turn one exact existing project milestone into a reviewable completion argument 
 
 Use model judgment for semantic coverage and keep selection conservative. The planner recommends; it does not own task, decomposition, or milestone mutation. After explicit authorization, invoke Task Author, Task Decomposer when needed, and Project Milestone Author in sequence. Each owner keeps its own preview, digest, safety checks, write, and read-back contract.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+
 ## When to Use
 
 - Plan the tasks needed to deliver one feature- or outcome-shaped project milestone.

@@ -26,6 +26,14 @@ Use the model to understand and author one GitHub-backed project milestone, then
 
 This skill can inspect, create, revise, close, reopen, schedule, and synchronize explicitly selected task membership. It exposes no deletion path and does not decide which tasks are needed, create or rewrite tasks, or infer milestone completion.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+
 ## When to Use
 
 - Inspect one exact milestone, including its complete description, state, due date, tasks, and pull requests.

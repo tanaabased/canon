@@ -20,6 +20,17 @@ metadata:
 
 Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake forms from the shared task-management contract. Extract submitted responses plus their complete original Markdown as a lossless evidence package for Task Author's later semantic normalization. Render deterministic organization and personal-repository variants, plan an exact managed repository diff, and require digest-bound authorization before writing the four owned files.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Task Management Contract](../../references/task-management-contract.md) and [Task Management Schema](../../references/task-management-schema.json).
+- **Before invoking GitHub CLI or planning repository changes:** [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before changing form prose:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Use when a project needs canonical `.github/ISSUE_TEMPLATE` Task, Bug, and Feature forms.

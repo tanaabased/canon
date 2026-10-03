@@ -26,6 +26,16 @@ Tanaab-based creation, canonical settings synchronization, and About metadata fo
 
 This skill owns one project-container policy surface implemented through GitHub repositories. Canonical settings use checked-in desired state; repository descriptions and topics use a separately reviewed, model-authored plan.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Github Cli Routing](../../references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
+- **Before proposing repository presentation prose:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create the explicit `OWNER/REPO` that represents a project with the canonical Tanaab GitHub settings.

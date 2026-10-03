@@ -26,6 +26,13 @@ Assess, draft, create, revise, or normalize one canonical GitHub-backed Task, Bu
 
 Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary revision and normalization keep existing fallback keys in fallback even when native fields later appear. The separately authorized migration mode writes and verifies native values before removing only their verified fallback keys. Task Author does not own schema definitions or relationship mutations.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), [Task Management Fixtures](../../references/task-management-fixtures.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+
 ## When to Use
 
 - Draft a new Task, Bug, or Feature against one explicit GitHub repository.

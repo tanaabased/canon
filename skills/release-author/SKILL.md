@@ -26,6 +26,15 @@ Tanaab-based release drafting and readiness workflow implemented through GitHub 
 
 Use this skill to prepare a release from the repository's current changelog contract, choose or verify the next release tag, and create a GitHub Release draft that a human can review and publish.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Github Cli Routing](../../references/github-cli-routing.md) and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before preparing release text:** [Documentation Standards](../../references/documentation-standards.md) and [Changelog Format and Examples](../changelog-author/references/changelog-format-and-examples.md).
+- **Before selecting npm channels:** [Coding Stack — npm Package Publishing](../../references/coding-stack-preferences.md#npm-package-publishing).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create a GitHub Release draft for a Tanaab or allied repository.
