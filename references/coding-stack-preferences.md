@@ -7,6 +7,13 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Keep this file focused on stable defaults and exception boundaries, not step-by-step implementation recipes.
 - Future live coding skills should cite this file instead of re-copying stack choices into each skill.
 
+## Project Maturity and Compatibility
+
+- Determine the affected surface's stability and compatibility commitments from repository guidance, supported public contracts, release policy, and explicit user decisions. A version number or prerelease label alone does not establish those commitments or authorize breaking them.
+- For an explicitly experimental or unsettled surface, prefer correcting the design and updating its consumers directly. Do not add aliases, facades, fallback paths, or deprecation machinery merely to preserve an abandoned design.
+- For a supported contract, preserve compatibility or follow an authorized breaking-change and migration plan. If the commitment is unclear and the change would break consumers, resolve that uncertainty before removing behavior.
+- Keep documentation proportionate to the supported contract: describe current use and necessary migration steps, without presenting unsettled implementation details as permanent guarantees or adding speculative compatibility guides.
+
 ## Default Runtime
 
 - Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.

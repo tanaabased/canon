@@ -49,7 +49,7 @@ scope/
 ## `bin/` Boundary
 
 - Use `bin/` for commands intended as a public or directly human-facing interface.
-- Treat command names, help, arguments, options, output, and exit behavior as a stable user contract.
+- Treat command names, help, arguments, options, output, and exit behavior as a public contract governed by the project's [maturity and compatibility commitments](./coding-stack-preferences.md#project-maturity-and-compatibility).
 - Declare package-level CLIs in `package.json` when package metadata is in scope.
 - Keep public entrypoints friendly to `bun build` when built artifacts are part of the product surface.
 - Prefer static imports for repo-authored and package dependencies when the built CLI artifact is the product.
