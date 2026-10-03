@@ -30,6 +30,8 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
   4. Optional `## Cleanup`
 
 - Keep setup minimal and run the real prepared product surface before asserting its observable results.
+- Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
+- Add CLI and library coverage when both are supported public interfaces with contracts to prove. Do not duplicate every scenario across interfaces or build a scenario-by-interface matrix merely for symmetry.
 - Add `## Cleanup` only when teardown is part of the product contract, a resource can persist beyond the runner, or later work shares the same environment.
 - Add `examples/AGENTS.md` only when executable examples need durable editing rules beyond the repository root guidance.
 
@@ -39,7 +41,7 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 - Keep scenario-owned fixture files and named input directories directly beside that scenario's README. Do not add a generic scenario-local `fixtures/` wrapper merely to label them as fixtures.
 - Hoist a fixture to root `fixtures/` only when two or more live scenarios already share the same fixture contract. Do not hoist based on hypothetical reuse.
 - Reuse a repository-owned product asset directly when that real asset is the intended test input. Do not duplicate it as an example-only fixture solely to satisfy directory symmetry.
-- Keep scenario-specific helper code beside its scenario. Hoist a helper to root `scripts/` only when multiple scenarios share it or it owns substantial reusable semantic parsing or process coordination.
+- Keep scenario-specific helper code beside its scenario, including complex parsing or process coordination. Hoist a helper to root `scripts/` only when multiple live scenarios share it; complexity alone does not make it shared.
 - Avoid generic `examples/fixtures` or `examples/support` directories when immediate children of `examples/` are treated as scenario identities by CI. Put proven shared resources at the repository root instead.
 - Keep fixture trees deterministic and credential-free. Do not commit generated state, sessions, caches, runtime config, machine-specific paths, or secrets.
 
@@ -73,7 +75,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Chain fixed-string greps when stable tokens must occur on the same line. Do not assert terminal padding, alignment whitespace, color escape sequences, or complete human prose unless those are explicitly stable contracts.
 - Grep a product-generated log directly when that log is the observable lifecycle, audit, or safety record.
-- Keep product behavior assertions and scenario-specific expected values visible in the owning README or fixture; do not hide them in shared helpers.
+- Keep product invocations and behavior assertions visible in the owning README, with scenario-specific expected values there or in its fixtures. Helpers may handle justified parsing or process mechanics, but must not turn the example into an opaque runner call.
 - Do not redirect command output to a temporary file solely so the next command can grep it.
 - Capture output once when:
 
@@ -171,7 +173,7 @@ Do not add `examples/package.json` solely for Leia's generated harness. Retain a
 - Is every constant input checked in beside its sole owning scenario or hoisted only after proven sharing?
 - Are public product commands retained where their behavior is part of the contract?
 - Are generated files limited to runtime-derived state and evidence?
-- Are behavior assertions and scenario-specific expected values visible in the README or fixture rather than a shared helper?
+- Are product invocations and behavior assertions visible in the README, with scenario-specific expected values there or in its fixtures?
 - Are checked-in inputs copied under `TMPDIR` before product behavior mutates them?
 - Are simple assertions direct and semantic rather than whitespace-sensitive?
 - Is captured output reused for a real reason?

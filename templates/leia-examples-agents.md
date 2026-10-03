@@ -14,6 +14,8 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 
 - Add coverage to the narrowest existing scenario that owns the behavior. Add a scenario only for incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
 - Keep scenario-specific setup, assertions, and cleanup in its README.
+- Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
+- Cover CLI and library interfaces when both have supported public contracts to prove; do not duplicate every scenario across interfaces or build a matrix merely for symmetry.
 - Put useful fixture rationale, regression context, and scenario limitations beside the relevant example steps. Explain only what the commands leave unclear; an issue link may add context but must not be required to understand the example. Keep essential user requirements in product docs and temporary debugging or validation history in the PR.
 - Prefer checked-in static inputs over commands or helpers that synthesize the same constant files on every run.
 - Keep scenario-owned fixture files and named input directories directly beside the README without a generic scenario-local `fixtures/` wrapper.
@@ -25,11 +27,11 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 - Prefer direct fixed-string pipelines for one invocation with one output assertion.
 - Capture output only when one stateful invocation supports multiple assertions, complete failure or non-leak output is required, background output must be inspected later, or the output artifact is itself the contract.
 - Inspect existing product logs directly when they are the observable lifecycle or safety record.
-- Keep product behavior assertions and scenario-specific expected values visible in the owning README or fixture; do not hide them in shared helpers.
+- Keep product invocations and behavior assertions visible in the owning README, with scenario-specific expected values there or in its fixtures. Helpers may handle justified parsing or process mechanics, but must not turn the example into an opaque runner call.
 - Prefer semantic tokens over terminal spacing, color escapes, or complete human prose unless exact rendering is the supported contract.
 - Use ordinary shell for straightforward assertions and scenario-local process coordination. Use JavaScript only when structured semantics, portability, or coordination complexity would be materially worse in shell.
 - Do not add preflight existence checks when the immediately following product command validates the same prerequisite clearly. Retain them when the state itself is under test or the check materially improves failure diagnostics.
-- Keep scenario-specific helpers beside their scenario and hoist only helpers shared by multiple scenarios or owning substantial semantic parsing or process coordination.
+- Keep scenario-specific helpers beside their scenario, including complex parsing or process coordination. Hoist only helpers shared by multiple live scenarios; complexity alone does not make them shared.
 - Unit-test reusable helper decisions, not thin shell composition or third-party behavior.
 
 ## Runtime and Process Boundaries
