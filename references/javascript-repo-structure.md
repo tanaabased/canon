@@ -15,6 +15,7 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 - A thin single-surface repository may use the repository root as its owning scope.
 - A skill, package, app, plugin, or independent product surface should normally own its code beneath its own directory.
 - Code shared by multiple sibling scopes may move to their nearest common owner only after it passes the hoisting test.
+- Carry ownership changes through the affected consumers and representations using [Optimization Operations](./optimization-operations.md); moving a file alone does not establish the new boundary.
 - Do not hide structured code beneath an extra generic directory when the owner is already clear.
 - Do not introduce a generic `src/` directory merely because a scope uses TypeScript. Preserve `src/` when an existing framework, external contract, package tool, or established repo convention requires it.
 
