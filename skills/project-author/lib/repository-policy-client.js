@@ -104,21 +104,13 @@ function makeMissingReport(slug, policy = canonicalPolicy) {
 }
 
 function withOwnerSupport(report, ownerType) {
-  const supported = ownerType === 'Organization';
+  if (ownerType === 'Organization') return report;
   return {
     ...report,
-    owner_type: ownerType ?? null,
-    status: supported ? report.status : 'unsupported',
-    warnings: supported
-      ? [
-          'Classic push restrictions do not exclude repository administrators, including apps. ' +
-            'The policy retains enforce_admins: false; admin and custom-role protection bypasses remain.',
-        ]
-      : [
-          'Canonical main push restrictions require an organization-owned repository; ' +
-            `owner type is ${ownerType ?? 'unknown'}. Creation and settings apply are blocked. ` +
-            'Personal repositories need a separately approved policy; required reviews are not a merge allowlist.',
-        ],
+    status: 'unsupported',
+    warnings: [
+      'Canonical main push restrictions require an organization owner; creation and settings apply are blocked.',
+    ],
   };
 }
 
