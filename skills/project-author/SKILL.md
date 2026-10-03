@@ -48,6 +48,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
 - Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired managed settings; description and topic proposals remain repository-specific. Do not recapture policy from the live `tanaabased/canon` repository.
 - GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](../../references/commit-subjects.md) when authoring issue-backed commits.
+- The canonical `main` push allowlist contains only `pirog` and `tanaabot`, with no teams or apps, and is separate from review bypass. [GitHub supports this restriction only for organization repositories and retains administrator push access](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#restrict-who-can-push-to-matching-branches); the existing `enforce_admins: false` policy is unchanged. Personal or unknown owners remain inspectable, with an owner-type warning; only creation and settings apply are blocked before writes. Metadata-only operations remain available.
 
 ## Inputs
 
@@ -58,7 +59,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 ## Outputs
 
-- `inspect` returns `missing`, `aligned`, or `drifted`, plus sorted `current -> desired` changes and any required branch action. It never writes.
+- `inspect` returns `missing`, `aligned`, or `drifted`, plus `owner_type`, warnings, sorted `current -> desired` changes and any required branch action. It never writes, including for personal repositories; reported drift is not proof that the policy can be applied to that owner.
 - `create` requires a metadata plan, creates a public repository with an initial `README.md` and description, then applies and verifies the policy and topics.
 - `apply` updates only managed General settings, `tanaabot` access, and classic `main` protection, then returns a fresh aligned report.
 - `inspect-metadata` reads or previews description and topics; `apply-metadata` changes only those fields and verifies the complete result.
@@ -75,7 +76,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 ## Workflow
 
 1. Validate the explicit slug and prerequisites. For metadata-only work, follow Repository Presentation below; otherwise run read-only `inspect --json`.
-2. If `aligned`, report that no write is needed. If the intent is audit-only, return the diff and stop.
+2. If the intent is audit-only, return the diff and any warnings. For creation or settings synchronization, stop if `owner_type` is not `Organization`. If `aligned`, report that no write is needed.
 3. If `missing`, prepare the description/topic plan below and show it with the public-plus-README creation preview. Treat an unambiguous request to create that exact slug as authorization; otherwise confirm before `create`.
 4. If `drifted`, show every managed change and ask whether to apply it. Never invoke `apply` before this post-diff confirmation.
 5. Resolve a reported branch action first and only with its dedicated flag and approval. The helper then patches General settings, grants `tanaabot` write access, applies classic protection, disables signature protection when needed, and re-inspects.
@@ -100,7 +101,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 ## Bundled Resources
 
-- [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state captured from `tanaabased/canon`
+- [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state originally captured from `tanaabased/canon`
 - [./scripts/repository-policy.js](./scripts/repository-policy.js): non-interactive Bun entrypoint for inspect, create, and apply operations
 - [./lib/repository-policy-client.js](./lib/repository-policy-client.js): GitHub API orchestration over an injected command boundary
 - [./utils/](./utils/): focused slug, diff, protection-normalization, argument, rendering, and `gh` process units
@@ -113,4 +114,4 @@ This skill owns one project-container policy surface implemented through GitHub 
 - Confirm creation includes the researched description and topics.
 - Confirm exact managed drift includes extra required checks and stricter managed protection as removals.
 - Run the focused unit specs and the skill validator before broader repo checks.
-- Run a read-only inspection of `tanaabased/canon`; it must report `aligned` against the checked-in policy.
+- Run a read-only inspection of `tanaabased/canon` and report actual drift; a policy change does not authorize live normalization.

@@ -70,7 +70,13 @@ export function protectionResponse(
       checks: payload.required_status_checks.checks,
       strict: payload.required_status_checks.strict,
     },
-    restrictions: payload.restrictions,
+    restrictions: payload.restrictions
+      ? {
+          apps: responseActors(payload.restrictions.apps, 'slug'),
+          teams: responseActors(payload.restrictions.teams, 'slug'),
+          users: responseActors(payload.restrictions.users, 'login'),
+        }
+      : null,
   };
 }
 
@@ -79,6 +85,7 @@ export function canonicalRepository(overrides = {}) {
     ...canonicalPolicy.repository,
     archived: true,
     description: 'Unmanaged description',
+    owner: { login: 'acme', type: 'Organization' },
     private: true,
     visibility: 'private',
     ...overrides,
@@ -100,6 +107,7 @@ export function createRemote(overrides = {}) {
     ignoreTopics: false,
     invitations: [],
     mainExists: true,
+    ownerType: 'Organization',
     permission: { permission: 'write', role_name: 'write' },
     protection: protectionResponse(),
     repository: canonicalRepository(),
@@ -126,6 +134,7 @@ export function createRemote(overrides = {}) {
         default_branch: defaultBranch,
         description: args[args.indexOf('--description') + 1],
         has_wiki: true,
+        owner: { login: 'acme', type: remote.ownerType },
         private: false,
         visibility: 'public',
       });
@@ -139,6 +148,10 @@ export function createRemote(overrides = {}) {
     const endpoint = args[1];
     const methodIndex = args.indexOf('--method');
     const method = methodIndex === -1 ? 'GET' : args[methodIndex + 1];
+
+    if (endpoint === '/users/acme') {
+      return success({ login: 'acme', type: remote.ownerType });
+    }
 
     if (endpoint === `/repos/${TARGET}`) {
       if (!remote.exists) {
