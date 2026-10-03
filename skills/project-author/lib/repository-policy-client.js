@@ -104,18 +104,20 @@ function makeMissingReport(slug, policy = canonicalPolicy) {
 }
 
 function withOwnerSupport(report, ownerType) {
-  if (ownerType === 'Organization') return report;
   return {
     ...report,
-    status: 'unsupported',
-    warnings: [
-      'Canonical main push restrictions require an organization owner; creation and settings apply are blocked.',
-    ],
+    owner_type: ownerType ?? null,
+    warnings:
+      ownerType === 'Organization'
+        ? []
+        : [
+            'Canonical main push restrictions require an organization owner; creation and settings apply are blocked.',
+          ],
   };
 }
 
 function requireSupportedOwner(report) {
-  if (report.status === 'unsupported') {
+  if (report.owner_type !== 'Organization') {
     throw new RepositoryPolicyError(report.warnings[0], {
       report,
       step: 'check-owner-support',

@@ -87,7 +87,11 @@ describe('project-author main push restrictions', () => {
           repository: canonicalRepository({ owner: { type: ownerType }, has_wiki: true }),
         });
         const client = clientFor(remote);
-        assert.equal(client.inspect(TARGET).status, 'unsupported');
+        const report = client.inspect(TARGET);
+        assert.equal(report.status, exists ? 'drifted' : 'missing');
+        assert.equal(report.owner_type, ownerType ?? null);
+        assert.ok(report.changes.length > 0);
+        assert.match(report.warnings[0], /organization owner/);
         assert.throws(
           () =>
             exists
