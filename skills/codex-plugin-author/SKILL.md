@@ -71,6 +71,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 
 ## Testing
 
+- Apply [Mock-AI Fixtures](../../references/mock-ai-fixtures.md) only when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary plugin fixtures do not require that workflow.
 - Select the smallest layers that cover the change: deterministic units for logic, extracted-package checks for distribution, and isolated native checks for installation or host behavior. Keep each check in one owning suite; do not repeat an operational suite in release checks without a distinct gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
