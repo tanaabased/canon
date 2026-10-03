@@ -162,6 +162,8 @@ Do not add `examples/package.json` solely for Leia's generated harness. Retain a
 
 ## CI Guidance
 
+- Prioritize readable, consistent example workflows across repositories over avoiding harmless unused setup. Prefer one linear setup sequence shared by the scenario matrix; conditional steps require a concrete correctness, security, or platform constraint, not merely a chance to save a little work.
+- Keep scenario-specific onboarding, configuration, and behavior in the owning README. Let shared actions supply their documented runtimes and tools; do not add redundant installers or preflight steps when the next operation already reports the missing prerequisite clearly.
 - Run mutating, secret-backed, or platform-dependent Leia scenarios on fresh CI runners by default.
 - Map one matrix entry to one example so failures identify the broken user flow directly.
 - Keep matrix names aligned with scenario directory names.

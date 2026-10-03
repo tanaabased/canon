@@ -53,6 +53,7 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 
 ## Leia Invocation and Execution
 
+- Prefer readable, consistent CI setup shared across examples over conditionals that only avoid harmless unused work. Conditions need a correctness, security, or platform reason; keep scenario-specific onboarding in its README and reuse runtimes supplied by setup actions.
 - Use the compatible `@lando/leia` range `^2.0.0` with the consumer script `"leia": "bun ./node_modules/.bin/leia"`; use an exact beta only during a deliberate prerelease rollout.
 - Invoke scenarios with `bun run leia` by default. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options.
 - Treat Bun as Leia's runtime only. Explicit `node` commands and Node-based product entrypoints inside scenario blocks retain their Node runtime.

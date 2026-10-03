@@ -105,6 +105,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ### Test Runtimes
 
 - Select [runtime setup actions](../skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
+- Before adding a runtime installer, inspect the selected actions' setup guarantees. Reuse a compatible runtime they already provide; an npm operation or Node-based action does not by itself require another caller-owned `setup-node` step.
 - Make the tool runtime explicit in package scripts, for example `bun ./node_modules/mocha/bin/mocha.js`. `bun run` alone can honor a tool's Node shebang. [Bun's `--bun` override](https://bun.com/docs/runtime/bunfig#run-bun-auto-alias-node-to-bun) also redirects child `node` commands, so keep it and equivalent configuration out of Node compatibility checks.
 - Exercise the prepared or packed artifact under its declared runtime: the installed CLI through its executable entrypoint, and public library exports through the promised `import`/`require` paths. A Bun-hosted check may launch real Node subprocesses; its own runtime does not prove the consumer's runtime.
 - Keep compatibility checks focused on the package contract and supported runtime boundary. Do not repeat the full development suite across runtimes or add post-publish registry probes without a distinct gap to cover.
