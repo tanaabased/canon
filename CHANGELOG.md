@@ -1,5 +1,13 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
+- Added support for restricting canonical `main` pushes and merges to designated users in `tanaab-project-author`. [#79](https://github.com/tanaabased/canon/pull/79)
+- Clarified unit-test boundaries, candidate-package Leia coverage, and mock-AI fixture scope. [#78](https://github.com/tanaabased/canon/pull/78)
+- Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
+- Required `tanaab-project-optimizer` to report and plan small corrections alongside substantial improvements. [#78](https://github.com/tanaabased/canon/pull/78)
+- Strengthened guidance for ownership changes, justified abstractions, and compatibility appropriate to project maturity. [#78](https://github.com/tanaabased/canon/pull/78)
+- Updated documentation guidance to keep scenario-specific explanations beside their executable examples. [#78](https://github.com/tanaabased/canon/pull/78)
+
 ## v0.12.1 - [September 29, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.1)
 
 - Clarified npm channel selection by GitHub release status in `tanaab-javascript-author` and `tanaab-github-workflow-author`. [#72](https://github.com/tanaabased/canon/issues/72) [#73](https://github.com/tanaabased/canon/pull/73)
