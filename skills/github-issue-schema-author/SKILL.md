@@ -103,7 +103,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Mark a hidden field, type, or label surface `unresolved`; do not convert lack of access into a missing-schema claim.
 - Mark organization field and type surfaces `not_applicable` for personal repositories while still comparing repository labels.
 - Never compensate for a read failure by attempting a write or a broader authorization flow.
-- Stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
+- In additive-field mode, stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
 - Stop on the first failed create. Never delete a successfully created field to simulate rollback; re-read and report partial success instead.
 - Stop color synchronization if any field is missing or has a different type, option membership, order, ID, or priority. Never use color synchronization to add, remove, recreate, or reorder an option.
 - Stop on the first failed color update. Never roll back a successful update by issuing an unplanned second replacement; re-read and report partial success instead.
