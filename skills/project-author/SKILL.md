@@ -123,5 +123,11 @@ Read each applicable document in full, or the explicitly named section, before d
 - Confirm ordinary settings sync leaves description, topics, and unrelated settings untouched; metadata mutations match the reviewed complete plan.
 - Confirm creation includes the researched description and topics.
 - Confirm exact managed drift includes extra required checks and stricter managed protection as removals.
+- Keep verification on the explicitly requested repository and use the workflow's returned inspection or read-back result.
+
+### When Maintaining This Skill
+
+Run these checks only when changing the skill or its implementation, not during ordinary use.
+
 - Run the focused unit specs and the skill validator before broader repo checks.
-- Run a read-only inspection of `tanaabased/canon` and report actual drift; a policy change does not authorize live normalization.
+- When live inspection is explicitly in scope, inspect the agreed repository and report actual drift; a policy change does not authorize live normalization.
