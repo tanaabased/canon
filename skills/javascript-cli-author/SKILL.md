@@ -24,6 +24,20 @@ Tanaab-based authoring and standardization of JavaScript or TypeScript CLI produ
 - Keep this skill on a package-level, user-facing JS/TS CLI product surface.
 - Let `tanaab-shell-cli-author` own Bash or PowerShell CLI surfaces.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Cli Style Rules](../../references/cli-style-rules.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [Javascript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before changing implementation logic:** [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before adapting the CLI starter:** [Bun CLI Template](./references/bun-cli-template.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Build or update a package-level JavaScript or TypeScript CLI entrypoint.

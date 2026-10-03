@@ -23,6 +23,20 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 - Keep this skill on maintained Bash or PowerShell CLI surfaces.
 - Let `tanaab-javascript-cli-author` own package-level JavaScript and TypeScript CLIs.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Cli Style Rules](../../references/cli-style-rules.md).
+- **Before choosing shell versus JavaScript or a test runtime:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before changing comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before adapting a shell starter:** [Shell CLI Templates](./references/shell-cli-templates.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Build or update a Bash or PowerShell CLI entrypoint.

@@ -23,6 +23,15 @@ metadata:
 
 Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, and report both substantial improvements and small concrete cleanup. The default pass inspects the local repository plus bounded public upstream release metadata, stays read-only, and is complete when every observed or explicitly required surface is classified and actionable findings have a dependency-ordered plan.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before recommending documentation changes:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+
 ## When to Use
 
 - Run a repeatable, project-wide alignment and maintainability audit before an optimization pass.
