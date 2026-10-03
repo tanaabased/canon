@@ -72,6 +72,17 @@ skill-folder/
 - `[manual]` `When to Use` and `When Not to Use` should describe a narrow, concrete owned surface.
 - `[warn]` Keep `metadata.tags` short. Prefer one category tag by default instead of a long keyword list.
 
+## Required Reading
+
+- `[manual]` A skill with governing reference documents must include `## Required Reading`. Omit it only when the skill has no such dependencies; a list of optional resources does not satisfy this requirement.
+- `[error]` When present, place the section after `## Overview`, in canonical template order. Existing relative-link validation applies to its links.
+- `[manual]` Link each required policy directly and mark it **Always** or **Before a named activity or decision**. Read and apply every applicable document before that work; matching a condition makes the read mandatory, not discretionary. Include governing dependencies that would otherwise be hidden behind another reference.
+- `[manual]` Read required documents in full unless the entry explicitly identifies a self-contained section. Reuse a complete read already available in the active context; a filename, summary, prior familiarity, or truncated output is not a substitute. If required material is unavailable, report the gap and pause only the dependent work rather than guessing its policy.
+- `[manual]` Keep the consequential constraint visible at its point of use and refer to the required policy for detail. Maintain the full rule in one authoritative document; do not copy whole policies into skills or make every reference mandatory indiscriminately.
+- `[manual]` Keep `Bundled Resources` as an inventory of supporting material. It neither makes a governing policy optional nor replaces an explicit reading trigger. Remove stale dependencies and resolve conflicting instructions rather than adding more links.
+- `[manual]` During skill optimization, trace each workflow decision to its governing policies and check coverage, trigger timing, direct reachability, and consistency. Report required policies with no effective skill consumer and unnecessary required reads as findings.
+- `[manual]` Structural validation proves shape and link availability, not reading or compliance. For changes intended to improve instruction following, inspect representative task traces and resulting artifacts, including an applicable conditional case and an inapplicable case. Report behavioral evidence separately; if no trial ran, leave compliance unverified rather than claiming the wording guarantees it.
+
 ## Workflow Facets
 
 - A workflow facet is a reusable path through one skill-owned surface. Operating modes, lifecycle phases, and output variants may use their natural domain language instead of being renamed generically.

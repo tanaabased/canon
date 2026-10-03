@@ -2,6 +2,7 @@
 template_type: generic
 default_category_tag: workflow
 optional_top_level_headings:
+  - '## Required Reading'
   - '## Preferred Tools'
   - '## Optimization'
 ---
@@ -26,6 +27,12 @@ metadata:
 ## Overview
 
 {{description}}
+
+## Required Reading
+
+- Replace this scaffold with direct links to governing policies, labeled **Always** or **Before a named activity or decision**; omit this section only if there are no governing references.
+- Require each applicable document to be read and applied before the dependent work. Read the full document unless an entry explicitly names a self-contained section; reuse complete reads already in context, not summaries or truncated output.
+- Keep essential constraints at their decision points and optional background in Bundled Resources. Report unavailable required material and pause only the dependent work.
 
 ## When to Use
 
