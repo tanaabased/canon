@@ -86,10 +86,10 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 ## Testing
 
 - Apply [Mock-AI Fixtures](../../references/mock-ai-fixtures.md) only when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary plugin fixtures do not require that workflow.
-- Select the smallest layers that cover the change: deterministic units for logic, extracted-package checks for distribution, and isolated native checks for installation or host behavior. Keep each check in one owning suite; do not repeat an operational suite in release checks without a distinct gap.
+- Use deterministic units for logic, static extracted-package validation for metadata and resources, and Leia scenarios for executable consumer or native host behavior. Keep each check in one owning suite; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
-- For example, run an extracted authoring CLI against a temporary local fixture and verify its output. Keep GitHub mutations out of ordinary package smoke tests.
+- In the owning Leia example, run the extracted authoring CLI against a temporary local fixture and verify its output. Keep commands and assertions visible and keep GitHub mutations out of ordinary package scenarios.
 - For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/main/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
 - For hooks, test the packaged handler and its output directly. That does not prove native event delivery or trust: use the host's hook review/trust flow and a fresh session when that boundary is the feature under test. Keep ordinary tests out of the developer's live cache and credentials.
 
