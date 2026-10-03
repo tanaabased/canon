@@ -66,7 +66,7 @@
 - Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
 - Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
-- Put reusable prompts and prompt fragments in `prompts/` when they have value beyond one skill.
+- Use skills as workflow entrypoints. Keep skill-specific procedures in the owning `SKILL.md` or its explicitly required resources; root `prompts/` is for reusable request starters with value beyond one skill, not otherwise undiscoverable workflow policy.
 - Put reusable scaffolds and fragments in `templates/` when reuse is proven, when they are a repo-wide tooling surface, or when they are canonical human-facing starters with standalone copy/adapt value.
 - If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
 - Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
@@ -80,7 +80,7 @@
 - Apply the shared [commit-subject convention](./references/commit-subjects.md) when authoring issue-backed commits.
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
-- Before rolling a new canon release, run [`prompts/optimize-canon-project.md`](./prompts/optimize-canon-project.md) as a planning pass and review the resulting staged optimization plan.
+- Before rolling a new canon release, invoke `tanaab-project-optimizer` for a whole-project, read-only review of this repository and review the resulting staged optimization plan.
 - Treat optimizer convergence and release readiness as separate conclusions. Reconcile the unreleased changelog against the latest versioned tag and run `tanaab-release-author` independently.
 
 ## Validation

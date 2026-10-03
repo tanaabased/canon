@@ -1,6 +1,6 @@
 ---
 name: tanaab-skill-author
-description: Tanaab-based authoring, standardization, and validation of canon skills. Use when a user wants to scaffold a new repo-local skill, standardize an existing skill, or validate a canon skill directory against the current contract.
+description: Tanaab-based authoring, optimization, and validation of canon skills. Use when a user wants to create or standardize a skill, review a skill collection, refresh its preferred-tool recommendations, or validate it against the current contract.
 license: MIT
 metadata:
   type: meta
@@ -48,6 +48,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - **Before optimizing a skill or collection:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before choosing a project-management skill name:** [Project Management Model](../../references/project-management-model.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Before reviewing preferred-tool recommendations:** [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before changing skill prose or references:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before changing skill-owned JavaScript or TypeScript:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
@@ -67,6 +68,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - Decide whether a new or standardized skill should retain and tailor the full template's optional `Optimization` facet.
 - Decide whether a coding skill should retain the optional `Deployment` lifecycle because it owns one canonical delivery or publication mechanism.
 - Optimize a repository-local collection of skills individually and collectively, including keep, merge, split, move, extract, tighten, rename, or remove recommendations.
+- Refresh preferred-tool recommendations for a bounded set of skills against authoritative upstream evidence.
 
 ## When Not to Use
 
@@ -126,7 +128,7 @@ Read and apply every applicable document before the dependent work. A summary or
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
-1. Determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `namespace` or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
+1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `namespace` or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
 
 2. Complete the applicable Required Reading before making dependent decisions.
 
@@ -138,7 +140,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Patch manually when the task is a partial migration or standardization pass.
 - Tailor `Required Reading` to the actual governing policies with explicit Always or Before triggers. Keep essential constraints at the decision point, detailed policy in its authoritative reference, and optional background in the resource inventory.
 - Review the scaffolded `Optimization` section. Retain and tailor it when the skill can audit an existing persistent surface against durable canon; otherwise remove it.
-- Retain `Preferred Tools` only for concrete recommendations under the [shared contract](../../references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Optimization checks, and remove unused scaffold guidance. For an upstream recommendation review, use the [manual refresh prompt](../../prompts/refresh-preferred-tools.md).
+- Retain `Preferred Tools` only for concrete recommendations under the [shared contract](../../references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Optimization checks, and remove unused scaffold guidance. For an upstream recommendation review, follow [Review Preferred Tools](#review-preferred-tools).
 - Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
 - Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
@@ -152,6 +154,16 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Fix every `[error]` before finishing.
 - Review `[warn]` and `[manual]` results explicitly instead of treating them as silent success.
 - Confirm the skill still owns one narrow surface and only references canon it actually needs.
+
+### Review Preferred Tools
+
+Use this workflow for requests to refresh what selected skills recommend. Keep the review read-only; Project Optimizer owns adoption and freshness in a consuming project.
+
+1. Complete the applicable Required Reading. Use the skills or upstream repositories named in the request; if neither supplies a bounded scope, ask for one rather than scanning an organization or every installed skill.
+2. Start from those skills' existing tool links and explicitly supplied new sources. Inspect authoritative releases, maintained documentation, and package or action contracts under the [Preferred Tools contract](../../references/skill-standard.md#preferred-tools). Distinguish shipped compatible capabilities from unreleased or inaccessible candidates; record reviewed releases and uncertainty in the report, while proposed guidance links maintained documentation.
+3. Assign each justified recommendation to the narrowest existing skill owner. Assess applicability, runtime and platform limits, behavior, migration cost, and maintenance benefit; retain existing choices when replacement has no material payoff.
+4. Reconcile each proposed change with its point-of-use instructions, Optimization facet, templates, and shared references. Remove stale or duplicated guidance; keep API and input details upstream. Report ownership gaps without inventing another skill.
+5. Return justified changes and material deferrals with owners, affected paths, upstream evidence, and proportional validation. Stop before editing guidance, installing tools, migrating projects, or publishing anything; implementation requires a later explicit request.
 
 ## Optimization
 

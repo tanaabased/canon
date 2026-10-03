@@ -71,7 +71,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - During step 5, apply the [shared adoption and freshness assessment](../../references/skill-standard.md#preferred-tools) to each relevant Preferred Tools entry. Check both missing preferred tools and newer compatible releases; meeting a minimum does not establish freshness.
 - Collect upstream release evidence once per tool project and release line, then share it across selected owners. Record current, update recommended, adoption recommended, retain with reason, or unverified; apply Finding Disposition using concrete benefit, compatibility, and migration cost.
-- Read-only public upstream checks are part of this assessment; they do not authorize GitHub-hosted target-repository settings inspection or changes. Honor local-only requests and mark freshness unverified when upstream evidence is unavailable. Use the [refresh prompt](../../prompts/refresh-preferred-tools.md) for broader discovery of new tools.
+- Read-only public upstream checks are part of this assessment; they do not authorize GitHub-hosted target-repository settings inspection or changes. Honor local-only requests and mark freshness unverified when upstream evidence is unavailable. Requests to refresh Canon's tool recommendations belong to [Skill Author — Review Preferred Tools](../skill-author/SKILL.md#review-preferred-tools), rather than expanding a consuming-project audit into a catalog review.
 
 ### Dependency Ordering
 
