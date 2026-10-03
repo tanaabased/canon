@@ -47,6 +47,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
 - Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired managed settings; description and topic proposals remain repository-specific. Do not recapture policy from the live `tanaabased/canon` repository.
+- Canonical creation and settings synchronization require an organization owner. The helper checks the repository's owner type, or looks up the owner before creation; personal or unknown owner types are unsupported and block all settings and creation writes.
 - GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](../../references/commit-subjects.md) when authoring issue-backed commits.
 
 ## Inputs
@@ -58,7 +59,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 ## Outputs
 
-- `inspect` returns `missing`, `aligned`, or `drifted`, plus sorted `current -> desired` changes and any required branch action. It never writes.
+- `inspect` returns `missing`, `aligned`, `drifted`, or `unsupported`, plus owner type, warnings, sorted `current -> desired` changes and any required branch action. It never writes. Unsupported reports retain the desired policy and visible drift rather than silently dropping the push allowlist.
 - `create` requires a metadata plan, creates a public repository with an initial `README.md` and description, then applies and verifies the policy and topics.
 - `apply` updates only managed General settings, `tanaabot` access, and classic `main` protection, then returns a fresh aligned report.
 - `inspect-metadata` reads or previews description and topics; `apply-metadata` changes only those fields and verifies the complete result.
@@ -71,15 +72,23 @@ This skill owns one project-container policy surface implemented through GitHub 
 - If an existing empty repository lacks `main`, require approval to create its initial `README.md` before passing `--initialize`.
 - Treat a pending `tanaabot` invitation as incomplete configuration. Do not claim success or continue to branch protection until effective `write` access is visible.
 - Never delete a repository to roll back partial creation. Report completed steps and the exact failure; rerun inspection and converge from the remaining drift.
+- On `unsupported`, stop settings work before creation, initialization, renaming, grants, or protection writes. Personal repositories need a separately reviewed solution; do not substitute required reviews, omit restrictions, or migrate to rulesets through this skill. Metadata-only work remains available.
 
 ## Workflow
 
 1. Validate the explicit slug and prerequisites. For metadata-only work, follow Repository Presentation below; otherwise run read-only `inspect --json`.
-2. If `aligned`, report that no write is needed. If the intent is audit-only, return the diff and stop.
+2. If `unsupported`, report the owner limitation and stop settings work. If `aligned`, report that no write is needed, retaining the administrator caveat below. If the intent is audit-only, return the diff and stop.
 3. If `missing`, prepare the description/topic plan below and show it with the public-plus-README creation preview. Treat an unambiguous request to create that exact slug as authorization; otherwise confirm before `create`.
 4. If `drifted`, show every managed change and ask whether to apply it. Never invoke `apply` before this post-diff confirmation.
 5. Resolve a reported branch action first and only with its dedicated flag and approval. The helper then patches General settings, grants `tanaabot` write access, applies classic protection, disables signature protection when needed, and re-inspects.
 6. Finish settings work only when the fresh report is `aligned`; otherwise return the remaining drift and partial-operation details.
+
+### Main Push Access
+
+- The canonical `main` push allowlist is exactly the GitHub users `pirog` and `tanaabot`, with no teams or apps. It gates direct pushes and PR merges into `main`, including after review approval. Other collaborators with Write can still create working branches, push commits there, open PRs, and review, subject to any other repository rules.
+- Push restrictions and `bypass_pull_request_allowances` are separate controls. Review bypass excuses the required PR review; it does not grant push access. Keep the existing review-bypass list and other canonical settings unchanged when authoring this policy. During normalization, preview every managed change, including extra allowed users, teams, or apps that will be removed; fresh readback must match each actor list exactly.
+- [GitHub limits classic push restrictions](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#restrict-who-can-push-to-matching-branches) to public organization repositories on Free and organization repositories on Team or Enterprise Cloud. API or plan failures remain failures; never retry with weaker protection. Allowed actors must already have repository write access.
+- This is not an absolute two-account security boundary: GitHub documents that people and apps with repository admin permissions can always push despite the allowlist. The policy also retains `enforce_admins: false`, so ordinary protection requirements can be bypassed by administrators and qualifying custom roles. Keep agents that must not merge at Write, without administrative or protection-bypass authority. `aligned` verifies the managed configuration, not an audit of effective privileges, other rulesets, or credentials available to workflows.
 
 ### Repository Presentation
 
@@ -100,7 +109,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 ## Bundled Resources
 
-- [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state captured from `tanaabased/canon`
+- [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state, originally captured from `tanaabased/canon`
 - [./scripts/repository-policy.js](./scripts/repository-policy.js): non-interactive Bun entrypoint for inspect, create, and apply operations
 - [./lib/repository-policy-client.js](./lib/repository-policy-client.js): GitHub API orchestration over an injected command boundary
 - [./utils/](./utils/): focused slug, diff, protection-normalization, argument, rendering, and `gh` process units
@@ -111,6 +120,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 - Confirm inspection is read-only and mutation commands never prompt on their own; the skill owns authorization.
 - Confirm ordinary settings sync leaves description, topics, and unrelated settings untouched; metadata mutations match the reviewed complete plan.
 - Confirm creation includes the researched description and topics.
-- Confirm exact managed drift includes extra required checks and stricter managed protection as removals.
+- Confirm exact managed drift includes extra required checks, stricter managed protection, and extra push-allowed users, teams, or apps as removals; do not confuse push access with review bypass.
+- Confirm unsupported owners cannot reach any creation or settings write, including branch actions and collaborator grants, and that ineffective protection writes fail readback verification.
 - Run the focused unit specs and the skill validator before broader repo checks.
-- Run a read-only inspection of `tanaabased/canon`; it must report `aligned` against the checked-in policy.
+- Run a read-only inspection of `tanaabased/canon` and report its actual state; a newly revised policy may correctly expose drift. Validation never authorizes live normalization.
