@@ -70,9 +70,19 @@ Read each applicable document in full, or the explicitly named section, before d
 ### Scope Selection
 
 - State the resolved repository and requested surfaces before the audit. Default to the whole project only when the user has not named a narrower target. Honor explicit paths, collections, and exclusions; ask only when the target cannot be resolved from the request and repository evidence.
-- Treat natural-language targets as scope, not special command syntax or a fixed routing registry. For example, “optimize Canon skills” reviews that repository's live skill collection and governing resources; “optimize documentation” reviews its README, guides, docs site, and relevant examples; “optimize code and tests” reviews owned implementation, unit tests, Leia scenarios, and their necessary build or test wiring. Combined targets form one bounded review.
+- Treat natural-language targets as scope, not special command syntax or a fixed routing registry. A repository name identifies the project; “optimize Canon” is a whole-project review, while “optimize Canon skills” narrows it to the skill collection. Combined targets such as “optimize code and tests” form one bounded review.
 - Select owners dynamically from the observed in-scope surfaces. Read adjacent code, docs, configuration, or references when needed to judge a scoped contract, without turning those dependencies into another general audit. Report directly coupled corrections; flag independent out-of-scope discoveries separately for a scope decision.
 - Keep inventory, required-but-absent checks, preferred-tool assessment, documentation placement, validation, and the final disposition within that boundary. Mark unrelated surfaces outside scope, not aligned or not applicable; a scoped convergence result says nothing about the rest of the project.
+
+Common scope examples, not an exhaustive menu:
+
+| Request                        | Review surfaces                                                                                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Optimize documentation         | README, guides, docs site, and relevant examples; clarity, duplication, and placement of user guidance.                                          |
+| Optimize code and architecture | Owned implementation; naming, responsibility boundaries, unnecessary abstractions, and cohesive units.                                           |
+| Optimize tests and examples    | Unit tests, Leia scenarios, and necessary build/test wiring; meaningful coverage, readable examples, and packaged or compiled consumer behavior. |
+| Optimize CI and delivery       | Workflows, runtime setup, package artifacts, and release wiring; consistency, readability, and distinct delivery boundaries.                     |
+| Optimize Canon skills          | Canon's live skill collection and governing resources; discovery, required reading, ownership, overlap, and policy consistency.                  |
 
 ### Preferred Tool Adoption
 
