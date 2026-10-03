@@ -54,7 +54,9 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 ## Leia Invocation and Execution
 
 - Use the compatible `@lando/leia` range `^2.0.0` with the consumer script `"leia": "bun ./node_modules/.bin/leia"`; use an exact beta only during a deliberate prerelease rollout.
-- Invoke scenarios with `bun run leia`. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options.
+- Invoke scenarios with `bun run leia` by default. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options.
 - Treat Bun as Leia's runtime only. Explicit `node` commands and Node-based product entrypoints inside scenario blocks retain their Node runtime.
+- If the launcher changes `PATH`, executable resolution, or runtime so the wrong product host runs, invoke the installed Leia CLI directly with a compatible runtime. Explain the exception beside the invocation and verify the selected product executable and runtime from the scenario's environment while retaining candidate-distribution coverage.
+- Capture bounded, secret-safe failure diagnostics before cleanup. If a wrapper removes required evidence too soon, invoke Leia directly with explicit temporary-state ownership, diagnostic capture, and cleanup; preserve Leia's failure status and report cleanup failures.
 - Do not add `examples/package.json` solely for Leia's harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers actually use `require` or `module.exports`.
 - Run mutating, secret-backed, or platform-dependent scenarios in fresh CI by default; do not run them locally unless the user explicitly requests operational validation.

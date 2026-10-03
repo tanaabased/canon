@@ -137,7 +137,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 Use [`@lando/leia`](https://www.npmjs.com/package/@lando/leia) in the compatible `^2.0.0` range. Use an exact beta only during a deliberate prerelease rollout.
 
-Expose Leia through the consuming repository's `package.json` instead of invoking the installed binary directly:
+By default, expose Leia through the consuming repository's `package.json`:
 
 ```json
 {
@@ -150,9 +150,13 @@ Expose Leia through the consuming repository's `package.json` instead of invokin
 }
 ```
 
-Invoke scenarios with `bun run leia`. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/main/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
+Invoke scenarios with `bun run leia` by default. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/main/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
 
-Bun runs the Leia process; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
+The default script runs Leia with Bun; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
+
+When the script or wrapper changes `PATH`, executable resolution, or runtime so the scenario exercises a checkout command instead of the intended installed host, invoke the installed Leia CLI directly with a compatible runtime. Explain the exception beside the invocation and verify the selected product executable and runtime from the scenario's environment. Keep testing the candidate distribution; changing launchers is not a substitute for installed acceptance coverage.
+
+Capture bounded, secret-safe failure diagnostics before cleanup. If a wrapper removes required evidence before it can be captured, use a direct Leia invocation for that job with explicit temporary-state ownership, diagnostic capture, and cleanup. Preserve Leia's failure status and report cleanup failures; do not add another wrapper merely to work around the first.
 
 Do not add `examples/package.json` solely for Leia's generated harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers use `require` or `module.exports`. Consult Leia's scenario documentation for module selection and shell behavior.
 
