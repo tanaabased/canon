@@ -4,6 +4,7 @@
 - Added support for restricting canonical `main` pushes and merges to designated users in `tanaab-project-author`. [#79](https://github.com/tanaabased/canon/pull/79)
 - Clarified unit-test boundaries, candidate-package Leia coverage, and mock-AI fixture scope. [#78](https://github.com/tanaabased/canon/pull/78)
 - Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
+- Replaced standalone optimization prompts with scoped `tanaab-project-optimizer` reviews and preferred-tool review in `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
 - Required `tanaab-project-optimizer` to report and plan small corrections alongside substantial improvements. [#78](https://github.com/tanaabased/canon/pull/78)
 - Simplified shared Leia setup and made workflow readability take precedence over conditional setup optimizations. [#78](https://github.com/tanaabased/canon/pull/78)
 - Strengthened guidance for ownership changes, justified abstractions, and compatibility appropriate to project maturity. [#78](https://github.com/tanaabased/canon/pull/78)

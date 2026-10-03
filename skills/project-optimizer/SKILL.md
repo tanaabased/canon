@@ -1,6 +1,6 @@
 ---
 name: tanaab-project-optimizer
-description: Tanaab-based read-only project optimization assessment. Use when a user wants to audit a project's repository surfaces, prioritize substantial improvements and small concrete cleanup, and plan implementation while making retained decisions and uncertainty explicit.
+description: Tanaab-based read-only project optimization assessment. Use when a user wants to audit a whole project or selected surfaces such as skills, documentation, code, and tests, prioritize substantial improvements and small concrete cleanup, and plan implementation while making retained decisions and uncertainty explicit.
 license: MIT
 metadata:
   type: workflow
@@ -21,7 +21,7 @@ metadata:
 
 ## Overview
 
-Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, and report both substantial improvements and small concrete cleanup. The default pass inspects the local repository plus bounded public upstream release metadata, stays read-only, and is complete when every observed or explicitly required surface is classified and actionable findings have a dependency-ordered plan.
+Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, and report both substantial improvements and small concrete cleanup. The default scope is the whole local project; an explicit target narrows the review. The pass includes relevant bounded public upstream release metadata, stays read-only, and is complete when every in-scope observed or explicitly required surface is classified and actionable findings have a dependency-ordered plan.
 
 ## Required Reading
 
@@ -33,7 +33,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When to Use
 
-- Run a repeatable, project-wide alignment and maintainability audit before an optimization pass.
+- Run a repeatable alignment and maintainability audit of a whole project or an explicitly targeted subset.
 - Reconcile documentation, code, package, workflow, skill, required-but-absent, and other applicable surfaces through their existing Tanaab owners.
 - Distinguish substantial improvements, small concrete cleanup, deliberately retained decisions, and unavailable evidence.
 - Turn actionable findings into a proportionate implementation and validation plan before any changes are made, even when only small fixes remain.
@@ -50,15 +50,15 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Resolve the local repository root and read its applicable `AGENTS.md` guidance.
 - Require `git` and record the initial tracked and untracked state so existing user changes remain distinguishable from audit activity.
-- Confirm the request is for a read-only optimization audit and project-level disposition.
+- Confirm the request is for a read-only optimization audit and a disposition for its selected scope.
 - For optional remote repository coverage, require an explicit request plus a supplied or confirmed `OWNER/REPO` slug before invoking any integration skill.
 
 ## Workflow
 
-1. Read repository guidance and its directly applicable shared canon, then inventory tracked local surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
+1. Resolve the target and scope under [Scope Selection](#scope-selection), read repository guidance and directly applicable shared canon, then inventory in-scope tracked surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
 2. Classify each observed or contract-required area as live, cold-path, generated, missing, or not applicable before recommending changes. Declare an absent surface missing only when applicable checked-in guidance or directly linked canon makes it an expectation; otherwise preserve uncertainty or classify it not applicable.
 3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence or an explicit contract requirement and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
-4. When the repository contains multiple live `SKILL.md` files, always select Skill Author and review the skill collection individually and collectively even when no single skill has obvious drift.
+4. When the selected scope includes multiple live `SKILL.md` files, select Skill Author and review that collection individually and collectively even when no single skill has obvious drift. A whole-project review includes every live skill; a targeted review does not pull in unrelated skills.
 5. Use each selected skill's Optimization facet as the routing summary, then apply the skill's full relevant contract, directly linked canon, and the shared optimization operations to the observed surface. Do not limit the audit to the literal five facet bullets or skip high-value checks that the owning skill makes explicit elsewhere.
 6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces. Consolidate findings about the same source of truth and reuse existing validation evidence for an unchanged snapshot instead of repeating each owner's checks.
 7. Report every inventoried surface as aligned, drifted, or not applicable. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
@@ -66,6 +66,13 @@ Read each applicable document in full, or the explicitly named section, before d
 9. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
 10. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
 11. Stop without modifying files. A later explicit implementation request may invoke the owning skills against an approved plan.
+
+### Scope Selection
+
+- State the resolved repository and requested surfaces before the audit. Default to the whole project only when the user has not named a narrower target. Honor explicit paths, collections, and exclusions; ask only when the target cannot be resolved from the request and repository evidence.
+- Treat natural-language targets as scope, not special command syntax or a fixed routing registry. For example, “optimize Canon skills” reviews that repository's live skill collection and governing resources; “optimize documentation” reviews its README, guides, docs site, and relevant examples; “optimize code and tests” reviews owned implementation, unit tests, Leia scenarios, and their necessary build or test wiring. Combined targets form one bounded review.
+- Select owners dynamically from the observed in-scope surfaces. Read adjacent code, docs, configuration, or references when needed to judge a scoped contract, without turning those dependencies into another general audit. Report directly coupled corrections; flag independent out-of-scope discoveries separately for a scope decision.
+- Keep inventory, required-but-absent checks, preferred-tool assessment, documentation placement, validation, and the final disposition within that boundary. Mark unrelated surfaces outside scope, not aligned or not applicable; a scoped convergence result says nothing about the rest of the project.
 
 ### Preferred Tool Adoption
 
@@ -103,11 +110,11 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Completion Criteria
 
-- Every tracked local or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
-- Every live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
+- The repository and scope are explicit; every in-scope tracked or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
+- Every in-scope live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
 - Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
 - Documentation placement was reviewed explicitly; proposed moves identify an existing relevant example and its discovery link, while essential user requirements and useful general references retain their appropriate homes.
-- Repositories with multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
+- Scopes containing multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
 - The report groups substantial improvements, small concrete cleanup, deliberately retained decisions, and unverified areas, and states the disposition required by Finding Disposition.
 - Every actionable finding appears in a proportionate plan, including when only small cleanup remains. The plan is ordered by dependency and leverage and does not invent work to fill an output shape.
@@ -125,10 +132,11 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Compare `git status --short` before and after the audit; the optimizer must create no tracked or untracked changes.
 - Confirm remote GitHub inspection was skipped unless the user explicitly requested it and supplied or confirmed a slug.
-- Confirm every selected skill matched an observed surface and exposed `## Optimization`.
+- Confirm the inventory, owner selection, recommendations, and convergence claim honor the requested scope; adjacent evidence did not silently broaden the audit.
+- Confirm every selected skill matched an observed in-scope surface and exposed `## Optimization`.
 - Confirm contract-required but absent surfaces were inventoried when applicable canon establishes the expectation, without treating every conceivable surface as required.
 - Confirm every selected facet was followed into the skill's full relevant contract and directly linked canon rather than treated as a standalone generic checklist.
-- Confirm repositories with multiple live skills selected Skill Author for both individual and portfolio review.
+- Confirm scopes containing multiple live skills selected Skill Author for both individual and portfolio review.
 - Confirm every drift finding has one primary operation and that the audit did not force every operation onto every surface.
 - Confirm the report includes aligned and not-applicable results where supported instead of manufacturing drift.
 - Confirm relevant preferred tools were checked for adoption and newer compatible releases, with upstream uncertainty explicit and shared lookups deduplicated.
