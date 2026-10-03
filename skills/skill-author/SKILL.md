@@ -116,8 +116,8 @@ Read and apply every applicable document before the dependent work. A summary or
 ## Iteration Loop
 
 - Start with the smallest fitting type.
-- Scaffold or patch the skill, then validate immediately.
-- Run validation first when the request is validation-only.
+- For authorized authoring, scaffold or patch the skill, then validate immediately.
+- For validation-only requests, run validation and report findings without applying repairs.
 - Tighten scope before adding new sections, resources, or hoisted canon.
 - For `coding` skills, challenge the scope before adding a second materially different documentation, direct-test, or deployment pattern, and use GitHub Actions H3 headings only when mapping multiple justified workflow paths.
 - Challenge skill-vs-template ownership before adding doctrine for a surface that already looks like a reusable starter repo.
@@ -132,7 +132,9 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 2. Complete the applicable Required Reading before making dependent decisions.
 
-3. Scaffold or patch the skill.
+3. For validation-only requests, run the validator, review its manual checks, and stop at the findings. For optimization requests, follow the read-only Inspect, Compare, and Recommend phases of [Optimization](#optimization), then stop at the proposal. Neither request authorizes repairs; enter Apply only after explicit implementation authorization.
+
+4. For authorized creation, standardization, or implementation of an optimization plan, scaffold or patch the skill.
 
 - Use [`./scripts/init-skill.js`](./scripts/init-skill.js) when the task is a clean scaffold.
 - Pass project-declared identity context explicitly with `--namespace <id>` and `--container <standalone|codex-plugin|openclaw-plugin>`; do not expect deterministic scripts to parse `AGENTS.md` prose.
@@ -141,14 +143,13 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Tailor `Required Reading` to the actual governing policies with explicit Always or Before triggers. Keep essential constraints at the decision point, detailed policy in its authoritative reference, and optional background in the resource inventory.
 - Review the scaffolded `Optimization` section. Retain and tailor it when the skill can audit an existing persistent surface against durable canon; otherwise remove it.
 - Retain `Preferred Tools` only for concrete recommendations under the [shared contract](../../references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Optimization checks, and remove unused scaffold guidance. For an upstream recommendation review, follow [Review Preferred Tools](#review-preferred-tools).
-- Use [`./scripts/validate-skill.js`](./scripts/validate-skill.js) when the task is validation-only or when structural changes need objective confirmation.
 - Keep support material local by default.
 - Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
 - Keep skill-owned `test/` directories flat by default, with specs, fixtures, fakes, and support JavaScript as siblings.
 - Hoist only when the file is reused across live surfaces, is a repo-wide contract or tooling surface, or has standalone human value.
 - Review existing hoisted files with one meaningful live consumer for demotion.
 
-4. Validate before finishing.
+5. Validate before finishing authorized authoring.
 
 - Run [`./scripts/validate-skill.js`](./scripts/validate-skill.js) against the generated or updated skill.
 - Fix every `[error]` before finishing.
@@ -203,4 +204,4 @@ Use this workflow for requests to refresh what selected skills recommend. Keep t
 - Confirm bundled resources and flat skill-local tests remain with their smallest justified owner, and recheck any affected hoisted surface.
 - Confirm `Optimization` is either surface-specific for persistent alignment or intentionally absent when it does not apply.
 - For portfolio work, confirm every skill was reviewed individually and collectively and that recommendations preserve materially different owners.
-- Run `validate-skill.js` and fix all `[error]` results before finishing.
+- Run `validate-skill.js`; report findings without repairs for validation-only or optimization requests, and fix all `[error]` results before finishing authorized authoring.
