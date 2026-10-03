@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: 'Use $tanaab-release-author when the task is to prepare release metadata, choose a version bump, draft GitHub release notes from CHANGELOG.md, and create a GitHub Release draft for a Tanaab or allied project.'
+  default_prompt: 'Use $tanaab-release-author to review release readiness or verify a next tag without changes, or prepare release metadata and a GitHub Release draft when explicitly requested.'
