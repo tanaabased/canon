@@ -37,14 +37,13 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 - Inject clocks, delays, schedulers, subprocesses, network clients, and similar boundaries when unit-testing orchestration.
 - Avoid fixed sleeps and assertions that nothing happened after an arbitrary number of milliseconds.
-- Move genuine filesystem notification, process lifecycle, network, and platform behavior into explicitly named integration or smoke checks.
-- Keep environment-sensitive checks separate from the default unit suite when they are valuable but not deterministic.
+- Move genuine filesystem notification, process lifecycle, network, and platform behavior into the owning [Leia scenario](../../../references/leia-markdown-scenarios.md).
 
 ### Test Adapters Without Re-Testing Dependencies
 
 - Test the decisions made by local adapters: input mapping, policy enforcement, error handling, retries, and returned results.
 - Do not reproduce a third-party library's own behavior matrix in local unit tests.
-- Use a narrow integration check only when compatibility with the actual dependency is an owned project risk.
+- Exercise the actual dependency through the owning Leia scenario when compatibility is an owned project risk.
 
 ### Preserve Strong Safety Coverage
 
@@ -58,7 +57,7 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 - **Ordered protocol versus unordered membership:** use `assert.deepEqual(actual, expected)` when sequence is contractual; otherwise compare `new Set(actual)` with `new Set(expected)`.
 - **Canonical version versus release literal:** assert `runVersion() === packageJson.version`; use a synthetic value such as `9.8.7-test` when testing propagation or mismatch handling.
 - **Injected time versus fixed sleep:** pass a fake clock or scheduler and assert the requested deadline or callback; do not sleep and infer success from a timing window.
-- **Local adapter versus dependency behavior:** stub the dependency and assert local mapping, retry, policy, and error decisions; add a separately invoked integration check only for compatibility the project owns.
+- **Local adapter versus dependency behavior:** stub the dependency and assert local mapping, retry, policy, and error decisions; use the owning Leia scenario for compatibility the project owns.
 
 ## Starter Shapes
 

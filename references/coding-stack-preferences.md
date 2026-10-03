@@ -79,7 +79,10 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Testing Defaults
 
 - Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
-- Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
+- Tests have two default homes: focused unit tests and Leia integration scenarios. Before adding a harness, probe suite, or test category that fits neither, explain the uncovered requirement and ask the user. Existing surface-specific guidance, such as Vue component testing below, remains applicable.
+- Unit tests primarily exercise independently testable functions in `utils/` within the owning scope. Extract cohesive decisions from libraries when that makes the code simpler; retain light, deterministic library tests for state or orchestration that cannot honestly be separated. Do not build fake end-to-end consumers inside unit tests.
+- Integration and consumer behavior belong in the owning Leia example: commands, installed imports and declarations, public SDK workflows, process lifecycle, and operational filesystem effects. Extend an existing scenario or add a focused example instead of a parallel consumer runner or smoke suite.
+- Keep linting, formatting, type-checking, and established static validators separate from behavioral tests. Packaging and publication commands retain their own validation contracts under [verification boundaries](./verification-boundaries.md); they do not justify a parallel consumer test suite.
 - For JS/TS/Bun helper tests, prefer Mocha plus built-in `node:` assertion and filesystem helpers. Vue component tests use [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing); existing pure-helper tests need not migrate.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a `test/` directory inside the nearest scope that owns the implementation.
@@ -101,7 +104,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Operational Scenario Testing
 
-- Prefer Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
+- Use Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
 - Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
 - Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
