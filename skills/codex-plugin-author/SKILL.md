@@ -20,6 +20,20 @@ metadata:
 
 Own the installable Codex plugin: its manifest, bundled resources, npm payload, and delivery contract. Keep skill content with [Skill Author](../skill-author/SKILL.md) and npm publishing mechanics with [JavaScript Author](../javascript-author/SKILL.md#deployment).
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Release Destinations](../../references/release-destinations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [Javascript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before using recorded responses or approval expectations in mock-AI tests:** [Mock Ai Fixtures](../../references/mock-ai-fixtures.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create or modify a Codex plugin's structure, manifest, package contents, or release validation.
