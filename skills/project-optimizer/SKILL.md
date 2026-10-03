@@ -30,7 +30,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 
 ## When to Use
 

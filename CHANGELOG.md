@@ -5,8 +5,9 @@
 - Clarified unit-test boundaries, candidate-package Leia coverage, and mock-AI fixture scope. [#78](https://github.com/tanaabased/canon/pull/78)
 - Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
 - Required `tanaab-project-optimizer` to report and plan small corrections alongside substantial improvements. [#78](https://github.com/tanaabased/canon/pull/78)
+- Simplified shared Leia setup and made workflow readability take precedence over conditional setup optimizations. [#78](https://github.com/tanaabased/canon/pull/78)
 - Strengthened guidance for ownership changes, justified abstractions, and compatibility appropriate to project maturity. [#78](https://github.com/tanaabased/canon/pull/78)
-- Updated documentation guidance to keep scenario-specific explanations beside their executable examples. [#78](https://github.com/tanaabased/canon/pull/78)
+- Updated documentation reviews to move useful scenario detail into existing Leia examples while retaining essential product guidance. [#78](https://github.com/tanaabased/canon/pull/78)
 
 ## v0.12.1 - [September 29, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.1)
 
