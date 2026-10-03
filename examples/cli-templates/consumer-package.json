@@ -1,0 +1,10 @@
+{
+  "name": "@tanaab/canon-cli-template-consumer",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "ansis": "4.4.0",
+    "debug": "4.4.3",
+    "yargs-parser": "22.0.0"
+  }
+}

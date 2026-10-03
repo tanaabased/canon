@@ -19,6 +19,7 @@ jobs:
         example:
           - openclaw
           - skill-tools
+          - cli-templates
     env:
       LEIA_TIMEOUT: '120'
       OPENCLAW_HIDE_BANNER: '1'
@@ -40,6 +41,9 @@ jobs:
         uses: tanaabased/actions/setup-openclaw@v1
         with:
           package-field: openclaw.build.openclawVersion
+      - name: Check runner PowerShell
+        if: matrix.example == 'cli-templates'
+        run: pwsh -NoProfile -Command '$PSVersionTable.PSVersion.ToString()'
       - name: Run example
         uses: tanaabased/actions/run-leia@v1
         env:
