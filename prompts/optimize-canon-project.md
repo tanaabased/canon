@@ -1,8 +1,8 @@
 # Optimize Canon Project
 
-Use `$tanaab-project-optimizer` to assess this project's checked-in repository surfaces and determine whether a staged optimization pass is warranted so Canon practices what it preaches.
+Use `$tanaab-project-optimizer` to assess this project's checked-in repository surfaces and plan substantial improvements and small concrete cleanup so Canon practices what it preaches.
 
-Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean or mostly aligned result is valid.
+Operate on this repository only. Keep the first pass read-only and stop after a decision-complete proposal unless the user explicitly asks for implementation in a follow-up turn. A clean result is valid; a mostly aligned result must still account for remaining small corrections.
 
 ## Canon Context
 
@@ -33,17 +33,18 @@ Return one grounded project-level disposition containing:
 
 - a concise inventory of live, cold-path, generated, and not-applicable surfaces
 - grouped aligned findings and specific evidence for every drifted surface
+- separate groups for substantial improvements, small concrete cleanup, deliberately retained decisions, and unverified areas, following the optimizer's Finding Disposition
 - one primary owning skill and one primary optimization operation for each recommendation, with companions only for genuine cross-surface work
 - an individual and portfolio-wide disposition for the live skill collection, including keep, merge, split, move, extract, tighten, rename, or remove only where evidence supports it
 - deferred questions only where repository evidence cannot resolve the decision
 
-When action-worthy findings clear the Project Optimizer convergence gate, also include:
+For every actionable finding, including a pass containing only small cleanup, include:
 
-- recommended changes ordered by correctness risk, leverage, and dependency
+- the affected location, evidence, and concrete correction, ordered by correctness risk, leverage, and dependency
 - reviewable implementation and commit stages
 - proportional validation for every proposed stage
 
-When the project is converged, briefly account for intentionally deferred minor drift, report `converged — no optimization pass recommended`, and omit implementation and commit stages.
+Give each deliberately retained observation a reason and reconsideration condition. Identify unresolved evidence separately. Omit implementation and commit stages only when there are no actionable findings; use the optimizer's disposition rules to distinguish convergence from an incomplete assessment.
 
 Do not return a generic checklist or restate the selected skills' Optimization sections. Stop before modifying files.
 
