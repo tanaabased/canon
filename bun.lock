@@ -64,7 +64,7 @@
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
-    "@tanaab/codex-tools": ["@tanaab/codex-tools@1.0.2", "", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "sha512-OzN5nykyMBrw5z9PGocNTIGxXbn4Y/UqtvBFJqOo6OTMU+4ZKoBYGwiWrDU+VLqnuYWwRpgEcRWrApL6w3clUw=="],
+    "@tanaab/codex-tools": ["@tanaab/codex-tools@1.0.3", "", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "sha512-aeW0sEiMhlxv1PxsdTjUNuRTSfWfW7WMlSgeVk0iP9x0OA0ifB2hRASfkLE88HUSM16IE/kPBMYF0nyatCX+Ug=="],
 
     "@types/esrecurse": ["@types/esrecurse@4.3.1", "", {}, "sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw=="],
 
