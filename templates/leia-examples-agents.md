@@ -37,6 +37,7 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 - When product behavior mutates a checked-in input tree, copy it under the scenario's `TMPDIR` first and run against the copy; keep the checked-in source deterministic.
 - Prefer bounded readiness and shutdown polling against meaningful product signals over fixed sleeps.
 - Run the real prepared product surface when CI can do so safely. Fixtures may prepare inputs but must not bypass public registration, onboarding, migration, or mutation behavior under test.
+- Test the revision's candidate distribution: install its tarball into an isolated consumer or run its standalone executable outside the checkout. Do not fall back to product source, development dependencies, workspace links, or a previously published version. Keep consumer coverage in the owning example and remove replaced parallel runners and their unused support files.
 - Keep externally registered or shared resources unique per scenario and run.
 - Omit cleanup that only erases ephemeral runner state. Add `## Cleanup` only for product teardown behavior, persistent resources, or shared-environment isolation.
 

@@ -110,7 +110,11 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Run the real public entrypoint when CI can do so safely. Do not substitute fake bootstrap scripts, private config writes, synthetic tool success, or local stubs for the supported product flow.
 - When a public registration or onboarding command is part of the integration contract, use it even if a static config could be written more cheaply.
-- When the distributed artifact is the product, prepare and test the release-shaped artifact rather than a source-only entrypoint.
+- Prepare the distribution from the revision under review using the product's build and packaging path. Run scenarios against that candidate; a source entrypoint or previously published version does not establish its behavior.
+- For npm products, install the candidate tarball into an isolated consumer and use its installed executable or public exports. Keep product resolution independent of checkout source, development dependencies, and workspace links. Check installed declarations through that same consumer when types are part of the package contract.
+- For standalone executables, run the compiled candidate outside the checkout with its declared release assets. Exclude source and development dependencies; when runtime-independent operation is promised, exercise it without an installed JavaScript runtime.
+- Keep consumer assertions in the existing owning example or a focused package example. When moving coverage into Leia, remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs that no longer have a consumer.
+- Preserve distinct static package validation, registry dry runs, and publication checks under [verification boundaries](./verification-boundaries.md). Passing Leia scenarios establishes the tested consumer behavior, not successful publication.
 - Test the runtime mode the product actually supports. Do not enable unrelated container, VM, sandbox, daemon, channel, or service behavior merely because the dependency offers it.
 - If the safe default target is manageable to clean up, testing that default target directly is acceptable instead of forcing an example-local override.
 - Keep secrets in CI-managed environment variables. A scenario that requires a secret must fail clearly when it is absent and must assert that owned output and logs do not expose it.

@@ -108,8 +108,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
 - Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
-- When a prepared `dist/` artifact is the real shipped surface, run operational scenario tests against that prepared artifact instead of raw source files.
-- For shipped JS/TS CLIs, build first and run Leia scenarios against the artifact in its declared consumer runtime, following [Test Runtimes](#test-runtimes).
+- Apply [Leia's artifact testing policy](./leia-markdown-scenarios.md#real-product-execution): exercise the candidate tarball or standalone executable through its consumer interface, with no checkout-source fallback. Select the declared consumer runtime through [Test Runtimes](#test-runtimes).
 
 ## Shell and Scripting Exceptions
 
