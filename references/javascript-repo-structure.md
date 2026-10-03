@@ -33,6 +33,7 @@ scope/
 ```
 
 - Create only the role folders the scope actually needs.
+- Before adding an abstraction or permanent command, apply the [upkeep guidance in Optimization Operations](./optimization-operations.md); a place in this layout does not justify a new tool.
 - Keep executable entrypoints thin and move reusable behavior into `lib/` or `utils/`.
 - Do not keep ordinary implementation modules loose at the scope root when one of these roles describes them.
 - Purpose-named subscopes may repeat this layout when one owner contains multiple independently understandable surfaces.
