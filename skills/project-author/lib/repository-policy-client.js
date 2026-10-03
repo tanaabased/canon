@@ -103,6 +103,28 @@ function makeMissingReport(slug, policy = canonicalPolicy) {
   };
 }
 
+function withOwnerSupport(report, ownerType) {
+  return {
+    ...report,
+    owner_type: ownerType ?? null,
+    warnings:
+      ownerType === 'Organization'
+        ? []
+        : [
+            'Canonical main push restrictions require an organization owner; creation and settings apply are blocked.',
+          ],
+  };
+}
+
+function requireSupportedOwner(report) {
+  if (report.owner_type !== 'Organization') {
+    throw new RepositoryPolicyError(report.warnings[0], {
+      report,
+      step: 'check-owner-support',
+    });
+  }
+}
+
 function branchAction({ branches, defaultBranch, mainExists }) {
   if (mainExists) {
     return null;
@@ -206,7 +228,10 @@ export class RepositoryPolicyClient {
       step: 'inspect-repository',
     });
     if (repositoryResponse.missing) {
-      return makeMissingReport(slug, this.policy);
+      const owner = this.request('GET', `/users/${slug.split('/')[0]}`, undefined, {
+        step: 'inspect-owner',
+      }).data;
+      return withOwnerSupport(makeMissingReport(slug, this.policy), owner?.type);
     }
 
     const repository = repositoryResponse.data;
@@ -286,14 +311,17 @@ export class RepositoryPolicyClient {
       mainExists,
     });
 
-    return {
-      branch_action: action,
-      changes,
-      current,
-      desired,
-      status: changes.length === 0 && !action ? 'aligned' : 'drifted',
-      target: slug,
-    };
+    return withOwnerSupport(
+      {
+        branch_action: action,
+        changes,
+        current,
+        desired,
+        status: changes.length === 0 && !action ? 'aligned' : 'drifted',
+        target: slug,
+      },
+      repository.owner?.type,
+    );
   }
 
   inspectMetadata(slugValue, proposal = null) {
@@ -507,6 +535,7 @@ export class RepositoryPolicyClient {
   apply(slugValue, options = {}) {
     const slug = normalizeRepositorySlug(slugValue);
     let report = this.inspect(slug);
+    requireSupportedOwner(report);
     if (report.status === 'missing') {
       throw new RepositoryPolicyError('Repository is missing; use create instead of apply.', {
         report,
@@ -612,6 +641,7 @@ export class RepositoryPolicyClient {
       throw new RepositoryPolicyError('Creation requires a metadata plan with current: null.');
     }
     const report = this.inspect(slug);
+    requireSupportedOwner(report);
     if (report.status !== 'missing') {
       throw new RepositoryPolicyError(
         'Repository already exists; use inspect or apply instead of create.',
