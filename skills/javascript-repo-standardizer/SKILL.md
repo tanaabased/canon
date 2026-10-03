@@ -25,6 +25,19 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 - Keep this skill normalization-led rather than implementation-led.
 - Use it to bring a JS/TS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, type-checking when applicable, and related baseline scripts while leaving runtime authorship to the broader implementation skill.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [Javascript Repo Structure](../../references/javascript-repo-structure.md), and [Lint and Format Baseline](./references/lint-format-baseline.md).
+- **Before standardizing workspace packages:** [Bun Workspace Baseline](./references/bun-workspace-baseline.md).
+- **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Align a repo to the shared ESLint and standalone Prettier baseline.

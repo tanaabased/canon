@@ -24,6 +24,20 @@ Tanaab-based authoring and standardization of GitHub Actions workflow surfaces. 
 - Treat workflow-file boundaries and resulting status-check identities as part of the topology, not as incidental file organization.
 - Let coding and integration skills own their canonical surface-local validation or deployment workflows when the workflow only serves that narrower lifecycle and no independent workflow-graph decision is in scope.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before deciding whether comments or documentation need to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before selecting runtimes, test gates, or npm channels:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before authoring or reviewing Leia workflows:** [Leia Markdown Scenarios — CI Guidance](../../references/leia-markdown-scenarios.md#ci-guidance).
+- **Before configuring Homebrew installation:** [Homebrew CI Freshness](./references/homebrew-ci-freshness.md).
+- **Before selecting release destinations:** [Release Destinations](../../references/release-destinations.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create or update GitHub Actions workflow YAML, reusable workflows, permissions, triggers, or job structure.
@@ -89,6 +103,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 2. Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether comments or other prose need to change. Load the target workflow YAML plus the Bun-first defaults from [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) when JavaScript runtime wiring matters. Load [Homebrew Freshness in GitHub Actions](references/homebrew-ci-freshness.md) when Homebrew-backed dependency installation is in scope.
 3. Select applicable [Preferred Tools](#preferred-tools) before rewriting setup or publication steps. Keep workflow ownership on independent trigger or permission design, workflow-file boundaries, status-check identity, job topology, matrix shape, reusable workflow boundaries, and CI gate placement. Preserve canonical workflow filenames named by narrower skills, apply the shared pull-request gate defaults when multiple validation surfaces are present, and preserve those skills' surface-local lifecycles.
 4. Require workflows that generate or rewrite tracked files to run the applicable formatter and validation after the mutation and before committing, syncing, or pushing the result.
+   For Leia workflows, apply [CI Guidance](../../references/leia-markdown-scenarios.md#ci-guidance): prefer consistent linear setup, justify necessary conditions, and keep scenario-specific behavior in examples.
 5. Validate the changed workflow files and surface any unverified remote behavior explicitly.
 
 ### Release Composition
@@ -108,7 +123,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 - **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, runtime and package-manager freshness, job topology, release checkout refs and destination names, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks.
 - **Compare:** Compare [Preferred Tools](#preferred-tools) with current steps, required inputs, runners, permissions, and destination-specific recovery; keep compatible adoption or justified exceptions. Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, implicit Homebrew update behavior or disabled automatic updates without an explicit freshness check, and tracked-file mutations that lack post-mutation formatting or validation.
-- **Recommend:** Keep valid workflows; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.
+- **Recommend:** Keep valid workflows; simplify Leia setup under [CI Guidance](../../references/leia-markdown-scenarios.md#ci-guidance), removing unnecessary conditions, runtime installers, and preflights; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; and remove stale wiring without manufacturing edits.
 - **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
 - **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
 
@@ -126,4 +141,5 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm runtime setup follows [Preferred Tools](#preferred-tools) and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes), uses the correct package directory and project declarations, and preserves required upstream inputs when a wrapper is unsuitable. Keep `bun install --frozen-lockfile --ignore-scripts` caller-owned.
 - Confirm workflows that install through Homebrew set `HOMEBREW_NO_AUTO_UPDATE` to `1` at workflow or job scope and run `brew update-if-needed` with an empty command-scoped value on every Homebrew-using runner, unless Homebrew is separately pinned or refreshed.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
+- Apply [Assertion Strength](../../references/verification-boundaries.md#assertion-strength) to workflow checks: validate parsed permissions, credential boundaries, artifact wiring, and check identities instead of freezing YAML layout or step text.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.

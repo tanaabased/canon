@@ -7,6 +7,13 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Keep this file focused on stable defaults and exception boundaries, not step-by-step implementation recipes.
 - Future live coding skills should cite this file instead of re-copying stack choices into each skill.
 
+## Project Maturity and Compatibility
+
+- Determine the affected surface's stability and compatibility commitments from repository guidance, supported public contracts, release policy, and explicit user decisions. A version number or prerelease label alone does not establish those commitments or authorize breaking them.
+- For an explicitly experimental or unsettled surface, prefer correcting the design and updating its consumers directly. Do not add aliases, facades, fallback paths, or deprecation machinery merely to preserve an abandoned design.
+- For a supported contract, preserve compatibility or follow an authorized breaking-change and migration plan. If the commitment is unclear and the change would break consumers, resolve that uncertainty before removing behavior.
+- Keep documentation proportionate to the supported contract: describe current use and necessary migration steps, without presenting unsettled implementation details as permanent guarantees or adding speculative compatibility guides.
+
 ## Default Runtime
 
 - Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
@@ -79,7 +86,10 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Testing Defaults
 
 - Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
-- Prefer focused unit tests for pure or mostly pure JavaScript or TypeScript helpers and modules.
+- Tests have two default homes: focused unit tests and Leia integration scenarios. Before adding a harness, probe suite, or test category that fits neither, explain the uncovered requirement and ask the user. Existing surface-specific guidance, such as Vue component testing below, remains applicable.
+- Unit tests primarily exercise independently testable functions in `utils/` within the owning scope. Extract cohesive decisions from libraries when that makes the code simpler; retain light, deterministic library tests for state or orchestration that cannot honestly be separated. Do not build fake end-to-end consumers inside unit tests.
+- Integration and consumer behavior belong in the owning Leia example: commands, installed imports and declarations, public SDK workflows, process lifecycle, and operational filesystem effects. Extend an existing scenario or add a focused example instead of a parallel consumer runner or smoke suite.
+- Keep linting, formatting, type-checking, and established static validators separate from behavioral tests. Packaging and publication commands retain their own validation contracts under [verification boundaries](./verification-boundaries.md); they do not justify a parallel consumer test suite.
 - For JS/TS/Bun helper tests, prefer Mocha plus built-in `node:` assertion and filesystem helpers. Vue component tests use [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing); existing pure-helper tests need not migrate.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a `test/` directory inside the nearest scope that owns the implementation.
@@ -95,18 +105,18 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ### Test Runtimes
 
 - Select [runtime setup actions](../skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
+- Before adding a runtime installer, inspect the selected actions' setup guarantees. Reuse a compatible runtime they already provide; an npm operation or Node-based action does not by itself require another caller-owned `setup-node` step.
 - Make the tool runtime explicit in package scripts, for example `bun ./node_modules/mocha/bin/mocha.js`. `bun run` alone can honor a tool's Node shebang. [Bun's `--bun` override](https://bun.com/docs/runtime/bunfig#run-bun-auto-alias-node-to-bun) also redirects child `node` commands, so keep it and equivalent configuration out of Node compatibility checks.
 - Exercise the prepared or packed artifact under its declared runtime: the installed CLI through its executable entrypoint, and public library exports through the promised `import`/`require` paths. A Bun-hosted check may launch real Node subprocesses; its own runtime does not prove the consumer's runtime.
 - Keep compatibility checks focused on the package contract and supported runtime boundary. Do not repeat the full development suite across runtimes or add post-publish registry probes without a distinct gap to cover.
 
 ## Operational Scenario Testing
 
-- Prefer Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
+- Use Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
 - Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
 - Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
-- When a prepared `dist/` artifact is the real shipped surface, run operational scenario tests against that prepared artifact instead of raw source files.
-- For shipped JS/TS CLIs, build first and run Leia scenarios against the artifact in its declared consumer runtime, following [Test Runtimes](#test-runtimes).
+- Apply [Leia's artifact testing policy](./leia-markdown-scenarios.md#real-product-execution): exercise the candidate tarball or standalone executable through its consumer interface, with no checkout-source fallback. Select the declared consumer runtime through [Test Runtimes](#test-runtimes).
 
 ## Shell and Scripting Exceptions
 

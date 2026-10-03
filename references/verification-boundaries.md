@@ -9,3 +9,10 @@ A successful command is sufficient evidence for the operation its contract promi
 - Add a separate post-success check only for an explicit user request, an uncovered acceptance criterion, a known defect, or a consequential boundary such as silently dropped fields or partial multi-step mutations. Retain those readbacks inside their owning integration; callers should not repeat them after verified success.
 - When external visibility itself must be checked, allow for documented propagation delays, use bounded polling, and report unresolved visibility separately from publication failure. Never republish merely because a cached lookup has not caught up.
 - Report what the evidence establishes. Successful publication need not establish downstream installation or runtime activation unless that is part of the requested outcome.
+
+## Assertion Strength
+
+- Judge an assertion by the regression it detects. Derive expected results from the supported contract or a known input/output example, not by repeating the implementation's calculation or copying its current output.
+- Avoid assertions that merely freeze prose, source text, YAML layout, occurrence counts, or invocation spelling. Keep exact assertions when those details are themselves a public, protocol, configuration, artifact, or safety contract.
+- For structured data, use an existing parser or validator and assert meaningful fields and relationships. Preserve checks for permissions, credential isolation, artifact selection, and required-check identities; formatting changes alone should not break them. Do not build a bespoke parser to police incidental syntax.
+- Before removing or loosening a check, identify the contract it protects and retain any distinct coverage in the owning check or suite. A test becoming inconvenient after a change is not evidence that it is unnecessary.

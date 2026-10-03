@@ -11,6 +11,33 @@ const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.resolve(TEST_DIR, '..', 'templates');
 
 describe('skills/skill-author/templates', () => {
+  it('should allow Required Reading after Overview or omit it, but reject late reading sections', async () => {
+    const templateNames = (await readdir(TEMPLATE_DIR)).filter((name) => name.endsWith('.md'));
+
+    for (const templateName of templateNames) {
+      const { body, frontmatter } = splitLeadingSkillFrontmatter(
+        await readFile(path.join(TEMPLATE_DIR, templateName), 'utf8'),
+      );
+      const headings = extractTopLevelSkillHeadings(body);
+      const optional = frontmatter.optional_top_level_headings;
+      const withoutReading = body.replace(/## Required Reading\n[\s\S]*?(?=## When to Use\n)/, '');
+      const lateReading = withoutReading.replace(
+        '## Bundled Resources',
+        '## Required Reading\n\n## Bundled Resources',
+      );
+
+      assert.ok(optional.includes('## Required Reading'), templateName);
+      assert.equal(
+        headings.indexOf('## Required Reading'),
+        headings.indexOf('## Overview') + 1,
+        templateName,
+      );
+      assert.equal(hasOrderedSkillSections(body, headings, optional), true, templateName);
+      assert.equal(hasOrderedSkillSections(withoutReading, headings, optional), true, templateName);
+      assert.equal(hasOrderedSkillSections(lateReading, headings, optional), false, templateName);
+    }
+  });
+
   it('should allow Preferred Tools to be present or absent before Workflow for every type', async () => {
     const templateNames = (await readdir(TEMPLATE_DIR)).filter((name) => name.endsWith('.md'));
 

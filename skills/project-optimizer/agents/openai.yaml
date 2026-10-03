@@ -4,4 +4,4 @@ interface:
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
   brand_color: '#00c88a'
-  default_prompt: "Use $tanaab-project-optimizer to audit this project's checked-in repository surfaces against applicable Tanaab optimization facets, determine whether action-worthy improvements clear its convergence gate, and produce a staged read-only plan only when warranted."
+  default_prompt: 'Use $tanaab-project-optimizer to audit this project or the requested subset of skills, documentation, code, or tests, report substantial improvements and small concrete cleanup separately, explain retained decisions and uncertainty, and plan every actionable finding without modifying files.'

@@ -1,5 +1,6 @@
+/* global Bun */
+
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 
 import { authorIssueFormSet } from '../lib/issue-form-author.js';
 import { alignGitHubIssueForms } from '../lib/issue-form-repository-author.js';
@@ -20,19 +21,6 @@ function renderedFiles(mode = 'organization') {
   return Object.fromEntries(
     authorIssueFormSet(mode).files.map(({ path, content }) => [path, content]),
   );
-}
-
-function parsedByBun(content) {
-  const result = spawnSync(
-    'bun',
-    [
-      '-e',
-      'const text = await Bun.stdin.text(); process.stdout.write(JSON.stringify(Bun.YAML.parse(text)));',
-    ],
-    { encoding: 'utf8', input: content },
-  );
-  assert.equal(result.status, 0, result.stderr);
-  return JSON.parse(result.stdout);
 }
 
 describe('skills/github-issue-form-author/lib/issue-form-repository-author', () => {
@@ -107,10 +95,10 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
       authorization: authorize(preview),
     });
     assert.equal(report.status, 'aligned_after_write');
-    const updatedTask = parsedByBun(
+    const updatedTask = Bun.YAML.parse(
       client.state.files.get('.github/ISSUE_TEMPLATE/task.yml').content,
     );
-    const updatedConfig = parsedByBun(
+    const updatedConfig = Bun.YAML.parse(
       client.state.files.get('.github/ISSUE_TEMPLATE/config.yml').content,
     );
     assert.equal(updatedTask.title, '[Work]: ');
@@ -122,7 +110,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
 
   it('should preserve compatible Markdown guidance without changing submitted input semantics', () => {
     const files = renderedFiles('personal');
-    const task = parsedByBun(files['.github/ISSUE_TEMPLATE/task.yml']);
+    const task = Bun.YAML.parse(files['.github/ISSUE_TEMPLATE/task.yml']);
     task.description = 'Old description';
     task.body.unshift({
       type: 'markdown',
@@ -137,7 +125,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
       client,
       authorization: authorize(preview),
     });
-    const updatedTask = parsedByBun(
+    const updatedTask = Bun.YAML.parse(
       client.state.files.get('.github/ISSUE_TEMPLATE/task.yml').content,
     );
 
@@ -150,7 +138,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
 
   it('should retire only inputs owned by the previous canonical form projection', () => {
     const files = renderedFiles('organization');
-    const task = parsedByBun(files['.github/ISSUE_TEMPLATE/task.yml']);
+    const task = Bun.YAML.parse(files['.github/ISSUE_TEMPLATE/task.yml']);
     task.body = [
       task.body[0],
       {
@@ -189,7 +177,9 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
       client,
       authorization: authorize(preview),
     });
-    const updated = parsedByBun(client.state.files.get('.github/ISSUE_TEMPLATE/task.yml').content);
+    const updated = Bun.YAML.parse(
+      client.state.files.get('.github/ISSUE_TEMPLATE/task.yml').content,
+    );
 
     assert.equal(report.status, 'aligned_after_write');
     assert.deepEqual(
@@ -290,7 +280,7 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     const taskContent = report.plannedMutation.operations.find(({ path }) =>
       path.endsWith('task.yml'),
     ).after.content;
-    const task = parsedByBun(taskContent);
+    const task = Bun.YAML.parse(taskContent);
 
     assert.equal(report.repositoryMode, 'personal');
     assert.equal(Object.hasOwn(task, 'type'), false);

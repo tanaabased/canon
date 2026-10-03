@@ -18,6 +18,8 @@ jobs:
           - ubuntu-24.04
         example:
           - openclaw
+          - skill-tools
+          - cli-templates
     env:
       LEIA_TIMEOUT: '120'
       OPENCLAW_HIDE_BANNER: '1'
@@ -29,12 +31,16 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Install OpenClaw
-        if: matrix.example == 'openclaw'
         uses: tanaabased/actions/setup-openclaw@v1
         with:
           package-field: openclaw.build.openclawVersion
+      - name: Pack candidate
+        id: pack
+        uses: tanaabased/actions/npm-pack@v1
       - name: Run example
         uses: tanaabased/actions/run-leia@v1
+        env:
+          CANON_TARBALL: ${{ steps.pack.outputs.tarball-path }}
         with:
           scenarios: examples/${{ matrix.example }}/README.md
           shell: bash

@@ -24,6 +24,18 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 - Treat Markdown page implementation as the default and highest-frequency VitePress surface.
 - Let `tanaab-vue-author` own generic Vue component work when the primary surface is not VitePress-led.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Front End Preferences](../../references/front-end-preferences.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before aligning the repository entrypoint:** [Readme Standards](../../references/readme-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Build or update a VitePress 1 docs or static site once that site surface is already chosen.
@@ -114,7 +126,7 @@ bun run build
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
-- **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
+- **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Apply [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) to excessive edge-case detail and useful scenario explanations that belong in existing Leia examples with discovery links. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
 - **Recommend:** Keep coherent site structure; remove prose or pages that fail the documentation change gate before splitting or relocating them; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
 - **Apply:** After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
 - **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.

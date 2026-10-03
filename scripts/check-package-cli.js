@@ -10,7 +10,7 @@ if (args.length !== 1 || args[0].startsWith('-')) {
   try {
     const result = await checkPackage(args[0]);
     process.stdout.write(
-      `Verified ${result.name}@${result.version}: ${result.skills} skills and ${result.commands} commands; no dependency installation.\n`,
+      `Verified ${result.name}@${result.version}: ${result.skills} skills; no dependency installation.\n`,
     );
   } catch (error) {
     process.stderr.write(`${error.message}\n`);

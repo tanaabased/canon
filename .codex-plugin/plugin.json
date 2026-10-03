@@ -25,7 +25,7 @@
       "Use $tanaab-project-milestone-author to draft an exact verified milestone update after the desired plan is approved.",
       "Use $tanaab-task-decomposer to decide whether tanaabased/example#12 should remain intact, split into child tasks, or become a project milestone.",
       "Use $tanaab-task-author to draft one canonical GitHub task from the available evidence without publishing it yet.",
-      "Use $tanaab-project-optimizer to audit a project's checked-in repository surfaces against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
+      "Use $tanaab-project-optimizer to audit a whole project or requested surfaces such as skills, documentation, code, and tests against applicable Tanaab optimization facets and produce a staged read-only improvement plan.",
       "Use $tanaab-javascript-author to add Bun-run tests for TypeScript utility functions in utils/.",
       "Use $tanaab-javascript-repo-standardizer to standardize a JavaScript and TypeScript Bun workspace monorepo, including package boundaries, formatting, type-checking, and baseline scripts.",
       "Use $tanaab-github-workflow-author to create a Tanaab-approved GitHub Actions release workflow.",

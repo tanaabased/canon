@@ -20,6 +20,17 @@ metadata:
 
 Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake forms from the shared task-management contract. Extract submitted responses plus their complete original Markdown as a lossless evidence package for Task Author's later semantic normalization. Render deterministic organization and personal-repository variants, plan an exact managed repository diff, and require digest-bound authorization before writing the four owned files.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md) and [Task Management Schema](../../references/task-management-schema.json).
+- **Before invoking GitHub CLI or planning repository changes:** [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before changing form prose:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Use when a project needs canonical `.github/ISSUE_TEMPLATE` Task, Bug, and Feature forms.
@@ -36,6 +47,8 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 - Do not delete unknown issue templates, silently replace custom submitted inputs, or auto-apply canonical labels through form YAML.
 
 ## Prerequisites
+
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
 
 - Require Bun for the bundled render command and YAML validation.
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
@@ -85,19 +98,19 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 2. Render all four desired files without touching the target repository:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js render --repository-mode organization --json
+   bun <skill-path>/scripts/render-issue-forms.js render --repository-mode organization --json
    ```
 
 3. Inspect and plan one explicit repository without writing:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js plan OWNER/REPO --json
+   bun <skill-path>/scripts/render-issue-forms.js plan OWNER/REPO --json
    ```
 
 4. Review creates, updates, preserved additions, unmanaged files, blockers, default branch, and digest. Apply only the exact approved plan:
 
    ```bash
-   bun skills/github-issue-form-author/scripts/render-issue-forms.js apply OWNER/REPO \
+   bun <skill-path>/scripts/render-issue-forms.js apply OWNER/REPO \
      --approved-repository OWNER/REPO --approved-branch BRANCH --approved-digest SHA256 --json
    ```
 

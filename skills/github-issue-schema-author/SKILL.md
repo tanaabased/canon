@@ -22,6 +22,14 @@ Inspect one explicit GitHub repository's issue types, organization fields, type 
 
 Every mutation requires exact digest-bound authorization and post-write verification. Visibility and labels are separately authorized from other schema effects. Label sync preserves associations and every noncanonical label; field modes preserve unmanaged fields, including Effort. GitHub's public APIs expose pin state but no pin-assignment mutation, so never call the private web endpoint directly. This version exposes no deletion path.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+
 ## When to Use
 
 - Use when a user wants to inspect or compare GitHub issue schema for an explicit `OWNER/REPO`.
@@ -45,6 +53,8 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Do not infer a repository from the working directory. Require an explicit target.
 
 ## Prerequisites
+
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
 
 - Require Bun and the GitHub CLI (`gh`).
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
@@ -93,7 +103,7 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 - Mark a hidden field, type, or label surface `unresolved`; do not convert lack of access into a missing-schema claim.
 - Mark organization field and type surfaces `not_applicable` for personal repositories while still comparing repository labels.
 - Never compensate for a read failure by attempting a write or a broader authorization flow.
-- Stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
+- In additive-field mode, stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
 - Stop on the first failed create. Never delete a successfully created field to simulate rollback; re-read and report partial success instead.
 - Stop color synchronization if any field is missing or has a different type, option membership, order, ID, or priority. Never use color synchronization to add, remove, recreate, or reorder an option.
 - Stop on the first failed color update. Never roll back a successful update by issuing an unplanned second replacement; re-read and report partial success instead.
@@ -110,7 +120,7 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 4. For read-only inspection, run:
 
    ```bash
-   bun skills/github-issue-schema-author/scripts/inspect-schema.js inspect OWNER/REPO --json
+   bun <skill-path>/scripts/inspect-schema.js inspect OWNER/REPO --json
    ```
 
 5. Compare organization definitions, repository-effective definitions, fields, pinning, visibility, and all repository labels.
@@ -129,9 +139,9 @@ Every mutation requires exact digest-bound authorization and post-write verifica
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
-- **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
-- **Compare:** Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
-- **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
+- **Inspect:** Resolve the explicit repository and read organization and repository-effective issue types, managed fields, option IDs and colors, visibility, type pinning, and repository labels; keep inaccessible surfaces unresolved.
+- **Compare:** Compare the managed schema and label definitions with canonical policy. Distinguish missing fields from retained-option color drift, visibility drift, and Task/Bug/Feature pinning drift; preserve existing IDs, option membership and order, unmanaged pins, and Effort. Treat organization-default labels as a manual evidence gap.
+- **Recommend:** Plan additive fields, retained-option colors, visibility, labels, and browser-backed pinning as separately authorized effects. Preserve aligned and unmanaged state; do not propose deletion or renaming.
 - **Apply:** Add only proven-missing canonical fields, synchronize retained colors or managed visibility, synchronize canonical label definitions, or apply an exact browser-backed pin manifest after authorization. Keep deletion, renaming, option membership or order changes, issue types, unmanaged pinning, and pinned-field ordering unavailable.
 - **Verify:** Re-run the read-only inspection after an independently authorized change and report remaining drift or remote uncertainty.
 

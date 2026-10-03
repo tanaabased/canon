@@ -24,6 +24,12 @@ metadata:
 
 Assess whether one GitHub-backed task is complete, ready, pending, blocked, or uncertain from its declared acceptance criteria and required linked completion pull request. The workflow is read-only: the GitHub issue remains the authority for task state, and the skill never closes it or mutates its pull requests.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Github Cli Routing](../../references/github-cli-routing.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+
 ## When to Use
 
 - Check whether an explicit GitHub issue is ready to close.

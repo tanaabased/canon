@@ -18,6 +18,8 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 ## Scenario Shape
 
 - Put each user-visible flow in `examples/<scenario>/README.md`.
+- Apply the [documentation change gate](./documentation-standards.md#documentation-change-gate): keep useful fixture rationale, regression context, and scenario limitations beside the relevant setup or assertions in this README. Explain what a maintainer needs to understand the scenario without repeating what its commands already make clear.
+- Link the resolving issue when it explains a non-obvious regression, but keep the example understandable without opening it. Essential user requirements remain in product docs; temporary debugging and validation history stay in the PR.
 - Keep one scenario per README. Add a new scenario when the flow requires incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
 - Prefer broad contract names such as `install`, `options`, `envvars`, `model`, or `agent` unless the scenario truly owns one narrow case.
 - Use this default README structure:
@@ -28,6 +30,8 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
   4. Optional `## Cleanup`
 
 - Keep setup minimal and run the real prepared product surface before asserting its observable results.
+- Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
+- Add CLI and library coverage when both are supported public interfaces with contracts to prove. Do not duplicate every scenario across interfaces or build a scenario-by-interface matrix merely for symmetry.
 - Add `## Cleanup` only when teardown is part of the product contract, a resource can persist beyond the runner, or later work shares the same environment.
 - Add `examples/AGENTS.md` only when executable examples need durable editing rules beyond the repository root guidance.
 
@@ -37,7 +41,7 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 - Keep scenario-owned fixture files and named input directories directly beside that scenario's README. Do not add a generic scenario-local `fixtures/` wrapper merely to label them as fixtures.
 - Hoist a fixture to root `fixtures/` only when two or more live scenarios already share the same fixture contract. Do not hoist based on hypothetical reuse.
 - Reuse a repository-owned product asset directly when that real asset is the intended test input. Do not duplicate it as an example-only fixture solely to satisfy directory symmetry.
-- Keep scenario-specific helper code beside its scenario. Hoist a helper to root `scripts/` only when multiple scenarios share it or it owns substantial reusable semantic parsing or process coordination.
+- Keep scenario-specific helper code beside its scenario, including complex parsing or process coordination. Hoist a helper to root `scripts/` only when multiple live scenarios share it; complexity alone does not make it shared.
 - Avoid generic `examples/fixtures` or `examples/support` directories when immediate children of `examples/` are treated as scenario identities by CI. Put proven shared resources at the repository root instead.
 - Keep fixture trees deterministic and credential-free. Do not commit generated state, sessions, caches, runtime config, machine-specific paths, or secrets.
 
@@ -71,7 +75,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Chain fixed-string greps when stable tokens must occur on the same line. Do not assert terminal padding, alignment whitespace, color escape sequences, or complete human prose unless those are explicitly stable contracts.
 - Grep a product-generated log directly when that log is the observable lifecycle, audit, or safety record.
-- Keep product behavior assertions and scenario-specific expected values visible in the owning README or fixture; do not hide them in shared helpers.
+- Keep product invocations and behavior assertions visible in the owning README, with scenario-specific expected values there or in its fixtures. Helpers may handle justified parsing or process mechanics, but must not turn the example into an opaque runner call.
 - Do not redirect command output to a temporary file solely so the next command can grep it.
 - Capture output once when:
 
@@ -110,7 +114,11 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 - Run the real public entrypoint when CI can do so safely. Do not substitute fake bootstrap scripts, private config writes, synthetic tool success, or local stubs for the supported product flow.
 - When a public registration or onboarding command is part of the integration contract, use it even if a static config could be written more cheaply.
-- When the distributed artifact is the product, prepare and test the release-shaped artifact rather than a source-only entrypoint.
+- Prepare the distribution from the revision under review using the product's build and packaging path. Run scenarios against that candidate; a source entrypoint or previously published version does not establish its behavior.
+- For npm products, install the candidate tarball into an isolated consumer and use its installed executable or public exports. Keep product resolution independent of checkout source, development dependencies, and workspace links. Check installed declarations through that same consumer when types are part of the package contract.
+- For standalone executables, run the compiled candidate outside the checkout with its declared release assets. Exclude source and development dependencies; when runtime-independent operation is promised, exercise it without an installed JavaScript runtime.
+- Keep consumer assertions in the existing owning example or a focused package example. When moving coverage into Leia, remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs that no longer have a consumer.
+- Preserve distinct static package validation, registry dry runs, and publication checks under [verification boundaries](./verification-boundaries.md). Passing Leia scenarios establishes the tested consumer behavior, not successful publication.
 - Test the runtime mode the product actually supports. Do not enable unrelated container, VM, sandbox, daemon, channel, or service behavior merely because the dependency offers it.
 - If the safe default target is manageable to clean up, testing that default target directly is acceptable instead of forcing an example-local override.
 - Keep secrets in CI-managed environment variables. A scenario that requires a secret must fail clearly when it is absent and must assert that owned output and logs do not expose it.
@@ -129,7 +137,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 
 Use [`@lando/leia`](https://www.npmjs.com/package/@lando/leia) in the compatible `^2.0.0` range. Use an exact beta only during a deliberate prerelease rollout.
 
-Expose Leia through the consuming repository's `package.json` instead of invoking the installed binary directly:
+By default, expose Leia through the consuming repository's `package.json`:
 
 ```json
 {
@@ -142,14 +150,20 @@ Expose Leia through the consuming repository's `package.json` instead of invokin
 }
 ```
 
-Invoke scenarios with `bun run leia`. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/main/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
+Invoke scenarios with `bun run leia` by default. In CI, prefer [`tanaabased/actions/run-leia@v1`](https://github.com/tanaabased/actions/blob/main/run-leia/README.md), which invokes that script and owns temporary-state cleanup; runtime installation, dependencies, scenario setup, and assertions remain caller-owned. Follow [Leia's Bun CLI documentation](https://github.com/lando/leia/blob/main/CLI.md#bun) for Leia-owned options instead of copying its command reference here.
 
-Bun runs the Leia process; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
+The default script runs Leia with Bun; commands inside scenario blocks retain their declared runtimes. Follow [Test Runtimes](./coding-stack-preferences.md#test-runtimes) for CI setup and avoid Bun overrides that could redirect a Node runtime check.
+
+When the script or wrapper changes `PATH`, executable resolution, or runtime so the scenario exercises a checkout command instead of the intended installed host, invoke the installed Leia CLI directly with a compatible runtime. Explain the exception beside the invocation and verify the selected product executable and runtime from the scenario's environment. Keep testing the candidate distribution; changing launchers is not a substitute for installed acceptance coverage.
+
+Capture bounded, secret-safe failure diagnostics before cleanup. If a wrapper removes required evidence before it can be captured, use a direct Leia invocation for that job with explicit temporary-state ownership, diagnostic capture, and cleanup. Preserve Leia's failure status and report cleanup failures; do not add another wrapper merely to work around the first.
 
 Do not add `examples/package.json` solely for Leia's generated harness. Retain a CommonJS boundary when repository-authored `.js` scenario helpers use `require` or `module.exports`. Consult Leia's scenario documentation for module selection and shell behavior.
 
 ## CI Guidance
 
+- Prioritize readable, consistent example workflows across repositories over avoiding harmless unused setup. Prefer one linear setup sequence shared by the scenario matrix; conditional steps require a concrete correctness, security, or platform constraint, not merely a chance to save a little work.
+- Keep scenario-specific onboarding, configuration, and behavior in the owning README. Let shared actions supply their documented runtimes and tools; do not add redundant installers or preflight steps when the next operation already reports the missing prerequisite clearly.
 - Run mutating, secret-backed, or platform-dependent Leia scenarios on fresh CI runners by default.
 - Map one matrix entry to one example so failures identify the broken user flow directly.
 - Keep matrix names aligned with scenario directory names.
@@ -165,7 +179,7 @@ Do not add `examples/package.json` solely for Leia's generated harness. Retain a
 - Is every constant input checked in beside its sole owning scenario or hoisted only after proven sharing?
 - Are public product commands retained where their behavior is part of the contract?
 - Are generated files limited to runtime-derived state and evidence?
-- Are behavior assertions and scenario-specific expected values visible in the README or fixture rather than a shared helper?
+- Are product invocations and behavior assertions visible in the README, with scenario-specific expected values there or in its fixtures?
 - Are checked-in inputs copied under `TMPDIR` before product behavior mutates them?
 - Are simple assertions direct and semantic rather than whitespace-sensitive?
 - Is captured output reused for a real reason?

@@ -24,6 +24,7 @@ Use backticks for concrete machine names: packages, skills, channels, tools, fil
 
 ## Compatibility and Links
 
+- Follow the project's [maturity and compatibility commitments](./coding-stack-preferences.md#project-maturity-and-compatibility) when describing stability, deprecation, or migration; do not invent guarantees or migration obligations for an unsettled surface.
 - Link to maintained upstream documentation or the upstream default branch for current guidance. Document minimum compatibility or a supported range only when it affects the reader's choice, such as `1.0.2+`, `^2.0.0`, or `2.x`; a range describes supported compatibility, not necessarily an open-ended minimum. Avoid release-tag and commit-pinned documentation links in ongoing guidance.
 - Read current runtime and dependency versions from project declarations rather than repeating them in prose. A current documentation link does not make unreleased features available in the installed package.
 - Preserve exact versions in release history, historical evidence, reproducible fixtures, lockfiles, and intentional execution pins. Record the release or commit inspected during an audit in its review report rather than turning that snapshot into a permanent guidance link.
@@ -35,8 +36,18 @@ Apply this gate before adding, expanding, or relocating documentation on any sur
 - Identify the reader and the task, decision, or concrete mistake the proposed prose helps them address. Add prose only when that need is unmet.
 - Check existing docs, help, schemas, tests, runtime errors, and Actions diagnostics first. Do not add troubleshooting prose for failures that already explain the problem and remedy; document only missing prerequisites, decisions, consequences, or recovery steps readers need.
 - Give each explanation one authoritative home. Keep machine contracts in schemas, tests, and runtime instructions; add a human explanation only when the reader needs it to act correctly.
+- Keep installation, configuration, operation, and recovery requirements in product docs. Put useful fixture rationale, regression context, and scenario-specific limitations in the owning executable example's README; a test change does not justify expanding product docs. Keep implementation invariants with the owning code.
 - Prefer correcting, replacing, deleting, or linking existing material over adding sections or files. Use the shortest explanation that closes the gap: a sentence may suffice, and removing unnecessary prose needs no replacement.
-- Keep change-specific rationale, one-off debugging history, and validation evidence in the pull request. Promote only reusable guidance that passes this gate into durable docs.
+- Keep temporary debugging history, abandoned approaches, and validation evidence in the pull request. Promote only reusable explanation that passes this gate into its appropriate durable home; do not relocate prose that should simply be omitted.
 - Preserve useful reference coverage and correct claims made inaccurate by behavior changes. Complete API, CLI, and configuration references can serve a real lookup need; explanatory prose should help readers choose, combine, or understand consequences rather than repeat the inventory.
 - Update generated references through their existing source and generator when their contract changes. Regeneration does not require an accompanying narrative, troubleshooting section, or new guide.
 - Apply the gate as an internal authoring and review decision, without a mandatory justification template, checklist response, or recurring boilerplate.
+
+## Documentation Placement Review
+
+During optimization, inspect the existing documentation structure, whether a single README, companion Markdown guides, or a VitePress site. Audit obscure informational detail, repetitive explanation, and lengthy edge cases against the reader's task, not a word-count target.
+
+- Keep essential installation, configuration, operation, recovery, and consequential limitations in product documentation. Keep useful general lookup material in its appropriate reference home.
+- Move useful scenario-specific explanation to an existing Leia example that actually demonstrates the behavior. Name the source passage and destination example in the proposal; do not create a test merely to store prose or force unrelated detail into an example.
+- Remove redundant narration and temporary debugging history instead of relocating it. Examples may explain more when that helps a reader understand the demonstrated behavior, but remain edited and coherent.
+- Link moved material from the relevant product documentation through a contextual link or a short Examples or Further Reading area when useful. Preserve navigation and discoverability without duplicating the explanation or requiring another section in every document.

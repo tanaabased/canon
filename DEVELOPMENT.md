@@ -16,7 +16,7 @@ bun run lint
 
 ## Validation
 
-`bun run test` runs unit tests; `bun run lint` checks code and formatting. The [OpenClaw example](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md) owns packed installation, skill discovery, and guidance opt-out coverage. Its matrix-based [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) supplies OpenClaw and runs Leia on isolated CI runners; do not run the mutating scenario against your normal profile.
+`bun run test` runs unit tests; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
 Check the actual npm payload without installing dependencies into it:
 
@@ -28,7 +28,7 @@ tar -xzf "/tmp/tanaab-canon-$version.tgz" -C "$candidate" --strip-components=1
 bun run check:package "$candidate"
 ```
 
-The package check validates skill/resource links, loads entrypoints, scaffolds a skill, and renders issue forms outside the checkout. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
+The package check validates identities, metadata, entrypoints, and skill/resource links in the extracted payload. Leia owns executable consumer behavior. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
 
 ## Codex cache
 

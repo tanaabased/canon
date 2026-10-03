@@ -20,6 +20,15 @@ metadata:
 
 Tanaab-based authoring and standardization of repository READMEs and companion guides. Use when a user wants to write or trim a README, ADVANCED.md, or another supplementary guide, choose a README mode, or keep these docs aligned with the product.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Documentation Standards](../../references/documentation-standards.md) and [Readme Standards](../../references/readme-standards.md).
+- **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Structure or rewrite a repository `README.md` or its companion guides, including existing advanced, CLI, API, and configuration references.
@@ -51,7 +60,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Optimization
 
 - **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, primary entrypoints, supported commands, configuration, and other repository evidence that can confirm or contradict documentation claims.
-- **Compare:** Apply the documentation change gate, then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful explanations that belong closer to their point of use. Treat extraction signals as placement guidance for content that remains necessary.
+- **Compare:** Apply the documentation change gate and [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review), then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful scenario explanations better placed in existing Leia examples with discovery links. Treat extraction signals as placement guidance for content that remains necessary.
 - **Recommend:** Keep the truthful common path; correct contradictions; deduplicate or consolidate repeated guidance; remove prose that fails the documentation change gate without requiring replacement; split overloaded sections; move short line-specific explanation into language-appropriate comments above the relevant code; extract and move justified long-tail material; tighten prose and ordering; and remove stale claims without fabricating behavior.
 - **Apply:** After explicit authorization, perform those operations around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
 - **Verify:** Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.

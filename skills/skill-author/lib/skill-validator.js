@@ -428,6 +428,9 @@ function buildManualChecks({ expectedType }) {
   const checks = [
     'Check that the description clearly says what the skill does and when to use it.',
     'Check that the skill owns one narrow, concrete surface.',
+    'Check that governing policies appear in Required Reading with direct links and explicit Always or Before triggers, before the decisions they govern; omit the section only when there are no governing references.',
+    'Check required-reading coverage, nested policy dependencies, point-of-use constraints, and conflicting or unnecessary reads; Bundled Resources alone does not establish coverage.',
+    'For instruction-following changes, inspect representative traces and artifacts for timely reads and policy compliance, including applicable and inapplicable conditional cases; report unrun trials separately from structural validation.',
     'Check that bundled resources stay local unless they clearly pass the hoist test for repo-root canon.',
     'Check that any repo-root resources referenced by the skill still earn hoisted status through proven reuse, repo-wide contract status, or standalone human value.',
     'Check that skill code uses public bin, internal scripts, orchestration lib, unit-shaped utils, and scoped test roles consistently.',

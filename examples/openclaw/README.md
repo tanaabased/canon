@@ -1,24 +1,19 @@
 # OpenClaw Installation
 
-Install Canon's npm tarball in an isolated OpenClaw profile and verify native loading, skill discovery, and optional guidance. Run through the [Examples workflow](../../.github/workflows/pr-examples-tests.yml), which provides the pinned OpenClaw runtime and setup helpers without credentials or a live Gateway.
+Install Canon's npm tarball in an isolated OpenClaw profile and verify native loading, skill discovery, and optional guidance. Run through the [Examples workflow](../../.github/workflows/pr-examples-tests.yml), which provides `CANON_TARBALL`, the pinned OpenClaw runtime, and setup helpers without credentials or a live Gateway.
 
 ## Setup
 
 ```bash
 # should prepare an unauthenticated openclaw profile
 openclaw-setup
-
-# should pack the plugin from the checkout
-cd "$GITHUB_WORKSPACE"
-npm pack --ignore-scripts --pack-destination "$TMPDIR" --json > "$TMPDIR/pack.json"
 ```
 
 ## Testing
 
 ```bash
 # should load the packaged native plugin at its declared version
-tarball="$TMPDIR/$(jq -r '.[0].filename' "$TMPDIR/pack.json")"
-openclaw plugins install "$tarball" --force --accept-capabilities
+openclaw plugins install "$CANON_TARBALL" --force --accept-capabilities
 openclaw plugins inspect tanaab --runtime --json | jq -e \
   --arg version "$(jq -r '.version' "$GITHUB_WORKSPACE/package.json")" \
   '.plugin | .status == "loaded" and .format == "openclaw" and .version == $version'

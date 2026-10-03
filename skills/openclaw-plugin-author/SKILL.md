@@ -25,6 +25,22 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 - Treat the npm package name, OpenClaw plugin id, ClawHub owner/listing, and source repository as related but distinct identities.
 - Keep npm and ClawHub as independently operable publication pipelines while aligning their release source, version, build, package contents, and compatibility metadata.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [Javascript Repo Structure](../../references/javascript-repo-structure.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before changing implementation logic:** [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before changing plugin-owned commands:** [Cli Style Rules](../../references/cli-style-rules.md).
+- **Before adding or changing installed or runtime scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
+- **Before using recorded responses or approval expectations in mock-AI tests:** [Mock Ai Fixtures](../../references/mock-ai-fixtures.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create or update a native OpenClaw code plugin that ships `openclaw.plugin.json` and executable plugin runtime code.
@@ -113,6 +129,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- Apply [Mock-AI Fixtures](../../references/mock-ai-fixtures.md) only when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary plugin fixtures do not require that workflow.
 - Apply [JavaScript Author's direct-test contract](../javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
 - Prefer injected or faked SDK contexts for direct tests and assert manifest/runtime agreement, registered contract identity, and error behavior where those are stable public contracts.
 - For a plugin-local logger adapter, fake the host logger and assert one call at the original level, one plugin-id-derived namespace without a leading `openclaw-` when host attribution is absent, no repeated namespace when attribution is present, and no direct console fallback.

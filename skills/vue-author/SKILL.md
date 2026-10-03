@@ -23,6 +23,21 @@ Tanaab-based authoring, component testing, documentation, and npm packaging of V
 - Keep this skill on Vue components, their tests, documentation examples, and library exports.
 - Let `tanaab-vitepress-author` own VitePress site implementation, even when that site includes Vue under the hood.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Front End Preferences](../../references/front-end-preferences.md) and [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before adapting component documentation fallbacks:** [Component Documentation Examples](./references/component-documentation-examples.md).
+- **Before documenting components in VitePress:** [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
+- **Before packaging a component library:** [Release Destinations](../../references/release-destinations.md) and [Component Package Example](./references/component-package-example.md).
+- **Before adding or changing packaged consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Build or update Vue 3 components, SFC structure, or composition API flows.

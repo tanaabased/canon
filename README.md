@@ -26,7 +26,7 @@
 
 Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI for repository work. See [installation](./INSTALLATION.md) for prerequisites, upgrades, local checkouts, and optional OpenClaw guidance.
 
-For Codex, install Node/npm and the supported Codex CLI listed in the [prerequisites](./INSTALLATION.md#codex), then run:
+For Codex, install the Node/npm [prerequisites](./INSTALLATION.md#codex), then run:
 
 ```sh
 npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/canon

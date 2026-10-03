@@ -26,6 +26,14 @@ Inspect one canonical Task, Bug, or Feature; recommend whether it should remain 
 
 Recommendation is always read-only. A milestone reframe produces a bounded handoff for Project Milestone Author while leaving the source task unchanged. Decomposition publication reuses Task Author's canonical child payload, metadata, label, fallback, safety, and verification contracts while this skill owns the multi-issue ordering, sub-issue and dependency graph, parent rollup, and resumable partial-failure boundary.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Decomposition Contract](./references/task-decomposition-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+
 ## When to Use
 
 - Review an oversized task whose Work size or evidence suggests multiple independently completable outcomes.
@@ -46,6 +54,8 @@ Recommendation is always read-only. A milestone reframe produces a bounded hando
 
 ## Preconditions
 
+- Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
+
 - Require one explicit GitHub issue URL or `OWNER/REPO#NUMBER`. Never infer the target from a directory name.
 - Apply [the project-management model](../../references/project-management-model.md), [task-management contract](../../references/task-management-contract.md), and [GitHub CLI routing contract](../../references/github-cli-routing.md).
 - Require Bun and host-routed bare `gh`; preserve the inherited environment and working directory.
@@ -58,7 +68,7 @@ Recommendation is always read-only. A milestone reframe produces a bounded hando
 1. Inspect one exact parent without mutation:
 
    ```bash
-   bun skills/task-decomposer/scripts/inspect-task-decomposition.js OWNER/REPO#NUMBER --json
+   bun <skill-path>/scripts/inspect-task-decomposition.js OWNER/REPO#NUMBER --json
    ```
 
    Require a complete normalized issue, native and fallback metadata, comments, acceptance criteria, constraints, linked work, parent, sub-issues, child depth, blocked-by and blocking relationships, and a bounded set of recently updated repository task candidates. Resolve every proposed child through a separate exact-title search before deciding create or reuse. Keep unavailable reads explicit.
@@ -76,7 +86,7 @@ Recommendation is always read-only. A milestone reframe produces a bounded hando
 7. Preview the complete decomposition plan by sending the request without publication approval:
 
    ```bash
-   bun skills/task-decomposer/scripts/decompose-task.js --input -
+   bun <skill-path>/scripts/decompose-task.js --input -
    ```
 
    Review every child create or exact-reuse decision, native or fallback metadata, labels, managed comments, sub-issue edge, dependency edge, parent semantic and storage diff, preserved parent surfaces, ordered operation, target, publication finding, and SHA-256 digest.

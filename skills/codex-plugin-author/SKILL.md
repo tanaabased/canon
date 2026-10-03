@@ -20,6 +20,20 @@ metadata:
 
 Own the installable Codex plugin: its manifest, bundled resources, npm payload, and delivery contract. Keep skill content with [Skill Author](../skill-author/SKILL.md) and npm publishing mechanics with [JavaScript Author](../javascript-author/SKILL.md#deployment).
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [Release Destinations](../../references/release-destinations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [Javascript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before using recorded responses or approval expectations in mock-AI tests:** [Mock Ai Fixtures](../../references/mock-ai-fixtures.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Create or modify a Codex plugin's structure, manifest, package contents, or release validation.
@@ -71,10 +85,11 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 
 ## Testing
 
-- Select the smallest layers that cover the change: deterministic units for logic, extracted-package checks for distribution, and isolated native checks for installation or host behavior. Keep each check in one owning suite; do not repeat an operational suite in release checks without a distinct gap.
+- Apply [Mock-AI Fixtures](../../references/mock-ai-fixtures.md) only when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary plugin fixtures do not require that workflow.
+- Use deterministic units for logic, static extracted-package validation for metadata and resources, and Leia scenarios for executable consumer or native host behavior. Keep each check in one owning suite; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
-- For example, run an extracted authoring CLI against a temporary local fixture and verify its output. Keep GitHub mutations out of ordinary package smoke tests.
+- In the owning Leia example, run the extracted authoring CLI against a temporary local fixture and verify its output. Keep commands and assertions visible and keep GitHub mutations out of ordinary package scenarios.
 - For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/main/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
 - For hooks, test the packaged handler and its output directly. That does not prove native event delivery or trust: use the host's hook review/trust flow and a fresh session when that boundary is the feature under test. Keep ordinary tests out of the developer's live cache and credentials.
 

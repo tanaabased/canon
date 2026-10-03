@@ -41,5 +41,3 @@ Reject `fix: preserve EMORI identity`, `#42: docs: update OPENCLAW setup`, `#42:
 ## Validation
 
 Before delivery, verify the backing issue, lifecycle stage, and explicit prefix owner; check the supplied subject against the applicable example. After delivery, inspect the actual commit subject, for example with `git log -1 --format=%s`, and verify the complete form, correct issue number, a single prefix, and description casing.
-
-The existing unit suite checks this reference's lifecycle examples and authoring links. Those checks validate Canon's guidance, not Agent System's runtime prefixing implementation. Any runtime implementation must separately prove that first-commit prefixing happens exactly once and that subsequent PR follow-ups preserve the complete supplied subject.

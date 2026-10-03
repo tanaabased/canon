@@ -15,6 +15,7 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 - A thin single-surface repository may use the repository root as its owning scope.
 - A skill, package, app, plugin, or independent product surface should normally own its code beneath its own directory.
 - Code shared by multiple sibling scopes may move to their nearest common owner only after it passes the hoisting test.
+- Carry ownership changes through the affected consumers and representations using [Optimization Operations](./optimization-operations.md); moving a file alone does not establish the new boundary.
 - Do not hide structured code beneath an extra generic directory when the owner is already clear.
 - Do not introduce a generic `src/` directory merely because a scope uses TypeScript. Preserve `src/` when an existing framework, external contract, package tool, or established repo convention requires it.
 
@@ -32,6 +33,7 @@ scope/
 ```
 
 - Create only the role folders the scope actually needs.
+- Before adding an abstraction or permanent command, apply the [upkeep guidance in Optimization Operations](./optimization-operations.md); a place in this layout does not justify a new tool.
 - Keep executable entrypoints thin and move reusable behavior into `lib/` or `utils/`.
 - Do not keep ordinary implementation modules loose at the scope root when one of these roles describes them.
 - Purpose-named subscopes may repeat this layout when one owner contains multiple independently understandable surfaces.
@@ -48,7 +50,7 @@ scope/
 ## `bin/` Boundary
 
 - Use `bin/` for commands intended as a public or directly human-facing interface.
-- Treat command names, help, arguments, options, output, and exit behavior as a stable user contract.
+- Treat command names, help, arguments, options, output, and exit behavior as a public contract governed by the project's [maturity and compatibility commitments](./coding-stack-preferences.md#project-maturity-and-compatibility).
 - Declare package-level CLIs in `package.json` when package metadata is in scope.
 - Keep public entrypoints friendly to `bun build` when built artifacts are part of the product surface.
 - Prefer static imports for repo-authored and package dependencies when the built CLI artifact is the product.

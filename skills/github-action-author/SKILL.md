@@ -23,6 +23,22 @@ Tanaab-based authoring and standardization of GitHub Action product surfaces. Us
 - Keep this skill on the action product surface: `action.yml`, runtime layout, committed artifact, README contract, and action-local validation.
 - Let `tanaab-github-workflow-author` own workflow graphs when triggers, permissions, matrices, or reusable topology are the main artifact.
 
+## Required Reading
+
+Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
+
+- **Always:** [JavaScript Action Conventions](./references/javascript-action-conventions.md) and [Coding Stack Preferences](../../references/coding-stack-preferences.md).
+- **Before changing source layout or implementation:** [Javascript Repo Structure](../../references/javascript-repo-structure.md) and [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before changing the action README:** [Readme Standards](../../references/readme-standards.md).
+- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before testing input normalization:** [Action Input Helper Tests](./references/action-input-helper-tests.md).
+- **Before selecting release destinations:** [Release Destinations](../../references/release-destinations.md).
+- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+
 ## When to Use
 
 - Shape `action.yml`, committed runtime artifacts, or the repo-local contract of a GitHub Action.
