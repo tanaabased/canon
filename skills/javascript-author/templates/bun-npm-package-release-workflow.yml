@@ -44,9 +44,7 @@ jobs:
         uses: tanaabased/actions/publish-npm@v1
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
-          # Set false and omit channel-token when GitHub Latest should leave edge unchanged.
           sync-edge-tag: true
-          channel-token: ${{ secrets.TANAAB_NPM_DEPLOY }}
 
   publish-repo:
     name: Publish repo
