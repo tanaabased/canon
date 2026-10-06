@@ -40,13 +40,14 @@ jobs:
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
           dry-run: true
+          npm-version: '^11.21.0'
       - name: Publish npm
         uses: tanaabased/actions/publish-npm@v1
         with:
           tarball: ${{ steps.pack.outputs.tarball-path }}
-          # Set false and omit channel-token when GitHub Latest should leave edge unchanged.
+          # Tokenless syncing requires a released publish-npm version with OIDC dist-tag support; v1.0.4 does not support it.
           sync-edge-tag: true
-          channel-token: ${{ secrets.TANAAB_NPM_DEPLOY }}
+          npm-version: '^11.21.0'
 
   publish-repo:
     name: Publish repo
