@@ -91,6 +91,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
 - In the owning Leia example, run the extracted authoring CLI against a temporary local fixture and verify its output. Keep commands and assertions visible and keep GitHub mutations out of ordinary package scenarios.
 - For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/main/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
+- When changing shipped resources or retiring skills, extend the existing isolated cache scenario with representative stale or missing files. Verify synchronization restores required resources, removes owned retired files, and preserves unrelated content. Keep retirement selectors until supported older caches no longer need them, and check native discovery when the skill inventory changes; a fresh install alone does not establish upgrade behavior.
 - For hooks, test the packaged handler and its output directly. That does not prove native event delivery or trust: use the host's hook review/trust flow and a fresh session when that boundary is the feature under test. Keep ordinary tests out of the developer's live cache and credentials.
 
 ## Deployment
@@ -110,7 +111,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
-- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer.
+- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer.
 - **Recommend:** Reconcile conflicting install paths, repair missing runtime resources, and replace redundant archive jobs with the existing npm lifecycle when parity is demonstrable. Keep justified exceptions and aligned implementations.
 - **Apply:** After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
 - **Verify:** Validate and exercise the exact packed artifact in isolation, run the publication dry run, and report separately any unverified live installation or publication.

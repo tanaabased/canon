@@ -55,6 +55,8 @@ Use these rules when shaping human or machine-readable CLI output in Tanaab-mana
 - Use `tp` on the key verb in an action message and `ts` on the key target or destination.
 - Avoid coloring entire sentences unless the message is itself a compact status label.
 - Prefer a small shared helper surface such as `log`, `note`, `success`, `warn`, `fail`, or their shell equivalents over ad hoc inline formatting.
+- For subprocesses with potentially large output, drain log streams continuously and retain only bounded, redacted failure context. Keep structured results separate and complete within the declared output contract; do not silently truncate JSON to fit a diagnostic limit. Apply redaction across stream boundaries before displaying or retaining diagnostics.
+- Failure diagnostics must work when setup is incomplete. Optional reporting failures must not replace the original command's failure or exit status. When changing this boundary, use focused checks for large output, incomplete setup, and diagnostic failure rather than requiring a separate stress suite.
 
 ## Machine-Readable Output
 

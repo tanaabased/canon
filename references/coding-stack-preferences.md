@@ -21,6 +21,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Read runtime versions from project declarations such as `.node-version`, `.bun-version`, `packageManager`, and `engines`; follow [compatibility and link guidance](./documentation-standards.md#compatibility-and-links) for upstream requirements and necessary minimums instead of copying changing versions into prose.
 - Use `node:` built-in modules when Bun provides Node-compatible support.
 - Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
+- For saved automation commands intended to survive supported runtime upgrades, prefer a stable host-owned launcher or resolution through the configured host `PATH` over a version-specific installation path. Check the executing runtime against the package's declared compatibility before accessing operational state, and report missing or unsupported runtimes with an actionable remedy. Preserve intentional exact-runtime pins and required executable identity checks; this does not prohibit absolute paths. When changing durable launch behavior, use a disposable replacement-runtime case to verify that removing the old executable does not strand the saved command.
 
 ### Source and Distribution
 
