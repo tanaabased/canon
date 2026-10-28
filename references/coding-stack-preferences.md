@@ -86,12 +86,23 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## Testing Defaults
 
-- Apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
-- Tests have two default homes: focused unit tests and Leia integration scenarios. Before adding a harness, probe suite, or test category that fits neither, explain the uncovered requirement and ask the user. Existing surface-specific guidance, such as Vue component testing below, remains applicable.
-- Unit tests primarily exercise independently testable functions in `utils/` within the owning scope. Extract cohesive decisions from libraries when that makes the code simpler; retain light, deterministic library tests for state or orchestration that cannot honestly be separated. Do not build fake end-to-end consumers inside unit tests.
-- Integration and consumer behavior belong in the owning Leia example: commands, installed imports and declarations, public SDK workflows, process lifecycle, and operational filesystem effects. Extend an existing scenario or add a focused example instead of a parallel consumer runner or smoke suite.
-- Keep linting, formatting, type-checking, and established static validators separate from behavioral tests. Packaging and publication commands retain their own validation contracts under [verification boundaries](./verification-boundaries.md); they do not justify a parallel consumer test suite.
-- For JS/TS/Bun helper tests, prefer Mocha plus built-in `node:` assertion and filesystem helpers. Vue component tests use [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing); existing pure-helper tests need not migrate.
+the shared behavioral model has three layers. classify by the boundary exercised, not by runner, duration, or filename; Mocha can run both units and components.
+
+| layer       | boundary and example                                                                                                                                                                                         | placement                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| strict unit | an isolated decision or transformation with deterministic inputs and injected boundaries; for example, selecting a retry policy from supplied errors and time                                                | nearest owning scope's `test/`, such as `feature/test/retry-policy.spec.js` |
+| component   | a coherent subsystem with real internal wiring exercised through its boundary and fake external services; for example, backup creation and recovery through a local archive adapter with fake remote storage | the same owning `test/`, such as `feature/test/backup.component.js`         |
+| end-to-end  | a supported installed product flow through public interfaces and meaningful outcomes; for example, installing the candidate package and using its CLI to back up and restore a workspace                     | the owning Leia `examples/<flow>/README.md`, where applicable               |
+
+- apply [verification boundaries](./verification-boundaries.md) when selecting checks; additional post-success verification must cover a consequential gap in the command's contract.
+- strict units avoid real filesystem, subprocess, network, credential, and timing dependencies. inject those boundaries; extract cohesive decisions into `utils/` when that simplifies the code rather than forcing every function out of its owner.
+- components can cover a subsystem smaller than a library and need not be UI components. allow small isolated filesystem, socket, or process fixtures when that native contract is the subject. inject incidental dependencies, keep external services fake, and keep installed functional loops in end-to-end coverage.
+- end-to-end coverage includes bounded installed integration, such as importing one public package API in an isolated consumer, as well as multi-system journeys such as installation through service restart and recovery. choose the smaller flow that establishes the supported contract; use deterministic model fixtures when model judgment is not the contract. follow [Leia policy](./leia-markdown-scenarios.md) for execution and artifact isolation.
+- choose the smallest layer that detects the regression. functions composing does not require another suite; expose separately selectable fast units and components when their cost or boundary makes that useful. use disjoint discovery patterns if splitting commands, such as `test/*.spec.js` and `test/*.component.js`, without another runner or mandatory component suite.
+- classify [evidence per assertion](./verification-boundaries.md#evidence-and-static-checks), including in mixed suites. lint, schema, build, packaging, and publication checks retain their distinct contracts; they do not require a fourth suite or establish runtime behavior by themselves.
+- when Mocha cases time out or repeatedly run slowly, review their boundary and execution cost. reduce fixtures, inject incidental dependencies, and consolidate duplicate flows before a justified timeout increase. elapsed time alone does not classify a test, and filesystem use does not automatically require Leia.
+- before consolidating coverage, identify the surviving assertion or flow for each distinct safety, protocol, and platform contract. remove duplicate assertions and unused fixtures only after those guarantees have an owner.
+- for JS/TS/Bun units and components, prefer Mocha plus built-in `node:` assertions and appropriate fixture helpers. preserve [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing) and effective existing suites.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a `test/` directory inside the nearest scope that owns the implementation.
 - Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support code.
@@ -99,7 +110,8 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
 - Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
 - Start Mocha test names with `should` so each test reads as an expected behavior.
-- For JS/TS/Bun unit-test workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
+- OS matrices and stress/volume coverage are independent of these layers; choose them for supported platform contracts and load risks.
+- For JS/TS/Bun unit and component workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
 - Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone is not sufficient evidence.
 - When Windows CI is explicitly required, use a supported versioned runner label selected for that repository and never `windows-latest`.
 
@@ -114,7 +126,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 ## Operational Scenario Testing
 
 - Use Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
-- Use Leia for shell, bootstrap, or other operational surfaces that are better expressed as executable scenarios than as unit tests.
+- apply [Testing Defaults](#testing-defaults) before choosing Leia: small native-contract components can stay in the owning test runner; installed shell, bootstrap, and other public flows belong in executable scenarios.
 - Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
 - Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
 - Apply [Leia's artifact testing policy](./leia-markdown-scenarios.md#real-product-execution): exercise the candidate tarball or standalone executable through its consumer interface, with no checkout-source fallback. Select the declared consumer runtime through [Test Runtimes](#test-runtimes).
@@ -133,7 +145,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 - Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
-- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed consumer scenarios, `.github/workflows/pr-component-tests.yml` for Vue component behavior, `.github/workflows/pr-build-checks.yml` for frontend lint and builds, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
+- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed consumer scenarios, `.github/workflows/pr-component-tests.yml` for separately gated component behavior, including Vue, `.github/workflows/pr-build-checks.yml` for frontend lint and builds, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
 - Add separate files such as `pr-options-tests.yml` or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
 - Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
 - For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.

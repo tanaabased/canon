@@ -106,7 +106,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Testing
 
 - Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
-- Use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and deterministic boundaries. Test wrappers or classes directly when they own meaningful orchestration, state, or boundary behavior.
+- use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and injected boundaries. test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
 
