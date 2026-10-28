@@ -351,9 +351,9 @@ Task Author may apply or remove existing canonical labels but must not create, r
 
 Revise the body to represent the current task rather than accumulating an inline changelog. For a material change to outcome, scope, acceptance criteria, constraints, task kind, or execution assumptions:
 
-1. show the exact semantic diff;
-2. update the current body after authorization; and
-3. post a concise comment summarizing what changed and why.
+1. Show the exact semantic diff;
+2. Update the current body after authorization; and
+3. Post a concise comment summarizing what changed and why.
 
 Minor wording, formatting, or typo corrections do not require a history comment. Never erase earlier comments or claim that previously delivered work satisfied newly added criteria without evidence.
 
@@ -390,12 +390,12 @@ Minor wording, formatting, or typo corrections do not require a history comment.
 
 When a canonical native representation becomes available:
 
-1. inspect the current fallback and native values;
-2. treat a conflicting native value as authoritative and report the conflict;
-3. preview the exact native write and capsule removal;
-4. write and re-read the native value;
-5. remove only the verified fallback key; and
-6. remove the capsule when empty.
+1. Inspect the current fallback and native values;
+2. Treat a conflicting native value as authoritative and report the conflict;
+3. Preview the exact native write and capsule removal;
+4. Write and re-read the native value;
+5. Remove only the verified fallback key; and
+6. Remove the capsule when empty.
 
 ### Completion Pull Request
 

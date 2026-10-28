@@ -21,7 +21,7 @@ metadata:
 
 ## Overview
 
-Audit a project's checked-in and contract-required repository surfaces against the Optimization facets owned by applicable Tanaab skills, apply the shared optimization operations to observed evidence, and report both substantial improvements and small concrete cleanup. The default scope is the whole local project; an explicit target narrows the review. The pass includes relevant bounded public upstream release metadata, stays read-only, and is complete when every in-scope observed or explicitly required surface is classified and actionable findings have a dependency-ordered plan.
+Review a project's checked-in files and any material its contracts require, using the applicable Tanaab skills' Optimization facets and shared optimization operations. Report both substantial improvements and small concrete cleanup from observed evidence. Review the whole local project unless an explicit target narrows the scope, and include relevant, bounded public upstream release metadata. Keep the review read-only. Finish when every observed or explicitly required area in scope is classified and actionable findings have a dependency-ordered plan.
 
 ## Required Reading
 
@@ -29,7 +29,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
 
 ## When to Use
 

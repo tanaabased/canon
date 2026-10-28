@@ -56,7 +56,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 1. Confirm the work is changelog-led and complete Required Reading.
 2. Inspect the existing changelog and gather commit, issue, and pull-request evidence for the selected range.
 3. Select material user or developer outcomes, excluding changes already covered by released entries.
-4. Edit the unreleased section using [Changelog Format and Examples](./references/changelog-format-and-examples.md) for the heading, bullet shape, ordering, machine names, and source links. Preserve released history.
+4. Select the applicable [documentation style](../../references/documentation-standards.md#documentation-style), then edit the unreleased section using [Changelog Format and Examples](./references/changelog-format-and-examples.md) for the heading, bullet shape, ordering, machine names, and source links. Preserve released history.
 5. Validate the entries against their evidence and stop without drafting or publishing a release.
 
 ## Checkpoints

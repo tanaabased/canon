@@ -2,6 +2,20 @@
 
 Apply these standards to all documentation: READMEs, supplementary guides such as `ADVANCED.md`, API and CLI references, VitePress or other docs-site pages, generated documentation, and inline comments. The filename, renderer, and owning skill do not change the gate.
 
+## Documentation Style
+
+Before authoring or optimizing documentation, select the style in this order: explicit user direction, the target repository's declared house style, then the shared default below. Read any voice skill selected by the repository before editing. Apply the choice across contributors; a personal agent voice does not override the repository's documentation style. This selects expression without changing contributor identity, credentials, judgment, permissions, or conversational persona.
+
+The shared default follows [Agent System's documentation voice](https://github.com/tanaabased/openclaw-agent-system/blob/main/DOCUMENTATION.md#documentation-voice): clear, warm, direct, and practical for readers unfamiliar with the project.
+
+- Lead with what the reader can do or needs to know, then explain the reason, consequence, or next step. Name the tool or runtime when it performs the action.
+- Use familiar words and active verbs. Keep useful technical precision, and explain the practical effect of terms the reader needs to understand.
+- Use normal sentence capitalization, exact product and identifier casing, and natural contractions. Be personable without relying on familiarity, catchphrases, teasing, profanity, or inflated claims.
+- Keep paragraphs focused. Use lists for steps or parallel choices and tables for lookup details; cut repetition instead of compressing explanations into fragments.
+- State limitations and failures calmly and specifically. Explain the consequence and the next supported action. Distinguish configured state, accepted requests, execution, and verified completion.
+
+Leave already-clear passages alone and apply the [documentation change gate](#documentation-change-gate) to voice cleanup too. Preserve factual claims, commands, identifiers, code, quoted/source material, links and anchors, consequential defaults and caveats, permission boundaries, executable Leia blocks, required formats, and published release history. Style edits must not weaken requirements or imply unverified success. Required skill headings, changelog formats, and language-specific code/comment conventions retain their own rules.
+
 ## Inventory
 
 Common places to inspect when relevant to the change, including but not limited to:

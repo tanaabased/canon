@@ -1,6 +1,6 @@
 # Development
 
-Contributor setup, validation, and release preparation for [Canon](./README.md). For using the plugin, see [Installation](./INSTALLATION.md).
+Set up a [Canon](./README.md) checkout, validate changes, and prepare a release. To install and use the plugin, see [Installation](./INSTALLATION.md).
 
 ## Setup
 
@@ -36,8 +36,8 @@ The package check validates identities, metadata, entrypoints, and skill/resourc
 
 ## Release preparation
 
-npm publication and `latest`-to-`edge` channel syncing use trusted publishing for `tanaabased/canon` and `.github/workflows/release.yml`, with `npm publish` and `npm dist-tag` permissions. no npm token is required; see the [npm publishing contract](./references/coding-stack-preferences.md#npm-package-publishing).
+Use trusted publishing for npm publication and `latest`-to-`edge` channel syncing from `tanaabased/canon` and `.github/workflows/release.yml`, with `npm publish` and `npm dist-tag` permissions. No npm token is required; see the [npm publishing contract](./references/coding-stack-preferences.md#npm-package-publishing).
 
-ClawHub publication uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. all three jobs stamp the same release version into the package and both plugin manifests.
+ClawHub publication uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests.
 
 See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.

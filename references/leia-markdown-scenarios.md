@@ -10,9 +10,9 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 
 ## When to Use
 
-- use Leia for supported installed flows through public product surfaces: CLI behavior, installed imports, file layout, permissions, process lifecycle, readiness, machine mutation, or logs. a small filesystem, socket, or process fixture testing one native subsystem contract can remain a component; installed functional loops belong here.
+- Use Leia for supported installed flows through public product surfaces: CLI behavior, installed imports, file layout, permissions, process lifecycle, readiness, machine mutation, or logs. A small filesystem, socket, or process fixture testing one native subsystem contract can remain a component; installed functional loops belong here.
 - Prefer Leia when fresh CI runners, platform matrices, secrets, or release-shaped artifacts are important to the result.
-- choose units, bounded components, or installed flows using the shared model; filesystem use and elapsed time alone do not require Leia. bounded installed integration need not become a multi-system journey. use deterministic model fixtures when model judgment is not the contract.
+- Choose units, bounded components, or installed flows using the shared model; filesystem use and elapsed time alone do not require Leia. Bounded installed integration need not become a multi-system journey. Use deterministic model fixtures when model judgment is not the contract.
 - Do not reproduce the same contract in both Leia and another end-to-end harness without a distinct risk that justifies both.
 
 ## Scenario Shape
@@ -20,17 +20,17 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 - Put each user-visible flow in `examples/<scenario>/README.md`.
 - Apply the [documentation change gate](./documentation-standards.md#documentation-change-gate): keep useful fixture rationale, regression context, and scenario limitations beside the relevant setup or assertions in this README. Explain what a maintainer needs to understand the scenario without repeating what its commands already make clear.
 - Link the resolving issue when it explains a non-obvious regression, but keep the example understandable without opening it. Essential user requirements remain in product docs; temporary debugging and validation history stay in the PR.
-- keep one scenario per README. add a scenario only for a distinct installed flow, native boundary, safety contract, or incompatible setup; a separate matrix identity alone does not justify another scenario.
+- Keep one scenario per README. Add a scenario only for a distinct installed flow, native boundary, safety contract, or incompatible setup; a separate matrix identity alone does not justify another scenario.
 - Prefer broad contract names such as `install`, `options`, `envvars`, `model`, or `agent` unless the scenario truly owns one narrow case.
 - Use this default README structure:
 
-  1. title and a short critical-path paragraph naming the trigger, necessary transitions, and observable terminal result; a focused safety contract may end in a meaningful refusal
-  2. included behavior, adjacent exclusions with links to existing owners, and concise evidence limits, all before executable setup
+  1. Title and a short critical-path paragraph naming the trigger, necessary transitions, and observable terminal result; a focused safety contract may end in a meaningful refusal
+  2. Included behavior, adjacent exclusions with links to existing owners, and concise evidence limits, all before executable setup
   3. `## Setup`
   4. `## Testing`
-  5. optional `## Cleanup`
+  5. Optional `## Cleanup`
 
-  use headings such as `What Belongs Here`, `What Does Not Belong Here`, and `Notes`, or equivalent prose and headings. combine short explanations and omit empty sections; describe the boundary without inventorying every assertion.
+  Use headings such as `What Belongs Here`, `What Does Not Belong Here`, and `Notes`, or equivalent prose and headings. Combine short explanations and omit empty sections; describe the boundary without inventorying every assertion.
 
 - Keep setup minimal and run the real prepared product surface before asserting its observable results.
 - Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
@@ -38,14 +38,14 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 - Add `## Cleanup` only when teardown is part of the product contract, a resource can persist beyond the runner, or later work shares the same environment.
 - Add `examples/AGENTS.md` only when executable examples need durable editing rules beyond the repository root guidance.
 
-## scope and placement
+## Scope and placement
 
-- before adding coverage, read existing README scopes and choose the narrowest existing example, strict unit, component, or upstream owner under the [shared testing layers](./coding-stack-preferences.md#testing-defaults). convenient installed state, a shared prerequisite, or a related feature name does not establish ownership.
-- add a check only when it advances the declared path or protects an essential guarantee. explain a proposed scope change before expanding the example to accommodate it.
-- before adding an install, restart, model turn, or live provider request, identify the required behavior existing evidence cannot establish and its execution cost. retain representative convergence or duplicate-prevention checks when they are part of the declared result; route independent recovery cases and permutations to their narrowest owner.
-- remove confirmed duplication after identifying surviving coverage for distinct safety, protocol, and platform guarantees. remove unused support only after its consumers are gone; do not mechanically relocate checks that already have sufficient coverage.
-- keep each scenario's scope in its README. matrices select scenarios and examples-level guidance gives editing rules; neither should repeat individual scopes.
-- distinguish executed checks from manual or future acceptance work and still-present checks awaiting relocation. link only existing destinations; state an ownership gap rather than inventing a destination or claiming an unperformed split.
+- Before adding coverage, read existing README scopes and choose the narrowest existing example, strict unit, component, or upstream owner under the [shared testing layers](./coding-stack-preferences.md#testing-defaults). Convenient installed state, a shared prerequisite, or a related feature name does not establish ownership.
+- Add a check only when it advances the declared path or protects an essential guarantee. Explain a proposed scope change before expanding the example to accommodate it.
+- Before adding an install, restart, model turn, or live provider request, identify the required behavior existing evidence cannot establish and its execution cost. Retain representative convergence or duplicate-prevention checks when they are part of the declared result; route independent recovery cases and permutations to their narrowest owner.
+- Remove confirmed duplication after identifying surviving coverage for distinct safety, protocol, and platform guarantees. Remove unused support only after its consumers are gone; do not mechanically relocate checks that already have sufficient coverage.
+- Keep each scenario's scope in its README. Matrices select scenarios and examples-level guidance gives editing rules; neither should repeat individual scopes.
+- Distinguish executed checks from manual or future acceptance work and still-present checks awaiting relocation. Link only existing destinations; state an ownership gap rather than inventing a destination or claiming an unperformed split.
 
 ## Fixture and Support Ownership
 
@@ -119,7 +119,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - When product behavior mutates a checked-in input tree, copy it under the scenario's `TMPDIR` first and run against the copy; keep the checked-in source deterministic.
 - Prefer readiness polling against a meaningful product signal over fixed sleeps.
 - Bound every readiness and shutdown wait. Allow enough time for cold CI startup and report the relevant process or log state when the bound expires.
-- keep genuine operational waits in the owning installed flow. inject deterministic time and process boundaries in units; keep component readiness waits bounded around the native contract being exercised. review slow fixtures and duplicate flows before increasing timeouts.
+- Keep genuine operational waits in the owning installed flow. Inject deterministic time and process boundaries in units; keep component readiness waits bounded around the native contract being exercised. Review slow fixtures and duplicate flows before increasing timeouts.
 - A deliberate edit used to exercise watching, rebuilding, or restart behavior is an action under test, not static fixture generation.
 
 ## Real Product Execution
@@ -129,7 +129,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Prepare the distribution from the revision under review using the product's build and packaging path. Run scenarios against that candidate; a source entrypoint or previously published version does not establish its behavior.
 - For npm products, install the candidate tarball into an isolated consumer and use its installed executable or public exports. Keep product resolution independent of checkout source, development dependencies, and workspace links. Check installed declarations through that same consumer when types are part of the package contract.
 - For standalone executables, run the compiled candidate outside the checkout with its declared release assets. Exclude source and development dependencies; when runtime-independent operation is promised, exercise it without an installed JavaScript runtime.
-- Keep consumer assertions in the existing owning example or a focused package example. before consolidating, identify surviving coverage for distinct safety, protocol, and platform contracts. remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs only when their guarantees remain covered and they no longer have a consumer.
+- Keep consumer assertions in the existing owning example or a focused package example. Before consolidating, identify surviving coverage for distinct safety, protocol, and platform contracts. Remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs only when their guarantees remain covered and they no longer have a consumer.
 - Preserve distinct static package validation, registry dry runs, and publication checks under [verification boundaries](./verification-boundaries.md). Passing Leia scenarios establishes the tested consumer behavior, not successful publication.
 - Test the runtime mode the product actually supports. Do not enable unrelated container, VM, sandbox, daemon, channel, or service behavior merely because the dependency offers it.
 - If the safe default target is manageable to clean up, testing that default target directly is acceptable instead of forcing an example-local override.
@@ -203,4 +203,4 @@ Do not add `examples/package.json` solely for Leia's generated harness. Retain a
 - Is each live model invocation required by the contract and using the lowest-cost compatible model?
 - Are model selection and credentials centralized and scoped to model-backed scenarios?
 - Is cleanup present only when resources can persist or cleanup behavior is itself under test?
-- does each assertion use the smallest shared testing layer, keeping bounded subsystem contracts in components and installed product flows in Leia?
+- Does each assertion use the smallest shared testing layer, keeping bounded subsystem contracts in components and installed product flows in Leia?
