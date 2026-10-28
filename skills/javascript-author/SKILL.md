@@ -106,7 +106,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Testing
 
 - Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
-- use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and injected boundaries. test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
+- Use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and injected boundaries. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
 
@@ -186,6 +186,6 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
 - Confirm `GitHub Actions` maps pull-request validation to `Testing`, linting to Repo Standardizer, and release publication to `Deployment` without duplicating their doctrine or absorbing independent workflow-topology ownership.
 - Confirm any npm deployment uses the canonical release-published lifecycle, `@tanaab` package identity, npm trusted publishing, conditional package builds, post-stamping format validation, an npm dry run, and the `latest` or `edge` channel contract.
-- confirm authentication follows `Deployment`: prefer tokenless publication and channel syncing, and retain token auth only for its documented exceptions or unverified migration prerequisites.
+- Confirm authentication follows `Deployment`: prefer tokenless publication and channel syncing, and retain token auth only for its documented exceptions or unverified migration prerequisites.
 - Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface.
 - Confirm the change did not widen into CLI product, independent workflow-graph work, non-npm release systems, or broader operational deployment.

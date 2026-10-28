@@ -1,5 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added a shared documentation style with repository overrides and adopted it for Canon's checked-in prose. [#89](https://github.com/tanaabased/canon/issues/89)
 - Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
 - Added shared guidance for strict units, bounded components, end-to-end flows, and static evidence. [#86](https://github.com/tanaabased/canon/issues/86)
 - Added support for restricting canonical `main` pushes and merges to designated users in `tanaab-project-author`. [#79](https://github.com/tanaabased/canon/pull/79)

@@ -138,7 +138,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary. Use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - For justified CI runtime scenarios, use [preferred setup and Leia actions](#preferred-tools). Select the required OpenClaw version and isolated profile explicitly; Agent System and fixture options are conditional on the scenario.
 - When a fresh unattended CI scenario must exercise an OpenClaw tool call, synchronize no-approval exec policy inside the scenario setup with `openclaw exec-policy preset yolo`. Restrict this to isolated ephemeral state; CI or a missing TTY does not itself bypass approvals, and routine local validation must not apply the preset to a developer's normal profile.
-- follow the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): use the existing runner for units and bounded components with fake external services, making them separately selectable when useful. keep installed Leia flows in separate commands and CI checks; routine local validation must not require machine mutation or live OpenClaw flows.
+- Follow the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): use the existing runner for units and bounded components with fake external services, making them separately selectable when useful. Keep installed Leia flows in separate commands and CI checks; routine local validation must not require machine mutation or live OpenClaw flows.
 
 ## Deployment
 

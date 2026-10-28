@@ -90,7 +90,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
-- use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
+- Use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. Retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
 
 Minimal generic example:
 

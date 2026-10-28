@@ -96,7 +96,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep one example flow per `examples/<scenario>/README.md` and assert the user-facing CLI contract rather than internal parser details.
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
-- use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): keep parser decisions in units and command wiring with injected external services in bounded components. Leia owns installed CLI product flows; reuse the existing runner for internal coverage.
+- Use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): keep parser decisions in units and command wiring with injected external services in bounded components. Leia owns installed CLI product flows; reuse the existing runner for internal coverage.
 - When the CLI ships as a built artifact, run Leia against its executable entrypoint under the declared consumer runtime, following [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes).
 
 Minimal generic example:

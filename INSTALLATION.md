@@ -6,7 +6,7 @@ Have Bun available for bundled scripts, and `git` plus an authenticated `gh` CLI
 
 ## Codex
 
-Requires Node and npm supported by [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md#invocation). Codex Tools 1.0.2 or newer provisions its own verified Codex CLI; you do not need a separate CLI on `PATH` for this installation path.
+Use Node and npm supported by [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md#invocation). Codex Tools 1.0.2 or newer provisions its own verified Codex CLI; you do not need a separate CLI on `PATH` for this installation path.
 
 ```sh
 npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/canon
@@ -28,7 +28,7 @@ When switching an existing installation from archives, npm, or another checkout,
 
 ## OpenClaw
 
-Requires OpenClaw 2026.9.5 or newer. Install from ClawHub:
+Use OpenClaw 2026.9.5 or newer. Install from ClawHub:
 
 ```sh
 openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
@@ -52,4 +52,4 @@ The plugin exposes its skills without extra configuration. To enable the brief r
 openclaw config set plugins.entries.tanaab.hooks.allowConversationAccess true
 ```
 
-The hook appends static guidance without replacing the prompt or overriding user and project instructions. It respects OpenClaw's `allowPromptInjection` policy. Set `plugins.entries.tanaab.config.guidance` to `false` to disable the reminder while retaining the skills.
+The hook appends static guidance without replacing the prompt or overriding user and project instructions. It respects OpenClaw's `allowPromptInjection` policy. To disable the reminder, set `plugins.entries.tanaab.config.guidance` to `false`; the skills remain available.

@@ -2,19 +2,19 @@
 
 <!-- replace this starter prose with the real flow and its evidence limits. link adjacent exclusions to existing examples, tests, or upstream owners; state missing owners instead of inventing destinations. equivalent headings are fine; omit empty sections. distinguish executed checks from manual, future, or still-unrelocated coverage. keep fixture files or named input directories beside the README without a generic local fixtures wrapper. -->
 
-when asked to install into an empty target, prepare the target, run the public installer, and verify that it leaves an executable and config file in the expected locations.
+When asked to install into an empty target, prepare the target, run the public installer, and verify that it leaves an executable and config file in the expected locations.
 
-## what belongs here
+## What belongs here
 
-- one installation into an isolated target and checks for the resulting executable and config file.
+- One installation into an isolated target and checks for the resulting executable and config file.
 
-## what does not belong here
+## What does not belong here
 
-- repeat reconciliation, invoking the installed executable, and teardown. this generic starter has no product-specific owners; replace these exclusions with the real concerns and links before adopting it.
+- Repeat reconciliation, invoking the installed executable, and teardown. This generic starter has no product-specific owners; replace these exclusions with the real concerns and links before adopting it.
 
-## notes
+## Notes
 
-- the executable checks establish file presence and executable permission, not config validity or successful use of the installed product.
+- The executable checks establish file presence and executable permission, not config validity or successful use of the installed product.
 
 ## Setup
 

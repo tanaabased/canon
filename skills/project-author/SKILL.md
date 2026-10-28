@@ -81,7 +81,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - If an existing non-empty repository lacks `main`, explain that renaming the current default branch affects clones and workflow references. Require separate approval before passing `--rename-default`.
 - If an existing empty repository lacks `main`, require approval to create its initial `README.md` before passing `--initialize`.
 - Treat a pending `tanaabot` invitation as incomplete configuration. Do not claim success or continue to branch protection until effective `write` access is visible.
-- Never delete a repository to roll back partial creation. Report completed steps and the exact failure; rerun inspection and converge from the remaining drift.
+- If creation succeeds only in part, keep the repository. Report the completed steps and exact failure, then rerun inspection to identify and apply the remaining authorized changes. Never delete a repository to roll back partial creation.
 
 ## Workflow
 

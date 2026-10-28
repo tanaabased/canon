@@ -13,6 +13,11 @@
 - Do not hide workflow logic in `AGENTS.md`.
 - Do not duplicate global repo doctrine across multiple `SKILL.md` files when one ambient rule will do.
 
+## Documentation House Style
+
+- All contributors use the shared [documentation style](./references/documentation-standards.md#documentation-style) for Canon's checked-in documentation, including root guides, `SKILL.md` instructions, references, guidance, ideas, examples, and template prose. Read it before editing those surfaces; a contributor's personal voice does not override this repository style. Explicit user direction still wins.
+- This choice governs documentation expression only; contributors retain their own identity, credentials, judgment, permissions, and conversational persona.
+
 ## Project Management Model
 
 - Treat GitHub as the canonical project-management implementation for Tanaab work.

@@ -48,7 +48,7 @@ Read each applicable document in full, or the explicitly named section, before d
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request concerns a README or companion guide; leave source-owned API contracts and generated-reference tooling to their code owner, and VitePress pages to VitePress Author.
-2. Apply [Documentation Standards](../../references/documentation-standards.md) to every in-scope guide. Load [README Standards](../../references/readme-standards.md) for entrypoint structure or guide placement; choose a README mode only when restructuring is needed.
+2. Select the applicable [documentation style](../../references/documentation-standards.md#documentation-style) and apply Documentation Standards to every in-scope guide. Load [README Standards](../../references/readme-standards.md) for entrypoint structure or guide placement; choose a README mode only when restructuring is needed.
 3. Inventory the repository's existing README, root-level guides, docs site, real entrypoints, visual assets, and meaningful status signals before choosing a structure.
 4. Keep the common path and roughly 80 percent of reader needs in the README. Treat 250 and 400 source lines as review signals, not validation limits.
 5. Preserve complete CLI and configuration references when they provide a useful standalone lookup surface. Reconcile them with current help, schemas, and defaults, while keeping prose focused on selection, precedence, consequences, and non-obvious behavior rather than narrating the inventory line by line.

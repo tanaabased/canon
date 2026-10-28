@@ -12,12 +12,12 @@ A successful command is sufficient evidence for the operation its contract promi
 
 ## Evidence and Static Checks
 
-- classify each assertion by what it establishes, even when one suite mixes evidence. use the [shared testing layers](./coding-stack-preferences.md#testing-defaults) for behavioral coverage. a runner name does not turn static inspection into a unit test.
-- static checks inspect source or artifacts without executing the behavior they describe. retain one only for a named correctness, compatibility, safety, or maintenance invariant with a concrete failure consequence that existing validation does not cover. prefer existing syntax, schema, lint, or build checks to new snapshots of configuration or implementation layout.
-- justified: parse a workflow and verify its token permissions stay restricted, preventing credential exposure; validate that a package export resolves inside the packed payload, preventing a broken consumer entrypoint. these establish configuration or packaging invariants, not successful execution of a workflow or installed import.
-- unjustified: snapshot an entire workflow to freeze YAML ordering, compare complete documentation paragraphs, or count helper calls merely to preserve today's implementation. remove redundant assertions rather than relocating them into another suite.
-- reading fixture files while executing the production parser is behavioral coverage. classify its boundary under the shared model; reading files alone does not make it static inspection.
-- preserve distinct safety, protocol, and packaging checks where exact details are contractual. retained static checks may share an existing command with behavioral tests; no fourth suite is required. report their evidence separately from runtime proof.
+- Classify each assertion by what it establishes, even when one suite mixes evidence. Use the [shared testing layers](./coding-stack-preferences.md#testing-defaults) for behavioral coverage. A runner name does not turn static inspection into a unit test.
+- Static checks inspect source or artifacts without executing the behavior they describe. Retain one only for a named correctness, compatibility, safety, or maintenance invariant with a concrete failure consequence that existing validation does not cover. Prefer existing syntax, schema, lint, or build checks to new snapshots of configuration or implementation layout.
+- Justified: parse a workflow and verify its token permissions stay restricted, preventing credential exposure; validate that a package export resolves inside the packed payload, preventing a broken consumer entrypoint. These establish configuration or packaging invariants, not successful execution of a workflow or installed import.
+- Unjustified: snapshot an entire workflow to freeze YAML ordering, compare complete documentation paragraphs, or count helper calls merely to preserve today's implementation. Remove redundant assertions rather than relocating them into another suite.
+- Reading fixture files while executing the production parser is behavioral coverage. Classify its boundary under the shared model; reading files alone does not make it static inspection.
+- Preserve distinct safety, protocol, and packaging checks where exact details are contractual. Retained static checks may share an existing command with behavioral tests; no fourth suite is required. Report their evidence separately from runtime proof.
 
 ## Assertion Strength
 

@@ -49,7 +49,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - **Before choosing a project-management skill name:** [Project Management Model](../../references/project-management-model.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 - **Before reviewing preferred-tool recommendations:** [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before changing skill prose or references:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before changing skill prose or references, or reviewing their style:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
 - **Before changing skill-owned JavaScript or TypeScript:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before scaffolding or reviewing type shape:** the matching [generic](./templates/generic.md), [coding](./templates/coding.md), [integration](./templates/integration.md), [workflow](./templates/workflow.md), or [meta](./templates/meta.md) template; read only the selected type.

@@ -12,12 +12,12 @@ Use the upstream `leia-scenarios` skill when available, following this policy an
 
 ## Scenario and Fixture Ownership
 
-- begin each README with the trigger, necessary transitions, and observable terminal result, followed by included behavior, adjacent exclusions linked to existing owners, and concise evidence limits before executable setup. a safety contract may end in refusal. use equivalent headings or prose and omit empty sections.
-- add coverage only when it advances that declared path or protects an essential guarantee. convenient installed state or shared prerequisites do not establish ownership; explain a scope change before expanding the example.
-- before adding an install, restart, model turn, or live provider request, identify the required behavior existing evidence cannot establish and its execution cost.
-- route adjacent coverage to the narrowest existing example, strict unit, component, or upstream owner. add a scenario only for a distinct installed flow, native boundary, safety contract, or incompatible setup; a matrix identity alone is insufficient.
-- remove confirmed duplication only after identifying surviving coverage for distinct safety, protocol, and platform guarantees; remove unused support when it has no consumers.
-- keep each scenario's scope in its README, without repeating it in matrices or per-example policy. distinguish executed checks from manual or future work and still-present checks awaiting relocation; link only existing destinations and state ownership gaps honestly.
+- Begin each README with the trigger, necessary transitions, and observable terminal result, followed by included behavior, adjacent exclusions linked to existing owners, and concise evidence limits before executable setup. A safety contract may end in refusal. Use equivalent headings or prose and omit empty sections.
+- Add coverage only when it advances that declared path or protects an essential guarantee. Convenient installed state or shared prerequisites do not establish ownership; explain a scope change before expanding the example.
+- Before adding an install, restart, model turn, or live provider request, identify the required behavior existing evidence cannot establish and its execution cost.
+- Route adjacent coverage to the narrowest existing example, strict unit, component, or upstream owner. Add a scenario only for a distinct installed flow, native boundary, safety contract, or incompatible setup; a matrix identity alone is insufficient.
+- Remove confirmed duplication only after identifying surviving coverage for distinct safety, protocol, and platform guarantees; remove unused support when it has no consumers.
+- Keep each scenario's scope in its README, without repeating it in matrices or per-example policy. Distinguish executed checks from manual or future work and still-present checks awaiting relocation; link only existing destinations and state ownership gaps honestly.
 - Keep scenario-specific setup, assertions, and cleanup in its README.
 - Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
 - Cover CLI and library interfaces when both have supported public contracts to prove; do not duplicate every scenario across interfaces or build a matrix merely for symmetry.
