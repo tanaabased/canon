@@ -1,6 +1,6 @@
 ---
 name: tanaab-github-issue-schema-author
-description: Tanaab-based GitHub issue schema inspection and bounded synchronization. Use when a user wants to compare one repository with canonical task policy, add missing fields, synchronize retained option colors, align field pinning or visibility, or synchronize canonical label definitions without deletions.
+description: Tanaab-based GitHub issue schema inspection and bounded synchronization. Use to compare repository schema with canonical task policy, align managed fields, or inspect, plan, and synchronize canonical labels across an organization and explicit repositories without deletions.
 license: MIT
 metadata:
   type: integration
@@ -22,6 +22,8 @@ Inspect one explicit GitHub repository's issue types, organization fields, type 
 
 Every mutation requires exact digest-bound authorization and post-write verification. Visibility and labels are separately authorized from other schema effects. Label sync preserves associations and every noncanonical label; field modes preserve unmanaged fields, including Effort. GitHub's public APIs expose pin state but no pin-assignment mutation, so never call the private web endpoint directly. This version exposes no deletion path.
 
+Label batch mode discovers an explicit organization's accessible repositories and combines them with explicit repository targets. It owns label distribution only; organization defaults and issue-field changes remain separate effects.
+
 ## Required Reading
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
@@ -40,6 +42,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Use pinning mode when an organization owner explicitly authorizes the exact managed field-to-type associations for Task, Bug, and Feature.
 - Use visibility mode when an organization owner explicitly authorizes only the managed fields whose visibility differs from the canonical organization-members-only policy.
 - Use label mode when a repository maintainer explicitly authorizes creation or definition-only updates for the canonical repository labels.
+- Use label batch mode for a read-only drift check, a reviewable distribution plan, or authorized label synchronization across an organization and explicit repositories.
 
 ## When Not to Use
 
@@ -66,7 +69,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Inputs
 
-- Required: one explicit `OWNER/REPO` or GitHub repository URL.
+- Required: one explicit `OWNER/REPO` or GitHub repository URL; label batch mode instead accepts `--organization ORG`, repeatable `--repository OWNER/REPO`, or both.
 - Optional: `--json` for the complete machine-readable report.
 - Additive planning: `bun <skill-path>/scripts/add-fields.js plan OWNER/REPO --json`.
 - Additive apply: rerun with `apply`, the exact `--approved-organization`, and the previewed `--approved-digest`.
@@ -74,6 +77,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Color apply: rerun with `apply`, the exact `--approved-organization`, and the previewed `--approved-digest`.
 - Visibility planning and apply: use `scripts/set-field-visibility.js`, with a separate exact organization and digest approval.
 - Label planning and apply: use `scripts/sync-labels.js`, with the exact `--approved-repository` and previewed digest.
+- Label batch status, planning, and apply: use `scripts/sync-labels-batch.js inspect|plan|apply` with the same explicit selectors. Apply requires the previewed `--approved-digest` for the complete batch.
 - Pinning planning: `bun <skill-path>/scripts/pin-fields.js plan OWNER/REPO --json`.
 - Pinning authorization: rerun with `authorize`, the exact `--approved-organization`, and the previewed `--approved-digest`; then execute only that manifest through GitHub's signed-in organization settings UI.
 - Canonical policy: [`../../references/task-management-schema.json`](../../references/task-management-schema.json).
@@ -95,6 +99,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Pinning authorization returns `ready_for_browser` without writing. After browser execution, a fresh plan must return `aligned`; otherwise stop and report the remaining partial drift.
 - Visibility apply returns `updated` only when each complete field snapshot verifies with no change outside `visibility`.
 - Label apply returns `updated` only when every canonical definition and retained association count verifies; noncanonical labels remain untouched.
+- Label batch reports the discovered targets, archived or disabled exclusions, per-repository drift or exact operations, and create/update totals. Its digest binds the selection, inventory, exclusions, and repository plans. Apply reports completed results and remaining repositories; an uncertain outcome retains `mutatesGitHub: null` unless an earlier write is confirmed.
 
 ## Failure Handling
 
@@ -111,6 +116,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Stop on the first failed browser save. Do not retry through a private endpoint or change any field property outside the authorized pin selection; re-read and report partial success instead.
 - Stop visibility sync if any managed field is missing or lacks a numeric REST ID. PATCH only `visibility`, stop on the first failure, and verify the entire field snapshot.
 - Stop label sync when labels cannot be fully inspected. Never rename or delete a label, and verify association counts after definition updates.
+- For label batches, inspect every target before any write. Block the entire batch on an incomplete inventory or unresolved label read. Reject a stale digest, recheck each changing repository before writing, and stop on the first failed or uncertain result. Preserve successful writes, report the remainder, and obtain a fresh plan before continuing; never automatically retry or roll back.
 
 ## Workflow
 
@@ -135,6 +141,27 @@ Read each applicable document in full, or the explicitly named section, before d
 14. Rerun the pin plan. Report success only when it returns `aligned`; otherwise report the remaining partial drift and do not retry through GitHub's private web endpoint.
 15. Plan visibility and labels separately. For each, show the exact bounded operations and digest, obtain its own authorization, stop on the first failed write, and re-read the complete affected surface.
 
+### Label Distribution
+
+Use the batch entrypoint for an organization plus any personal or separately selected repositories:
+
+```bash
+bun <skill-path>/scripts/sync-labels-batch.js inspect --organization tanaabased --repository pirog/me --json
+bun <skill-path>/scripts/sync-labels-batch.js plan --organization tanaabased --repository pirog/me --json
+```
+
+`inspect` reports drift without a mutation plan. `plan` includes every exact create or definition update and preserved label. Discovery follows all accessible organization-repository pages, deduplicates targets, and reports archived or disabled repositories as excluded. It cannot discover repositories hidden from the authenticated account; state that boundary when reporting coverage.
+
+Present the inventory, exclusions, changes, and digest for review. Preserve stock, automation-owned, and repository-specific labels outside the canonical set. Existing stock labels whose names are canonical, such as `documentation`, retain their identity and assignments while their definitions are aligned.
+
+After authorization for that reviewed batch, use the same selectors and digest:
+
+```bash
+bun <skill-path>/scripts/sync-labels-batch.js apply --organization tanaabased --repository pirog/me --approved-digest SHA256 --json
+```
+
+Apply re-discovers and re-plans the entire selection before checking authorization, then uses the existing per-repository synchronizer and verification. It does not change organization defaults, fields, issue types, or issue assignments. Future canonical label changes use the same inspect → plan → apply workflow.
+
 ## Optimization
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
@@ -153,9 +180,11 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `scripts/pin-fields.js`: no-write field-pinning planner and digest authorization entrypoint.
 - `scripts/set-field-visibility.js`: digest-gated visibility-only field entrypoint.
 - `scripts/sync-labels.js`: digest-gated canonical repository-label entrypoint.
+- `scripts/sync-labels-batch.js`: organization and explicit-repository label inspection, planning, and digest-gated distribution entrypoint.
 - `lib/github-schema-client.js`: injected read-only GraphQL boundary.
 - `lib/github-issue-field-client.js`: organization-field REST read, additive POST, color, and visibility PATCH boundary.
 - `lib/github-label-client.js`: repository-label create and definition-only update boundary.
+- `lib/schema-label-batch-synchronizer.js`: repository discovery, batch authorization, and sequential per-repository synchronization.
 - `lib/schema-inspector.js`: deterministic comparison orchestration.
 - `lib/schema-field-synchronizer.js`: additive, retained-option color, and visibility planning, authorization, mutation, and verification orchestration.
 - `lib/schema-field-pinning-planner.js`: pin-manifest planning and authorization without a private API write.

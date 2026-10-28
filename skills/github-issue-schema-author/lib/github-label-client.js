@@ -1,4 +1,8 @@
-import runGitHubCli, { GITHUB_API_VERSION_HEADER } from '../../../lib/run-github-cli.js';
+import runGitHubCli, {
+  GITHUB_API_VERSION_HEADER,
+  githubCliResultDetail,
+  githubCliResultStatus,
+} from '../../../lib/run-github-cli.js';
 import { GitHubSchemaClient } from './github-schema-client.js';
 
 /** GitHub boundary for repository-label reads, creates, and definition-only updates. */
@@ -17,6 +21,25 @@ export class GitHubLabelClient {
 
   inspect(target) {
     return this.#reader.inspect(target);
+  }
+
+  listOrganizationRepositories(organization) {
+    const result = this.#runner([
+      'api',
+      `/orgs/${organization}/repos?type=all&per_page=100`,
+      '--paginate',
+      '--slurp',
+      '-H',
+      GITHUB_API_VERSION_HEADER,
+    ]);
+    if (githubCliResultStatus(result) !== 0) {
+      throw new Error(`Repository inventory failed: ${githubCliResultDetail(result)}`);
+    }
+    const pages = JSON.parse(String(result.stdout));
+    if (!Array.isArray(pages) || !pages.every(Array.isArray)) {
+      throw new Error('Repository inventory returned an invalid page collection.');
+    }
+    return pages.flat();
   }
 
   #request(method, endpoint, payload) {

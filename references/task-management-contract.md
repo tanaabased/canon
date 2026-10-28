@@ -312,15 +312,17 @@ Priority is an explicit human or policy override using Urgent, High, Medium, or 
 
 ## Canonical Repository Labels
 
+Use exact colors from [Theme's portable palette](https://github.com/tanaabased/theme/blob/main/styles/colors.json). The labels use the dark-mode brand and status colors, with `light.status.error` for the deeper `blocked` red and `dark.brand.accentDark` for `needs reproduction`. `good first issue` uses the lighter green, `dark.brand.primaryLight`.
+
 | Label                | Purpose                                                    | Color     |
 | -------------------- | ---------------------------------------------------------- | --------- |
-| `documentation`      | Documentation additions or improvements                    | `#2f81f7` |
+| `documentation`      | Documentation additions or improvements                    | `#5ab0ff` |
 | `breaking change`    | Requires consumer migration or coordination                | `#db2777` |
-| `regression`         | Previously working behavior has degraded                   | `#e5484d` |
-| `blocked`            | Cannot proceed because of a documented blocker             | `#7f1d1d` |
-| `needs triage`       | Submitted but not yet normalized against the task contract | `#f59e0b` |
-| `needs reproduction` | A Bug needs reproducible evidence before work can proceed  | `#f97316` |
-| `good first issue`   | Well-bounded work suitable for a first contribution        | `#86e7c4` |
+| `regression`         | Previously working behavior has degraded                   | `#ff667d` |
+| `blocked`            | Cannot proceed because of a documented blocker             | `#b4233c` |
+| `needs triage`       | Submitted but not yet normalized against the task contract | `#ffb000` |
+| `needs reproduction` | A Bug needs reproducible evidence before work can proceed  | `#b67e00` |
+| `good first issue`   | Well-bounded work suitable for a first contribution        | `#33d3a1` |
 | `help wanted`        | Maintainers welcome outside contribution                   | `#00c88a` |
 
 Label rules:
@@ -335,6 +337,8 @@ Label rules:
 - `help wanted` applies only after triage when the task is actionable and maintainers welcome outside contribution. It may cover larger work than `good first issue`.
 
 The eight labels form the canonical human-task vocabulary. A repository may declare at most two project-specific extensions before the shared contract should be reconsidered. Automation-owned labels such as Dependabot's `dependencies` may coexist but are not canonical task labels and do not count as project-specific extensions.
+
+Organization-default labels seed new repositories; changing those defaults does not update existing repositories. Keep both projections aligned with this schema: configure organization defaults in GitHub's settings UI, and use GitHub Issue Schema Author's `sync-labels.js` plan/apply workflow for one repository or `sync-labels-batch.js` inspect/plan/apply workflow for an explicit organization and repository set. Repository synchronization is programmatic and preserves noncanonical labels and existing issue and pull-request associations. It does not update organization defaults.
 
 Task Author may apply or remove existing canonical labels but must not create, recolor, rename, or delete label definitions. Schema inspection must distinguish canonical, project-specific, automation-owned, and unmanaged labels. Label definition deletion is never automatic because it removes the label from every associated issue and pull request.
 

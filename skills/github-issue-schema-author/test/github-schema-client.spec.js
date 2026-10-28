@@ -62,6 +62,40 @@ describe('skills/github-issue-schema-author/lib/github-schema-client', () => {
     assert.ok(fake.calls[1].args.includes('labelCursor=cursor-1'));
   });
 
+  it('should mark labels unavailable after a failed later page or unusable cursor', () => {
+    for (const endCursor of ['cursor-1', null]) {
+      const first = organizationPayload({
+        labels: [makeLabel({ name: 'documentation' })],
+        hasNextPage: true,
+        endCursor,
+      });
+      const fake = createQueuedRunner([
+        result({ stdout: JSON.stringify(first) }),
+        result({ status: 1, stderr: 'Later page failed' }),
+      ]);
+      const report = new GitHubSchemaClient({ runner: fake.runner }).inspect({
+        owner: 'tanaabased',
+        repo: 'canon',
+        slug: 'tanaabased/canon',
+      });
+      assert.equal(report.repositoryLabels.status, 'unavailable');
+      assert.deepEqual(report.repositoryLabels.values, []);
+    }
+  });
+
+  it('should reject partial label data even when page information is present', () => {
+    const payload = organizationPayload({
+      errors: [{ message: 'Label access failed', path: ['repository', 'labels', 'nodes'] }],
+    });
+    const fake = createQueuedRunner([result({ stdout: JSON.stringify(payload) })]);
+    const report = new GitHubSchemaClient({ runner: fake.runner }).inspect({
+      owner: 'tanaabased',
+      repo: 'canon',
+      slug: 'tanaabased/canon',
+    });
+    assert.equal(report.repositoryLabels.status, 'unavailable');
+  });
+
   it('should retain partial repository data when issue fields are unavailable', () => {
     const payload = organizationPayload({
       labels: [makeLabel({ name: 'documentation' })],

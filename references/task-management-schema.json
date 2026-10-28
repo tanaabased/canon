@@ -183,7 +183,7 @@
     {
       "name": "documentation",
       "description": "Documentation additions or improvements",
-      "color": "2f81f7"
+      "color": "5ab0ff"
     },
     {
       "name": "breaking change",
@@ -193,27 +193,27 @@
     {
       "name": "regression",
       "description": "Previously working behavior has degraded",
-      "color": "e5484d"
+      "color": "ff667d"
     },
     {
       "name": "blocked",
       "description": "Cannot proceed because of a documented blocker",
-      "color": "7f1d1d"
+      "color": "b4233c"
     },
     {
       "name": "needs triage",
       "description": "Submitted but not yet normalized against the task contract",
-      "color": "f59e0b"
+      "color": "ffb000"
     },
     {
       "name": "needs reproduction",
       "description": "A Bug needs reproducible evidence before work can proceed",
-      "color": "f97316"
+      "color": "b67e00"
     },
     {
       "name": "good first issue",
       "description": "Well-bounded work suitable for a first contribution",
-      "color": "86e7c4"
+      "color": "33d3a1"
     },
     {
       "name": "help wanted",

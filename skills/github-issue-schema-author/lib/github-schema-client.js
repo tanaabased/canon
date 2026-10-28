@@ -230,12 +230,20 @@ export class GitHubSchemaClient {
 
     let labels = [...(firstRepository.labels?.nodes ?? [])];
     let pageInfo = firstRepository.labels?.pageInfo;
-    while (pageInfo?.hasNextPage && pageInfo.endCursor) {
+    let labelsAvailable = Boolean(pageInfo) && !hasErrorPath(firstPayload, 'repository', 'labels');
+    const cursors = new Set();
+    while (labelsAvailable && pageInfo?.hasNextPage) {
+      if (!pageInfo.endCursor || cursors.has(pageInfo.endCursor)) {
+        labelsAvailable = false;
+        break;
+      }
+      cursors.add(pageInfo.endCursor);
       const pageResult = this.#query(target, pageInfo.endCursor);
       const pagePayload = parsePayload(pageResult);
       const pageRepository = pagePayload?.data?.repository;
       const pageLabels = pageRepository?.labels;
-      if (!pageLabels) {
+      if (!pageLabels?.pageInfo || hasErrorPath(pagePayload, 'repository', 'labels')) {
+        labelsAvailable = false;
         warnings.push(
           resultError(pageResult, `Could not inspect all repository labels for ${target.slug}.`),
         );
@@ -295,9 +303,9 @@ export class GitHubSchemaClient {
             )
           : available((organization?.issueFields?.nodes ?? []).map(normalizeField))
         : { status: 'not_applicable', values: [] },
-      repositoryLabels: firstRepository.labels
+      repositoryLabels: labelsAvailable
         ? available(labels.map(normalizeLabel))
-        : unavailable('Repository labels could not be inspected.'),
+        : unavailable('Repository labels could not be completely inspected.'),
       organizationDefaultLabels: organizationOwned
         ? {
             status: 'manual',
