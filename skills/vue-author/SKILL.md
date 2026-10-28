@@ -97,6 +97,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Prefer `scoped` styles for component-owned styling unless the repo or task clearly requires a shared or global surface.
 - In a larger VitePress site, prefer existing site components or already-styled semantic elements before introducing new wrapper markup.
 - Keep templates as lean as possible. Do not add extra containers, classes, or presentational hooks unless they materially serve the component.
+- When asynchronous work updates component state, prevent superseded results from overwriting newer state and stop updates after disposal. If an optional enhancement fails, preserve essential interaction; choose cancellation or stale-result guards to fit the existing component rather than introducing a framework.
 
 ### Accessibility
 
@@ -130,6 +131,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults); this skill owns Vue component behavior within the broader subsystem component layer. Preserve the tooling below and use the smallest layer that detects the regression.
 - Use Vitest, Vue Test Utils, and jsdom for observable DOM behavior, props, slots, emitted events, and user actions. Assert the public contract rather than private methods or broad snapshots.
 - Await Vue updates and interactions. Unmount wrappers, remove test-owned DOM/teleports, and restore mocks and timers when used. Add browser API shims only for APIs the component actually calls; jsdom cannot establish layout, focus rendering, or real-browser behavior.
+- For asynchronous state updates, use controlled promises to exercise out-of-order completion and disposal while work is pending. Where an optional enhancement can fail, assert that essential interaction still works. Keep these cases in the existing component suite and omit them for synchronous components.
 - Keep pure-helper Mocha tests when they already work. If both runners exist, give them disjoint discovery patterns, such as Mocha `test/*.spec.js` and Vitest `test/*.test.js`.
 - Run Vitest under Node when its Vite toolchain requires native Node behavior; keep Bun for dependency installation and orchestration. A minimal script is `"test:components": "node ./node_modules/vitest/vitest.mjs run"`.
 - Copy the [Vitest config](./templates/vitest.config.js) to the repo root and [component test](./templates/example-component.test.js) to `test/`, adapting its component import. Declare `vitest`, `@vue/test-utils`, `jsdom`, `vite`, `@vitejs/plugin-vue`, and the component's preprocessor (such as `sass`) in development dependencies alongside Vue.
@@ -152,7 +154,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
-- **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
+- **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; check asynchronous update and disposal behavior where present, and identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
 - **Recommend:** Keep cohesive components; deduplicate or consolidate repeated logic and styles; split overloaded SFCs; extract composables or child components; move shared code to its owner; tighten public API; and remove stale paths without imposing unrelated visual doctrine.
 - **Apply:** After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
 - **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
