@@ -28,6 +28,7 @@ Review a project's checked-in files and any material its contracts require, usin
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before assessing repository surfaces:** Discover and read applicable guidance under [Repository Optimization Guidance](#repository-optimization-guidance).
 - **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
 
@@ -55,7 +56,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
-1. Resolve the target and scope under [Scope Selection](#scope-selection), read repository guidance and directly applicable shared canon, then inventory in-scope tracked surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
+1. Resolve the target and scope under [Scope Selection](#scope-selection), read [repository optimization guidance](#repository-optimization-guidance) and directly applicable shared canon, then inventory in-scope tracked surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
 2. Classify each observed or contract-required area as live, cold-path, generated, missing, or not applicable before recommending changes. Declare an absent surface missing only when applicable checked-in guidance or directly linked canon makes it an expectation; otherwise preserve uncertainty or classify it not applicable.
 3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence or an explicit contract requirement and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
 4. When the selected scope includes multiple live `SKILL.md` files, select Skill Author and review that collection individually and collectively even when no single skill has obvious drift. A whole-project review includes every live skill; a targeted review does not pull in unrelated skills.
@@ -84,6 +85,12 @@ Common scope examples, not an exhaustive menu:
 | Optimize CI and delivery       | Workflows, runtime setup, package artifacts, and release wiring; consistency, readability, and distinct delivery boundaries.                     |
 | Optimize Canon skills          | Canon's live skill collection and governing resources; discovery, required reading, ownership, overlap, and policy consistency.                  |
 
+### Repository Optimization Guidance
+
+- Read applicable root and nested `AGENTS.md` files before assessing the surfaces they govern; narrower instructions take precedence within their scope. Then read repository-root `.github/OPTIMIZATION.md` when present and any applicable guidance explicitly linked by these files. If applicable repository guidance explicitly names another repository-owned file as the owner, read that file instead of assuming the conventional path owns the policy. Resolve conflicting ownership from applicable instructions; report unresolved conflicts or unavailable linked guidance and pause only dependent assessment.
+- `.github/OPTIMIZATION.md` is an optional home for repository-owned audit constraints and accepted decisions. Each entry should give a concise reason and concrete conditions for reconsideration. Its absence alone is not drift or a missing requirement, and an audit must not create it. Apply entries only within their stated scope and subject to `AGENTS.md` precedence; they neither exempt surfaces from review nor authorize mutation.
+- Keep temporary findings, implementation plans, debug history, and validation logs in GitHub issues or pull requests. Link durable contracts instead of copying them, and keep detailed workflow logic with its owning skills.
+
 ### Preferred Tool Adoption
 
 - During step 5, apply the [shared adoption and freshness assessment](../../references/skill-standard.md#preferred-tools) to each relevant Preferred Tools entry. Check both missing preferred tools and newer compatible releases; meeting a minimum does not establish freshness.
@@ -109,7 +116,7 @@ Common scope examples, not an exhaustive menu:
 - Identify missing evidence and what would resolve it under unverified areas. Do not treat uncertainty as alignment or invent a correction before establishing the problem.
 - Apply [verification boundaries](../../references/verification-boundaries.md) when recommending validation changes. Remove duplicate post-success checks; propose new checks only for concrete uncovered risks, not to make an aligned surface appear more thoroughly verified.
 - Report `optimization recommended` whenever either actionable group is nonempty. Report `converged — no actionable findings` only when the requested audit is complete and neither group has findings; otherwise report `assessment incomplete` with the unresolved evidence gaps. Retained decisions remain visible in every disposition.
-- Reuse prior evidence and retained decisions when their inputs are unchanged. Reconsider them when the recorded condition or new evidence warrants it; do not repeatedly rediscover or silently drop known small corrections.
+- Reuse prior evidence and retained decisions when their inputs are unchanged. Cite each applicable retained decision's source, reason, and reconsideration conditions. Reopen it when a stated condition is met, requirements change, or current evidence contradicts it, naming that evidence in the finding. Report missing reasons, unclear conditions, or unavailable evidence as uncertainty rather than inventing support or treating the decision as immunity from review. Do not repeatedly rediscover or silently drop known small corrections.
 
 ## Checkpoints
 
@@ -152,3 +159,4 @@ Common scope examples, not an exhaustive menu:
 - Confirm relevant preferred tools were checked for adoption and newer compatible releases, with upstream uncertainty explicit and shared lookups deduplicated.
 - Confirm all four finding groups are accounted for and the disposition distinguishes actionable work, completed assessment without actionable findings, and incomplete assessment.
 - Confirm every actionable finding is planned, including small corrections; retained decisions have reasons and reconsideration conditions, and uncertainty is not presented as alignment.
+- When maintaining this skill, review a repository with accepted decisions, one without the optional file, and a changed-evidence case that reopens a decision with named evidence. Check scoped `AGENTS.md` precedence and explicitly linked owners; report scenario evidence separately from structural validation and unverified future instruction compliance.
