@@ -16,6 +16,16 @@ const FALLBACK_TO_METADATA = Object.freeze({
   'target-date': 'targetDate',
 });
 
+const LABEL_SIGNALS = Object.freeze({
+  documentation: 'documentation',
+  breakingChange: 'breaking change',
+  regression: 'regression',
+  blocked: 'blocked',
+  needsTriage: 'needs triage',
+  goodFirstIssue: 'good first issue',
+  helpWanted: 'help wanted',
+});
+
 function currentLabelNames(issue) {
   return new Set(
     (issue.labels ?? []).map((label) =>
@@ -27,15 +37,19 @@ function currentLabelNames(issue) {
 function preservedSignals(issue, inputSignals = {}) {
   const names = currentLabelNames(issue);
   return {
-    documentation: names.has('documentation'),
-    breakingChange: names.has('breaking change'),
-    regression: names.has('regression'),
-    blocked: names.has('blocked'),
-    needsTriage: names.has('needs triage'),
-    goodFirstIssue: names.has('good first issue'),
-    helpWanted: names.has('help wanted'),
+    ...Object.fromEntries(
+      Object.entries(LABEL_SIGNALS).map(([signal, label]) => [signal, names.has(label)]),
+    ),
     ...inputSignals,
   };
+}
+
+function reviewedLabels(input) {
+  const labels = Object.entries(LABEL_SIGNALS)
+    .filter(([signal]) => typeof input.signals?.[signal] === 'boolean')
+    .map(([, label]) => label);
+  if (typeof input.reproductionAvailable === 'boolean') labels.push('needs reproduction');
+  return labels;
 }
 
 function preservedFallbackInput(parsed, input) {
@@ -125,6 +139,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
   );
   const { errors: planErrors, plan } = buildTaskUpdatePlan(draft, current, {
     revisionSummary: input.revisionSummary,
+    reviewedLabels: reviewedLabels(input),
   });
   const digest = planDigest(plan);
   const publication = evaluateTaskPublication(plan, digest, input.publication);

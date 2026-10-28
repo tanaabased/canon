@@ -79,13 +79,11 @@ function operationOrder(children, subIssues, dependencies, parentRevision) {
   return operations;
 }
 
-function buildChildPlan(child, proposal, evidence, client) {
-  const blocked = proposal.dependencies.some(({ blocked: key }) => key === child.key);
+function buildChildPlan(child, evidence, client) {
   const draft = authorTaskDraft(
     {
       ...child.task,
       target: evidence.target.slug,
-      relationships: { ...child.task.relationships, ...(blocked ? { blockedBy: true } : {}) },
     },
     { githubClient: client },
   );
@@ -272,7 +270,7 @@ export function prepareTaskDecomposition(input = {}, { client } = {}) {
   const existingBlockedByIds = new Map();
   if (blockers.length === 0) {
     for (const child of input.children) {
-      const built = buildChildPlan(child, input, evidence, client);
+      const built = buildChildPlan(child, evidence, client);
       blockers.push(...built.blockers);
       const existing = resolveExistingChild(child, built.plan, evidence, client);
       blockers.push(...existing.errors);

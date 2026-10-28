@@ -51,6 +51,97 @@ function observedFields(draft, capabilities) {
 }
 
 describe('Task Author existing-issue modes', () => {
+  it('should preserve unassessed labels when revision omits eligibility inputs', () => {
+    const capabilities = organizationCapabilities();
+    const labels = [
+      'blocked',
+      'needs reproduction',
+      'regression',
+      'good first issue',
+      'help wanted',
+      'bug',
+      'custom-preserved',
+    ];
+    const input = {
+      mode: 'revise',
+      target: 'acme/widgets#83',
+      title: 'clarify the task wording',
+      kind: 'Task',
+      sections: completeTaskSections,
+      revisionSummary: 'Clarified wording without reassessing labels.',
+    };
+    const client = fakeGitHubTaskClient(capabilities, {
+      initialIssue: initialIssue(83, 'original task wording', 'original evidence', labels),
+    });
+    const preview = updateTask(input, { githubClient: client });
+    assert.equal(preview.status, 'approval_required');
+    assert.equal(preview.plannedMutation.mutation.labels, undefined);
+    const report = updateTask(approve(input, preview), { githubClient: client });
+    assert.equal(report.status, 'updated');
+    assert.deepEqual(
+      client.state.issue.labels.map(({ name }) => name),
+      labels,
+    );
+  });
+
+  it('should satisfy R03 by removing only reviewed resolved conditions during normalization', () => {
+    const capabilities = organizationCapabilities();
+    const input = {
+      mode: 'normalize',
+      target: 'acme/widgets#84',
+      kind: 'Bug',
+      sections: {
+        ...completeBugSections,
+        reproduction: 'The upstream fix is available; the supplied trace establishes the failure.',
+      },
+      signals: { blocked: false, needsTriage: false },
+      reproductionAvailable: true,
+    };
+    const client = fakeGitHubTaskClient(capabilities, {
+      initialIssue: initialIssue(84, 'restore task output', 'initial report', [
+        'blocked',
+        'needs triage',
+        'needs reproduction',
+        'regression',
+        'bug',
+        'custom-preserved',
+      ]),
+    });
+    const preview = updateTask(input, { githubClient: client });
+    assert.equal(preview.status, 'approval_required');
+    assert.deepEqual(preview.plannedMutation.mutation.labels, [
+      'regression',
+      'bug',
+      'custom-preserved',
+    ]);
+    const report = updateTask(approve(input, preview), { githubClient: client });
+    assert.equal(report.status, 'updated');
+    assert.equal(report.verification.status, 'verified');
+    assert.deepEqual(
+      client.state.issue.labels.map(({ name }) => name),
+      ['regression', 'bug', 'custom-preserved'],
+    );
+  });
+
+  it('should retain needs triage when a false signal conflicts with incomplete evidence', () => {
+    const preview = updateTask(
+      {
+        mode: 'normalize',
+        target: 'acme/widgets#85',
+        signals: { needsTriage: false },
+        actionable: false,
+      },
+      {
+        githubClient: fakeGitHubTaskClient(organizationCapabilities(), {
+          initialIssue: initialIssue(85, 'unclear task', 'unresolved evidence', ['needs triage']),
+        }),
+      },
+    );
+    assert.equal(preview.status, 'needs_input');
+    assert.equal(preview.mutatesGitHub, false);
+    assert.deepEqual(preview.plannedMutation.issue.labels, ['needs triage']);
+  });
+
   it('should revise personal-repository fallback metadata without reading issue fields', () => {
     const capabilities = personalCapabilities();
     const originalInput = {

@@ -342,6 +342,10 @@ Organization-default labels seed new repositories; changing those defaults does 
 
 Task Author may apply or remove existing canonical labels but must not create, recolor, rename, or delete label definitions. Schema inspection must distinguish canonical, project-specific, automation-owned, and unmanaged labels. Label definition deletion is never automatic because it removes the label from every associated issue and pull request.
 
+Assess all eight labels against their schema descriptions during task creation and normalization. During ordinary revision, reassess only labels affected by the changed scope or new evidence. Consider `good first issue` when its eligibility criteria are met; `help wanted` requires explicit maintainer intent or repository policy welcoming contributions. A decomposition assesses each child's deliverable independently instead of copying parent labels or deriving labels from dependency edges.
+
+For existing tasks, distinguish assessed eligibility from missing evidence: preserve labels that were not assessed, and remove a label only when current evidence supports that decision. Recheck temporary conditions such as triage, reproduction gaps, and external blockers during normalization. Present additions, removals, and unresolved decisions with concise evidence; do not print an unchanged eight-label checklist or post a separate label-audit comment. Read-only planners and completion checks may recommend corrections through Task Author, but their result statuses never imply issue-label changes.
+
 ## Task Lifecycle Operations
 
 ### Draft and Create

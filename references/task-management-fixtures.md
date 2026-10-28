@@ -50,6 +50,7 @@ Every applicable fixture must satisfy these assertions:
 | F01 | Form Author   | All       | Both            | Low-friction, lossless intake handoff         |
 | R01 | Task Author   | Feature   | Organization    | Material revision history                     |
 | R02 | Task Author   | Task      | Organization    | Replacement write preserves unmanaged fields  |
+| R03 | Task Author   | Bug       | Organization    | Evidence-based label reassessment             |
 
 ## Task Author Fixtures
 
@@ -512,6 +513,15 @@ Expected behavior:
 - Preserve unmanaged and unchanged native fields without treating them as newly assessed values.
 - Post only the authorized revision-summary comment.
 - Re-read every expected field and return success only when none were cleared or changed unexpectedly.
+
+### R03: Evidence-Based Label Reassessment
+
+An existing Bug has `blocked`, `needs triage`, `needs reproduction`, and `regression`, plus stock and project-specific labels. New evidence confirms that the external blocker cleared, the task is actionable, and diagnostic evidence is sufficient to investigate.
+
+- During normalization, explicitly reassess the resolved conditions and remove only `blocked`, `needs triage`, and `needs reproduction`. Preserve `regression` and unrelated labels; verify the resulting label set after publication.
+- During an unrelated revision, preserve unassessed labels even when eligibility inputs such as Work size or Complexity are omitted. Missing inputs do not prove ineligibility.
+- An explicit false `needsTriage` signal cannot clear the label while the task remains incomplete.
+- Decomposed children use their own evidence and label signals. Parent labels and dependency edges do not supply child labels.
 
 ## Convergence Review
 

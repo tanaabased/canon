@@ -92,6 +92,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Stop before an owner handoff when coverage is uncertain, overlap is unresolved, or inspected evidence changed materially.
 - Stop when a Task Decomposer result reframes the source as a project milestone. Do not treat the proposed milestone as existing, consume it as a task graph, or continue to membership planning.
 - Preserve unrelated milestone membership, task state, schema, labels, comments, relationships, and release state.
+- Flag label corrections supported by inspected evidence for Task Author; do not apply them during planning or equate dependency order with the `blocked` label. Missing-task drafts use Task Author's normal label assessment.
 - Never infer or report milestone completion from issue closure, merged pull requests, selected membership, or this workflow's status.
 
 ## Completion Criteria

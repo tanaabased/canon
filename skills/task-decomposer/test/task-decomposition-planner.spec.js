@@ -31,6 +31,21 @@ function approve(input, preview) {
 }
 
 describe('Task Decomposer exact planning', () => {
+  it('should classify children independently of parent labels and dependency edges', () => {
+    const proposal = decompositionProposal();
+    proposal.children[0].task.signals = { documentation: true };
+    proposal.children[1].task.signals = { helpWanted: true };
+    const preview = prepareTaskDecomposition(proposal, {
+      client: clientFixture({
+        issues: [parentIssue({ labels: [{ name: 'blocked' }, { name: 'breaking change' }] })],
+      }),
+    });
+    assert.equal(preview.status, 'approval_required');
+    assert.deepEqual(preview.plan.children[0].taskPlan.issue.labels, ['documentation']);
+    assert.deepEqual(preview.plan.children[1].taskPlan.issue.labels, ['help wanted']);
+    assert.equal(preview.plan.relationships.dependencies.length, 1);
+  });
+
   it('should block child creation when duplicate search is incomplete', () => {
     const client = clientFixture();
     const search = new GitHubTaskDecomposerClient({

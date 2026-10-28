@@ -28,6 +28,8 @@ Recommendations are always read-only. Reframing a task as a milestone prepares a
 
 When publishing a split, use Task Author's contracts for child payloads, metadata, labels, fallback storage, safety, and verification. Task Decomposer owns the operation order, sub-issue and dependency graph, parent rollup, and recovery from partial failure.
 
+Assess each proposed child's labels through Task Author from that child's deliverable and evidence. Do not inherit parent labels or derive `blocked` from a dependency edge. Surface label corrections for reused children as separate Task Author revisions; reuse does not authorize rewriting them.
+
 ## Required Reading
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.

@@ -59,7 +59,7 @@ Read each applicable document in full, or the explicitly named section, before d
 3. Discover closing and manually linked pull requests through GitHub's issue relationship, then merge any explicit `--pr` evidence without duplicates.
 4. Inspect each pull request's target branch, state, draft state, mergeability, review decision, and checks. For failing GitHub Actions checks, include the run identity and a bounded failure snippet when logs are available.
 5. Classify the task as `complete`, `ready`, `pending`, `blocked`, or `uncertain`. A closed issue is complete; incomplete criteria or explicit failures on a ready pull request block; complete criteria without a linked completion pull request, a draft pull request with failing reproduction checks, active review, or pending checks remain pending; missing or contradictory evidence is uncertain.
-6. Report the normalized evidence and stop. A separate user-authorized workflow owns any fix, merge, or task closure.
+6. Report the normalized evidence and stop. Flag evidence-backed label corrections for Task Author without applying them. A `blocked` completion result, including failing checks or incomplete criteria, does not establish the hard external blocker required by the issue label. A separate user-authorized workflow owns any fix, merge, or task closure.
 
 ## Checkpoints
 

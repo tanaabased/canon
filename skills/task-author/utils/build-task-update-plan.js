@@ -15,10 +15,13 @@ function sameLabels(left, right) {
   return JSON.stringify(normalized(left)) === JSON.stringify(normalized(right));
 }
 
-function reconciledLabels(issue, desired) {
+function reconciledLabels(issue, desired, reviewedLabels) {
   const canonical = new Set(Object.keys(CANONICAL_LABELS));
   const retained = observedLabelNames(issue?.labels).filter(
-    (name) => !canonical.has(name.toLowerCase()) || desired.includes(name.toLowerCase()),
+    (name) =>
+      !canonical.has(name.toLowerCase()) ||
+      !reviewedLabels.includes(name.toLowerCase()) ||
+      desired.includes(name.toLowerCase()),
   );
   for (const name of desired) {
     if (!retained.some((current) => current.toLowerCase() === name.toLowerCase()))
@@ -32,9 +35,13 @@ function nativeValue(field) {
 }
 
 /** Build an exact existing-issue PATCH while preserving unmanaged labels and comments. */
-export function buildTaskUpdatePlan(draft, current, { revisionSummary = '' } = {}) {
+export function buildTaskUpdatePlan(
+  draft,
+  current,
+  { revisionSummary = '', reviewedLabels = [] } = {},
+) {
   const errors = [];
-  const labels = reconciledLabels(current.issue, draft.labels.apply);
+  const labels = reconciledLabels(current.issue, draft.labels.apply, reviewedLabels);
   const comments = draft.comments
     .filter(({ body }) => !current.comments.some((comment) => comment.body === body))
     .map(({ kind, body }) => ({ kind, body }));
