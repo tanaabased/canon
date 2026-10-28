@@ -68,7 +68,7 @@
 - Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support code directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
 - Apply the same hoisting test to tests as to source; root `test/` is only for root-owned or intentionally cross-scope coverage.
 - Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
-- Put exploratory or not-yet-adopted designs in `ideas/` so current guidance and reference material stay clean.
+- Put exploratory Tanaab proposals in `ideas/`, including future products, modules, features, repositories, and Canon skills or guidance. These proposals are not adopted policy, commitments, or authorization to act; follow the [ideas guidance](./ideas/README.md) for scope and handoff to actionable work.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
 - Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
 - Use skills as workflow entrypoints. Keep skill-specific procedures in the owning `SKILL.md` or its explicitly required resources; root `prompts/` is for reusable request starters with value beyond one skill, not otherwise undiscoverable workflow policy.
