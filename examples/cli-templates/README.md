@@ -2,6 +2,8 @@
 
 Build the shipped Bun starter in a disposable consumer and exercise its standalone output alongside the shipped shell starters. The Examples workflow supplies `CANON_TARBALL`, Bun, Bash, and the hosted Ubuntu runner's PowerShell. No checkout dependency or Git history may supply the resulting CLI behavior.
 
+This scenario covers packaged starter preparation, the Bun build, and help and fallback-version output for Bun, Bash, and PowerShell. It does not exercise every option or environment override. Bundled skill commands belong in [skill tools](../skill-tools/README.md); native plugin loading belongs in [OpenClaw installation](../openclaw/README.md). Results apply to the hosted Ubuntu environment, not every supported shell platform.
+
 ## Setup
 
 ```bash

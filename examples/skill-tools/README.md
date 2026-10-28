@@ -2,6 +2,8 @@
 
 Exercise Canon's bundled commands from a candidate npm tarball without checkout dependencies. The Examples workflow supplies `CANON_TARBALL`, Bun, and Leia's isolated `TMPDIR`. No GitHub access or host installation is needed.
 
+This scenario covers packaged command loading, skill scaffolding and validation, malformed-input rejection, and issue-form rendering. It does not perform authenticated GitHub operations or prove their remote effects. Native plugin loading belongs in [OpenClaw installation](../openclaw/README.md), and standalone starter behavior belongs in [CLI templates](../cli-templates/README.md).
+
 ## Setup
 
 ```bash

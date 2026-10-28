@@ -2,6 +2,8 @@
 
 Install Canon's npm tarball in an isolated OpenClaw profile and verify native loading, skill discovery, and optional guidance. Run through the [Examples workflow](../../.github/workflows/pr-examples-tests.yml), which provides `CANON_TARBALL`, the pinned OpenClaw runtime, and setup helpers without credentials or a live Gateway.
 
+This scenario covers installation, runtime inspection, model-visible skill discovery, and guidance-hook registration with guidance enabled and disabled. It does not run a model turn or prove that a live Gateway delivers the reminder. Bundled command behavior belongs in [skill tools](../skill-tools/README.md), and standalone starters belong in [CLI templates](../cli-templates/README.md).
+
 ## Setup
 
 ```bash
