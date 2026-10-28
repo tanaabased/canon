@@ -1,5 +1,10 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added canonical label inspection, planning, and synchronization across repositories to `tanaab-github-issue-schema-author`.
+- Clarified eligibility in all eight canonical label descriptions.
+- Fixed `tanaab-task-author` to require an explicit hard external blocker for `blocked`; dependencies alone no longer qualify.
+- Made ClawHub publication best effort so its failures don't block npm or repository publication. [#102](https://github.com/tanaabased/canon/issues/102) [#103](https://github.com/tanaabased/canon/pull/103)
+
 ## v0.13.0 - [October 28, 2026](https://github.com/tanaabased/canon/releases/tag/v0.13.0)
 
 ### New Features

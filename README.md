@@ -35,7 +35,7 @@ npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/can
 For OpenClaw 2026.9.5 or newer:
 
 ```sh
-openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
+openclaw plugins install npm:@tanaab/canon --accept-capabilities
 ```
 
 ## Skills

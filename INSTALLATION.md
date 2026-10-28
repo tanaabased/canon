@@ -28,13 +28,15 @@ When switching an existing installation from archives, npm, or another checkout,
 
 ## OpenClaw
 
-Use OpenClaw 2026.9.5 or newer. Install from ClawHub:
+Use OpenClaw 2026.9.5 or newer. Install from npm:
 
 ```sh
-openclaw plugins install clawhub:@tanaab/canon --accept-capabilities
+openclaw plugins install npm:@tanaab/canon --accept-capabilities
 ```
 
-For direct npm installation, use `npm:@tanaab/canon` instead. Append `@edge` or `@<version>` to select a prerelease or fixed version. Follow the command's activation instructions; supported plugins can activate without a Gateway restart. See [OpenClaw installation and updates](https://docs.openclaw.ai/tools/plugin).
+Append `@edge` or `@<version>` to select a prerelease or fixed version. Follow the command's activation instructions; supported plugins can activate without a Gateway restart. See [OpenClaw installation and updates](https://docs.openclaw.ai/tools/plugin).
+
+ClawHub is an optional, best-effort channel. After confirming the desired version is available there, use `clawhub:@tanaab/canon` instead.
 
 ### Local checkout
 
