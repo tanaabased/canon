@@ -2,6 +2,7 @@
 
 - Added a shared documentation style with repository overrides and adopted it for Canon's checked-in prose. [#89](https://github.com/tanaabased/canon/issues/89)
 - Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
+- Added optional repository optimization guidance discovery and evidence-based reconsideration to `tanaab-project-optimizer`. [#91](https://github.com/tanaabased/canon/issues/91)
 - Added shared guidance for strict units, bounded components, end-to-end flows, and static evidence. [#86](https://github.com/tanaabased/canon/issues/86)
 - Added support for restricting canonical `main` pushes and merges to designated users in `tanaab-project-author`. [#79](https://github.com/tanaabased/canon/pull/79)
 - Clarified unit-test boundaries, candidate-package Leia coverage, and mock-AI fixture scope. [#78](https://github.com/tanaabased/canon/pull/78)
