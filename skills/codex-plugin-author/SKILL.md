@@ -29,7 +29,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before using recorded responses or approval expectations in mock-AI tests:** [Mock Ai Fixtures](../../references/mock-ai-fixtures.md).
+- **Before using recorded responses or approval expectations in mock-AI tests:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
@@ -85,7 +85,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 
 ## Testing
 
-- Apply [Mock-AI Fixtures](../../references/mock-ai-fixtures.md) only when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary plugin fixtures do not require that workflow.
+- Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary synthetic plugin fixtures do not require that workflow.
 - Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): deterministic units for decisions, bounded components for subsystem wiring with fake external services, and Leia for installed consumer or native host flows. Static extracted-package checks establish metadata and resource invariants. Preserve distinct contracts when consolidating; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
