@@ -186,6 +186,6 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
 - Confirm `GitHub Actions` maps pull-request validation to `Testing`, linting to Repo Standardizer, and release publication to `Deployment` without duplicating their doctrine or absorbing independent workflow-topology ownership.
 - Confirm any npm deployment uses the canonical release-published lifecycle, `@tanaab` package identity, npm trusted publishing, conditional package builds, post-stamping format validation, an npm dry run, and the `latest` or `edge` channel contract.
-- Confirm npm publication receives no long-lived npm token and that any granular npm credential is isolated to an explicitly retained dist-tag step.
+- confirm authentication follows `Deployment`: prefer tokenless publication and channel syncing, and retain token auth only for its documented exceptions or unverified migration prerequisites.
 - Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface.
 - Confirm the change did not widen into CLI product, independent workflow-graph work, non-npm release systems, or broader operational deployment.

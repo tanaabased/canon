@@ -10,6 +10,7 @@
 - Simplified shared Leia setup and made workflow readability take precedence over conditional setup optimizations. [#78](https://github.com/tanaabased/canon/pull/78)
 - Strengthened guidance for ownership changes, justified abstractions, and compatibility appropriate to project maturity. [#78](https://github.com/tanaabased/canon/pull/78)
 - Updated documentation reviews to move useful scenario detail into existing Leia examples while retaining essential product guidance. [#78](https://github.com/tanaabased/canon/pull/78)
+- Updated `tanaab-javascript-author` and `tanaab-github-workflow-author` to prefer tokenless npm publication and channel syncing. [#82](https://github.com/tanaabased/canon/issues/82) [#83](https://github.com/tanaabased/canon/pull/83)
 
 ## v0.12.1 - [September 29, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.1)
 

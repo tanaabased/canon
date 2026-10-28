@@ -4,7 +4,7 @@ Use this reference when drafting or standardizing `CHANGELOG.md` entries.
 
 ## Unreleased Heading
 
-When the repo follows the shared `prepare-release-action` contract, the top line must be:
+When the repo follows the shared [`prepare-release`](https://github.com/tanaabased/actions/blob/main/prepare-release/README.md) contract, the top line must be:
 
 ```md
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
@@ -14,7 +14,7 @@ Keep that line exact so CI can stamp the unreleased section correctly.
 
 ## Entry Rules
 
-- By default, only mutate the upcoming unreleased bullets under the `prepare-release-action` heading.
+- By default, only mutate the upcoming unreleased bullets under the unreleased heading.
 - Treat older released sections as read-only unless the user explicitly asks to standardize, correct, or rewrite historical release notes.
 - If the user does not state the changelog scope or source, derive the unreleased bullets from the commits between `HEAD` and the most recent versioned tag after refreshing tags when possible.
 - Check prior released sections and avoid duplicating a bullet that is already represented there.

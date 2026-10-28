@@ -1,4 +1,4 @@
-import runGitHubCli from '../../../lib/run-github-cli.js';
+import runGitHubCli, { flattenGitHubPages } from '../../../lib/run-github-cli.js';
 
 function defaultCommandRunner(command, args) {
   if (command !== 'gh') throw new Error('GitHub CLI command must be bare gh.');
@@ -26,11 +26,6 @@ function parseJson(result, parseError, shapeError, isExpectedShape) {
   return data;
 }
 
-function flattenPages(pages) {
-  if (!Array.isArray(pages)) throw new Error('unexpected repository issue JSON shape.');
-  return pages.every(Array.isArray) ? pages.flat() : pages;
-}
-
 function fetchPaged(runGh, endpoint, context) {
   const result = runGh(['api', '--method', 'GET', '--paginate', '--slurp', endpoint]);
   if (result.returncode !== 0) throw new Error(errorMessage(result, context));
@@ -40,7 +35,7 @@ function fetchPaged(runGh, endpoint, context) {
     `unexpected ${context} JSON shape.`,
     Array.isArray,
   );
-  return flattenPages(pages);
+  return flattenGitHubPages(pages);
 }
 
 /**

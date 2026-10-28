@@ -32,7 +32,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Draft or update `CHANGELOG.md`.
 - Preserve the repo's changelog structure and section ordering.
-- Keep the leading unreleased heading aligned with the shared `prepare-release-action` contract when that format is in use.
+- Keep the leading unreleased heading aligned with the shared `prepare-release` contract when that format is in use.
 - Summarize changes concisely in changelog-ready user-facing language with consistent bullet shape, ordering, and issue or PR links when available.
 
 ## When Not to Use
@@ -81,7 +81,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Bundled Resources
 
-- [./references/changelog-format-and-examples.md](./references/changelog-format-and-examples.md): exact `prepare-release-action` unreleased heading line plus canonical bullet-shape examples mined from `prepare-release-action`
+- [./references/changelog-format-and-examples.md](./references/changelog-format-and-examples.md): exact `prepare-release` unreleased heading and canonical bullet examples
 
 ## Validation
 

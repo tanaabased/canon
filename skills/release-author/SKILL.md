@@ -46,7 +46,7 @@ Read each applicable document in full, or the explicitly named section, before d
 ## When Not to Use
 
 - Do not use this skill for ordinary `CHANGELOG.md` drafting without release creation intent; use `$tanaab-changelog-author`.
-- Do not edit release workflows, packaging scripts, or `prepare-release-action` wiring unless the user asks for workflow authoring separately.
+- Do not edit release workflows, packaging scripts, or `prepare-release` wiring unless the user asks for workflow authoring separately.
 - Do not invent a multi-package versioning or publication strategy while drafting a release; require that repository contract to exist first.
 - Do not publish a release directly by default; create a draft unless the user explicitly asks to publish immediately.
 - Do not bump `package.json` or other stamped version files locally before drafting the release; the release workflow owns that mutation.
@@ -123,9 +123,9 @@ Resolve intent before acting: readiness questions and next-tag verification foll
 - For release preparation, draft is the default because publication is the review gate that triggers repos using `release.published`.
 - Use tag and title equality exactly: `v0.2.1` tag means `v0.2.1` title.
 - SemVer tags supply only the default GitHub status: ordinary tags default to regular Latest, and prerelease-suffixed tags default to GitHub prerelease and non-Latest. An explicit GitHub status choice overrides that default; no first-release exception applies. See [npm publishing signals](../../references/coding-stack-preferences.md#npm-package-publishing) for how published GitHub status selects npm tags.
-- `prepare-release-action` owns release-time package and manifest version stamping after the draft is published.
-- For `prepare-release-action`-backed repos, the release tag should be the semver-valid value consumed by `github.event.release.tag_name`.
-- Do not assume that the single-package `prepare-release-action` contract covers multiple publishable workspaces; require explicit repo-local release wiring before using it for that shape.
+- [`prepare-release`](https://github.com/tanaabased/actions/blob/main/prepare-release/README.md) owns release-time package stamping; its project-specific commands stamp additional manifests after the draft is published.
+- For `prepare-release`-backed repos, the release tag should be the semver-valid value consumed by `github.event.release.tag_name`.
+- Do not assume that the single-package `prepare-release` contract covers multiple publishable workspaces; require explicit repo-local release wiring before using it for that shape.
 
 ## Bundled Resources
 
