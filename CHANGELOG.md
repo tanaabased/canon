@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.13.0 - [October 28, 2026](https://github.com/tanaabased/canon/releases/tag/v0.13.0)
+
 ### New Features
 
 - Added independent `pirog` skill ownership through `--owner` in `tanaab-skill-author`. [#90](https://github.com/tanaabased/canon/issues/90) [#99](https://github.com/tanaabased/canon/pull/99)
