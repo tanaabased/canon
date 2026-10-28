@@ -199,7 +199,7 @@ Use GitHub's native representation when it exists and is writable. The fallback 
 | Responsibility             | Assignees                            | None          | Do not create an Owner or DRI field                                                         |
 | Project outcome or timebox | Milestone                            | None          | Keep milestone context separate from task metadata                                          |
 | Hierarchy                  | Parent issue and sub-issues          | None          | Use native relationships                                                                    |
-| Blocking                   | Dependencies plus `blocked` label    | None          | Use dependencies for GitHub task blockers and document external blockers                    |
+| Blocking                   | Dependencies or `blocked` label      | None          | Use dependencies for GitHub task blockers and document external blockers                    |
 | Classification and intake  | Canonical repository labels          | None          | Use the approved vocabulary without duplicating issue type, fields, state, or relationships |
 
 Native metadata is authoritative if a duplicate fallback value exists accidentally. Migrate the fallback value into a newly available native field, verify the native write, then remove only the migrated key. Remove the capsule when it becomes empty.
@@ -314,23 +314,23 @@ Priority is an explicit human or policy override using Urgent, High, Medium, or 
 
 Use exact colors from [Theme's portable palette](https://github.com/tanaabased/theme/blob/main/styles/colors.json). The labels use the dark-mode brand and status colors, with `light.status.error` for the deeper `blocked` red and `dark.brand.accentDark` for `needs reproduction`. `good first issue` uses the lighter green, `dark.brand.primaryLight`.
 
-| Label                | Purpose                                                    | Color     |
-| -------------------- | ---------------------------------------------------------- | --------- |
-| `documentation`      | Documentation additions or improvements                    | `#5ab0ff` |
-| `breaking change`    | Requires consumer migration or coordination                | `#db2777` |
-| `regression`         | Previously working behavior has degraded                   | `#ff667d` |
-| `blocked`            | Cannot proceed because of a documented blocker             | `#b4233c` |
-| `needs triage`       | Submitted but not yet normalized against the task contract | `#ffb000` |
-| `needs reproduction` | A Bug needs reproducible evidence before work can proceed  | `#b67e00` |
-| `good first issue`   | Well-bounded work suitable for a first contribution        | `#33d3a1` |
-| `help wanted`        | Maintainers welcome outside contribution                   | `#00c88a` |
+| Label                | Purpose                                                                                           | Color     |
+| -------------------- | ------------------------------------------------------------------------------------------------- | --------- |
+| `documentation`      | Documentation is a primary deliverable, not an incidental update                                  | `#5ab0ff` |
+| `breaking change`    | Requires consumers to migrate or coordinate adoption                                              | `#db2777` |
+| `regression`         | Evidence shows previously working behavior now fails or degrades                                  | `#ff667d` |
+| `blocked`            | Work cannot proceed until a documented external blocker clears; dependencies alone do not qualify | `#b4233c` |
+| `needs triage`       | Task kind, actionable scope, or acceptance criteria need clarification                            | `#ffb000` |
+| `needs reproduction` | A bug lacks reproduction or diagnostic evidence needed to investigate                             | `#b67e00` |
+| `good first issue`   | Small, low-complexity, actionable, unblocked work suitable for a first contribution               | `#33d3a1` |
+| `help wanted`        | Actionable work for which maintainers explicitly welcome outside contribution                     | `#00c88a` |
 
 Label rules:
 
 - `documentation` applies when documentation is a primary delivery surface; an incidental docs update does not make it primary, and a code change need not change docs.
 - `breaking change` applies when consumers must migrate or coordinate because of the delivered behavior.
 - `regression` applies only to a Bug with evidence that the behavior previously worked.
-- `blocked` applies while any documented blocker prevents progress. Use a native issue dependency for a GitHub task blocker; identify external blockers in the body or a comment. Remove the label when the final blocker clears.
+- `blocked` follows its schema description. Identify the external blocker and unblock condition in the issue body or a comment; native dependency links alone do not qualify. Remove the label after verifying the blocker has cleared.
 - `needs triage` applies while task kind, actionable scope, or required evidence is unresolved. Remove it once normalization is complete.
 - `needs reproduction` applies only to a Bug that lacks enough reproduction or diagnostic evidence to proceed. Remove it once the evidence exists.
 - `good first issue` applies only after triage to an actionable, unblocked task with clear acceptance criteria, Low Complexity, and Work size `1`, `2`, or `3`.

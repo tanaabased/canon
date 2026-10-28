@@ -154,6 +154,35 @@ fallback:
     assert.ok(report.warnings.some((warning) => warning.includes('good first issue')));
   });
 
+  it('should not label a dependency alone as blocked', () => {
+    const report = classifyTaskLabels({
+      kind: 'task',
+      actionable: true,
+      hasAcceptanceCriteria: true,
+      relationships: { blockedBy: 'acme/widgets#42' },
+      availableLabels: ['blocked'],
+    });
+    assert.deepEqual(report.desired, []);
+    assert.deepEqual(report.apply, []);
+  });
+
+  it('should label explicit hard blockers with or without a linked issue', () => {
+    for (const evidence of [
+      { signals: { blocked: true } },
+      { relationships: { externalBlocker: true } },
+      { relationships: { externalBlocker: true, blockedBy: 'vendor/api#42' } },
+    ]) {
+      const report = classifyTaskLabels({
+        kind: 'task',
+        actionable: true,
+        hasAcceptanceCriteria: true,
+        availableLabels: ['blocked'],
+        ...evidence,
+      });
+      assert.deepEqual(report.apply, ['blocked']);
+    }
+  });
+
   it('should require provenance for estimates and reserve Priority for humans or policy', () => {
     const accepted = buildTaskAssessment(
       { priority: 'high', workSize: 3, complexity: 'medium', impact: 'high' },

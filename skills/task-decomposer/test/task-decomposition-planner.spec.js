@@ -104,7 +104,7 @@ describe('Task Decomposer exact planning', () => {
       ['create', 'create'],
     );
     assert.equal(preview.plan.children[0].taskPlan.issue.type, 'Task');
-    assert.deepEqual(preview.plan.children[1].taskPlan.issue.labels, ['blocked']);
+    assert.equal(preview.plan.children[1].taskPlan.issue.labels, undefined);
     assert.equal(Object.hasOwn(preview.plan.children[0], 'taskPreview'), false);
     assert.equal(Object.hasOwn(preview.plan.children[0], 'existingBlockedBy'), false);
     assert.deepEqual(preview.plan.relationships.dependencies[0], {

@@ -269,7 +269,7 @@ const fixtures = [
       metadata: { priority: 'medium', workSize: 5, complexity: 'medium', impact: 'high' },
       relationships: { blockedBy: 'acme/widgets#42' },
     }),
-    expected: { nativeFields: 4, fallback: {}, labels: ['blocked'] },
+    expected: { nativeFields: 4, fallback: {}, labels: [] },
   },
   {
     id: 'T11',

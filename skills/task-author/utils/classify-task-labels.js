@@ -21,10 +21,7 @@ export function classifyTaskLabels({
   if (signals.breakingChange === true) add('breaking change');
   if (kind === 'bug' && signals.regression === true) add('regression');
 
-  const blocked =
-    signals.blocked === true ||
-    relationships.externalBlocker === true ||
-    Boolean(relationships.blockedBy);
+  const blocked = signals.blocked === true || relationships.externalBlocker === true;
   if (blocked) add('blocked');
 
   const needsTriage =

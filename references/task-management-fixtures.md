@@ -40,7 +40,7 @@ Every applicable fixture must satisfy these assertions:
 | T07 | Task Author   | Unknown   | Organization    | Underspecified external submission            |
 | T08 | Task Author   | Bug       | Organization    | Missing reproduction evidence                 |
 | T09 | Task Author   | Task      | Organization    | Documented external blocker                   |
-| T10 | Task Author   | Task      | Organization    | Native task dependency and blocked lifecycle  |
+| T10 | Task Author   | Task      | Organization    | Dependency without automatic blocked label    |
 | T11 | Task Author   | Task      | Organization    | Partial native schema and partial fallback    |
 | T12 | Task Author   | Task      | Ambiguous       | Conservative target resolution                |
 | T13 | Task Author   | Task      | Organization    | Oversized, very-high-value work               |
@@ -298,23 +298,23 @@ Expected relationships: no fabricated GitHub dependency.
 
 When access arrives, remove `blocked` after verifying the task is actionable.
 
-### T10: Task Blocked by Another GitHub Task
+### T10: Task Sequenced After Another GitHub Task
 
 Input evidence:
 
 - Explicit target: `acme/widgets`.
-- `acme/widgets#42` must deliver a stable API before this task can proceed.
-- The blocker exists and is verified in the same project repository.
+- `acme/widgets#42` delivers the stable API this task will consume. This is ordinary project sequencing, with no documented external hard blocker.
+- The prerequisite exists and is verified in the same project repository.
 
 Expected behavior:
 
 - Create the native blocked-by relationship to `acme/widgets#42`.
-- Apply `blocked` as the filterable lifecycle signal.
-- Record the dependency in the preview and verify both the relationship and label after mutation.
+- Do not apply `blocked` from the dependency alone.
+- Record the dependency in the relationship-owning workflow preview; verify the relationship after an authorized mutation.
 
 Expected native values are Task, Priority Medium, Work size `5`, Complexity Medium, and Impact High.
 
-Remove `blocked` only after the final blocker is actually resolved. Closing the related issue is evidence to inspect, not automatic proof that its required outcome exists.
+If a documented external hard blocker later prevents work, assess `blocked` separately. Closing a related issue is evidence to inspect, not automatic proof that its required outcome exists.
 
 ### T11: Organization Repository with a Partial Native Schema
 

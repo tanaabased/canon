@@ -182,42 +182,42 @@
   "labels": [
     {
       "name": "documentation",
-      "description": "Documentation additions or improvements",
+      "description": "Documentation is a primary deliverable, not an incidental update",
       "color": "5ab0ff"
     },
     {
       "name": "breaking change",
-      "description": "Requires consumer migration or coordination",
+      "description": "Requires consumers to migrate or coordinate adoption",
       "color": "db2777"
     },
     {
       "name": "regression",
-      "description": "Previously working behavior has degraded",
+      "description": "Evidence shows previously working behavior now fails or degrades",
       "color": "ff667d"
     },
     {
       "name": "blocked",
-      "description": "Cannot proceed because of a documented blocker",
+      "description": "Work cannot proceed until a documented external blocker clears; dependencies alone do not qualify",
       "color": "b4233c"
     },
     {
       "name": "needs triage",
-      "description": "Submitted but not yet normalized against the task contract",
+      "description": "Task kind, actionable scope, or acceptance criteria need clarification",
       "color": "ffb000"
     },
     {
       "name": "needs reproduction",
-      "description": "A Bug needs reproducible evidence before work can proceed",
+      "description": "A bug lacks reproduction or diagnostic evidence needed to investigate",
       "color": "b67e00"
     },
     {
       "name": "good first issue",
-      "description": "Well-bounded work suitable for a first contribution",
+      "description": "Small, low-complexity, actionable, unblocked work suitable for a first contribution",
       "color": "33d3a1"
     },
     {
       "name": "help wanted",
-      "description": "Maintainers welcome outside contribution",
+      "description": "Actionable work for which maintainers explicitly welcome outside contribution",
       "color": "00c88a"
     }
   ],
