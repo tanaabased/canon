@@ -9,11 +9,12 @@
 ### Improvements
 
 - Added a shared documentation style with repository overrides and adopted it for Canon's checked-in prose. [#89](https://github.com/tanaabased/canon/issues/89) [#96](https://github.com/tanaabased/canon/pull/96)
-- Added asynchronous update, disposal, and optional-enhancement failure guidance to `tanaab-vue-author`.
-- Added bounded subprocess diagnostics that preserve complete machine results and the original failure status.
-- Added durable automation launcher guidance for supported runtime upgrades.
+- Added asynchronous update, disposal, and optional-enhancement failure guidance to `tanaab-vue-author`. [#101](https://github.com/tanaabased/canon/pull/101)
+- Added bounded subprocess diagnostics that preserve complete machine results and the original failure status. [#101](https://github.com/tanaabased/canon/pull/101)
+- Added durable automation launcher guidance for supported runtime upgrades. [#101](https://github.com/tanaabased/canon/pull/101)
 - Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
 - Added recorded-response evidence and replay guidance to `tanaab-openclaw-plugin-author`. [#77](https://github.com/tanaabased/canon/issues/77) [#97](https://github.com/tanaabased/canon/pull/97)
+- Expanded `ideas/` to shared Tanaab product, module, and repository proposals, with a selective CI feasibility sketch.
 - Replaced standalone optimization prompts with scoped `tanaab-project-optimizer` reviews and preferred-tool review in `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
 - Required `tanaab-github-workflow-author` to justify `workflow_dispatch` with a concrete operator use case. [#93](https://github.com/tanaabased/canon/issues/93) [#100](https://github.com/tanaabased/canon/pull/100)
 - Required `tanaab-project-optimizer` to report and plan small corrections alongside substantial improvements. [#78](https://github.com/tanaabased/canon/pull/78)
@@ -29,8 +30,8 @@
 
 ### Testing and Delivery
 
-- Added cache upgrade coverage for restored resources, retired skills, and unrelated-file preservation in `tanaab-codex-plugin-author`.
-- Added configuration contract coverage through each supported runtime adapter while preserving documented differences.
+- Added cache upgrade coverage for restored resources, retired skills, and unrelated-file preservation in `tanaab-codex-plugin-author`. [#101](https://github.com/tanaabased/canon/pull/101)
+- Added configuration contract coverage through each supported runtime adapter while preserving documented differences. [#101](https://github.com/tanaabased/canon/pull/101)
 - Added shared guidance for strict units, bounded components, end-to-end flows, and static evidence. [#78](https://github.com/tanaabased/canon/pull/78) [#86](https://github.com/tanaabased/canon/issues/86) [#94](https://github.com/tanaabased/canon/pull/94)
 - Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
 - Removed redundant repository checks that froze documentation and workflow structure. [#78](https://github.com/tanaabased/canon/pull/78)
