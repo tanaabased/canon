@@ -4,6 +4,8 @@ import { bold, dim, renderCliHelp, writeLine } from '../../../lib/bun-cli-suppor
 import {
   CANON_SKILL_BRAND_COLOR,
   CANON_SKILL_PREFIX,
+  DEFAULT_SKILL_OWNER,
+  SKILL_OWNER_IDS,
   SKILLS_ROOT_DIR,
   formatSkillContainerIds,
   formatSkillTypeIds,
@@ -20,9 +22,10 @@ function renderUsage(stream = process.stdout) {
         'Initialize a canon-shaped skill from the local full templates owned by tanaab-skill-author.',
       options: [
         `  --type <type>           skill type such as ${dim(formatSkillTypeIds(), stream)}`,
+        `  --owner <id>            skill owner: ${SKILL_OWNER_IDS.join(', ')} ${dim(`[default: ${DEFAULT_SKILL_OWNER}]`, stream)}`,
         `  --namespace <id>        public skill namespace ${dim(`[default: ${CANON_SKILL_PREFIX}]`, stream)}`,
         `  --container <id>        folder context: ${dim(formatSkillContainerIds(), stream)}; auto-detected when omitted`,
-        '  --category-tag <tag>    category tag override; must add one tag beyond owner and type',
+        '  --category-tag <tag>    category tag override; must differ from supported owners and type',
         '  --slug <slug>           skill slug without the configured namespace prefix',
         '  --display-name <name>   human-readable skill display name',
         '  --description <text>    skill description text',

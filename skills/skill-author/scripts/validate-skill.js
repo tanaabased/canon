@@ -1,7 +1,12 @@
 #!/usr/bin/env bun
 
 import { bold, dim, renderCliHelp, writeLine } from '../../../lib/bun-cli-support.js';
-import { CANON_SKILL_PREFIX, formatSkillContainerIds } from '../lib/skill-contract.js';
+import {
+  CANON_SKILL_PREFIX,
+  DEFAULT_SKILL_OWNER,
+  SKILL_OWNER_IDS,
+  formatSkillContainerIds,
+} from '../lib/skill-contract.js';
 import { validateSkillDir } from '../lib/skill-validator.js';
 import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
 import parseValidateSkillArgs from '../utils/parse-validate-skill-args.js';
@@ -15,6 +20,7 @@ function renderUsage(stream = process.stdout) {
       options: [
         '  --skill-dir <path>      skill directory to validate',
         '  --type <type>           expected type override',
+        `  --owner <id>            skill owner: ${SKILL_OWNER_IDS.join(', ')} ${dim(`[default: ${DEFAULT_SKILL_OWNER}]`, stream)}`,
         `  --namespace <id>        public skill namespace ${dim(`[default: ${CANON_SKILL_PREFIX}]`, stream)}`,
         `  --container <id>        folder context: ${dim(formatSkillContainerIds(), stream)}; auto-detected when omitted`,
         '  -h, --help              show this message',
@@ -38,6 +44,7 @@ async function main() {
     container: options.container,
     expectedType: options.type,
     namespace: options.namespace,
+    owner: options.owner,
   });
   writeLine(process.stdout, formatSkillValidationReport(result));
   return result.errors.length === 0;

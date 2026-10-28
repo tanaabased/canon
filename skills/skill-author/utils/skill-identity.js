@@ -1,4 +1,6 @@
 export const DEFAULT_SKILL_NAMESPACE = 'tanaab';
+export const DEFAULT_SKILL_OWNER = 'tanaab';
+export const SKILL_OWNER_IDS = ['tanaab', 'pirog'];
 export const SKILL_CONTAINER_IDS = ['standalone', 'codex-plugin', 'openclaw-plugin'];
 
 export function formatSkillContainerIds() {

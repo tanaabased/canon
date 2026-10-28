@@ -23,7 +23,7 @@ metadata:
 
 Use this skill when the skill itself is the artifact being created, standardized, or validated.
 
-- `type` selects the canonical shape. Public `namespace` and `container` retain Tanaab and detected-container defaults but may be explicitly overridden by an owning project.
+- `type` selects the canonical shape; `owner` selects skill ownership (`tanaab` by default, or explicit `pirog`). Public `namespace` and `container` retain Tanaab and detected-container defaults but may be explicitly overridden by an owning project.
 - Choose the narrowest type that fits; keep `generic` as the fallback.
 - Treat project management as a domain and category rather than a separate skill type. Use `integration` for one provider-backed object or mutation boundary and `workflow` for a fixed multi-object lifecycle.
 - Prefer domain-led names for project, task, project milestone, and release surfaces; treat those concepts as lowercase ordinary nouns in prose. Retain provider-led names when provider mechanics are the actual product surface, and retain repository or repo when the technical container or baseline is the exact owned surface.
@@ -35,7 +35,7 @@ Use this skill when the skill itself is the artifact being created, standardized
 - Let the shared standard define the base contract and let local templates and scripts own type-specific authoring behavior.
 - Keep support material local unless it clearly passes the hoist test for repo-root canon, and apply that same ownership test to skill-local tests.
 - For `coding` skills, define one owned code surface plus the required `Documentation` and `Testing` lifecycles; add optional `Deployment` when one canonical delivery mechanism materially shapes that surface, then map those lifecycles through the required `GitHub Actions` reference section.
-- Keep Canon provenance separate from public identity. In plugin-contained skill trees, retain the configured namespace in frontmatter and prompts while omitting it from the skill folder name.
+- Keep skill ownership independent of public namespace and Canon structure. In plugin-contained skill trees, retain the configured namespace in frontmatter and prompts while omitting it from the skill folder name.
 - Give every skill a skill-specific `metadata.openclaw.emoji` and an HTTPS source homepage; add load-time gates only for hard runtime dependencies.
 - If the reusable artifact is really a whole starter repository with committed structure, scripts, examples, and docs that users adopt wholesale, challenge whether it should be a repo template instead of a live skill.
 - When a skill implies durable, always-on repo policy, it may bundle `references/repo-agents-lines.md` as short copyable guidance for a target repo's `AGENTS.md`.
@@ -58,7 +58,7 @@ Read and apply every applicable document before the dependent work. A summary or
 
 - Create a new skill from scratch.
 - Choose or refine a skill's `type`.
-- Apply an explicit project-owned public namespace or standalone, Codex-plugin, or OpenClaw-plugin container policy.
+- Apply explicit project-owned skill ownership, public namespace or standalone, Codex-plugin, or OpenClaw-plugin container policy.
 - Standardize an existing skill's `SKILL.md`, `agents/openai.yaml`, naming, `metadata.owner`, or `metadata.openclaw`.
 - Validate a newly created, standardized, or migrated skill directory.
 - Review whether skill support material and tests should stay local or be hoisted under the shared hoist test.
@@ -83,7 +83,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - For project-management skills, keep domain naming separate from implementation detail and choose `integration` or `workflow` from the actual permission and lifecycle boundary.
 - Keep structure and metadata aligned with the shared canon contract.
 - Require explicit policy reads under the [required-reading contract](../../references/skill-standard.md#required-reading); a valid link alone does not establish that the workflow loads or follows the policy.
-- Keep Tanaab provenance separate from product-facing namespace, description, prompt, folder, and brand identity.
+- Keep skill ownership separate from product-facing namespace, description, prompt, folder, and brand identity.
 - Keep OpenClaw display metadata in `SKILL.md` and Codex interface metadata in `agents/openai.yaml`.
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
@@ -128,7 +128,7 @@ Read and apply every applicable document before the dependent work. A summary or
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
-1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `namespace` or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
+1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `owner`, `namespace`, or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
 
 2. Complete the applicable Required Reading before making dependent decisions.
 
@@ -137,7 +137,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 4. For authorized creation, standardization, or implementation of an optimization plan, scaffold or patch the skill.
 
 - Use [`./scripts/init-skill.js`](./scripts/init-skill.js) when the task is a clean scaffold.
-- Pass project-declared identity context explicitly with `--namespace <id>` and `--container <standalone|codex-plugin|openclaw-plugin>`; do not expect deterministic scripts to parse `AGENTS.md` prose.
+- Pass project-declared identity context explicitly with `--owner <tanaab|pirog>`, `--namespace <id>` and `--container <standalone|codex-plugin|openclaw-plugin>`; do not expect deterministic scripts to parse `AGENTS.md` prose.
 - Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
 - Tailor `Required Reading` to the actual governing policies with explicit Always or Before triggers. Keep essential constraints at the decision point, detailed policy in its authoritative reference, and optional background in the resource inventory.
@@ -153,6 +153,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 - Run [`./scripts/validate-skill.js`](./scripts/validate-skill.js) against the generated or updated skill.
 - Fix every `[error]` before finishing.
+- Pass the same explicit owner, namespace, and container used for scaffolding; validation defaults to `tanaab` ownership.
 - Review `[warn]` and `[manual]` results explicitly instead of treating them as silent success.
 - Confirm the skill still owns one narrow surface and only references canon it actually needs.
 
@@ -198,7 +199,7 @@ Use this workflow for requests to refresh what selected skills recommend. Keep t
 ## Validation
 
 - Confirm the skill has one distinct owned surface, the correct explicit type and section order, and domain- or provider-led naming that matches the shared standard.
-- Confirm namespace, container, public identity, and OpenClaw metadata match applicable project guidance without accidental Tanaab branding or unnecessary load-time gates.
+- Confirm owner, namespace, container, public identity, and OpenClaw metadata match applicable project guidance without accidental Tanaab branding or unnecessary load-time gates.
 - Confirm coding skills keep their required lifecycle sections and map automation to named workflow paths without duplicating doctrine or absorbing another owner's topology.
 - Confirm a repo template or short ambient `AGENTS.md` projection was used instead when either is the more honest reusable artifact.
 - Confirm bundled resources and flat skill-local tests remain with their smallest justified owner, and recheck any affected hoisted surface.

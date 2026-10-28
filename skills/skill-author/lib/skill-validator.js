@@ -6,8 +6,9 @@ import {
   CANON_DESCRIPTION_PREFIX,
   CANON_SKILL_BRAND_COLOR,
   CANON_SKILL_LICENSE,
-  CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX,
+  DEFAULT_SKILL_OWNER,
+  SKILL_OWNER_IDS,
   formatSkillTypeIds,
   getSkillNamespacePrefix,
   getSkillType,
@@ -22,6 +23,7 @@ import normalizeSkillNamespace from '../utils/normalize-skill-namespace.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
 import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
 import resolveSkillContainer from '../utils/resolve-skill-container.js';
+import resolveSkillOwner from '../utils/resolve-skill-owner.js';
 import validateOpenClawMetadata from '../utils/validate-openclaw-metadata.js';
 const AUXILIARY_DOCS = [
   'README.md',
@@ -144,6 +146,9 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
     if (!isKebabCaseId(tag)) {
       errors.push(`Skill tag must use lowercase letters, digits, and hyphens only: ${tag}`);
     }
+    if (SKILL_OWNER_IDS.includes(tag) && tag !== actualOwner) {
+      errors.push(`Skill tags must not include a competing owner tag: ${tag}`);
+    }
   }
 
   if (actualOwner && !normalizedTags.includes(actualOwner)) {
@@ -153,7 +158,9 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
     errors.push(`Skill tags must include the selected type tag: ${actualType}`);
   }
 
-  const categoryTags = normalizedTags.filter((tag) => tag !== actualOwner && tag !== actualType);
+  const categoryTags = normalizedTags.filter(
+    (tag) => !SKILL_OWNER_IDS.includes(tag) && tag !== actualOwner && tag !== actualType,
+  );
   if (categoryTags.length === 0) {
     errors.push(
       'Skill tags must include at least one additional category tag beyond owner and type.',
@@ -165,7 +172,14 @@ function validateNormalizedTags({ normalizedTags, actualOwner, actualType, error
   }
 }
 
-function validateFrontmatter({ errors, frontmatter, namespace, requestedType, warnings }) {
+function validateFrontmatter({
+  errors,
+  frontmatter,
+  namespace,
+  requestedOwner,
+  requestedType,
+  warnings,
+}) {
   pushMissingFieldErrors(frontmatter, REQUIRED_FRONTMATTER_FIELDS, errors);
   pushForbiddenFieldErrors(frontmatter, FORBIDDEN_TOP_LEVEL_FIELDS, errors);
 
@@ -183,15 +197,19 @@ function validateFrontmatter({ errors, frontmatter, namespace, requestedType, wa
   const rawDeclaredOwner = metadata?.owner;
   const declaredTags = metadata?.tags;
   const declaredType = normalizeLowercaseString(rawDeclaredType);
-  const declaredOwner = normalizeLowercaseString(rawDeclaredOwner);
   const actualType = declaredType ?? requestedType ?? 'generic';
-  const actualOwner = declaredOwner ?? CANON_SKILL_OWNER;
+  let actualOwner = requestedOwner;
+  try {
+    actualOwner = resolveSkillOwner(rawDeclaredOwner);
+  } catch (error) {
+    errors.push(`SKILL.md metadata.owner: ${error.message}`);
+  }
   const namespacePrefix = getSkillNamespacePrefix(namespace);
 
   if (rawDeclaredType && typeof rawDeclaredType !== 'string') {
     errors.push('SKILL.md frontmatter metadata.type must be a string.');
   }
-  if (rawDeclaredOwner && typeof rawDeclaredOwner !== 'string') {
+  if (rawDeclaredOwner !== undefined && typeof rawDeclaredOwner !== 'string') {
     errors.push('SKILL.md frontmatter metadata.owner must be a string.');
   }
 
@@ -200,8 +218,10 @@ function validateFrontmatter({ errors, frontmatter, namespace, requestedType, wa
       `SKILL.md metadata.type must match the requested type: expected \`${requestedType}\`.`,
     );
   }
-  if (declaredOwner && declaredOwner !== CANON_SKILL_OWNER) {
-    errors.push(`SKILL.md metadata.owner must be \`${CANON_SKILL_OWNER}\`.`);
+  if (actualOwner !== requestedOwner) {
+    errors.push(
+      `SKILL.md metadata.owner must match the requested owner: expected \`${requestedOwner}\`.`,
+    );
   }
   if (declaredType && !isKnownSkillType(declaredType)) {
     errors.push(`SKILL.md metadata.type must be one of: ${formatSkillTypeIds()}`);
@@ -470,6 +490,7 @@ function buildManualChecks({ expectedType }) {
  * @param {'standalone'|'codex-plugin'|'openclaw-plugin'} [options.container] Optional folder-policy context; containing plugin manifests are detected when omitted.
  * @param {string} [options.expectedType] Optional type requested by the caller.
  * @param {string} [options.namespace='tanaab'] Public machine-id namespace declared by the owning project.
+ * @param {string} [options.owner='tanaab'] Expected skill owner, independent of namespace.
  * @returns {Promise<{errors: string[], manualChecks: string[], skillDir: string, warnings: string[]}>} Validation report.
  */
 export async function validateSkillDir(skillDir, options = {}) {
@@ -479,8 +500,15 @@ export async function validateSkillDir(skillDir, options = {}) {
   const errors = [];
   const warnings = [];
   let actualType = requestedType ?? 'generic';
-  let actualOwner = CANON_SKILL_OWNER;
+  let requestedOwner = DEFAULT_SKILL_OWNER;
+  let actualOwner = DEFAULT_SKILL_OWNER;
   let namespace = CANON_SKILL_PREFIX;
+
+  try {
+    requestedOwner = resolveSkillOwner(options.owner);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+  }
 
   try {
     namespace = normalizeSkillNamespace(options.namespace);
@@ -529,6 +557,7 @@ export async function validateSkillDir(skillDir, options = {}) {
         errors,
         frontmatter,
         namespace,
+        requestedOwner,
         requestedType,
         warnings,
       }));

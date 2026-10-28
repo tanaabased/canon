@@ -33,6 +33,17 @@ bun --no-install "$TMPDIR/package/skills/skill-author/scripts/init-skill.js" --t
 bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/custom/github-cli" --namespace agent-system --container openclaw-plugin
 bun -e 'import assert from "node:assert/strict"; const s=await Bun.file(process.argv[1]).text(); const f=Bun.YAML.parse(s.split("---")[1]); assert.equal(f.name,"agent-system-github-cli"); assert.equal(f.description,"Agent System GitHub CLI guidance for agent-scoped operations."); assert.equal(f.metadata.owner,"tanaab"); const a=Bun.YAML.parse(await Bun.file(process.argv[2]).text()); assert.equal(a.interface.brand_color,"#123456"); assert.match(a.interface.default_prompt,/\$agent-system-github-cli/); assert.doesNotMatch(JSON.stringify(a),/Tanaab-based/);' "$TMPDIR/custom/github-cli/SKILL.md" "$TMPDIR/custom/github-cli/agents/openai.yaml"
 
+# should scaffold and validate explicit ownership independently of namespace
+cd "$TMPDIR"
+bun --no-install "$TMPDIR/package/skills/skill-author/scripts/init-skill.js" --type generic --owner pirog --namespace piro --container codex-plugin --category-tag skills --slug example --display-name 'Example' --description 'Create a focused example skill.' --openclaw-emoji '🧩' --openclaw-homepage https://example.com/skills/example --output-dir "$TMPDIR/pirog"
+bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/pirog/example" --owner pirog --namespace piro --container codex-plugin
+bun -e 'import assert from "node:assert/strict"; const s=await Bun.file(process.argv[1]).text(); const f=Bun.YAML.parse(s.split("---")[1]); assert.equal(f.name,"piro-example"); assert.equal(f.metadata.owner,"pirog"); assert.deepEqual(f.metadata.tags,["pirog","generic","skills"]);' "$TMPDIR/pirog/example/SKILL.md"
+status=0
+bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/pirog/example" --namespace piro --container codex-plugin > "$TMPDIR/owner.log" 2>&1 || status=$?
+cat "$TMPDIR/owner.log"
+test "$status" -eq 1
+grep -F 'must match the requested owner' "$TMPDIR/owner.log"
+
 # should reject missing frontmatter and interface metadata
 mkdir -p "$TMPDIR/malformed"
 cp missing-frontmatter.md "$TMPDIR/malformed/SKILL.md"

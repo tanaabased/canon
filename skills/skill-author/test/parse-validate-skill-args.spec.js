@@ -8,6 +8,8 @@ describe('skills/skill-author/utils/parse-validate-skill-args', () => {
       parseValidateSkillArgs([
         '--skill-dir',
         '/skill',
+        '--owner',
+        'pirog',
         '--namespace',
         'agent-system',
         '--container',
@@ -18,6 +20,7 @@ describe('skills/skill-author/utils/parse-validate-skill-args', () => {
         container: 'openclaw-plugin',
         help: true,
         namespace: 'agent-system',
+        owner: 'pirog',
         skillDir: '/skill',
       },
     );

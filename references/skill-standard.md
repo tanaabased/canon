@@ -11,8 +11,8 @@ Use this file as the source of truth for canon skill validation.
 ## Identity and Naming
 
 - `[error]` Canonical type-specific authoring and validation behavior comes from the full templates owned by `tanaab-skill-author`.
-- `[error]` Frontmatter `metadata.owner` must exist and must equal `tanaab`.
-- `[error]` Treat `metadata.owner` as Canon provenance, not as the public skill namespace. The public namespace defaults to `tanaab` and may be explicitly overridden by the owning project's ambient guidance.
+- `[error]` Frontmatter `metadata.owner` must identify the skill owner: `tanaab` (default) or explicit `pirog`. Explicit owner ids must be exact lowercase strings.
+- `[error]` Treat `metadata.owner` as skill ownership, independently of Canon structure and public namespace. The public namespace defaults to `tanaab` and may be explicitly overridden by the owning project's ambient guidance.
 - `[error]` Frontmatter `metadata.type` must be one of the type ids defined by those canonical templates.
 - `[error]` Frontmatter `metadata.type` must equal the selected or asserted type id when one is provided.
 - `[error]` The generated machine id must use lowercase letters, digits, and hyphens only.
@@ -21,7 +21,7 @@ Use this file as the source of truth for canon skill validation.
 - `[error]` In a `standalone` container, the skill folder name must equal the generated machine id.
 - `[error]` In a `codex-plugin` or `openclaw-plugin` container, the skill folder name must equal the generated machine id with its configured public namespace prefix removed.
 - `[error]` Strip an accidental duplicate configured namespace prefix before writing the final machine id.
-- `[manual]` A repository may declare durable `namespace` and `container` overrides in `AGENTS.md`, but deterministic scaffolding and validation must also receive them explicitly through `--namespace` and `--container`.
+- `[manual]` A repository may declare durable `owner`, `namespace`, and `container` overrides in `AGENTS.md`, but deterministic scaffolding and validation must also receive them explicitly through `--owner`, `--namespace`, and `--container`. Validation compares the declared owner with the explicitly selected owner, defaulting to `tanaab`.
 - `[manual]` Treat project management as a domain or category, not an additional skill type.
 - `[manual]` Prefer domain-led names for skills that own projects, tasks, project milestones, or releases. Treat those concepts as lowercase ordinary nouns in prose; retain capitalization only in proper skill, product, or document names.
 - `[manual]` Prefer provider-led names when provider-specific mechanics are the owned surface, and retain repository or repo when a technical container, layout, configuration, or tooling baseline is the exact owned surface.
@@ -62,7 +62,7 @@ skill-folder/
 - `[error]` Under a custom public namespace, preserve product-oriented description prose without injecting the Tanaab description prefix.
 - `[error]` `metadata.tags` must be a list of strings.
 - `[error]` `metadata.tags` must include the selected `owner` and `type`.
-- `[error]` `metadata.tags` must include at least one additional kebab-case category tag beyond `owner` and `type`.
+- `[error]` `metadata.tags` must include at least one additional kebab-case category tag beyond supported owner ids and `type`. Do not include a competing supported owner tag or use it as a category.
 - `[error]` Section order must match the selected type's canonical template order.
 - `[error]` Optional top-level sections declared by the canonical template may be omitted, but if present they must appear in the template's declared order.
 - `[error]` `coding` skills must include the canonical `Documentation`, `Testing`, and `GitHub Actions` sections in template order.
@@ -135,7 +135,7 @@ skill-folder/
 - `[error]` Optional `policy.allow_implicit_invocation` must be a boolean when present.
 - `[error]` Optional `dependencies.tools` entries must declare at least `type` and `value` when present.
 - `[warn]` `display_name` should be unprefixed by default unless the user explicitly wants `Tanaab` in the human-facing title.
-- `[manual]` After any applicable owner-profile prefix, `short_description` should describe the skill outcome.
+- `[manual]` `short_description` should describe the skill outcome after any namespace-required description prefix.
 - `[manual]` Use `policy.allow_implicit_invocation: false` only when a skill should require explicit `$<machine-id>` invocation.
 - `[manual]` Use `dependencies.tools` only for real tool dependencies that improve execution, such as an MCP server the skill directly needs.
 
@@ -143,7 +143,7 @@ skill-folder/
 
 - `[error]` Start every skill from the canonical full type template owned by `tanaab-skill-author`.
 - `[error]` Type-specific authoring and validation behavior must come from those canonical templates rather than ad hoc parallel registries.
-- `[error]` Use the shared Tanaab owner contract from this standard and the validator. Do not load owner behavior from a separate owner-data folder.
+- `[error]` Use the shared owner contract from this standard and Skill Author. Do not introduce owner profiles, owner-specific templates, or a separate owner-data folder.
 - `[error]` Use kebab-case for repo-authored filenames in `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, `assets/`, `references/`, `prompts/`, and `templates/` unless a tool requires a fixed conventional filename.
 - `[error]` `scripts/` is code-only. Do not store static registry data there as JS object literals.
 - `[error]` Repo-level script filenames must end in `-cli.js` or `-task.js`; import-only modules belong in `lib/`.

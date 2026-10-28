@@ -11,15 +11,16 @@ import normalizeSkillDescription, {
 } from '../utils/normalize-skill-description.js';
 import normalizeSkillNamespace from '../utils/normalize-skill-namespace.js';
 import renderSkillTemplate from '../utils/render-skill-template.js';
-import resolveSkillContainer from '../utils/resolve-skill-container.js';
 import resolveOpenClawHomepage from '../utils/resolve-openclaw-homepage.js';
+import resolveSkillContainer from '../utils/resolve-skill-container.js';
+import resolveSkillOwner from '../utils/resolve-skill-owner.js';
 import {
   CANON_DESCRIPTION_PREFIX,
   CANON_SKILL_BRAND_COLOR,
   CANON_SKILL_HOMEPAGE_BASE,
   CANON_SKILL_LICENSE,
-  CANON_SKILL_OWNER,
   CANON_SKILL_PREFIX,
+  SKILL_OWNER_IDS,
   SKILLS_ROOT_DIR,
   formatSkillTypeIds,
   getSkillNamespacePrefix,
@@ -77,6 +78,7 @@ export async function initializeSkill(options) {
   const description = String(options.description ?? '').trim();
   const openclawEmoji = String(options.openclawEmoji ?? '').trim();
   const namespace = normalizeSkillNamespace(options.namespace);
+  const owner = resolveSkillOwner(options.owner);
   const namespacePrefix = getSkillNamespacePrefix(namespace);
   const descriptionPrefix = namespace === CANON_SKILL_PREFIX ? CANON_DESCRIPTION_PREFIX : '';
   const brandColor = String(options.brandColor ?? CANON_SKILL_BRAND_COLOR).trim();
@@ -100,9 +102,9 @@ export async function initializeSkill(options) {
   }
   if (
     categoryTagOverride &&
-    (categoryTagOverride === CANON_SKILL_OWNER || categoryTagOverride === type)
+    (SKILL_OWNER_IDS.includes(categoryTagOverride) || categoryTagOverride === type)
   ) {
-    throw new Error('Category tag override must add one tag beyond owner and type.');
+    throw new Error('Category tag override must add one tag beyond supported owners and type.');
   }
 
   const normalizedDescription = normalizeSkillDescription(description, { descriptionPrefix });
@@ -122,11 +124,11 @@ export async function initializeSkill(options) {
   if (!categoryTag || !isKebabCaseId(categoryTag)) {
     throw new Error(`Category tag must be a kebab-case id: ${categoryTag || '<empty>'}`);
   }
-  if (categoryTag === CANON_SKILL_OWNER || categoryTag === type) {
-    throw new Error('Category tag must add one tag beyond owner and type.');
+  if (SKILL_OWNER_IDS.includes(categoryTag) || categoryTag === type) {
+    throw new Error('Category tag must add one tag beyond supported owners and type.');
   }
 
-  const tags = [CANON_SKILL_OWNER, type, categoryTag];
+  const tags = [owner, type, categoryTag];
   const outputDir = path.resolve(options.outputDir ?? SKILLS_ROOT_DIR);
   const container = await resolveSkillContainer(outputDir, options.container);
   const folderName = isPluginSkillContainer(container)
@@ -158,7 +160,7 @@ export async function initializeSkill(options) {
     metadata_tags_yaml: renderMetadataTagsYaml(tags),
     openclaw_emoji: quoteYaml(openclawEmoji),
     openclaw_homepage: quoteYaml(openclawHomepage),
-    owner: CANON_SKILL_OWNER,
+    owner,
     skill_id: skillId,
     type,
   });
@@ -183,6 +185,7 @@ export async function initializeSkill(options) {
     container,
     expectedType: type,
     namespace,
+    owner,
   });
   if (result.errors.length > 0) {
     throw new Error(`Generated skill failed validation.\n${formatSkillValidationReport(result)}`);

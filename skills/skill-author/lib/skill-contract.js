@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import bundledLargeIconImport from '../assets/icon-large.png';
-import bundledSmallIconImport from '../assets/icon-small.svg';
+import bundledLargeIconImport from '../assets/icon-large.png' with { type: 'file' };
+import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
 import codingTemplateText from '../templates/coding.md' with { type: 'text' };
 import extractTopLevelSkillHeadings from '../utils/extract-top-level-skill-headings.js';
 import genericTemplateText from '../templates/generic.md' with { type: 'text' };
@@ -12,6 +12,8 @@ import workflowTemplateText from '../templates/workflow.md' with { type: 'text' 
 import { splitLeadingSkillFrontmatter } from '../utils/parse-skill-frontmatter.js';
 import {
   DEFAULT_SKILL_NAMESPACE,
+  DEFAULT_SKILL_OWNER,
+  SKILL_OWNER_IDS,
   formatSkillContainerIds,
   getSkillNamespacePrefix,
   isPluginSkillContainer,
@@ -27,7 +29,6 @@ const TEMPLATE_TEXT_IMPORTS = [
   metaTemplateText,
 ];
 
-export const CANON_SKILL_OWNER = 'tanaab';
 export const CANON_SKILL_PREFIX = DEFAULT_SKILL_NAMESPACE;
 export const CANON_SKILL_LICENSE = 'MIT';
 export const CANON_SKILL_BRAND_COLOR = '#00c88a';
@@ -36,6 +37,8 @@ export const CANON_DESCRIPTION_PREFIX = 'Tanaab-based ';
 export const SKILLS_ROOT_DIR = path.resolve(LIB_DIR, '..', '..');
 
 export {
+  DEFAULT_SKILL_OWNER,
+  SKILL_OWNER_IDS,
   formatSkillContainerIds,
   getSkillNamespacePrefix,
   isPluginSkillContainer,
