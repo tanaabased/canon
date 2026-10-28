@@ -20,20 +20,32 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 - Put each user-visible flow in `examples/<scenario>/README.md`.
 - Apply the [documentation change gate](./documentation-standards.md#documentation-change-gate): keep useful fixture rationale, regression context, and scenario limitations beside the relevant setup or assertions in this README. Explain what a maintainer needs to understand the scenario without repeating what its commands already make clear.
 - Link the resolving issue when it explains a non-obvious regression, but keep the example understandable without opening it. Essential user requirements remain in product docs; temporary debugging and validation history stay in the PR.
-- Keep one scenario per README. Add a new scenario when the flow requires incompatible setup, a distinct runtime lifecycle, or a separate matrix identity.
+- keep one scenario per README. add a scenario only for a distinct installed flow, native boundary, safety contract, or incompatible setup; a separate matrix identity alone does not justify another scenario.
 - Prefer broad contract names such as `install`, `options`, `envvars`, `model`, or `agent` unless the scenario truly owns one narrow case.
 - Use this default README structure:
 
-  1. Title and one-paragraph contract summary
-  2. `## Setup`
-  3. `## Testing`
-  4. Optional `## Cleanup`
+  1. title and a short critical-path paragraph naming the trigger, necessary transitions, and observable terminal result; a focused safety contract may end in a meaningful refusal
+  2. included behavior, adjacent exclusions with links to existing owners, and concise evidence limits, all before executable setup
+  3. `## Setup`
+  4. `## Testing`
+  5. optional `## Cleanup`
+
+  use headings such as `What Belongs Here`, `What Does Not Belong Here`, and `Notes`, or equivalent prose and headings. combine short explanations and omit empty sections; describe the boundary without inventorying every assertion.
 
 - Keep setup minimal and run the real prepared product surface before asserting its observable results.
 - Make each scenario runnable with its declared prerequisites without relying on another example's execution or leftover state.
 - Add CLI and library coverage when both are supported public interfaces with contracts to prove. Do not duplicate every scenario across interfaces or build a scenario-by-interface matrix merely for symmetry.
 - Add `## Cleanup` only when teardown is part of the product contract, a resource can persist beyond the runner, or later work shares the same environment.
 - Add `examples/AGENTS.md` only when executable examples need durable editing rules beyond the repository root guidance.
+
+## scope and placement
+
+- before adding coverage, read existing README scopes and choose the narrowest existing example, strict unit, component, or upstream owner under the [shared testing layers](./coding-stack-preferences.md#testing-defaults). convenient installed state, a shared prerequisite, or a related feature name does not establish ownership.
+- add a check only when it advances the declared path or protects an essential guarantee. explain a proposed scope change before expanding the example to accommodate it.
+- before adding an install, restart, model turn, or live provider request, identify the required behavior existing evidence cannot establish and its execution cost. retain representative convergence or duplicate-prevention checks when they are part of the declared result; route independent recovery cases and permutations to their narrowest owner.
+- remove confirmed duplication after identifying surviving coverage for distinct safety, protocol, and platform guarantees. remove unused support only after its consumers are gone; do not mechanically relocate checks that already have sufficient coverage.
+- keep each scenario's scope in its README. matrices select scenarios and examples-level guidance gives editing rules; neither should repeat individual scopes.
+- distinguish executed checks from manual or future acceptance work and still-present checks awaiting relocation. link only existing destinations; state an ownership gap rather than inventing a destination or claiming an unperformed split.
 
 ## Fixture and Support Ownership
 
