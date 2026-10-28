@@ -30,7 +30,7 @@ Use this skill to assess release readiness without changes, or to prepare a rele
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Github Cli Routing](../../references/github-cli-routing.md) and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [GitHub CLI Routing](../../references/github-cli-routing.md) and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before assessing or preparing release text:** [Documentation Standards](../../references/documentation-standards.md) and [Changelog Format and Examples](../changelog-author/references/changelog-format-and-examples.md).
 - **Before selecting npm channels:** [Coding Stack — npm Package Publishing](../../references/coding-stack-preferences.md#npm-package-publishing).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).

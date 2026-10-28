@@ -25,7 +25,7 @@ Own the installable Codex plugin: its manifest, bundled resources, npm payload, 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
 - **Always:** [Release Destinations](../../references/release-destinations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [Javascript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [JavaScript Repo Structure](../../references/javascript-repo-structure.md).
 - **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).

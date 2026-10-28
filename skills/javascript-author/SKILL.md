@@ -29,9 +29,9 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [Javascript Repo Structure](../../references/javascript-repo-structure.md), and [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Function Tests](./references/javascript-function-tests.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).

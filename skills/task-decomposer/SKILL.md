@@ -22,15 +22,17 @@ metadata:
 
 ## Overview
 
-Inspect one canonical Task, Bug, or Feature; recommend whether it should remain intact, become one shallow parent, or be reframed as a project milestone; and preview or publish only an approved child-task decomposition through one exact plan.
+Review one canonical Task, Bug, or Feature and recommend keeping it intact, splitting it into one level of child tasks, or reframing it as a project milestone. Preview or publish a split only through one exact, approved plan.
 
-Recommendation is always read-only. A milestone reframe produces a bounded handoff for Project Milestone Author while leaving the source task unchanged. Decomposition publication reuses Task Author's canonical child payload, metadata, label, fallback, safety, and verification contracts while this skill owns the multi-issue ordering, sub-issue and dependency graph, parent rollup, and resumable partial-failure boundary.
+Recommendations are always read-only. Reframing a task as a milestone prepares a handoff for Project Milestone Author and leaves the source task unchanged.
+
+When publishing a split, use Task Author's contracts for child payloads, metadata, labels, fallback storage, safety, and verification. Task Decomposer owns the operation order, sub-issue and dependency graph, parent rollup, and recovery from partial failure.
 
 ## Required Reading
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Decomposition Contract](./references/task-decomposition-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Decomposition Contract](./references/task-decomposition-contract.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 

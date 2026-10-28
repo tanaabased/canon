@@ -22,7 +22,7 @@ metadata:
 
 ## Overview
 
-Assess, draft, create, revise, or normalize one canonical GitHub-backed Task, Bug, or Feature. Inspect the target repository's issue types, organization issue fields, and labels; show the source and rationale for accepted estimates; use native values where available; render fallback metadata only where needed; and verify every managed value after mutation.
+Assess, draft, create, revise, or normalize one canonical GitHub-backed Task, Bug, or Feature. Inspect the target repository's issue types, organization issue fields, and labels. Show the source and rationale for accepted estimates, use native values where available, and render fallback metadata only where needed. Verify every managed value after a write.
 
 Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary revision and normalization keep existing fallback keys in fallback even when native fields later appear. The separately authorized migration mode writes and verifies native values before removing only their verified fallback keys. Task Author does not own schema definitions or relationship mutations.
 
@@ -30,7 +30,7 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), [Task Management Fixtures](../../references/task-management-fixtures.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), [Task Management Fixtures](../../references/task-management-fixtures.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 

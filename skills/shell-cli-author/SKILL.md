@@ -27,10 +27,10 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Cli Style Rules](../../references/cli-style-rules.md).
+- **Always:** [CLI Style Rules](../../references/cli-style-rules.md).
 - **Before choosing shell versus JavaScript or a test runtime:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before changing comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before choosing or changing tests:** [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults), [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting a shell starter:** [Shell CLI Templates](./references/shell-cli-templates.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).

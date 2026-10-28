@@ -29,7 +29,7 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [Javascript Repo Structure](../../references/javascript-repo-structure.md), and [Lint and Format Baseline](./references/lint-format-baseline.md).
+- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [Lint and Format Baseline](./references/lint-format-baseline.md).
 - **Before standardizing workspace packages:** [Bun Workspace Baseline](./references/bun-workspace-baseline.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).

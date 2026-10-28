@@ -29,11 +29,11 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [Javascript Repo Structure](../../references/javascript-repo-structure.md), and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before changing implementation logic:** [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Before changing implementation logic:** [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
-- **Before changing plugin-owned commands:** [Cli Style Rules](../../references/cli-style-rules.md).
+- **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
+- **Before changing plugin-owned commands:** [CLI Style Rules](../../references/cli-style-rules.md).
 - **Before adding or changing installed or runtime scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before using recorded responses or approval expectations in mock-AI tests:** [Mock Ai Fixtures](../../references/mock-ai-fixtures.md).

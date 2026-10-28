@@ -28,7 +28,7 @@ Assess whether one GitHub-backed task is complete, ready, pending, blocked, or u
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Github Cli Routing](../../references/github-cli-routing.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [GitHub CLI Routing](../../references/github-cli-routing.md), and [Verification Boundaries](../../references/verification-boundaries.md).
 
 ## When to Use
 

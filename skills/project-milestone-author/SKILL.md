@@ -30,7 +30,7 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 

@@ -30,7 +30,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Front End Preferences](../../references/front-end-preferences.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
 - **Before deciding whether documentation needs to change or authoring page prose:** [Documentation Standards](../../references/documentation-standards.md), including style selection.
-- **Before aligning the repository entrypoint:** [Readme Standards](../../references/readme-standards.md).
+- **Before aligning the repository entrypoint:** [README Standards](../../references/readme-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).

@@ -22,15 +22,15 @@ metadata:
 
 ## Overview
 
-Turn one exact existing project milestone into a reviewable completion argument and proposed task graph. Compare bounded candidate tasks with delivery and repository evidence, identify missing or overlapping coverage, and recommend explicit membership. Apply an optional user-supplied Work size ceiling without weakening the milestone outcome.
+Plan how to complete one existing project milestone and explain how the proposed tasks cover its outcome. Compare a bounded set of candidate tasks with delivery and repository evidence, identify missing or overlapping coverage, and recommend which tasks belong in the milestone. Apply an optional user-supplied Work size ceiling without weakening the milestone outcome.
 
-Use model judgment for semantic coverage and keep selection conservative. The planner recommends; it does not own task, decomposition, or milestone mutation. After explicit authorization, invoke Task Author, Task Decomposer when needed, and Project Milestone Author in sequence. Each owner keeps its own preview, digest, safety checks, write, and read-back contract.
+Use model judgment to assess whether the tasks cover the outcome, and keep selection conservative. The planner recommends changes; it does not own task, decomposition, or milestone writes. After explicit authorization, invoke Task Author, Task Decomposer when needed, and Project Milestone Author in sequence. Each owner keeps its own preview, digest, safety checks, write, and read-back contract.
 
 ## Required Reading
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), and [Github Cli Routing](../../references/github-cli-routing.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 

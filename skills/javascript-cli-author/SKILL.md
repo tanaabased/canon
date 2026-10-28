@@ -28,10 +28,10 @@ Tanaab-based authoring and standardization of JavaScript or TypeScript CLI produ
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Cli Style Rules](../../references/cli-style-rules.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [Javascript Repo Structure](../../references/javascript-repo-structure.md).
-- **Before changing implementation logic:** [Javascript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Always:** [CLI Style Rules](../../references/cli-style-rules.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [JavaScript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before changing implementation logic:** [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing API documentation or comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
+- **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting the CLI starter:** [Bun CLI Template](./references/bun-cli-template.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).

@@ -30,7 +30,7 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Github Cli Routing](../../references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
+- **Always:** [GitHub CLI Routing](../../references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
 - **Before proposing repository presentation prose:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
