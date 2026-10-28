@@ -1,19 +1,41 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Added a shared documentation style with repository overrides and adopted it for Canon's checked-in prose. [#89](https://github.com/tanaabased/canon/issues/89)
-- Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
-- Added independent `pirog` skill ownership through `--owner` in `tanaab-skill-author`. [#90](https://github.com/tanaabased/canon/issues/90)
-- Added optional repository optimization guidance discovery and evidence-based reconsideration to `tanaab-project-optimizer`. [#91](https://github.com/tanaabased/canon/issues/91)
-- Added shared guidance for strict units, bounded components, end-to-end flows, and static evidence. [#86](https://github.com/tanaabased/canon/issues/86)
+### New Features
+
+- Added independent `pirog` skill ownership through `--owner` in `tanaab-skill-author`. [#90](https://github.com/tanaabased/canon/issues/90) [#99](https://github.com/tanaabased/canon/pull/99)
+- Added optional repository decision guidance and evidence-based reconsideration to `tanaab-project-optimizer`. [#91](https://github.com/tanaabased/canon/issues/91) [#98](https://github.com/tanaabased/canon/pull/98)
 - Added support for restricting canonical `main` pushes and merges to designated users in `tanaab-project-author`. [#79](https://github.com/tanaabased/canon/pull/79)
-- Clarified unit-test boundaries, candidate-package Leia coverage, and mock-AI fixture scope. [#78](https://github.com/tanaabased/canon/pull/78)
-- Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
+
+### Improvements
+
+- Added a shared documentation style with repository overrides and adopted it for Canon's checked-in prose. [#89](https://github.com/tanaabased/canon/issues/89) [#96](https://github.com/tanaabased/canon/pull/96)
+- Added asynchronous update, disposal, and optional-enhancement failure guidance to `tanaab-vue-author`.
+- Added bounded subprocess diagnostics that preserve complete machine results and the original failure status.
+- Added durable automation launcher guidance for supported runtime upgrades.
+- Added explicit policy-reading requirements across all skills and collection-wide review to `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
+- Added recorded-response evidence and replay guidance to `tanaab-openclaw-plugin-author`. [#77](https://github.com/tanaabased/canon/issues/77) [#97](https://github.com/tanaabased/canon/pull/97)
 - Replaced standalone optimization prompts with scoped `tanaab-project-optimizer` reviews and preferred-tool review in `tanaab-skill-author`. [#78](https://github.com/tanaabased/canon/pull/78)
-- Required Leia examples to declare critical paths, coverage boundaries, and evidence limits. [#88](https://github.com/tanaabased/canon/issues/88) [#95](https://github.com/tanaabased/canon/pull/95)
+- Required `tanaab-github-workflow-author` to justify `workflow_dispatch` with a concrete operator use case. [#93](https://github.com/tanaabased/canon/issues/93) [#100](https://github.com/tanaabased/canon/pull/100)
 - Required `tanaab-project-optimizer` to report and plan small corrections alongside substantial improvements. [#78](https://github.com/tanaabased/canon/pull/78)
-- Simplified shared Leia setup and made workflow readability take precedence over conditional setup optimizations. [#78](https://github.com/tanaabased/canon/pull/78)
+- Separated read-only reviews from mutations in `tanaab-skill-author` and release readiness from drafting in `tanaab-release-author`. [#78](https://github.com/tanaabased/canon/pull/78)
 - Strengthened guidance for ownership changes, justified abstractions, and compatibility appropriate to project maturity. [#78](https://github.com/tanaabased/canon/pull/78)
 - Updated documentation reviews to move useful scenario detail into existing Leia examples while retaining essential product guidance. [#78](https://github.com/tanaabased/canon/pull/78)
+
+### Bug Fixes
+
+- Corrected installed skill-command guidance to resolve scripts from their owning skill paths. [#78](https://github.com/tanaabased/canon/pull/78)
+- Limited additive-field safeguards to their mode in `tanaab-github-issue-schema-author`. [#78](https://github.com/tanaabased/canon/pull/78)
+- Scoped `tanaab-project-author` maintenance checks to avoid unrelated inspections during ordinary use. [#78](https://github.com/tanaabased/canon/pull/78)
+
+### Testing and Delivery
+
+- Added cache upgrade coverage for restored resources, retired skills, and unrelated-file preservation in `tanaab-codex-plugin-author`.
+- Added configuration contract coverage through each supported runtime adapter while preserving documented differences.
+- Added shared guidance for strict units, bounded components, end-to-end flows, and static evidence. [#78](https://github.com/tanaabased/canon/pull/78) [#86](https://github.com/tanaabased/canon/issues/86) [#94](https://github.com/tanaabased/canon/pull/94)
+- Moved packaged command and CLI starter checks into Leia examples, including required PowerShell coverage. [#78](https://github.com/tanaabased/canon/pull/78)
+- Removed redundant repository checks that froze documentation and workflow structure. [#78](https://github.com/tanaabased/canon/pull/78)
+- Required Leia examples to declare critical paths, coverage boundaries, and evidence limits. [#88](https://github.com/tanaabased/canon/issues/88) [#95](https://github.com/tanaabased/canon/pull/95)
+- Simplified shared Leia setup and made workflow readability take precedence over conditional setup optimizations. [#78](https://github.com/tanaabased/canon/pull/78)
 - Updated `tanaab-javascript-author` and `tanaab-github-workflow-author` to prefer tokenless npm publication and channel syncing. [#82](https://github.com/tanaabased/canon/issues/82) [#83](https://github.com/tanaabased/canon/pull/83)
 
 ## v0.12.1 - [September 29, 2026](https://github.com/tanaabased/canon/releases/tag/v0.12.1)
