@@ -1,6 +1,6 @@
 # Leia Markdown Scenarios
 
-Use this pattern when a repository needs end-to-end or operational coverage that is clearer as executable shell steps than as unit tests. A Leia scenario is both maintained example documentation and runnable contract coverage.
+Use this pattern for installed end-to-end product flows under the [shared testing layers](./coding-stack-preferences.md#testing-defaults). A Leia scenario is both maintained example documentation and runnable contract coverage.
 
 This reference owns Tanaab's Leia usage policy: test scope, scenario organization, fixtures, and execution restrictions. Leia owns its syntax, CLI options, and harness behavior. `templates/leia-examples-agents.md` projects this policy into `examples/**`; `templates/leia-markdown-example-readme.md` is a runnable starter.
 
@@ -10,9 +10,9 @@ For scenario authoring, diagnosis, or CI setup, Leia's optional [Codex and OpenC
 
 ## When to Use
 
-- Use Leia when the main risk is observable CLI behavior, file layout, permissions, process lifecycle, service readiness, machine mutation, logs, or integration through a public product surface.
+- use Leia for supported installed flows through public product surfaces: CLI behavior, installed imports, file layout, permissions, process lifecycle, readiness, machine mutation, or logs. a small filesystem, socket, or process fixture testing one native subsystem contract can remain a component; installed functional loops belong here.
 - Prefer Leia when fresh CI runners, platform matrices, secrets, or release-shaped artifacts are important to the result.
-- Use unit tests for pure parsing, transformation, rendering, and helper decisions that do not require an operational runtime.
+- choose units, bounded components, or installed flows using the shared model; filesystem use and elapsed time alone do not require Leia. bounded installed integration need not become a multi-system journey. use deterministic model fixtures when model judgment is not the contract.
 - Do not reproduce the same contract in both Leia and another end-to-end harness without a distinct risk that justifies both.
 
 ## Scenario Shape
@@ -107,7 +107,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - When product behavior mutates a checked-in input tree, copy it under the scenario's `TMPDIR` first and run against the copy; keep the checked-in source deterministic.
 - Prefer readiness polling against a meaningful product signal over fixed sleeps.
 - Bound every readiness and shutdown wait. Allow enough time for cold CI startup and report the relevant process or log state when the bound expires.
-- Keep long waits in operational scenarios rather than unit tests. Unit tests should inject deterministic time and process boundaries.
+- keep genuine operational waits in the owning installed flow. inject deterministic time and process boundaries in units; keep component readiness waits bounded around the native contract being exercised. review slow fixtures and duplicate flows before increasing timeouts.
 - A deliberate edit used to exercise watching, rebuilding, or restart behavior is an action under test, not static fixture generation.
 
 ## Real Product Execution
@@ -117,7 +117,7 @@ Fixtures prepare inputs; they should not bypass the public surface being tested.
 - Prepare the distribution from the revision under review using the product's build and packaging path. Run scenarios against that candidate; a source entrypoint or previously published version does not establish its behavior.
 - For npm products, install the candidate tarball into an isolated consumer and use its installed executable or public exports. Keep product resolution independent of checkout source, development dependencies, and workspace links. Check installed declarations through that same consumer when types are part of the package contract.
 - For standalone executables, run the compiled candidate outside the checkout with its declared release assets. Exclude source and development dependencies; when runtime-independent operation is promised, exercise it without an installed JavaScript runtime.
-- Keep consumer assertions in the existing owning example or a focused package example. When moving coverage into Leia, remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs that no longer have a consumer.
+- Keep consumer assertions in the existing owning example or a focused package example. before consolidating, identify surviving coverage for distinct safety, protocol, and platform contracts. remove the replaced consumer runner, duplicate assertions, and supporting scripts, workflows, fixtures, and docs only when their guarantees remain covered and they no longer have a consumer.
 - Preserve distinct static package validation, registry dry runs, and publication checks under [verification boundaries](./verification-boundaries.md). Passing Leia scenarios establishes the tested consumer behavior, not successful publication.
 - Test the runtime mode the product actually supports. Do not enable unrelated container, VM, sandbox, daemon, channel, or service behavior merely because the dependency offers it.
 - If the safe default target is manageable to clean up, testing that default target directly is acceptable instead of forcing an example-local override.
@@ -191,4 +191,4 @@ Do not add `examples/package.json` solely for Leia's generated harness. Retain a
 - Is each live model invocation required by the contract and using the lowest-cost compatible model?
 - Are model selection and credentials centralized and scoped to model-backed scenarios?
 - Is cleanup present only when resources can persist or cleanup behavior is itself under test?
-- Are pure helper decisions covered by unit tests and operational behavior left to Leia?
+- does each assertion use the smallest shared testing layer, keeping bounded subsystem contracts in components and installed product flows in Leia?

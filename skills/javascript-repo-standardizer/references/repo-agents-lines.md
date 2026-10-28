@@ -13,4 +13,4 @@ Use these lines only when the target repo wants the JS/TS/Bun baseline as durabl
 - Treat baseline normalization as separate from ordinary runtime authorship and feature refactors.
 - Assert exact values only for stable public, protocol, configuration, serialization, and safety contracts; test incidental diagnostics through their owned semantic signals.
 - Derive version expectations from canonical metadata and use clearly synthetic fixture versions.
-- Keep wall-clock waits and environment-sensitive filesystem, process, or network behavior out of unit tests; use injected boundaries or separately invoked integration checks.
+- keep strict units deterministic through injected boundaries. use bounded components for real subsystem wiring and small native-contract fixtures, and installed end-to-end flows for public consumer behavior; select separate commands only when useful.

@@ -10,6 +10,15 @@ A successful command is sufficient evidence for the operation its contract promi
 - When external visibility itself must be checked, allow for documented propagation delays, use bounded polling, and report unresolved visibility separately from publication failure. Never republish merely because a cached lookup has not caught up.
 - Report what the evidence establishes. Successful publication need not establish downstream installation or runtime activation unless that is part of the requested outcome.
 
+## Evidence and Static Checks
+
+- classify each assertion by what it establishes, even when one suite mixes evidence. use the [shared testing layers](./coding-stack-preferences.md#testing-defaults) for behavioral coverage. a runner name does not turn static inspection into a unit test.
+- static checks inspect source or artifacts without executing the behavior they describe. retain one only for a named correctness, compatibility, safety, or maintenance invariant with a concrete failure consequence that existing validation does not cover. prefer existing syntax, schema, lint, or build checks to new snapshots of configuration or implementation layout.
+- justified: parse a workflow and verify its token permissions stay restricted, preventing credential exposure; validate that a package export resolves inside the packed payload, preventing a broken consumer entrypoint. these establish configuration or packaging invariants, not successful execution of a workflow or installed import.
+- unjustified: snapshot an entire workflow to freeze YAML ordering, compare complete documentation paragraphs, or count helper calls merely to preserve today's implementation. remove redundant assertions rather than relocating them into another suite.
+- reading fixture files while executing the production parser is behavioral coverage. classify its boundary under the shared model; reading files alone does not make it static inspection.
+- preserve distinct safety, protocol, and packaging checks where exact details are contractual. retained static checks may share an existing command with behavioral tests; no fourth suite is required. report their evidence separately from runtime proof.
+
 ## Assertion Strength
 
 - Judge an assertion by the regression it detects. Derive expected results from the supported contract or a known input/output example, not by repeating the implementation's calculation or copying its current output.

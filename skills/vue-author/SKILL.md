@@ -127,6 +127,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults); this skill owns Vue component behavior within the broader subsystem component layer. preserve the tooling below and use the smallest layer that detects the regression.
 - Use Vitest, Vue Test Utils, and jsdom for observable DOM behavior, props, slots, emitted events, and user actions. Assert the public contract rather than private methods or broad snapshots.
 - Await Vue updates and interactions. Unmount wrappers, remove test-owned DOM/teleports, and restore mocks and timers when used. Add browser API shims only for APIs the component actually calls; jsdom cannot establish layout, focus rendering, or real-browser behavior.
 - Keep pure-helper Mocha tests when they already work. If both runners exist, give them disjoint discovery patterns, such as Mocha `test/*.spec.js` and Vitest `test/*.test.js`.

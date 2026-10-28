@@ -31,7 +31,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before choosing shell versus JavaScript or a test runtime:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before changing comments:** [Inline Code And Api Docs](../../references/inline-code-and-api-docs.md).
-- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Before choosing or changing tests:** [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults), [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting a shell starter:** [Shell CLI Templates](./references/shell-cli-templates.md).
 - **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
@@ -90,7 +90,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
-- Treat Leia as the canonical direct-test pattern for maintained shell CLI surfaces, with `shellcheck` and PowerShell parse checks as narrow supporting validators rather than separate testing patterns.
+- use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
 
 Minimal generic example:
 
