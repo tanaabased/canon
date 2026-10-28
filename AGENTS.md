@@ -47,8 +47,8 @@
 - Treat description quality as the highest-leverage part of a skill because discovery depends on name plus description.
 - Choose one primary owner for a multi-surface task and add companions only when the work truly crosses their surfaces.
 - Treat user-facing artifacts such as generated `dist/` outputs and executable example suites as real ownership surfaces during skill design.
-- Treat Canon provenance and public skill namespace as separate identities. The namespace defaults to `tanaab`; a product repository may declare another durable namespace and its `standalone`, `codex-plugin`, or `openclaw-plugin` container here in `AGENTS.md`.
-- When a project declares skill namespace or container overrides, pass them explicitly to Skill Author's scaffolder and validator; deterministic scripts do not parse `AGENTS.md` prose.
+- Treat skill ownership and public skill namespace as separate identities under the shared skill standard. Ownership defaults to `tanaab`; a project may explicitly select `pirog`. The namespace defaults to `tanaab`; a product repository may declare another durable namespace and its `standalone`, `codex-plugin`, or `openclaw-plugin` container here in `AGENTS.md`.
+- When a project declares skill owner, namespace, or container overrides, pass them explicitly to Skill Author's scaffolder and validator; deterministic scripts do not parse `AGENTS.md` prose.
 - In Codex- or OpenClaw-plugin skill trees, retain the configured public namespace in frontmatter and prompts but omit it from the skill folder name under `skills/`.
 - If ownership needs a routing matrix to stay understandable, the skills are still too broad.
 - When optimizing a collection of skills, review both each skill and the portfolio as a whole through Skill Author so overlap, contradictions, fragmented variants, and mega-skill behavior are visible.
