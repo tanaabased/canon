@@ -32,7 +32,9 @@ The package check validates identities, metadata, entrypoints, and skill/resourc
 
 ## Codex cache
 
-`bun run codex:check` inspects installed-cache drift; `bun run codex:sync` refreshes a development installation. Neither command publishes or upgrades an npm release. For a disposable raw cache, pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create`; this checks synchronization, not installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for options.
+`bun run codex:check` inspects cache drift; `bun run codex:sync` synchronizes the selected cache. Keep development verification isolated: pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create` to both commands. This checks synchronization, not installation, and neither command publishes or upgrades an npm release. Drift against a task worktree does not require updating the live installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for options.
+
+For Me-managed installations, deliberately update the designated source checkouts to merged `main`, then request Agent System Install against the trusted Me binding with unchanged installation inputs. Install checks and repairs the declared plugin caches; the authorized nightly refresh uses the same flow. Do not invoke Install or direct live cache sync as part of routine development validation.
 
 ## Release preparation
 
