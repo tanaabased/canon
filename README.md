@@ -67,6 +67,7 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 
 | Skill                                                                           | Owns                                                                      |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [`tanaab-architecture-review`](./skills/architecture-review/)                   | Source-grounded architecture reviews and proportionate refactoring plans. |
 | [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.  |
 | [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                           |
 | [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript CLI source, distribution, help, and versioning. |
