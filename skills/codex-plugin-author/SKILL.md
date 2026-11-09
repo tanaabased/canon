@@ -26,6 +26,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Release Destinations](../../references/release-destinations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [JavaScript Repo Structure](../../references/javascript-repo-structure.md).
+- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md).
 - **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
@@ -75,7 +76,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 Keep `package.json#files` authoritative for the npm payload. Codex Tools `managedPaths` controls cache reconciliation, not what native installation copies. See its [package and cache contract](https://github.com/tanaabased/codex-tools/blob/main/ADVANCED.md).
 
-For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
+For runtime integration, use supported native owners and separate model-authored choices from verified execution binding under [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md). For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
 
 ## Documentation
 
@@ -85,6 +86,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 
 ## Testing
 
+- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](../../references/plugin-runtime-contracts.md#verification) through the affected native adapters.
 - Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary synthetic plugin fixtures do not require that workflow.
 - Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): deterministic units for decisions, bounded components for subsystem wiring with fake external services, and Leia for installed consumer or native host flows. Static extracted-package checks establish metadata and resource invariants. Preserve distinct contracts when consolidating; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
@@ -111,7 +113,7 @@ For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and wr
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
-- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer.
+- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer. For runtime surfaces, apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to duplicated host behavior, bookkeeping gates, and model-supplied binding fields.
 - **Recommend:** Reconcile conflicting install paths, repair missing runtime resources, and replace redundant archive jobs with the existing npm lifecycle when parity is demonstrable. Keep justified exceptions and aligned implementations.
 - **Apply:** After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
 - **Verify:** Validate and exercise the exact packed artifact in isolation, run the publication dry run, and report separately any unverified live installation or publication.
