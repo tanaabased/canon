@@ -31,7 +31,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before using recorded responses or approval expectations in mock-AI tests:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
@@ -67,6 +67,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Inspect the plugin manifest, package manifest, installed resource paths, current consumers, and release workflow. Establish host and tooling compatibility before selecting a manifest format.
@@ -90,6 +92,7 @@ For runtime integration, use supported native owners and separate model-authored
 - Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary synthetic plugin fixtures do not require that workflow.
 - Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): deterministic units for decisions, bounded components for subsystem wiring with fake external services, and Leia for installed consumer or native host flows. Static extracted-package checks establish metadata and resource invariants. Preserve distinct contracts when consolidating; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
+- Retain distinct payload, native discovery, and upgrade-preservation guarantees when consolidating package checks. Avoid duplicate inventories or full manifest snapshots already covered by the owning validator; justify an installed run by a discovery, trust, or consumer-loading failure static payload validation cannot establish.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
 - In the owning Leia example, run the extracted authoring CLI against a temporary local fixture and verify its output. Keep commands and assertions visible and keep GitHub mutations out of ordinary package scenarios.
 - For installation checks, use an isolated Codex home and marketplace. A fresh app-server `skills/list` establishes native skill discovery without a model call; cache equality alone does not. Reuse [Codex Tools' native examples](https://github.com/tanaabased/codex-tools/tree/main/examples/native), including `fresh-skills.ts`, instead of maintaining another protocol client.
@@ -108,15 +111,13 @@ For runtime integration, use supported native owners and separate model-authored
 - `.github/workflows/release-tests.yml`: project the [Testing](#testing) checks onto a prepared package and a native npm publication dry run; no publication credentials or live registry writes in PRs.
 - `.github/workflows/release.yml`: adapt the [npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) with plugin stamping and the same extracted-package checks before publication. Follow [release composition](../github-workflow-author/SKILL.md#release-composition) for independent destinations.
 
-## Optimization
+## Review Criteria
 
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
 - **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer. For runtime surfaces, apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to duplicated host behavior, bookkeeping gates, and model-supplied binding fields.
 - **Recommend:** Reconcile conflicting install paths, repair missing runtime resources, and replace redundant archive jobs with the existing npm lifecycle when parity is demonstrable. Keep justified exceptions and aligned implementations.
-- **Apply:** After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
-- **Verify:** Validate and exercise the exact packed artifact in isolation, run the publication dry run, and report separately any unverified live installation or publication.
 
 ## Bundled Resources
 
@@ -124,6 +125,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [../javascript-author/templates/bun-npm-package-release-workflow.yml](../javascript-author/templates/bun-npm-package-release-workflow.yml): shared npm publication workflow
 
 ## Validation
+
+- Validate and exercise the exact packed artifact in isolation, run the publication dry run, and report separately any unverified live installation or publication.
 
 - Confirm package and plugin versions agree and every required resource survives packing.
 - Confirm generic validation and product smoke checks run against the extracted artifact without checkout dependencies.

@@ -30,7 +30,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 
 ## When to Use
 
@@ -120,6 +120,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- Add only proven-missing canonical fields, synchronize retained colors or managed visibility, synchronize canonical label definitions, or apply an exact browser-backed pin manifest after authorization. Keep deletion, renaming, option membership or order changes, issue types, unmanaged pinning, and pinned-field ordering unavailable.
+
 1. Resolve and validate the explicit target.
 2. Read the canonical schema policy and no unrelated project canon.
 3. Verify `gh` availability and authentication status.
@@ -162,15 +164,13 @@ bun <skill-path>/scripts/sync-labels-batch.js apply --organization tanaabased --
 
 Apply re-discovers and re-plans the entire selection before checking authorization, then uses the existing per-repository synchronizer and verification. It does not change organization defaults, fields, issue types, or issue assignments. Future canonical label changes use the same inspect → plan → apply workflow.
 
-## Optimization
+## Review Criteria
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Resolve the explicit repository and read organization and repository-effective issue types, managed fields, option IDs and colors, visibility, type pinning, and repository labels; keep inaccessible surfaces unresolved.
 - **Compare:** Compare the managed schema and label definitions with canonical policy. Distinguish missing fields from retained-option color drift, visibility drift, and Task/Bug/Feature pinning drift; preserve existing IDs, option membership and order, unmanaged pins, and Effort. Treat organization-default labels as a manual evidence gap.
 - **Recommend:** Plan additive fields, retained-option colors, visibility, labels, and browser-backed pinning as separately authorized effects. Preserve aligned and unmanaged state; do not propose deletion or renaming.
-- **Apply:** Add only proven-missing canonical fields, synchronize retained colors or managed visibility, synchronize canonical label definitions, or apply an exact browser-backed pin manifest after authorization. Keep deletion, renaming, option membership or order changes, issue types, unmanaged pinning, and pinned-field ordering unavailable.
-- **Verify:** Re-run the read-only inspection after an independently authorized change and report remaining drift or remote uncertainty.
 
 ## Bundled Resources
 
@@ -192,6 +192,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `test/`: fake GitHub responses and deterministic schema fixtures.
 
 ## Validation
+
+- Re-run the read-only inspection after an independently authorized change and report remaining drift or remote uncertainty.
 
 - Confirm the result reports only the authorized operations and preserves unrelated schema state; use the workflow's read-back to identify partial results.
 

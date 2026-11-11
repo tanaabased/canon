@@ -32,7 +32,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before deciding whether documentation needs to change or authoring page prose:** [Documentation Standards](../../references/documentation-standards.md), including style selection.
 - **Before aligning the repository entrypoint:** [README Standards](../../references/readme-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
@@ -80,6 +80,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is VitePress-site-led and that the docs-site surface is already the chosen path.
@@ -121,15 +123,13 @@ bun run build
 - Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the VitePress build-checks workflow template](./templates/bun-pr-build-checks.yml).
 - Keep this as an automation projection of the VitePress build- and lint-first validation path rather than expanding into broader CI topology.
 
-## Optimization
+## Review Criteria
 
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Apply [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) to excessive edge-case detail and useful scenario explanations that belong in existing Leia examples with discovery links. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
 - **Recommend:** Keep coherent site structure; remove prose or pages that fail the documentation change gate before splitting or relocating them; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
-- **Apply:** After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
-- **Verify:** Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
 
 ## Bundled Resources
 
@@ -140,6 +140,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): surface-owned workflow starter for lint- and build-first pull-request validation
 
 ## Validation
+
+- Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
 
 - Confirm the task stayed on VitePress implementation rather than docs-surface selection or generic Vue work.
 - Confirm the active surface was classified as Markdown page implementation, site structure/config, local subtheme wiring, or a narrow combination of those surfaces.

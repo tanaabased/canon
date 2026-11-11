@@ -456,8 +456,11 @@ function buildManualChecks({ expectedType }) {
     'Check that skill code uses public bin, internal scripts, orchestration lib, unit-shaped utils, and scoped test roles consistently.',
     'Check that tests remain with their owning scope unless their implementation or coverage is intentionally shared.',
     'Check that bulk standardization preserved the skill purpose unless a behavioral rewrite was requested.',
-    'Check whether the skill owns persistent alignment and therefore should retain and tailor `Optimization`, or should intentionally omit it as incident-specific, event-specific, or execution-only.',
-    'Check that a retained `Optimization` facet applies the shared keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove lenses where appropriate without manufacturing work.',
+    'Check whether the skill owns persistent alignment and therefore should retain and tailor `Review Criteria`, or should intentionally omit it as incident-specific, event-specific, or execution-only.',
+    'Check that a retained `Review Criteria` facet applies the shared keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove lenses where appropriate without manufacturing work.',
+    'Check that Review Criteria supplies concrete read-only Inspect, Compare, and Recommend guidance; implementation and execution checks remain in their owning lifecycle sections.',
+    'Check optional Architecture and Testing entry points for applicability, substantive owner-specific criteria or direct required reads, and missing coverage. Omit inapplicable entry points; empty headings and placeholders do not establish coverage.',
+    'Check that reviewers follow the shared loading rule from observed contract to owner, applicable criteria, required sections and references, assessment, and cross-owner synthesis; missing criteria must not become an alignment claim.',
   ];
 
   if (expectedType) {

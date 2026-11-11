@@ -34,7 +34,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before documenting components in VitePress:** [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
 - **Before packaging a component library:** [Release Destinations](../../references/release-destinations.md) and [Component Package Example](./references/component-package-example.md).
 - **Before adding or changing packaged consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
@@ -77,6 +77,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - **[@tanaab/component-playground](https://github.com/tanaabased/component-playground/tree/main):** Prefer this project for interactive component documentation, live previews, and generated usage examples. Reuse stronger project-local patterns; do not vendor a second playground into Canon. The [docs example](./templates/example-component.md) uses the released root and stylesheet exports. Adopt framework adapters only when the selected package version exports them.
 
 ## Workflow
+
+- After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
@@ -149,15 +151,13 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./templates/bun-pr-component-tests.yml). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./templates/bun-pr-build-checks.yml).
 - For published libraries, add a prepared-tarball consumer build to `.github/workflows/pr-examples-tests.yml`. Test each supported host only where its import or rendering contract differs; avoid a second equivalent release smoke suite.
 
-## Optimization
+## Review Criteria
 
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
 - **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; check asynchronous update and disposal behavior where present, and identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
 - **Recommend:** Keep cohesive components; deduplicate or consolidate repeated logic and styles; split overloaded SFCs; extract composables or child components; move shared code to its owner; tighten public API; and remove stale paths without imposing unrelated visual doctrine.
-- **Apply:** After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
-- **Verify:** Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
 
 ## Bundled Resources
 
@@ -174,6 +174,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/component-package-example.md](./references/component-package-example.md): library exports and prepared-package consumer example
 
 ## Validation
+
+- Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
 
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3, the canonical SFC block order, and SCSS defaults remain unless the repository or user requires another path.

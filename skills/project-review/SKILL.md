@@ -1,6 +1,6 @@
 ---
-name: tanaab-project-optimizer
-description: Tanaab-based read-only project optimization assessment. Use when a user wants to audit a whole project or selected surfaces such as skills, documentation, code, and tests, prioritize substantial improvements and small concrete cleanup, and plan implementation while making retained decisions and uncertainty explicit.
+name: tanaab-project-review
+description: Tanaab-based read-only project review. Use when a user wants to audit a whole project or selected surfaces such as skills, documentation, code, and tests, prioritize substantial improvements and small concrete cleanup, and plan implementation while making retained decisions and uncertainty explicit.
 license: MIT
 metadata:
   type: workflow
@@ -11,26 +11,27 @@ metadata:
     - optimization
   openclaw:
     emoji: '🧭'
-    homepage: 'https://github.com/tanaabased/canon/tree/main/skills/project-optimizer'
+    homepage: 'https://github.com/tanaabased/canon/tree/main/skills/project-review'
     requires:
       bins:
         - git
 ---
 
-# Project Optimizer
+# Project Review
 
 ## Overview
 
-Review a project's checked-in files and any material its contracts require, using the applicable Tanaab skills' Optimization facets and shared optimization operations. Report both substantial improvements and small concrete cleanup from observed evidence. Review the whole local project unless an explicit target narrows the scope, and include relevant, bounded public upstream release metadata. Keep the review read-only. Finish when every observed or explicitly required area in scope is classified and actionable findings have a dependency-ordered plan.
+Own breadth and prioritization across a project or requested surfaces. Review checked-in files and material their contracts require through the applicable surface owners; identify straightforward problems directly and use specialist procedures only where depth is needed. Report both substantial improvements and small concrete cleanup from observed evidence. Review the whole local project unless an explicit target narrows the scope, and include relevant, bounded public upstream release metadata. Keep the review read-only and report in chat by default; write Markdown only when requested at a specified or agreed destination. Finish when every observed or explicitly required area in scope is classified and actionable findings have a dependency-ordered plan.
 
 ## Required Reading
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [Skill Standard — Review Criteria](../../references/skill-standard.md#review-criteria), including the Shared Loading Rule. Apply that sequence to every selected owner; report missing applicable criteria as coverage gaps.
 - **Before assessing repository surfaces:** Discover and read applicable guidance under [Repository Optimization Guidance](#repository-optimization-guidance).
 - **Before assessing tool adoption or freshness:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before auditing documentation:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
+- **Before writing a requested report or auditing documentation:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
 
 ## When to Use
 
@@ -43,53 +44,53 @@ Read each applicable document in full, or the explicitly named section, before d
 ## When Not to Use
 
 - Do not use for an ordinary single-surface implementation request that already has a clear owning skill.
-- Do not modify files, apply recommendations, or perform destructive or remote actions during the initial optimization pass.
-- Do not load every installed skill indiscriminately or manufacture findings for an aligned or not-applicable surface.
+- Do not modify audited source, apply recommendations, or perform destructive actions or remote mutations during the review. Only explicitly requested report artifacts may be written.
+- Do not automatically invoke every review, recursively invoke Project Review, or require it before direct specialist use. Do not manufacture findings for an aligned or not-applicable surface.
 - Do not treat approval of the audit as approval of its implementation plan.
 
 ## Preconditions
 
 - Resolve the local repository root and read its applicable `AGENTS.md` guidance.
 - Require `git` and record the initial tracked and untracked state so existing user changes remain distinguishable from audit activity.
-- Confirm the request is for a read-only optimization audit and a disposition for its selected scope.
+- Confirm the request is for a read-only review and a disposition for its selected scope.
 - For optional remote repository coverage, require an explicit request plus a supplied or confirmed `OWNER/REPO` slug before invoking any integration skill.
 
 ## Workflow
 
 1. Resolve the target and scope under [Scope Selection](#scope-selection), read [repository optimization guidance](#repository-optimization-guidance) and directly applicable shared canon, then inventory in-scope tracked surfaces, including manifests, entrypoints, documentation, automation, tests, templates, generated artifacts, repo-native validation commands, and explicitly required surfaces that are absent.
 2. Classify each observed or contract-required area as live, cold-path, generated, missing, or not applicable before recommending changes. Declare an absent surface missing only when applicable checked-in guidance or directly linked canon makes it an expectation; otherwise preserve uncertainty or classify it not applicable.
-3. Discover applicable installed Tanaab skills dynamically. Select only skills whose owned surface matches observed evidence or an explicit contract requirement and whose instructions expose `## Optimization`; do not use a fixed registry or select this aggregation skill as a domain owner.
+3. Identify owners from observed contracts, not a fixed registry. Use the applicable owner’s Review Criteria for ordinary maintenance findings. When consequential architecture or test questions need depth, read and apply [Architecture Review](../architecture-review/SKILL.md) or [Testing Review](../testing-review/SKILL.md) within the selected scope, or recommend a bounded follow-up when evidence or scope is insufficient. Do not start a second inventory or a recursive project audit.
 4. When the selected scope includes multiple live `SKILL.md` files, select Skill Author and review that collection individually and collectively even when no single skill has obvious drift. A whole-project review includes every live skill; a targeted review does not pull in unrelated skills.
-5. Use each selected skill's Optimization facet as the routing summary, then apply the skill's full relevant contract, directly linked canon, and the shared optimization operations to the observed surface. Do not limit the audit to the literal five facet bullets or skip high-value checks that the owning skill makes explicit elsewhere.
+5. Apply the shared loading rule before assessing each surface: read the owner’s general Review Criteria, any specialist entry point needed for the selected depth, and their applicable required sections and references. Use a specialist’s review workflow only for selected depth; retain its coverage gaps in the combined result.
 6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces. Consolidate findings about the same source of truth and reuse existing validation evidence for an unchanged snapshot instead of repeating each owner's checks.
 7. Report every inventoried surface as aligned, drifted, or not applicable. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
-8. Before finalizing findings, audit the in-scope documentation structure directly under [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review), including single READMEs, companion guides, or VitePress pages. Identify excessive edge-case detail and repetition; retain essential user requirements, move useful scenario-specific explanations to existing relevant Leia examples with discoverable links, and remove unnecessary prose. Name concrete sources and destinations. Do not rely on a selected owner's facet to make this review happen; let the documentation owner implement any approved corrections.
+8. Review in-scope documentation through [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) and its existing surface owner. Keep that procedure authoritative; name concrete sources and destinations for justified moves.
 9. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
 10. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
-11. Stop without modifying files. A later explicit implementation request may invoke the owning skills against an approved plan.
+11. Deliver the findings and plan in chat by default. Write only explicitly requested Markdown reports at the specified or agreed destination; otherwise create no files. Stop before implementation. A later explicit implementation request may invoke the owning skills against an approved plan.
 
 ### Scope Selection
 
 - State the resolved repository and requested surfaces before the audit. Default to the whole project only when the user has not named a narrower target. Honor explicit paths, collections, and exclusions; ask only when the target cannot be resolved from the request and repository evidence.
-- Treat natural-language targets as scope, not special command syntax or a fixed routing registry. A repository name identifies the project; “optimize Canon” is a whole-project review, while “optimize Canon skills” narrows it to the skill collection. Combined targets such as “optimize code and tests” form one bounded review.
+- Treat natural-language targets as scope, not special command syntax or a fixed routing registry. A repository name identifies the project; “review Canon” is a whole-project review, while “review Canon skills” narrows it to the skill collection. Combined targets such as “review code and tests” form one bounded review.
 - Select owners dynamically from the observed in-scope surfaces. Read adjacent code, docs, configuration, or references when needed to judge a scoped contract, without turning those dependencies into another general audit. Report directly coupled corrections; flag independent out-of-scope discoveries separately for a scope decision.
 - Keep inventory, required-but-absent checks, preferred-tool assessment, documentation placement, validation, and the final disposition within that boundary. Mark unrelated surfaces outside scope, not aligned or not applicable; a scoped convergence result says nothing about the rest of the project.
 
 Common scope examples, not an exhaustive menu:
 
-| Request                        | Review surfaces                                                                                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Optimize documentation         | README, guides, docs site, and relevant examples; clarity, duplication, and placement of user guidance.                                          |
-| Optimize code and architecture | Owned implementation; naming, responsibility boundaries, unnecessary abstractions, and cohesive units.                                           |
-| Optimize tests and examples    | Unit tests, Leia scenarios, and necessary build/test wiring; meaningful coverage, readable examples, and packaged or compiled consumer behavior. |
-| Optimize CI and delivery       | Workflows, runtime setup, package artifacts, and release wiring; consistency, readability, and distinct delivery boundaries.                     |
-| Optimize Canon skills          | Canon's live skill collection and governing resources; discovery, required reading, ownership, overlap, and policy consistency.                  |
+| Request                      | Review surfaces                                                                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Review documentation         | README, guides, docs site, and relevant examples; clarity, duplication, and placement of user guidance.                                          |
+| Review code and architecture | Owned implementation; naming, responsibility boundaries, unnecessary abstractions, and cohesive units.                                           |
+| Review tests and examples    | Unit tests, Leia scenarios, and necessary build/test wiring; meaningful coverage, readable examples, and packaged or compiled consumer behavior. |
+| Review CI and delivery       | Workflows, runtime setup, package artifacts, and release wiring; consistency, readability, and distinct delivery boundaries.                     |
+| Review Canon skills          | Canon's live skill collection and governing resources; discovery, required reading, ownership, overlap, and policy consistency.                  |
 
 ### Repository Optimization Guidance
 
 - Read applicable root and nested `AGENTS.md` files before assessing the surfaces they govern; narrower instructions take precedence within their scope. Then read repository-root `.github/OPTIMIZATION.md` when present and any applicable guidance explicitly linked by these files. If applicable repository guidance explicitly names another repository-owned file as the owner, read that file instead of assuming the conventional path owns the policy. Resolve conflicting ownership from applicable instructions; report unresolved conflicts or unavailable linked guidance and pause only dependent assessment.
 - `.github/OPTIMIZATION.md` is an optional home for repository-owned audit constraints and accepted decisions. Each entry should give a concise reason and concrete conditions for reconsideration. Its absence alone is not drift or a missing requirement, and an audit must not create it. Apply entries only within their stated scope and subject to `AGENTS.md` precedence; they neither exempt surfaces from review nor authorize mutation.
-- Keep temporary findings, implementation plans, debug history, and validation logs in GitHub issues or pull requests. Link durable contracts instead of copying them, and keep detailed workflow logic with its owning skills.
+- Keep temporary findings, implementation plans, debug history, and validation evidence in chat or an explicitly requested report; publish to GitHub only when separately authorized. Link durable contracts instead of copying them, and keep detailed workflow logic with its owning skills.
 
 ### Preferred Tool Adoption
 
@@ -105,7 +106,7 @@ Common scope examples, not an exhaustive menu:
 - When structure and behavior both drift, decide the final owning scopes and destinations first, refactor directly into them, and use the structural owner for final verification instead of performing two full reorganizations.
 - Run independent findings within one wave together, validate each completed wave through its owning skills, and revisit downstream surfaces only when an upstream change affected their inputs.
 - During authorized implementation, finish small, directly related corrections within the approved scope when their benefit is clear and existing checks can validate them. Surface broader changes for a scope decision instead of silently expanding the work.
-- End the approved implementation with one read-only convergence audit of the initially selected and newly exposed surfaces rather than repeatedly restarting the entire optimizer.
+- End the approved implementation with one read-only convergence audit of the initially selected and newly exposed surfaces rather than repeatedly restarting the entire project review.
 
 ### Finding Disposition
 
@@ -115,12 +116,12 @@ Common scope examples, not an exhaustive menu:
 - For deliberately retained observations, give a specific reason and a condition for reconsideration. Small size alone is not a reason to defer concrete drift. Preference-only rewrites and speculative abstractions do not become work merely because they are easy.
 - Identify missing evidence and what would resolve it under unverified areas. Do not treat uncertainty as alignment or invent a correction before establishing the problem.
 - Apply [verification boundaries](../../references/verification-boundaries.md) when recommending validation changes. Remove duplicate post-success checks; propose new checks only for concrete uncovered risks, not to make an aligned surface appear more thoroughly verified.
-- Report `optimization recommended` whenever either actionable group is nonempty. Report `converged — no actionable findings` only when the requested audit is complete and neither group has findings; otherwise report `assessment incomplete` with the unresolved evidence gaps. Retained decisions remain visible in every disposition.
+- Report `improvements recommended` whenever either actionable group is nonempty. Report `converged — no actionable findings` only when the requested audit is complete and neither group has findings; otherwise report `assessment incomplete` with the unresolved evidence gaps. Retained decisions remain visible in every disposition.
 - Reuse prior evidence and retained decisions when their inputs are unchanged. Cite each applicable retained decision's source, reason, and reconsideration conditions. Reopen it when a stated condition is met, requirements change, or current evidence contradicts it, naming that evidence in the finding. Report missing reasons, unclear conditions, or unavailable evidence as uncertainty rather than inventing support or treating the decision as immunity from review. Do not repeatedly rediscover or silently drop known small corrections.
 
 ## Checkpoints
 
-- Pause when a target, owner, or policy decision cannot be resolved from checked-in repository evidence.
+- Resolve the target before reviewing it. Missing owners, applicable criteria, or policy decisions pause only dependent judgments; continue supported assessment and report the coverage gap under the shared loading rule.
 - Skip GitHub-hosted settings by default. Remote inspection requires the user's explicit request and an explicit or confirmed slug, and remains read-only during the audit.
 - Treat later implementation authorization as scoped to the approved local plan. Obtain separate authorization for remote, destructive, or otherwise distinct effects.
 - Preserve the initial working-tree state and call out any dirty-tree constraint that limits evidence or implementation sequencing.
@@ -128,8 +129,8 @@ Common scope examples, not an exhaustive menu:
 ## Completion Criteria
 
 - The repository and scope are explicit; every in-scope tracked or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
-- Every in-scope live or contract-required surface is reported as aligned, drifted, missing, or not applicable with concrete repository evidence and a clear owning skill.
-- Every selected skill's high-value canonical checks are accounted for, including documentation accuracy, structure, testing, and validation where applicable. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
+- Every in-scope live or contract-required surface is reported as aligned, drifted, missing, not applicable, or unverified with concrete repository evidence and its owning skill where resolved. Missing applicable criteria and unresolved ownership remain explicit coverage gaps.
+- Relevant owner criteria and any selected specialist findings are accounted for within the agreed depth; bounded follow-ups and unavailable evidence remain explicit. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
 - Documentation placement was reviewed explicitly; proposed moves identify an existing relevant example and its discovery link, while essential user requirements and useful general references retain their appropriate homes.
 - Scopes containing multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
@@ -138,7 +139,7 @@ Common scope examples, not an exhaustive menu:
 - Every planned finding either names its upstream dependencies or is explicitly independent, with source-of-truth changes ordered before downstream projections and one final convergence audit included.
 - Retained observations have specific reasons and reconsideration conditions; missing evidence is explicit and small actionable corrections are not dismissed as convergence.
 - Optional remote coverage is clearly labeled and was performed only after explicit request and target confirmation.
-- A final working-tree check confirms the audit made no repository changes.
+- A final working-tree check confirms the audit made no repository changes beyond explicitly requested report artifacts.
 
 ## Bundled Resources
 
@@ -147,12 +148,12 @@ Common scope examples, not an exhaustive menu:
 
 ## Validation
 
-- Compare `git status --short` before and after the audit; the optimizer must create no tracked or untracked changes.
+- Compare `git status --short` before and after the review; only explicitly requested report artifacts may change.
 - Confirm remote GitHub inspection was skipped unless the user explicitly requested it and supplied or confirmed a slug.
 - Confirm the inventory, owner selection, recommendations, and convergence claim honor the requested scope; adjacent evidence did not silently broaden the audit.
-- Confirm every selected skill matched an observed in-scope surface and exposed `## Optimization`.
+- Confirm every selected owner matched an observed in-scope contract; specialist procedures were used only for needed depth and never recursively invoked the broad review.
 - Confirm contract-required but absent surfaces were inventoried when applicable canon establishes the expectation, without treating every conceivable surface as required.
-- Confirm every selected facet was followed into the skill's full relevant contract and directly linked canon rather than treated as a standalone generic checklist.
+- Confirm applicable authoring criteria, facets, and selected specialist procedures were read and applied without duplicating their audits or authorizing implementation.
 - Confirm scopes containing multiple live skills selected Skill Author for both individual and portfolio review.
 - Confirm every drift finding has one primary operation and that the audit did not force every operation onto every surface.
 - Confirm the report includes aligned and not-applicable results where supported instead of manufacturing drift.

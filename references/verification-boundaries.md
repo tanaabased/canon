@@ -21,6 +21,10 @@ A successful command is sufficient evidence for the operation its contract promi
 
 ## Assertion Strength
 
+- The agreed product contract is authoritative. Tests are its executable specification and may themselves be wrong; reconcile a conflicting expectation instead of treating a passing suite as the definition of desired behavior.
+- Identify the supported behavior or invariant and a plausible wrong implementation each test group rejects. Classify assertions by the contract and boundary exercised, not filename, implementation language, runner, or duration; a mixed spec may need multiple surface owners' criteria.
+- Choose the cheapest reliable boundary that supplies distinct evidence. Compare coverage across layers before adding or removing tests; justify removal by retained distinct coverage or an obsolete requirement, not a deletion target or coverage percentage.
+- Preserve meaningful authorization, identity, destination, resource, and uncertain-effect protections during consolidation. A test calling a restriction a safety guard does not establish that the product requires it; trace the agreed requirement and actual consequence.
 - Judge an assertion by the regression it detects. Derive expected results from the supported contract or a known input/output example, not by repeating the implementation's calculation or copying its current output.
 - Avoid assertions that merely freeze prose, source text, YAML layout, occurrence counts, or invocation spelling. Keep exact assertions when those details are themselves a public, protocol, configuration, artifact, or safety contract.
 - For structured data, use an existing parser or validator and assert meaningful fields and relationships. Preserve checks for permissions, credential isolation, artifact selection, and required-check identities; formatting changes alone should not break them. Do not build a bespoke parser to police incidental syntax.

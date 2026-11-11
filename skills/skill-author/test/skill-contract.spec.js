@@ -79,19 +79,45 @@ describe('skills/skill-author/templates', () => {
     assert.equal(deploymentIndex + 1, githubActionsIndex);
   });
 
-  it('should expose Optimization as an optional facet before bundled resources', async () => {
+  it('should expose Review Criteria as an optional facet before bundled resources', async () => {
     const templateNames = (await readdir(TEMPLATE_DIR)).filter((name) => name.endsWith('.md'));
 
     for (const templateName of templateNames) {
       const templateContent = await readFile(path.join(TEMPLATE_DIR, templateName), 'utf8');
       const { body, frontmatter } = splitLeadingSkillFrontmatter(templateContent);
       const sectionOrder = extractTopLevelSkillHeadings(body);
-      const optimizationIndex = sectionOrder.indexOf('## Optimization');
+      const reviewCriteriaIndex = sectionOrder.indexOf('## Review Criteria');
       const resourcesIndex = sectionOrder.indexOf('## Bundled Resources');
+      const optional = frontmatter.optional_top_level_headings;
+      const withoutCriteria = body.replace(
+        /## Review Criteria\n[\s\S]*?(?=## Bundled Resources\n)/,
+        '',
+      );
+      const legacyCriteria = body.replace('## Review Criteria', '## Optimization');
+      const misplacedCriteria = withoutCriteria.replace(
+        '## Overview',
+        '## Review Criteria\n\n## Overview',
+      );
 
-      assert.ok(frontmatter.optional_top_level_headings.includes('## Optimization'), templateName);
-      assert.ok(optimizationIndex >= 0, templateName);
-      assert.equal(optimizationIndex + 1, resourcesIndex, templateName);
+      assert.ok(optional.includes('## Review Criteria'), templateName);
+      assert.ok(reviewCriteriaIndex >= 0, templateName);
+      assert.equal(reviewCriteriaIndex + 1, resourcesIndex, templateName);
+      assert.equal(hasOrderedSkillSections(body, sectionOrder, optional), true, templateName);
+      assert.equal(
+        hasOrderedSkillSections(withoutCriteria, sectionOrder, optional),
+        true,
+        templateName,
+      );
+      assert.equal(
+        hasOrderedSkillSections(legacyCriteria, sectionOrder, optional),
+        false,
+        templateName,
+      );
+      assert.equal(
+        hasOrderedSkillSections(misplacedCriteria, sectionOrder, optional),
+        false,
+        templateName,
+      );
       assert.match(
         templateContent,
         /\*\*keep\*\*.*\*\*reconcile\*\*.*\*\*deduplicate\*\*.*\*\*consolidate\/merge\*\*.*\*\*split\*\*.*\*\*extract\*\*.*\*\*move\*\*.*\*\*tighten\*\*.*\*\*remove\*\*/s,

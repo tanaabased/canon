@@ -25,7 +25,10 @@ Explain the architecture implemented in source, identify consequential structura
 Read and apply each applicable document before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent assessment.
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [Skill Standard — Review Criteria](../../references/skill-standard.md#review-criteria), including the Shared Loading Rule. Apply that sequence to every selected owner; report missing applicable criteria as coverage gaps.
 - **Before assessing a target:** its applicable `AGENTS.md` and declared architecture or review constraints, including `.github/OPTIMIZATION.md` when present. Treat existing design documents as claims to check against source.
+- **Before assessing a language, framework, or runtime boundary:** the relevant owner's general Review Criteria and Architecture entry point, then its applicable required sections and references under the shared loading rule.
+- **Before assessing JavaScript or TypeScript organization and dependency boundaries:** [JavaScript Repo Structure](../../references/javascript-repo-structure.md), including its dependency-direction guidance.
 - **Before writing a requested report artifact or recommending documentation changes:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before composing the assessment:** the compact [report outline](./templates/report.md), adapted to scope and output mode.
 
@@ -38,7 +41,8 @@ Read and apply each applicable document before dependent work. Reuse complete re
 ## When Not to Use
 
 - Implement changes, design a new product without an existing implementation, or certify runtime readiness.
-- Run a general canon-compliance, dependency-freshness, or release audit. [Project Optimizer](../project-optimizer/SKILL.md) owns that broader assessment; neither skill automatically invokes the other.
+- For a deep assessment of test value, reliability, cost, or total coverage, use [Testing Review](../testing-review/SKILL.md). Inspect tests here only as evidence for architectural findings; retain cross-component reasoning and the maintenance-change walkthrough.
+- Run a general canon-compliance, dependency-freshness, or release audit. [Project Review](../project-review/SKILL.md) owns that broader assessment; neither skill automatically invokes the other.
 
 ## Preconditions
 
@@ -57,12 +61,12 @@ Read and apply each applicable document before dependent work. Reuse complete re
 ### Reconstruct the Implementation
 
 4. Trace actual entry points into major subsystems, data models and state owners, shared utilities, and external integrations. Follow representative success and failure paths, including asynchronous or deferred work, and identify who owns decisions, effects, and recovery. Group components by responsibility, not directory labels.
-5. Inspect imports, module boundaries, registration, and dependency direction with available search, language-aware navigation, or static-analysis tools. Verify significant relationships in concrete files and symbols. Do not install a mandatory engine or build a generalized analysis framework; disclose analysis gaps for generated, dynamic, or unavailable code.
+5. Inspect imports, module boundaries, registration, and dependency direction with available search, language-aware navigation, or static-analysis tools. Verify significant relationships in concrete files and symbols, and compare consequential declared dependency rules with existing enforcement. Do not install a mandatory engine or build a generalized analysis framework; disclose analysis gaps for generated, dynamic, or unavailable code.
 6. Use readable Mermaid diagrams when they clarify current architecture or an important execution/data flow. Label meaningful calls, events, state writes, and failure boundaries. Tie diagram components and significant edges to source references; distinguish observed relationships from inference and current architecture from proposals.
 
 ### Assess and Recommend
 
-7. Evaluate oversized responsibilities, tight coupling and cycles, semantic duplication, inconsistent abstractions, unnecessary indirection, and dependencies against actual behavior and change costs. Apply the shared [operation lenses](../../references/optimization-operations.md) without manufacturing findings. Separate demonstrated defects, evidenced maintenance costs, and subjective preferences; do not attribute complexity to AI without provenance.
+7. Apply the shared loading rule to the observed contracts and their owners before judging structure. Evaluate oversized responsibilities, tight coupling and cycles, semantic duplication, inconsistent abstractions, unnecessary indirection, and dependencies against actual behavior and change costs. Apply the shared [operation lenses](../../references/optimization-operations.md) without manufacturing findings. Separate demonstrated defects, evidenced maintenance costs, and subjective preferences; do not attribute complexity to AI without provenance.
 8. For each substantive finding, identify the files and symbols, observed evidence, user or maintenance consequence, confidence and uncertainty, smallest defensible recommendation, and a verification method. State what should stay unchanged and why. Apply the evidence limits below before presenting a structural signal as a defect.
 9. Explain cohesion, ownership, testability, simplicity, and maintenance tradeoffs where they affect the recommendation. Include a proposed architecture, responsibility map, or current-to-proposed module/directory mapping only when it clarifies a real improvement. Consider a smaller repair, deferral, or no change; do not manufacture a replacement architecture when two local fixes suffice.
 10. Check the plan against one representative maintenance change, such as adding a field or removing a capability. First trace that change through current source: where is its authoritative definition, who validates, transforms, persists, or consumes it, and which tests establish completeness? Then walk the same change through the proposed structure. Does it clarify ownership, reduce independently maintained definitions or hidden dependencies, and make verification easier without requiring a human or model to understand unrelated code? Simplify or drop recommendations that add structure without a concrete benefit. Fold this evidence into existing findings and recommendations; do not add a separate score, report section, or duplicate finding. Treat the proposed walkthrough as a source-grounded thought exercise, not implementation or runtime proof; no proposed refactor is required when the current structure is adequate.
@@ -73,7 +77,8 @@ Read and apply each applicable document before dependent work. Reuse complete re
 - File length, high fan-in at a composition root, or an import cycle is a signal to investigate, not proof of a user defect. Distinguish type-only cycles from value-import cycles and establish the consequence before recommending a split.
 - Missing static references do not establish dead code: inspect hooks, dynamic registration, generated entrypoints, configuration, and external consumers before recommending removal.
 - Textual similarity does not establish duplicated responsibility. Separate native adapters may legitimately differ in lifecycle, permissions, or failure behavior; consolidate only when semantics and ownership match.
-- Distinguish context projections and presentation from authoritative state and durable effect accounting. Challenge speculative abstractions and guards by naming the concrete problem they solve and checking the existing owner first.
+- Examine whether optional context, presentation, diagnostics, or one malformed record can stop unrelated authorized work. Require a concrete correctness, authorization, or resource-protection reason for that coupling. Distinguish optional enrichment from authoritative inputs and durable receipts for uncertain effects; recommend removing unnecessary prerequisites while preserving authorization, identity, destination, and duplicate-effect protections. Fold findings into the existing assessment rather than a separate checklist or report section.
+- Challenge speculative abstractions and guards by naming the concrete problem they solve and checking the existing owner first.
 - Static inspection can explain code paths and support a maintenance finding; it does not prove live runtime behavior, passing CI, or installation readiness. Use [Verification Boundaries](../../references/verification-boundaries.md) to select proportionate evidence and label unrun checks.
 
 ### Deliver

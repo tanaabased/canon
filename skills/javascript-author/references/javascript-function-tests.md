@@ -9,6 +9,9 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 - Keep each spec scoped to one helper surface and assert observable return values or narrow boundary behavior.
 - Hoist tests only when their implementation is also hoisted or the coverage is intentionally cross-scope.
 - When TypeScript is present, make sure the repo's test command discovers `.spec.ts` and run `typecheck` separately from the test runner.
+- Value comes from rejecting incorrect decisions, transformations, or effects at the owned boundary. Prefer inputs that distinguish plausible wrong behavior; assertions that repeat the implementation's calculation or only verify mocked call counts often miss that contract.
+- Keep isolated edge cases in units and retain component coverage where real internal wiring can fail despite correct individual helpers. Packaging, installed CLI behavior, and native-host integration use their respective owners' criteria even when the test is written in JavaScript or TypeScript.
+- Before consolidating, retain distinct failure and boundary cases. Expensive setup is justified here only when a cheaper fixture cannot establish the subsystem behavior; testing a third-party dependency's own guarantees belongs upstream.
 
 ## Contract Durability
 

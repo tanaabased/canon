@@ -34,7 +34,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting the CLI starter:** [Bun CLI Template](./references/bun-cli-template.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
@@ -74,6 +74,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent CLI operations and preserve documented command behavior and package boundaries.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is primarily about a package-level JS/TS CLI product surface.
@@ -98,6 +100,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): keep parser decisions in units and command wiring with injected external services in bounded components. Leia owns installed CLI product flows; reuse the existing runner for internal coverage.
 - When the CLI ships as a built artifact, run Leia against its executable entrypoint under the declared consumer runtime, following [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes).
+- Retain distinct option/precedence, stdin, exit-status, stream, and file-effect contracts after consolidation. Parser edge cases belong in cheaper focused tests; installed cases must expose an entrypoint, packaging, or consumer-runtime failure those tests cannot catch. Repeated help snapshots or an install per parser permutation add little evidence unless the rendered text or installation difference is itself contractual.
 
 Minimal generic example:
 
@@ -116,15 +119,13 @@ test -n "$(my-cli --version)"
 - Keep the workflow centered on preparing the built CLI artifact, placing it on `PATH`, and running one Leia README per matrix entry. Use `setup-bun` for the harness and build; add `setup-node` when the CLI targets Node, per [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes).
 - Keep this as an automation projection of the package-level CLI test contract, not as general workflow-topology ownership.
 
-## Optimization
+## Review Criteria
 
 For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
 
 - **Inspect:** Inventory source and shipped entrypoints, their shebangs and runtime contracts, parser, help, version, environment precedence, build output, packaging metadata, scenarios, and observable CLI tests.
 - **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile source/build runtime selection, parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and scenario packaging drift.
 - **Recommend:** Keep aligned behavior; deduplicate or consolidate command contracts; extract parsers and renderers; split overloaded commands only when their public surfaces are distinct; move internal machinery out of the entrypoint; and tighten or remove stale API without widening into general cleanup.
-- **Apply:** After explicit authorization, make the smallest coherent CLI operations and preserve documented command behavior and package boundaries.
-- **Verify:** Build the entrypoint, smoke help and version output, validate scenario packaging against the shared Leia contract, run Leia-backed scenarios, and type-check when the repository owns TypeScript.
 
 ## Bundled Resources
 
@@ -141,6 +142,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
+
+- Build the entrypoint, smoke help and version output, validate scenario packaging against the shared Leia contract, run Leia-backed scenarios, and type-check when the repository owns TypeScript.
 
 - Confirm the task stayed on a package-level JS/TS CLI surface rather than drifting into shell CLI or generic JS/TS runtime work.
 - Confirm source entrypoints use `#!/usr/bin/env bun`, built entrypoints use the declared consumer runtime shebang, and package `bin` resolves to the shipped artifact.

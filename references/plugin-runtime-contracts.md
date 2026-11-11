@@ -23,6 +23,7 @@ Apply this contract when designing, changing, or reviewing plugin runtime integr
 
 Use the existing test owners and runtime adapters to verify the affected contract:
 
+- Exercise plugin-owned mapping, policy, failure isolation, and recovery with deterministic boundary fixtures; preserve negative cases when consolidating. Native-host tests earn their cost by proving supported integration, event delivery, trust, or lifecycle behavior those fixtures cannot establish, not by retesting host guarantees or merely observing successful bookkeeping. Packaging criteria remain with the plugin author; a correct payload alone does not prove runtime integration.
 - Ordinary calls work with authored content and meaningful selectors, without internal binding identifiers. Attempts to supply binding fields, including matching values, are rejected before effects.
 - Concurrent and queued inputs retain their exact sources, drafts, and destinations. Stale, cross-agent, retired, ambiguous, or uncertain ownership cannot redirect an effect or cause a duplicate.
 - Authorized work proceeds with realistically incomplete optional bookkeeping, including child startup before coordinator reconciliation. Do not prepopulate the very records claimed to be unnecessary. Required identity, authorization, destination, and resource checks still hold.
