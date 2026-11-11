@@ -10,6 +10,14 @@ A successful command is sufficient evidence for the operation its contract promi
 - When external visibility itself must be checked, allow for documented propagation delays, use bounded polling, and report unresolved visibility separately from publication failure. Never republish merely because a cached lookup has not caught up.
 - Report what the evidence establishes. Successful publication need not establish downstream installation or runtime activation unless that is part of the requested outcome.
 
+## Validation Selection
+
+- Run inexpensive baseline checks routinely for implementation changes, then select lint, type checks, builds, and component tests from the changed behavior and affected consumers. Include relevant callers and runtime adapters; matching changed filenames alone does not establish coverage. Documentation-only changes need applicable checks, not automatic behavioral suites.
+- Prefer focused local checks. Broaden to a full local suite only when a named unresolved risk cannot be covered reliably by focused checks, impact cannot be bounded, failures reveal wider consequences, or the operator explicitly requests it. A push or handoff alone is not a reason to run the full suite.
+- Preserve required coverage at its designated CI or release gate and honor explicit repository requirements. When a repository unconditionally requires expensive local validation, propose a scoped policy change rather than silently skipping the requirement. Retain conditional artifact, platform, and release checks for their distinct contracts.
+- Reuse passing results until relevant source, configuration, dependencies, fixtures, or build inputs change. Prepare artifacts required by selected tests without repeating unchanged setup unnecessarily. Explicit test selection must not silently expand to the whole suite or report success when no tests matched.
+- Report focused local results separately from full-suite and hosted results; queued or unrun checks are not passes. Measure local feedback time separately from CI execution, runner cost, and start delay. Duration informs selection and test-design review, not automatic exemption or removal.
+
 ## Evidence and Static Checks
 
 - Classify each assertion by what it establishes, even when one suite mixes evidence. Use the [shared testing layers](./coding-stack-preferences.md#testing-defaults) for behavioral coverage. A runner name does not turn static inspection into a unit test.

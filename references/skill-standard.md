@@ -110,6 +110,13 @@ Project Review, Architecture Review, and Testing Review use the same sequence: *
 4. When an owner, section, or specialist entry point is missing or insufficient, use available authoritative guidance and source evidence for bounded findings and name the remaining coverage gap. Distinguish a genuinely inapplicable concern from unavailable criteria. Missing guidance is not itself a product defect or proof of alignment; do not silently invent policy, require every skill to gain every section, or block unrelated assessment.
 5. The reviewer reconciles overlaps, missing journeys, conflicts, and cross-owner consequences, consolidating findings into one proportionate plan. Report evidence limits and unresolved applicable criteria alongside the findings; convergence applies only to the assessed scope.
 
+### Review Completeness
+
+- `[manual]` Preserve the requested scope. Before concluding, account for its major responsibilities, journeys, or test groups and distinguish inspected, sampled, and unexamined areas. A healthy sample does not establish whole-scope alignment; a scoped review does not require unrelated investigation. Keep this accounting lightweight in the review, not a permanent registry.
+- `[manual]` Investigate consequential signals through their definitions, callers, consumers, and relevant evidence far enough to support or reject a finding. Missing evidence remains a gap. Choose the smallest worthwhile change after investigation; a small recommendation or concise output must not silently narrow the investigation.
+- `[manual]` When multiple reviews are requested, share inventory and unchanged evidence but answer each review's distinct questions. Reconcile overlaps without substituting one investigation for the others. Report incomplete coverage explicitly rather than presenting it as convergence; no finding count or report-length target applies.
+- `[manual]` When maintaining review instructions, exercise a broad and a smaller scoped case. Inspect actual source traces and results for coverage, consequential reasoning, scope control, and actionable recommendations or justified retention. Reuse prior evidence explicitly; distinguish manual application from fresh independent-model trials and structural validation. Do not grade against exact wording or a fixed finding list.
+
 ## Preferred Tools
 
 - `[manual]` Use optional `## Preferred Tools` for packages, actions, skills, or other reusable assets that materially help the owned surface. Omit it when there are no concrete recommendations; do not add empty inventories to every skill.
