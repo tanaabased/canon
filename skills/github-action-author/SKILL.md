@@ -35,8 +35,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before testing input normalization:** [Action Input Helper Tests](./references/action-input-helper-tests.md).
 - **Before selecting release destinations:** [Release Destinations](../../references/release-destinations.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -80,6 +80,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent action-product operations and preserve GitHub Workflow Author ownership of broader workflow graphs.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is action-product-led rather than workflow-led or general-JS/TS-led.
@@ -96,15 +98,13 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Follow [release composition](../github-workflow-author/SKILL.md#release-composition) for checkout inputs, destination names, and independent jobs. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
 - Minimal example: [action release workflow](./templates/bun-javascript-action-release-workflow.yml).
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
 - **Compare:** Compare runtime setup and repository publication with [Preferred Tools](#preferred-tools), preserving action smoke behavior and moving-tag policy. Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.
 - **Recommend:** Keep aligned runtime output; deduplicate or consolidate repeated contracts; extract testable units; move misplaced action-owned material; split only genuinely independent actions; and tighten or remove stale surfaces without creating unrelated workflow work.
-- **Apply:** After explicit authorization, make the smallest coherent action-product operations and preserve GitHub Workflow Author ownership of broader workflow graphs.
-- **Verify:** Rebuild and test the action, exercise its smoke path, and confirm committed runtime output remains aligned with source and metadata.
 
 ## Bundled Resources
 
@@ -120,6 +120,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): shared helper-shape defaults when action runtime code is in scope
 
 ## Validation
+
+- Rebuild and test the action, exercise its smoke path, and confirm committed runtime output remains aligned with source and metadata.
 
 - Confirm the task stayed on the GitHub Action product surface rather than drifting into workflow-graph authoring or workflow-only validation design.
 - Confirm JavaScript-backed actions use composite wrappers intentionally, keep a stable runtime artifact path such as `dist/index.js`, and keep JavaScript or TypeScript source aligned with the committed JavaScript artifact.

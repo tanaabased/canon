@@ -139,6 +139,7 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
   );
   const { errors: planErrors, plan } = buildTaskUpdatePlan(draft, current, {
     revisionSummary: input.revisionSummary,
+    revisionKind: mode === 'revise' ? (input.revisionKind ?? 'material') : undefined,
     reviewedLabels: reviewedLabels(input),
   });
   const digest = planDigest(plan);
@@ -151,7 +152,15 @@ export function updateTask(input = {}, { githubClient = new GitHubTaskClient() }
   if (mode === 'revise' && draft.status === 'needs_input') {
     blockers.push('Revision requires a complete actionable canonical task.');
   }
-  if (mode === 'revise' && plan.changes.length > 0 && !input.revisionSummary?.trim()) {
+  if (mode === 'revise' && !['minor', 'material'].includes(plan.revisionKind)) {
+    blockers.push('revisionKind must be minor or material.');
+  }
+  if (
+    mode === 'revise' &&
+    plan.revisionKind !== 'minor' &&
+    plan.changes.length > 0 &&
+    !input.revisionSummary?.trim()
+  ) {
     blockers.push('A material revision requires revisionSummary.');
   }
   const base = reportBase(mode, draft, current, plan, publication);

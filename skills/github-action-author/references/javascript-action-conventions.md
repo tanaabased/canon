@@ -28,6 +28,7 @@ This file is local to `tanaab-github-action-author` because it is action-product
 - Prefer separate `pr-linter.yml`, `pr-unit-tests.yml`, and other surface-specific PR workflows when their commands, runners, matrices, ownership, or status identities differ; combine only operationally inseparable gates.
 - Use `fetch-depth: 0` only in workflows that actually need tags, full history, or sync behavior.
 - In workflow-driven smoke tests, assert observable postconditions after the action runs, such as file mutations, tags, config changes, or verification state.
+- Keep input permutations in focused helper tests and retain representative `uses: ./` checks for committed-artifact loading, environment mapping, and effects only the runner integration proves. Avoid duplicating every helper case in hosted smoke tests or snapshotting the whole action YAML. Consolidation must preserve distinct input/output and permission/effect guarantees; general workflow-graph and GitHub-host guarantees belong to their respective owners.
 - Prefer one assertion step per postcondition, use `if: always()` when later checks should still execute after a failure, and emit `::notice` or `::error` annotations with a real non-zero exit code.
 - Keep assertion steps short and shell-native until the logic becomes complex enough to extract into a repo-authored helper script.
 

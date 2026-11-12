@@ -32,7 +32,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Project Management Model](../../references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 
 ## When to Use
 
@@ -93,6 +93,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After separate exact target, safety, and digest authorization, mutate only the planned milestone fields or explicitly selected task membership.
+
 1. Resolve and display one exact target; stop on ambiguity.
 2. Inspect the current milestone when it exists. Let the model interpret the user's intent and author the complete desired description, preserving important existing text deliberately rather than through a hidden parser.
 3. Run `draft` to obtain the compact before, operations, expected, target, findings, and digest report. If aligned, stop.
@@ -100,13 +102,11 @@ Read each applicable document in full, or the explicitly named section, before d
 5. Run `apply`. It rebuilds the plan from fresh remote state, sends only the approved structured operations, and re-reads every requested value.
 6. Report verified, partial, failed, or uncertain state without rollback.
 
-## Optimization
+## Review Criteria
 
 - **Inspect:** Resolve one exact milestone and read its complete description, state, due date, and issue membership without mutation.
 - **Compare:** Reconcile the requested desired state with provider-native values, distinguishing omitted, aligned, selected, and unmanaged state.
 - **Recommend:** Keep aligned and unrelated state; tighten ambiguous identity or authorization; and never manufacture task, completion, deletion, or planning changes.
-- **Apply:** After separate exact target, safety, and digest authorization, mutate only the planned milestone fields or explicitly selected task membership.
-- **Verify:** Re-read every requested value and report verified, remaining, unavailable, or partial state without compensating rollback.
 
 ## Bundled Resources
 
@@ -120,6 +120,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./test/](./test/): flat deterministic client, command, target, orchestration, and partial-failure coverage
 
 ## Validation
+
+- Re-read every requested value and report verified, remaining, unavailable, or partial state without compensating rollback.
 
 - Confirm the milestone and selected task membership match the authorized plan through exact read-back.
 

@@ -1,9 +1,18 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Added canonical label inspection, planning, and synchronization across repositories to `tanaab-github-issue-schema-author`.
+- Added `tanaab-architecture-review` and `tanaab-testing-review` with source-grounded improvement plans. [#107](https://github.com/tanaabased/canon/pull/107)
 - Clarified eligibility in all eight canonical label descriptions.
+- Fixed PowerShell CLI starter options losing precedence over environment defaults. [#107](https://github.com/tanaabased/canon/pull/107)
+- Fixed `tanaab-skill-author` YAML escaping and validation for descriptions containing punctuation. [#107](https://github.com/tanaabased/canon/pull/107)
+- Fixed `tanaab-task-author` to allow explicitly minor corrections without a revision-summary comment. [#107](https://github.com/tanaabased/canon/pull/107)
 - Fixed `tanaab-task-author` to require an explicit hard external blocker for `blocked`; dependencies alone no longer qualify.
+- Fixed `tanaab-task-decomposer` to retain successful issue creation when GitHub returns an incomplete receipt. [#107](https://github.com/tanaabased/canon/pull/107)
 - Made ClawHub publication best effort so its failures don't block npm or repository publication. [#102](https://github.com/tanaabased/canon/issues/102) [#103](https://github.com/tanaabased/canon/pull/103)
+- Renamed `tanaab-project-optimizer` to `tanaab-project-review` and shared owner-specific review criteria across all three reviewers. [#107](https://github.com/tanaabased/canon/pull/107)
+- Standardized review reports with shared code, tests, documentation, and devops coverage summaries, breadth/depth estimates, and explicit inspection gaps. [#107](https://github.com/tanaabased/canon/pull/107)
+- Strengthened review completeness, maintenance-change tracing, and failure-isolation checks. [#107](https://github.com/tanaabased/canon/pull/107)
+- Unified plugin runtime contracts and targeted local validation guidance. [#107](https://github.com/tanaabased/canon/pull/107)
 
 ## v0.13.0 - [October 28, 2026](https://github.com/tanaabased/canon/releases/tag/v0.13.0)
 

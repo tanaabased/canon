@@ -403,6 +403,38 @@ describe('Task Decomposer resumable publication', () => {
     assert.equal(client.state.issues.size, 1);
   });
 
+  it('should retain successful creation with an incomplete receipt and recover from fresh evidence', () => {
+    const client = clientFixture();
+    const createIssue = client.createIssue;
+    client.createIssue = (...args) => {
+      const result = createIssue(...args);
+      return { ...result, value: { ...result.value, html_url: undefined } };
+    };
+    const input = decompositionProposal();
+    const preview = prepareTaskDecomposition(input, { client });
+    const partial = publishTaskDecomposition(approve(input, preview), { client });
+    assert.equal(partial.status, 'partial');
+    assert.equal(partial.mutatesGitHub, true);
+    assert.equal(client.state.issues.size, 2);
+    assert.deepEqual(partial.completedOperations, ['create:inspection']);
+    assert.equal(partial.remainingOperations.includes('create:inspection'), false);
+    assert.equal(partial.remainingOperations[0], 'create:publication');
+    assert.deepEqual(partial.references.inspection, { id: 10002, number: 2 });
+    assert.equal(partial.verification.status, 'unavailable');
+
+    client.createIssue = createIssue;
+    const fresh = prepareTaskDecomposition(input, { client });
+    assert.deepEqual(
+      fresh.plan.children.map(({ action }) => action),
+      ['reuse', 'create'],
+    );
+    const resumed = publishTaskDecomposition(approve(input, fresh), { client });
+    assert.equal(resumed.status, 'published');
+    assert.equal(resumed.verification.status, 'verified');
+    assert.equal(client.state.issues.size, 3);
+    assert.equal(client.calls.filter(({ operation }) => operation === 'createIssue').length, 2);
+  });
+
   it('should report a silently dropped parent value through exact read-back verification', () => {
     const client = clientFixture({ dropParentBody: true });
     const input = decompositionProposal();

@@ -385,6 +385,8 @@ function Build-EnvironmentVariables {
 }
 
 function Resolve-Invocation {
+  param([System.Collections.IDictionary]$ExplicitParameters)
+
   $defaults = Build-Defaults
   $environment = Build-Environment
   $items = New-Object 'System.Collections.Generic.List[string]'
@@ -395,16 +397,16 @@ function Resolve-Invocation {
     Add-TrimmedValue -List $items -Value $entry
   }
 
-  if ($PSBoundParameters.ContainsKey('Item')) {
+  if ($ExplicitParameters.ContainsKey('Item')) {
     # Any CLI-provided repeatable parameter replaces the env-seeded list for that option.
     $items.Clear()
-    foreach ($entry in @($Item)) {
+    foreach ($entry in @($ExplicitParameters['Item'])) {
       Add-TrimmedValue -List $items -Value $entry
     }
   }
 
-  if ($PSBoundParameters.ContainsKey('Force')) {
-    $resolvedForce = [bool]$Force
+  if ($ExplicitParameters.ContainsKey('Force')) {
+    $resolvedForce = [bool]$ExplicitParameters['Force']
   }
 
   return [pscustomobject]@{
@@ -483,7 +485,7 @@ function Invoke-RunCli {
 
 $script:USE_COLOR = Test-ColorEnabled
 
-$script:Resolved = Resolve-Invocation
+$script:Resolved = Resolve-Invocation -ExplicitParameters $PSBoundParameters
 
 if ($Help) {
   Show-Usage -Invocation $script:Resolved

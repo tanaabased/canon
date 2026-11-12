@@ -1,100 +1,26 @@
-import unquoteYaml from './unquote-yaml.js';
+import { YAML } from 'bun';
 
-function parseIndentedKeyValues(content, sectionName) {
-  const lines = content.split('\n');
-  const values = {};
-  let inSection = false;
-
-  for (const line of lines) {
-    if (!inSection) {
-      if (line.trim() === `${sectionName}:`) {
-        inSection = true;
-      }
-      continue;
-    }
-
-    if (!line.trim()) {
-      continue;
-    }
-
-    if (!line.startsWith('  ')) {
-      break;
-    }
-
-    const match = line.match(/^ {2}([a-z_]+):\s*(.+)$/);
-    if (match) {
-      values[match[1]] = unquoteYaml(match[2]);
-    }
-  }
-
-  return values;
-}
-
-function parseDependencyTools(content) {
-  const lines = content.split('\n');
-  const tools = [];
-  let inDependencies = false;
-  let inTools = false;
-  let currentTool = null;
-
-  for (const line of lines) {
-    if (!inDependencies) {
-      if (line.trim() === 'dependencies:') {
-        inDependencies = true;
-      }
-      continue;
-    }
-
-    if (!line.trim()) {
-      continue;
-    }
-
-    if (!line.startsWith('  ')) {
-      break;
-    }
-
-    if (!inTools) {
-      if (line.trim() === 'tools:') {
-        inTools = true;
-      }
-      continue;
-    }
-
-    if (!line.startsWith('    ')) {
-      break;
-    }
-
-    const firstEntryMatch = line.match(/^ {4}-\s+([a-z_]+):\s*(.+)$/);
-    if (firstEntryMatch) {
-      currentTool = {
-        [firstEntryMatch[1]]: unquoteYaml(firstEntryMatch[2]),
-      };
-      tools.push(currentTool);
-      continue;
-    }
-
-    const entryMatch = line.match(/^ {6}([a-z_]+):\s*(.+)$/);
-    if (entryMatch && currentTool) {
-      currentTool[entryMatch[1]] = unquoteYaml(entryMatch[2]);
-    }
-  }
-
-  return tools;
+function stringValues(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, String(entry)]));
 }
 
 /**
- * Parses the narrow agents/openai.yaml surface owned by the skill scaffolder.
+ * Parse agents/openai.yaml into the string-valued inputs used by skill validation.
  *
  * @param {string} content agents/openai.yaml content.
  * @returns {{dependencyTools: object[], hasDependencyToolsSection: boolean, interfaceValues: object, policyValues: object}} Parsed validation inputs.
  */
 export default function parseOpenAiSkillMetadata(content) {
-  const normalizedContent = String(content ?? '');
-
+  const parsed = YAML.parse(String(content ?? ''));
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('Skill metadata must be a YAML mapping.');
+  }
+  const tools = parsed.dependencies?.tools;
   return {
-    dependencyTools: parseDependencyTools(normalizedContent),
-    hasDependencyToolsSection: /^\s{2}tools:\s*$/m.test(normalizedContent),
-    interfaceValues: parseIndentedKeyValues(normalizedContent, 'interface'),
-    policyValues: parseIndentedKeyValues(normalizedContent, 'policy'),
+    dependencyTools: Array.isArray(tools) ? tools.map(stringValues) : [],
+    hasDependencyToolsSection: Object.hasOwn(parsed.dependencies ?? {}, 'tools'),
+    interfaceValues: stringValues(parsed.interface),
+    policyValues: stringValues(parsed.policy),
   };
 }

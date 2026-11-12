@@ -43,11 +43,11 @@ openclaw plugins install npm:@tanaab/canon --accept-capabilities
 In a Codex project task or OpenClaw chat, invoke a skill by name. For a read-only first pass:
 
 ```text
-Use $tanaab-project-optimizer to audit this project's documentation and propose
+Use $tanaab-project-review to audit this project's documentation and propose
 only changes worth making. Keep the audit read-only.
 ```
 
-The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) manifests expose all 23 skills below.
+The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) manifests expose the skills below.
 
 ### Project and task management
 
@@ -58,23 +58,25 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 | [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation, settings, descriptions, and topics.              |
 | [`tanaab-project-milestone-author`](./skills/project-milestone-author/)     | Milestone state, due dates, and verified task membership.                    |
 | [`tanaab-project-milestone-planner`](./skills/project-milestone-planner/)   | Milestone coverage, task selection, and owner handoffs.                      |
-| [`tanaab-project-optimizer`](./skills/project-optimizer/)                   | Read-only project audits and staged improvement plans.                       |
+| [`tanaab-project-review`](./skills/project-review/)                         | Read-only project audits and staged improvement plans.                       |
 | [`tanaab-task-author`](./skills/task-author/)                               | Compact Task, Bug, and Feature drafting, publication, and normalization.     |
 | [`tanaab-task-completion-check`](./skills/task-completion-check/)           | Read-only task completion assessment against criteria and delivery evidence. |
 | [`tanaab-task-decomposer`](./skills/task-decomposer/)                       | Task splitting, milestone reframing, and verified child-task publication.    |
 
 ### Code and interface authoring
 
-| Skill                                                                           | Owns                                                                      |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.  |
-| [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                           |
-| [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript CLI source, distribution, help, and versioning. |
-| [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                     |
-| [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring and delivery.                            |
-| [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety. |
-| [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                         |
-| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components, behavior tests, docs examples, and npm libraries.       |
+| Skill                                                                           | Owns                                                                         |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [`tanaab-architecture-review`](./skills/architecture-review/)                   | Source-grounded architecture reviews and proportionate refactoring plans.    |
+| [`tanaab-codex-plugin-author`](./skills/codex-plugin-author/)                   | Codex plugin packaging, validation, npm delivery, and archive migration.     |
+| [`tanaab-javascript-author`](./skills/javascript-author/)                       | JavaScript, TypeScript, and Bun implementation.                              |
+| [`tanaab-javascript-cli-author`](./skills/javascript-cli-author/)               | JavaScript and TypeScript CLI source, distribution, help, and versioning.    |
+| [`tanaab-javascript-repo-standardizer`](./skills/javascript-repo-standardizer/) | JavaScript, TypeScript, and Bun repository baselines.                        |
+| [`tanaab-openclaw-plugin-author`](./skills/openclaw-plugin-author/)             | Native OpenClaw plugin authoring and delivery.                               |
+| [`tanaab-shell-cli-author`](./skills/shell-cli-author/)                         | Bash and PowerShell CLI entrypoints, wrappers, help, logging, and safety.    |
+| [`tanaab-testing-review`](./skills/testing-review/)                             | Read-only test-value, coverage, reliability, and cost reviews across layers. |
+| [`tanaab-vitepress-author`](./skills/vitepress-author/)                         | VitePress documentation and static-site surfaces.                            |
+| [`tanaab-vue-author`](./skills/vue-author/)                                     | Vue 3 components, behavior tests, docs examples, and npm libraries.          |
 
 ### GitHub and delivery
 

@@ -4,13 +4,13 @@ default_category_tag: skills
 optional_top_level_headings:
   - '## Required Reading'
   - '## Preferred Tools'
-  - '## Optimization'
+  - '## Review Criteria'
 ---
 
 ---
 
 name: {{skill_id}}
-description: {{description}}
+description: {{description_yaml}}
 license: {{license}}
 metadata:
   type: {{type}}
@@ -67,20 +67,33 @@ metadata:
 
 ## Workflow
 
+- After explicit authorization, make the smallest contract-aligned change and keep reusable support at its nearest justified owner.
+
 1. Confirm the request matches this skill's canon-facing surface.
 2. Load only the shared standard and local resources required for the task.
 3. Create, standardize, or validate using the narrowest reliable approach.
 4. Re-run validation before finishing and surface any manual review points.
 
-## Optimization
+
+## Review Criteria
+
+Retain and tailor this section only for a persistent surface this skill can assess. Keep criteria read-only; implementation belongs in Workflow and execution checks in Validation. Remove inapplicable specialist subsections rather than leaving placeholders.
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this artifact family; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the existing artifact family, discovery metadata, structure, bundled resources, and validation evidence owned by this skill.
 - **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Evaluate each artifact and the collection against the shared contract and canonical template, including contradictions, duplicated doctrine, fragmented variants, overloaded owners, misplaced resources, and obsolete identities.
 - **Recommend:** Preserve clear owners; reconcile conflicting contracts; and prioritize justified merging, splitting, extraction, movement, tightening, or removal without turning the skill into a router.
-- **Apply:** After explicit authorization, make the smallest contract-aligned change and keep reusable support at its nearest justified owner.
-- **Verify:** Run the existing validator, review manual checks, and confirm the optimized artifact still owns one clear surface.
+
+### Architecture
+
+- Retain only when this surface has architectural decisions to assess. Name the owned responsibilities, boundaries, or dependencies and concrete evidence that would justify keeping or changing them.
+- Require the relevant existing sections and governing references before assessment, using direct links and explicit applicability; do not copy their doctrine or prescribe a universal layout.
+
+### Testing
+
+- Retain only when this surface has test contracts to assess. Name the guarantees and appropriate evidence boundaries, including what would justify retaining, replacing, or removing coverage.
+- Require the relevant existing Testing or Validation sections and governing references before assessment. These criteria assess evidence; they do not authorize running the implementation workflow or live checks.
 
 ## Bundled Resources
 
@@ -88,6 +101,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Keep local resources local unless they clearly pass the hoist test.
 
 ## Validation
+
+- Run the existing validator, review manual checks, and confirm the optimized artifact still owns one clear surface.
 
 - Confirm the artifact still owns one narrow canon-facing surface.
 - Validate that structure, naming, and local-vs-hoisted placement match the shared contract.

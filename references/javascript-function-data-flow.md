@@ -13,7 +13,7 @@ Use these rules when shaping JavaScript, TypeScript, or Bun functions in Tanaab-
 - Default to `const` and keep mutable working variables rare.
 - Clone before mutating arrays or objects that originated outside the current function.
 - Keep side effects at the boundary. Read from the filesystem, environment, network, or child processes near the edge, then pass parsed data into smaller helpers.
-- Prefer one main exported function per utility file.
+- Keep cohesive functions together; use the [repo-structure guidance](./javascript-repo-structure.md#standard-layout-inside-a-scope) to decide when a separate module improves responsibility, effect isolation, reuse, or testability.
 
 ## Type Flow
 
