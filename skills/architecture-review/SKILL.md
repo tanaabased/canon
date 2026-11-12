@@ -25,12 +25,11 @@ Explain the architecture implemented in source, identify consequential structura
 Read and apply each applicable document before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent assessment.
 
 - **Always:** [Optimization Operations](../../references/optimization-operations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Always:** [Skill Standard — Review Criteria](../../references/skill-standard.md#review-criteria), including the Shared Loading Rule. Apply that sequence to every selected owner; report missing applicable criteria as coverage gaps.
+- **Always:** [Review Standard](../../references/review-standard.md), including criteria loading, completeness, and the shared report format. Apply it to the requested scope and every selected owner.
 - **Before assessing a target:** its applicable `AGENTS.md` and declared architecture or review constraints, including `.github/OPTIMIZATION.md` when present. Treat existing design documents as claims to check against source.
 - **Before assessing a language, framework, or runtime boundary:** the relevant owner's general Review Criteria and Architecture entry point, then its applicable required sections and references under the shared loading rule.
 - **Before assessing JavaScript or TypeScript organization and dependency boundaries:** [JavaScript Repo Structure](../../references/javascript-repo-structure.md), including its dependency-direction guidance.
 - **Before writing a requested report artifact or recommending documentation changes:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before composing the assessment:** the compact [report outline](./templates/report.md), adapted to scope and output mode.
 
 ## When to Use
 
@@ -60,7 +59,7 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ### Reconstruct the Implementation
 
-4. Trace actual entry points into major subsystems, data models and state owners, shared utilities, and external integrations. Follow representative success and failure paths, including asynchronous or deferred work, and identify who owns decisions, effects, and recovery. Group components by responsibility, not directory labels. Account for the major journeys in scope under [Review Completeness](../../references/skill-standard.md#review-completeness); one healthy path cannot establish repository-wide alignment.
+4. Trace actual entry points into major subsystems, data models and state owners, shared utilities, and external integrations. Follow representative success and failure paths, including asynchronous or deferred work, and identify who owns decisions, effects, and recovery. Group components by responsibility, not directory labels. Account for the major journeys in scope under [Review Completeness](../../references/review-standard.md#review-completeness); one healthy path cannot establish repository-wide alignment.
 5. Inspect imports, module boundaries, registration, and dependency direction with available search, language-aware navigation, or static-analysis tools. Trace a realistic maintenance change through a consequential shared owner, even when no refactor has been proposed: identify independently maintained definitions, projections, and consumers that must change together. Verify significant relationships in concrete files and symbols, and compare consequential declared dependency rules with existing enforcement. Do not install a mandatory engine or build a generalized analysis framework; disclose analysis gaps for generated, dynamic, or unavailable code.
 6. Use readable Mermaid diagrams when they clarify current architecture or an important execution/data flow. Label meaningful calls, events, state writes, and failure boundaries. Tie diagram components and significant edges to source references; distinguish observed relationships from inference and current architecture from proposals.
 
@@ -83,7 +82,7 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ### Deliver
 
-12. Use the [report outline](./templates/report.md) as a coverage aid, not a requirement for empty sections or a fixed report size. Begin with scope/baseline and the shared [inspection inventory](../../references/skill-standard.md#inspection-inventory), then include the implemented architecture, findings and retained decisions, a prioritized plan, and limitations. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
+12. Use the shared [report format](../../references/review-standard.md#report-format), including its four-bucket coverage summary before findings. Explain the implemented architecture and retained decisions within Findings; put proposed structure and the prioritized roadmap within Plan. Preserve source-grounded diagrams and maintenance-change reasoning where useful. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
 
 ## Checkpoints
 
@@ -99,7 +98,7 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ## Bundled Resources
 
-- [Report outline](./templates/report.md): one adaptable structure for chat and requested Markdown output.
+- [Review Standard](../../references/review-standard.md): shared review contract and report format.
 
 ## Validation
 

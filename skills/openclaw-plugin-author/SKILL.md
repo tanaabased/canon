@@ -39,7 +39,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before testing an external response contract or using mock-AI recordings or approval expectations:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -180,7 +180,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 

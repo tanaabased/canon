@@ -33,7 +33,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before aligning the repository entrypoint:** [README Standards](../../references/readme-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -125,7 +125,7 @@ bun run build
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Apply [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) to excessive edge-case detail and useful scenario explanations that belong in existing Leia examples with discovery links. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.

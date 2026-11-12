@@ -32,7 +32,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before using recorded responses or approval expectations in mock-AI tests:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -113,7 +113,7 @@ For runtime integration, use supported native owners and separate model-authored
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
 - **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer. For runtime surfaces, apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to duplicated host behavior, bookkeeping gates, and model-supplied binding fields.

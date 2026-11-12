@@ -35,7 +35,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before packaging a component library:** [Release Destinations](../../references/release-destinations.md) and [Component Package Example](./references/component-package-example.md).
 - **Before adding or changing packaged consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -153,7 +153,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
 - **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; check asynchronous update and disposal behavior where present, and identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.

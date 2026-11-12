@@ -35,7 +35,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -139,7 +139,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, conditional TypeScript or Vue surfaces, and npm deployment wiring. For npm identity and publication, inspect root and workspace `package.json` names, internal dependency keys and `npm:` aliases, workspace references, overrides, `.npmrc`, Bun/npm/pnpm/Yarn lockfiles, release workflows, trusted-publisher assumptions, package build inputs, format gates, dry runs, channels, docs, templates, fixtures, and npm-distributed plugin package roots.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against [development and consumer runtime roles](../../references/coding-stack-preferences.md#test-runtimes), runtime declarations, workspace scope, and required setup inputs. Reconcile conflicting configs, scripts, dependencies, lock metadata, and publication paths; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, source-to-test locality drift, long-lived publish tokens, unconditional non-package builds, missing post-stamping format validation, and channel drift against conditional canon. Flag Tanaab-owned npm identities outside `@tanaab`, including legacy `@tanaabased/*` names and generic scope placeholders used as Tanaab examples, while preserving third-party scopes, GitHub URLs, and platform-native plugin identifiers.

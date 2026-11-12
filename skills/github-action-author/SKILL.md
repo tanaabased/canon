@@ -36,7 +36,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before testing input normalization:** [Action Input Helper Tests](./references/action-input-helper-tests.md).
 - **Before selecting release destinations:** [Release Destinations](../../references/release-destinations.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -100,7 +100,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory `action.yml`, JavaScript or TypeScript source, generated `dist/`, the action README contract, smoke coverage, and action-local release wiring.
 - **Compare:** Compare runtime setup and repository publication with [Preferred Tools](#preferred-tools), preserving action smoke behavior and moving-tag policy. Reconcile metadata, source, generated `dist/`, documentation, tests, and action-local workflow claims; identify duplicated logic, overloaded entrypoints, misplaced product wiring, and stale artifacts against local action conventions.

@@ -35,7 +35,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -151,7 +151,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, CI, and npm package deployment wiring; identify independently testable function logic embedded in entrypoints or larger libraries. For npm releases, note token inputs, the released `publish-npm` version, npm CLI version, and trusted-publisher permissions.
 - **Compare:** Assess [Preferred Tools](#preferred-tools) against merge mutation/array semantics and current runtime, packing, and publication paths before proposing replacements. Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon. Flag publication/channel tokens as migration candidates when workflows use `publish-npm@v1.0.5` or later, or otherwise use a compatible npm CLI; unknown npm permissions or settings remain unverified prerequisites.

@@ -35,7 +35,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting the CLI starter:** [Bun CLI Template](./references/bun-cli-template.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -121,7 +121,7 @@ test -n "$(my-cli --version)"
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory source and shipped entrypoints, their shebangs and runtime contracts, parser, help, version, environment precedence, build output, packaging metadata, scenarios, and observable CLI tests.
 - **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile source/build runtime selection, parser behavior, help, version, precedence, package metadata, examples, build output, and tests; identify duplicated option logic, overloaded entrypoints, misplaced internals, stale public claims, and scenario packaging drift.

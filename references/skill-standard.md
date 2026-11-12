@@ -99,68 +99,7 @@ skill-folder/
 - `[manual]` Omit inapplicable specialist entry points; do not create empty headings, placeholder checklists, or mandatory sections for every skill. Whether applicable content is substantive and sufficient remains a manual review, not a structural-validator claim.
 - `[manual]` Apply the evidence-led lenses in [`optimization-operations.md`](./optimization-operations.md) as appropriate to the owned surface: keep, reconcile, deduplicate, consolidate or merge, split, extract, move, tighten, and remove. They are not mandatory output fields, and aligned surfaces must not be changed to satisfy the list.
 - `[manual]` Reconcile contradictions and establish one authoritative owner before polishing, reorganizing, or adding another representation.
-
-### Shared Loading Rule
-
-Project Review, Architecture Review, and Testing Review use the same sequence: **observed contract → owning skill → applicable Review Criteria → required sections and references → assessment → cross-owner synthesis**.
-
-1. Select owners from the behavior or contract under review, not its language, filename, runner, or a fixed routing registry. A mixed surface can require several owners; keep one primary owner per finding.
-2. Read the owner's general Review Criteria and the specialist entry point relevant to the selected depth: Architecture for structural assessment, Testing for test assessment. Project Review uses general criteria for breadth and the relevant specialist criteria only where needed; this does not require running all three reviewers.
-3. Follow applicable Required Reading triggers and the criteria's direct links through governing sections and references before judging the surface. Load only material needed for that assessment, including further required policy dependencies. A summary or resource inventory does not replace the read. Reading authoring guidance does not execute its workflow or authorize repairs, live checks, installation, or publication.
-4. When an owner, section, or specialist entry point is missing or insufficient, use available authoritative guidance and source evidence for bounded findings and name the remaining coverage gap. Distinguish a genuinely inapplicable concern from unavailable criteria. Missing guidance is not itself a product defect or proof of alignment; do not silently invent policy, require every skill to gain every section, or block unrelated assessment.
-5. The reviewer reconciles overlaps, missing journeys, conflicts, and cross-owner consequences, consolidating findings into one proportionate plan. Report evidence limits and unresolved applicable criteria alongside the findings; convergence applies only to the assessed scope.
-
-### Review Completeness
-
-- `[manual]` Preserve the requested scope and begin the report with an [inspection inventory](#inspection-inventory), before findings. A healthy sample does not establish whole-scope alignment; a scoped review does not require unrelated investigation. Keep this accounting lightweight in the review, not a permanent registry.
-- `[manual]` Investigate consequential signals through their definitions, callers, consumers, and relevant evidence far enough to support or reject a finding. Missing evidence remains a gap. Choose the smallest worthwhile change after investigation; a small recommendation or concise output must not silently narrow the investigation.
-- `[manual]` When multiple reviews are requested, share inventory and unchanged evidence but answer each review's distinct questions. Reconcile overlaps without substituting one investigation for the others. Report incomplete coverage explicitly rather than presenting it as convergence; no finding count or report-length target applies.
-- `[manual]` When maintaining review instructions, exercise a broad and a smaller scoped case. Inspect actual source traces and results for coverage, consequential reasoning, scope control, and actionable recommendations or justified retention. Reuse prior evidence explicitly; distinguish manual application from fresh independent-model trials and structural validation. Do not grade against exact wording or a fixed finding list.
-
-#### Inspection Inventory
-
-State the requested scope and what was actually examined, naming a narrow boundary explicitly, such as “`agent/` only” or “workflow integration only.” Use a short table or list of broad, task-appropriate buckets rather than a file checklist. Consider implementation code and ownership; runtime/workflow integrations; tests and verification; skills and agent guidance; user documentation; CI/build/release and operational tooling; and repository standards, configuration, and package metadata. Combine or omit buckets when appropriate to the scope, explaining material exclusions.
-
-For each bucket, distinguish **directly reviewed**, **sampled**, **not reviewed**, or **not applicable**, and briefly state the actual depth, representative evidence, and material gaps. “Directly reviewed” means substantive inspection of the named responsibility or contract; “sampled” means selected examples support only bounded conclusions. Discovery, file listings, and passing tests alone do not establish substantive review. Use “not reviewed” for applicable but unexamined work, including explicit scope exclusions; “not applicable” requires a reason the concern does not apply.
-
-A whole-repository request must account for every applicable bucket and plainly identify unfinished coverage, including material gaps within sampled buckets. Do not substitute an integration-only inventory or a generic “not exhaustive” disclaimer. “No findings” applies only to the examined scope; retain each reviewer's existing completion and disposition rules.
-
-The following examples are hypothetical, not findings about an actual repository. Adapt their buckets and depth; do not copy them as evidence.
-
-**Broad Project Review — whole repository requested; assessment incomplete**
-
-| Bucket                                   | Inspection        | Depth and gaps                                                                         |
-| ---------------------------------------- | ----------------- | -------------------------------------------------------------------------------------- |
-| Implementation and ownership             | Sampled           | Traced command parsing through persistence; background workers remain unexamined.      |
-| Runtime/workflow integrations            | Directly reviewed | Followed both supported adapters through startup, effects, and failure recovery.       |
-| Tests and verification                   | Sampled           | Read parser and persistence assertions and fixtures; worker coverage remains unknown.  |
-| Skills and agent guidance                | Directly reviewed | Read every live skill and shared guidance; compared ownership and loading rules.       |
-| User documentation                       | Not reviewed      | README and operator guides were only listed.                                           |
-| CI/build/release and tooling             | Sampled           | Inspected PR checks and build scripts; release and recovery tooling remain unexamined. |
-| Standards/configuration/package metadata | Directly reviewed | Compared root guidance, manifests, and runtime requirements with their consumers.      |
-
-Hypothetical finding: Both adapters independently maintain the same persistence mapping. Consolidate that owner; finish the named gaps before claiming whole-project convergence.
-
-**Scoped Architecture Review — workflow integration only**
-
-| Bucket                                      | Inspection        | Depth and gaps                                                                                    |
-| ------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------- |
-| Integration code and ownership              | Directly reviewed | Traced dispatch, persistence, and recovery; walked a new field through definitions and consumers. |
-| Tests and agent guidance                    | Sampled           | Read dispatch failure tests and invoking skill; other journeys remain outside scope.              |
-| Other subsystems, docs, and release tooling | Not reviewed      | Explicitly outside the requested integration boundary.                                            |
-
-Hypothetical finding: Dispatch validates unrelated records before selecting its target, so one malformed record blocks independent work. Narrow validation while preserving ownership checks. No repository-wide conclusion follows.
-
-**Testing Review — unit/component suites only**
-
-| Bucket                                             | Inspection        | Depth and gaps                                                                                                       |
-| -------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Unit/component tests and fixtures                  | Sampled           | Read authorization and persistence groups; parser cases remain unexamined.                                           |
-| Implementation, test guidance, and local selectors | Directly reviewed | Traced those groups' owned decisions, external effects, and commands; passing runs alone supplied no value judgment. |
-| Installed journeys and CI scheduling               | Not reviewed      | Outside this review; no claim about their coverage or cost.                                                          |
-| Visual rendering contracts                         | Not applicable    | The reviewed library has no rendered interface.                                                                      |
-
-Hypothetical finding: Several component tests replay mocked internal calls without protecting a consequential effect. Remove that overlap while retaining authorization and persistence assertions; complete the parser review before concluding about both suites.
+- `[manual]` Dedicated review skills must require [Review Standard](./review-standard.md) for shared assessment and reporting behavior; surface-specific criteria remain with their owners.
 
 ## Preferred Tools
 
@@ -169,11 +108,7 @@ Hypothetical finding: Several component tests replay mocked internal calls witho
 - `[manual]` Keep each entry to a short bullet: **linked tool and necessary compatibility minimum or range — when to prefer it; material exceptions.** Follow [compatibility and link guidance](./documentation-standards.md#compatibility-and-links): link maintained upstream docs and avoid patch-pinned documentation URLs. Include runtime, behavioral, or platform limits when they affect selection.
 - `[manual]` Prefer maintained Tanaab assets when they fit, while retaining useful third-party choices and justified repository exceptions. Preference does not require installation, migration, or publication.
 - `[manual]` Keep selection policy with the narrowest skill owner and mechanics upstream. Reference the entry from the workflow or lifecycle that uses it; update affected templates and remove contradictory defaults in the same change. A broader catalog may link the same tools for discovery without repeating their contracts.
-- `[manual]` When the skill has Review Criteria, connect its concrete adoption and version-freshness checks to Preferred Tools and apply the following shared assessment. Keep tool-specific compatibility and behavior checks with the owning skill.
-- `[manual]` Inspect actual usage, declared ranges, resolved lockfile versions, runtime constraints, and action refs before deciding that a tool is absent or outdated. For relevant preferred tools, check authoritative release or registry metadata for the latest stable release and the latest stable release compatible with the project's supported runtimes, platform, and declared support contract. Honor an explicitly selected prerelease channel rather than switching channels as a freshness update. A broad range or moving major action ref alone does not prove that the project is behind; documentation on the default branch does not prove a feature has shipped.
-- `[manual]` Recommend adoption when an applicable preferred tool is missing, or an update when a newer compatible release is available, unless a concrete compatibility, behavior, pinning, or migration-cost reason justifies retaining the current choice. Identify the benefit and smallest migration; classify a newer incompatible major as a separate migration candidate rather than silently widening the project's support contract. Do not equate passing a minimum version with being current, and do not invent a payoff merely because a version is newer.
-- `[manual]` Report relevant tools as current, update recommended, adoption recommended, retain with reason, or unverified. Give each proposed change one owner, current and proposed usage/version evidence, and the narrowest validation that covers its behavioral risk. Leave unchanged tools as a compact group; a missing dependency alone is not a finding when the tool does not fit the surface.
-- `[manual]` Bound upstream checks to preferred tools relevant to the selected surfaces. Reuse one lookup per upstream project and release line within the pass; record the checked date and source in the audit report, not permanent guidance. Honor offline or local-only requests and report unavailable evidence as unverified rather than current. Broader recommendation review belongs to [Skill Author — Review Preferred Tools](../skills/skill-author/SKILL.md#review-preferred-tools). Assessment never authorizes installation, lockfile changes, migration, or publication.
+- `[manual]` When the skill has Review Criteria, connect its concrete adoption and version-freshness checks to Preferred Tools and require [Preferred Tool Assessment](./review-standard.md#preferred-tool-assessment) before that assessment. Keep tool-specific compatibility and behavior checks with the owning skill.
 
 ## Required OpenClaw Metadata
 
