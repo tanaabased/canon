@@ -112,10 +112,55 @@ Project Review, Architecture Review, and Testing Review use the same sequence: *
 
 ### Review Completeness
 
-- `[manual]` Preserve the requested scope. Before concluding, account for its major responsibilities, journeys, or test groups and distinguish inspected, sampled, and unexamined areas. A healthy sample does not establish whole-scope alignment; a scoped review does not require unrelated investigation. Keep this accounting lightweight in the review, not a permanent registry.
+- `[manual]` Preserve the requested scope and begin the report with an [inspection inventory](#inspection-inventory), before findings. A healthy sample does not establish whole-scope alignment; a scoped review does not require unrelated investigation. Keep this accounting lightweight in the review, not a permanent registry.
 - `[manual]` Investigate consequential signals through their definitions, callers, consumers, and relevant evidence far enough to support or reject a finding. Missing evidence remains a gap. Choose the smallest worthwhile change after investigation; a small recommendation or concise output must not silently narrow the investigation.
 - `[manual]` When multiple reviews are requested, share inventory and unchanged evidence but answer each review's distinct questions. Reconcile overlaps without substituting one investigation for the others. Report incomplete coverage explicitly rather than presenting it as convergence; no finding count or report-length target applies.
 - `[manual]` When maintaining review instructions, exercise a broad and a smaller scoped case. Inspect actual source traces and results for coverage, consequential reasoning, scope control, and actionable recommendations or justified retention. Reuse prior evidence explicitly; distinguish manual application from fresh independent-model trials and structural validation. Do not grade against exact wording or a fixed finding list.
+
+#### Inspection Inventory
+
+State the requested scope and what was actually examined, naming a narrow boundary explicitly, such as “`agent/` only” or “workflow integration only.” Use a short table or list of broad, task-appropriate buckets rather than a file checklist. Consider implementation code and ownership; runtime/workflow integrations; tests and verification; skills and agent guidance; user documentation; CI/build/release and operational tooling; and repository standards, configuration, and package metadata. Combine or omit buckets when appropriate to the scope, explaining material exclusions.
+
+For each bucket, distinguish **directly reviewed**, **sampled**, **not reviewed**, or **not applicable**, and briefly state the actual depth, representative evidence, and material gaps. “Directly reviewed” means substantive inspection of the named responsibility or contract; “sampled” means selected examples support only bounded conclusions. Discovery, file listings, and passing tests alone do not establish substantive review. Use “not reviewed” for applicable but unexamined work, including explicit scope exclusions; “not applicable” requires a reason the concern does not apply.
+
+A whole-repository request must account for every applicable bucket and plainly identify unfinished coverage, including material gaps within sampled buckets. Do not substitute an integration-only inventory or a generic “not exhaustive” disclaimer. “No findings” applies only to the examined scope; retain each reviewer's existing completion and disposition rules.
+
+The following examples are hypothetical, not findings about an actual repository. Adapt their buckets and depth; do not copy them as evidence.
+
+**Broad Project Review — whole repository requested; assessment incomplete**
+
+| Bucket                                   | Inspection        | Depth and gaps                                                                         |
+| ---------------------------------------- | ----------------- | -------------------------------------------------------------------------------------- |
+| Implementation and ownership             | Sampled           | Traced command parsing through persistence; background workers remain unexamined.      |
+| Runtime/workflow integrations            | Directly reviewed | Followed both supported adapters through startup, effects, and failure recovery.       |
+| Tests and verification                   | Sampled           | Read parser and persistence assertions and fixtures; worker coverage remains unknown.  |
+| Skills and agent guidance                | Directly reviewed | Read every live skill and shared guidance; compared ownership and loading rules.       |
+| User documentation                       | Not reviewed      | README and operator guides were only listed.                                           |
+| CI/build/release and tooling             | Sampled           | Inspected PR checks and build scripts; release and recovery tooling remain unexamined. |
+| Standards/configuration/package metadata | Directly reviewed | Compared root guidance, manifests, and runtime requirements with their consumers.      |
+
+Hypothetical finding: Both adapters independently maintain the same persistence mapping. Consolidate that owner; finish the named gaps before claiming whole-project convergence.
+
+**Scoped Architecture Review — workflow integration only**
+
+| Bucket                                      | Inspection        | Depth and gaps                                                                                    |
+| ------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------- |
+| Integration code and ownership              | Directly reviewed | Traced dispatch, persistence, and recovery; walked a new field through definitions and consumers. |
+| Tests and agent guidance                    | Sampled           | Read dispatch failure tests and invoking skill; other journeys remain outside scope.              |
+| Other subsystems, docs, and release tooling | Not reviewed      | Explicitly outside the requested integration boundary.                                            |
+
+Hypothetical finding: Dispatch validates unrelated records before selecting its target, so one malformed record blocks independent work. Narrow validation while preserving ownership checks. No repository-wide conclusion follows.
+
+**Testing Review — unit/component suites only**
+
+| Bucket                                             | Inspection        | Depth and gaps                                                                                                       |
+| -------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Unit/component tests and fixtures                  | Sampled           | Read authorization and persistence groups; parser cases remain unexamined.                                           |
+| Implementation, test guidance, and local selectors | Directly reviewed | Traced those groups' owned decisions, external effects, and commands; passing runs alone supplied no value judgment. |
+| Installed journeys and CI scheduling               | Not reviewed      | Outside this review; no claim about their coverage or cost.                                                          |
+| Visual rendering contracts                         | Not applicable    | The reviewed library has no rendered interface.                                                                      |
+
+Hypothetical finding: Several component tests replay mocked internal calls without protecting a consequential effect. Remove that overlap while retaining authorization and persistence assertions; complete the parser review before concluding about both suites.
 
 ## Preferred Tools
 

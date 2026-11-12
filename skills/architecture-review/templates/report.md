@@ -4,7 +4,7 @@ Use this outline in chat by default; it does not authorize creating a file. For 
 
 ## Scope and Evidence
 
-Target and user journeys; reviewed revision and relevant dirty/in-flight changes; inspected paths and dependencies; exclusions and unavailable evidence. Note known issues, planned removals, and previous findings when available.
+Target and user journeys; reviewed revision and relevant dirty/in-flight changes; the shared [inspection inventory](../../../references/skill-standard.md#inspection-inventory) before findings. Note known issues, planned removals, and previous findings when available.
 
 ## Implemented Architecture
 

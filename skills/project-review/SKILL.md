@@ -67,7 +67,7 @@ Read each applicable document in full, or the explicitly named section, before d
 8. Review in-scope documentation through [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) and its existing surface owner. Keep that procedure authoritative; name concrete sources and destinations for justified moves.
 9. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
 10. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
-11. Deliver the findings and plan in chat by default. Write only explicitly requested Markdown reports at the specified or agreed destination; otherwise create no files. Stop before implementation. A later explicit implementation request may invoke the owning skills against an approved plan.
+11. Begin with the shared [inspection inventory](../../references/skill-standard.md#inspection-inventory), then deliver the findings and plan in chat by default. Write only explicitly requested Markdown reports at the specified or agreed destination; otherwise create no files. Stop before implementation. A later explicit implementation request may invoke the owning skills against an approved plan.
 
 ### Scope Selection
 

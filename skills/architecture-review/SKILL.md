@@ -83,7 +83,7 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ### Deliver
 
-12. Use the [report outline](./templates/report.md) as a coverage aid, not a requirement for empty sections or a fixed report size. Include scope/baseline, the implemented architecture, findings and retained decisions, a prioritized plan, and limitations. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
+12. Use the [report outline](./templates/report.md) as a coverage aid, not a requirement for empty sections or a fixed report size. Begin with scope/baseline and the shared [inspection inventory](../../references/skill-standard.md#inspection-inventory), then include the implemented architecture, findings and retained decisions, a prioritized plan, and limitations. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
 
 ## Checkpoints
 
