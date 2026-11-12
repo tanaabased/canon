@@ -1,6 +1,6 @@
 # JavaScript and TypeScript Function Tests
 
-Use these defaults when validating low-coupling JavaScript or TypeScript helpers and utility functions.
+Use these criteria for JavaScript or TypeScript unit and component tests, including existing passing suites.
 
 ## Direct-Test Pattern
 
@@ -9,9 +9,11 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 - Keep each spec scoped to one helper surface and assert observable return values or narrow boundary behavior.
 - Hoist tests only when their implementation is also hoisted or the coverage is intentionally cross-scope.
 - When TypeScript is present, make sure the repo's test command discovers `.spec.ts` and run `typecheck` separately from the test runner.
-- Value comes from rejecting incorrect decisions, transformations, or effects at the owned boundary. Prefer inputs that distinguish plausible wrong behavior; assertions that repeat the implementation's calculation or only verify mocked call counts often miss that contract.
+- Apply the shared [admission and retention gate](../../../references/verification-boundaries.md#assertion-strength). Identify the consequential wrong decision, transformation, or effect and how the assertion rejects it; a helper's existence does not require its own test. Remove low-value cases without replacement when their maintenance cost exceeds the protection, even if they are unique and fast.
 - Keep isolated edge cases in units and retain component coverage where real internal wiring can fail despite correct individual helpers. Packaging, installed CLI behavior, and native-host integration use their respective owners' criteria even when the test is written in JavaScript or TypeScript.
-- Before consolidating, retain distinct failure and boundary cases. Expensive setup is justified here only when a cheaper fixture cannot establish the subsystem behavior; testing a third-party dependency's own guarantees belongs upstream.
+- Compare meaningful failures before retaining permutations. Keep distinct consequential failures, not a case for every combination; testing a third-party dependency's own guarantees belongs upstream.
+- Audit fixture size and coupling independently of runtime. Exercise pure validation directly instead of preparing a whole dispatch or installation fixture. A component must exercise real internal cooperation, but needs no filesystem, OS, or process setup unless that boundary is the subject. Shrink setup to the behavior it proves.
+- Mock external boundaries while exercising owned decisions and internal cooperation. Supplying a canned response and expecting its scripted mock calls is insufficient unless real owned logic could make a consequential wrong choice that the assertions detect. Keep calls that prove a required or prohibited external effect; discard incidental internal call order and counts.
 
 ## Contract Durability
 
@@ -22,8 +24,8 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 ### Keep Prose Assertions With Their Owner
 
-- A formatter or logger may test its owned prefix, redaction, and rendering contract exactly.
-- Callers of that formatter should assert that the appropriate logging or error path was used and that required semantic context is present.
+- A formatter or logger may test its consequential owned prefix, redaction, and rendering contract exactly; ownership alone does not justify freezing every word.
+- Callers should check required semantic context or the relevant effect, not repeat the renderer's width, color, and formatting permutations or demand an incidental internal call.
 - Prefer stable error codes, names, or structured fields when callers need to distinguish failures. Render human-readable messages at the boundary.
 - Avoid duplicating complete diagnostic, log, and error sentences across unrelated specs.
 
@@ -54,7 +56,7 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 ### Short Examples
 
-- **Owned output versus incidental prose:** test a formatter's complete rendered message exactly; in its callers, assert the stable error code and required context rather than copying that sentence.
+- **Owned output versus incidental prose:** test an exact rendering contract where a deviation matters; in callers, assert the stable error code and required context rather than copying that sentence.
 - **Ordered protocol versus unordered membership:** use `assert.deepEqual(actual, expected)` when sequence is contractual; otherwise compare `new Set(actual)` with `new Set(expected)`.
 - **Canonical version versus release literal:** assert `runVersion() === packageJson.version`; use a synthetic value such as `9.8.7-test` when testing propagation or mismatch handling.
 - **Injected time versus fixed sleep:** pass a fake clock or scheduler and assert the requested deadline or callback; do not sleep and infer success from a timing window.

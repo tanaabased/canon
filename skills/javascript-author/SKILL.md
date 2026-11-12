@@ -81,7 +81,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
-- After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
+- After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests that pass the shared value gate, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
@@ -102,7 +102,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Testing
 
 - Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
-- Use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and injected boundaries. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
+- Apply the shared [admission and retention gate](../../references/verification-boundaries.md#assertion-strength) and the [function-test criteria](./references/javascript-function-tests.md) to new and existing units and components. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
 - For package-contract tests, protect declared exports, required payload files, runtime dependencies, and supported consumer entrypoints using the prepared artifact. A source import or whole-file snapshot does not prove those contracts. Retain static payload checks and representative isolated consumer execution for their distinct risks; route CLI or native-host behavior to its owner, and justify additional installs by a consumer failure cheaper checks cannot detect.
