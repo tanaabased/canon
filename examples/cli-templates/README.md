@@ -72,9 +72,15 @@ TANAAB_ITEM='env-only' NO_COLOR=1 ./bun-cli.js --item 'cli one' --item cli-two |
 TANAAB_ITEM='env-only' NO_COLOR=1 ./bash-cli.sh --item 'cli one' --item cli-two | grep -F 'received repeatable items: cli one,cli-two'
 TANAAB_ITEM='env-only' NO_COLOR=1 pwsh -NoProfile -Command './powershell-cli.ps1 -Item "cli one","cli-two"' | grep -F 'received repeatable items: cli one,cli-two'
 
-# should let explicit false override an enabled force environment default
+# should let bun explicit false override an enabled force environment default
 cd "$TMPDIR/standalone"
 TANAAB_FORCE=1 NO_COLOR=1 ./bun-cli.js --no-force --help | grep -F -- '--force' | grep -F '[default: off]'
+
+# should let bash explicit false override an enabled force environment default
+cd "$TMPDIR/standalone"
 TANAAB_FORCE=1 NO_COLOR=1 ./bash-cli.sh --force=false --help | grep -F -- '--force' | grep -F '[default: off]'
+
+# should let powershell explicit false override an enabled force environment default
+cd "$TMPDIR/standalone"
 TANAAB_FORCE=1 NO_COLOR=1 pwsh -NoProfile -Command './powershell-cli.ps1 -Force:$false -Help' | grep -F -- '-Force' | grep -F '[default: off]'
 ```

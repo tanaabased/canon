@@ -8,7 +8,7 @@ This scenario covers native discovery, retired-skill removal, required-resource 
 
 ```bash
 # should extract the candidate and reuse the upstream native discovery helper
-mkdir -p "$TMPDIR/package" "$TMPDIR/home"
+mkdir -p "$TMPDIR/package" "$TMPDIR/home" "$TMPDIR/marketplace"
 tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 curl --fail --silent --show-error --location https://raw.githubusercontent.com/tanaabased/codex-tools/227b8682216599c382803d82c6bfb7e143e8d866/examples/native/fresh-skills.ts --output "$TMPDIR/fresh-skills.ts"
 

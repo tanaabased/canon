@@ -246,8 +246,7 @@ function resolveInvocation(rawArgv, argv) {
   return { defaults, environment, explicitOptionKeys, options, positionals, repeatableOptions };
 }
 
-function renderHelp() {
-  const invocation = resolveInvocation([], parseArgs([]));
+function renderHelp(invocation) {
   const environmentVariables = buildEnvironmentVariables();
   const sections = [
     `Usage: ${bold(CLI_NAME)} ${dim('[options] [arguments...]')}`,
@@ -285,7 +284,7 @@ async function main(rawArgv) {
   const argv = parseArgs(rawArgv);
 
   if (argv.help) {
-    log(renderHelp());
+    log(renderHelp(resolveInvocation(rawArgv, argv)));
     return;
   }
 
