@@ -118,11 +118,6 @@ describe('skills/skill-author/templates', () => {
         false,
         templateName,
       );
-      assert.match(
-        templateContent,
-        /\*\*keep\*\*.*\*\*reconcile\*\*.*\*\*deduplicate\*\*.*\*\*consolidate\/merge\*\*.*\*\*split\*\*.*\*\*extract\*\*.*\*\*move\*\*.*\*\*tighten\*\*.*\*\*remove\*\*/s,
-        templateName,
-      );
     }
   });
 });

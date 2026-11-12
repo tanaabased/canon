@@ -332,8 +332,14 @@ async function validateOpenAiMetadata({
   skillPath,
   warnings,
 }) {
-  const { dependencyTools, hasDependencyToolsSection, interfaceValues, policyValues } =
-    parseOpenAiSkillMetadata(openAiContent);
+  let parsed;
+  try {
+    parsed = parseOpenAiSkillMetadata(openAiContent);
+  } catch {
+    errors.push('agents/openai.yaml must contain valid YAML.');
+    return;
+  }
+  const { dependencyTools, hasDependencyToolsSection, interfaceValues, policyValues } = parsed;
 
   for (const key of REQUIRED_OPENAI_INTERFACE_KEYS) {
     if (!interfaceValues[key]) {

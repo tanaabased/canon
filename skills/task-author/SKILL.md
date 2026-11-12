@@ -83,7 +83,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - For agent-owned command execution, prefer `--input -` and send the JSON request through the execution session's standard input. Start the Bun command directly; do not use `printf`, `echo`, a here-document, or a shell pipeline to feed the request because that can embed publication data in a command approval rule. Request elevated execution only for the stable Task Author command prefix, never for request content. If the harness cannot provide standard input, use a repository-local ignored scratch path under the active workspace, verify the intended path with `git check-ignore` before writing, and do not add a tracked placeholder merely to retain the directory.
 - Run `bun <skill-path>/scripts/draft-task.js --input <path|->` for a read-only draft.
 - Run `bun <skill-path>/scripts/create-task.js --input <path|->` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
-- Run `bun <skill-path>/scripts/update-task.js --input <path|->` with `mode` set to `revise` or `normalize`. Material revision also requires a concise `revisionSummary`; incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
+- Run `bun <skill-path>/scripts/update-task.js --input <path|->` with `mode` set to `revise` or `normalize`. Revision defaults to `revisionKind: "material"` and requires a concise `revisionSummary` when the issue changes. Use `revisionKind: "minor"` only for wording, formatting, or typo corrections that preserve task meaning; the classification is part of the exact approved plan. Incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
 - Run `bun <skill-path>/scripts/migrate-fallback.js --input <path|->` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
 - Every command accepts `--input -`; file input is the fallback. Use `--help` for the stable command contract.
 
@@ -151,6 +151,6 @@ Read each applicable document in full, or the explicitly named section, before d
 
 Run these checks only when changing the skill or its implementation, not during ordinary use.
 
-- Run `bun run test:unit -- --grep "Task Author"` for the focused behavior checks.
+- Run `bun run test` for the fast behavior checks, including shared consumers.
 - Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/task-author --container codex-plugin --namespace tanaab`.
 - Exercise a live create only against an explicitly approved disposable repository, first showing the exact digest-bound plan. Verify the live issue through the installed skill and retain any partial result for diagnosis rather than deleting evidence automatically.

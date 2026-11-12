@@ -20,6 +20,7 @@ jobs:
           - openclaw
           - skill-tools
           - cli-templates
+          - codex
     env:
       LEIA_TIMEOUT: '120'
       OPENCLAW_HIDE_BANNER: '1'
