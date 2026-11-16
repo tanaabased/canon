@@ -16,6 +16,8 @@ Fixture prose is illustrative. The expected task kind, body shape, metadata auth
 
 Every applicable fixture must satisfy these assertions:
 
+Unless a case states otherwise, its populated Priority and date values are supplied by a human, not inferred from the task evidence. The executable fixtures record that provenance explicitly.
+
 - Resolve and display one exact `OWNER/REPO` target or stop without mutation.
 - Preserve form and external-submission evidence losslessly, then produce the same canonical task semantics after Task Author normalization.
 - Show source and rationale for accepted estimates; keep Priority human- or policy-controlled.

@@ -18,7 +18,7 @@ Explain the common workflows for this subject with runnable examples.
 
 ## Verification
 
-Show how readers confirm the topical workflow succeeded.
+Keep this section only when readers need a separate check or help interpreting success; otherwise remove it. Do not repeat verification already guaranteed by the workflow’s commands.
 
 ## Troubleshooting Or Alignment
 

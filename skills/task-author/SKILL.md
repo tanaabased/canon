@@ -30,7 +30,9 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), [Task Management Fixtures](../../references/task-management-fixtures.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [GitHub CLI Routing](../../references/github-cli-routing.md).
+- **Before assessing, drafting, creating, revising, normalizing, or migrating a task:** read [Shared Assertions](../../references/task-management-fixtures.md#shared-assertions) and the [Fixture Matrix](../../references/task-management-fixtures.md#fixture-matrix), then read the case sections matching the task kind, repository capabilities, lifecycle operation, and evidence gaps.
+- **When maintaining this skill or reviewing cross-skill convergence:** read the complete [Task Management Fixtures](../../references/task-management-fixtures.md).
 - **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 
@@ -65,7 +67,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Prefer an explicit `OWNER/REPO` or `OWNER/REPO#NUMBER`; otherwise accept only a repository that `gh repo view` resolves unambiguously from the active project.
 - Check `gh auth status`. A failed auth probe is a visible warning because public reads may still work; never conceal a private-repository discovery failure.
 - Create mode requires GitHub Issues write access. Native type, label, and issue-field values require repository push access and may otherwise be silently dropped, so a successful create response is never sufficient verification.
-- Apply [the task management contract](../../references/task-management-contract.md) and its [fixture corpus](../../references/task-management-fixtures.md). Do not independently redefine task shapes, metadata, or labels.
+- Apply [the task management contract](../../references/task-management-contract.md) and the applicable cases from its [fixture corpus](../../references/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
 
 ## Inputs
 

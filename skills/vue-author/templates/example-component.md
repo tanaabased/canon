@@ -70,7 +70,3 @@ const examplePlaygroundSchema = {
 | `#actions` | Optional actions or secondary links.  |
 | `#title`   | Title or label content for the block. |
 | `default`  | Main body content for the component.  |
-
-## Behavior Notes
-
-The Usage playground combines the representative live preview and generated `html` usage example. Boolean props render as presence attributes when enabled.

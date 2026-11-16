@@ -141,8 +141,6 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Validation
 
-- Run lint and build checks, then confirm links, navigation, page reachability, and theme behavior across the changed surface.
-
 - Confirm the task stayed on VitePress implementation rather than docs-surface selection or generic Vue work.
 - Confirm the active surface was classified as Markdown page implementation, site structure/config, local subtheme wiring, or a narrow combination of those surfaces.
 - Confirm VitePress 1 remained the site stack unless the repo or user explicitly requires another path.
@@ -153,4 +151,4 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm repeated or brand-significant Markdown page patterns were promoted or explicitly called out rather than silently embedded in one page.
 - Confirm site builds and lint remain covered, with embedded component behavior delegated to Vue Author.
 - Confirm `GitHub Actions` maps VitePress validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
-- Run the narrowest relevant lint, build, or smoke checks for the touched VitePress surface.
+- Run the relevant lint, build, or smoke checks, then confirm links, navigation, page reachability, and theme behavior across the touched VitePress surface.

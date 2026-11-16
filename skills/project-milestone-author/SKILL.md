@@ -121,9 +121,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Validation
 
-- Re-read every requested value and report verified, remaining, unavailable, or partial state without compensating rollback.
-
-- Confirm the milestone and selected task membership match the authorized plan through exact read-back.
+- Use the command’s exact read-back to confirm the milestone and selected task membership match the authorized plan; report remaining, unavailable, or partial state without compensating rollback.
 
 ### When Maintaining This Skill
 

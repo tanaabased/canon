@@ -172,8 +172,6 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Validation
 
-- Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
-
 - Confirm the skill remains the broad JavaScript and TypeScript entrypoint, with thin command boundaries and cohesive, testable implementation.
 - Confirm physical layout and dependency direction follow the shared repo-structure guidance, with a concrete benefit for module extraction.
 - Confirm tests remain flat within their owning scope and are hoisted only with their implementation or for intentional cross-scope coverage.
@@ -184,5 +182,5 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm `GitHub Actions` maps pull-request validation to `Testing`, linting to Repo Standardizer, and release publication to `Deployment` without duplicating their doctrine or absorbing independent workflow-topology ownership.
 - Confirm any npm deployment uses the canonical release-published lifecycle, `@tanaab` package identity, npm trusted publishing, conditional package builds, post-stamping format validation, an npm dry run, and the `latest` or `edge` channel contract.
 - Confirm authentication follows `Deployment`: prefer tokenless publication and channel syncing, and retain token auth only for its documented exceptions or unverified migration prerequisites.
-- Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface.
+- Run the repo's narrowest relevant lint, type-check, build, test, or smoke checks for the touched JS or TS surface, then re-inspect the changed boundaries for remaining drift.
 - Confirm the change did not widen into CLI product, independent workflow-graph work, non-npm release systems, or broader operational deployment.
