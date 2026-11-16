@@ -10,7 +10,7 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 
 ## Owning Scope
 
-- Organize code by owned purpose first, then by runtime role inside that owning scope.
+- Organize code by owned purpose first; use runtime-role folders inside that scope when they improve navigation.
 - Choose the nearest directory that completely owns the surface. Climb only far enough to reach a coherent shared owner, then stop.
 - A thin single-surface repository may use the repository root as its owning scope.
 - A skill, package, app, plugin, or independent product surface should normally own its code beneath its own directory.
@@ -19,9 +19,15 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 - Do not hide structured code beneath an extra generic directory when the owner is already clear.
 - Do not introduce a generic `src/` directory merely because a scope uses TypeScript. Preserve `src/` when an existing framework, external contract, package tool, or established repo convention requires it.
 
+## Dependency Direction
+
+- Identify a few consequential allowed and forbidden dependencies between owners in existing code or configuration. Base them on actual responsibilities, not a universal layer hierarchy; no separate architecture document is required.
+- Where violations threaten an identified boundary, enforce those rules through existing syntax-aware lint or static-analysis tooling. Keep exceptions narrow and intentional, including composition roots that wire otherwise independent owners together. Do not require a new analysis framework for every repository.
+- Distinguish value imports from type-only dependencies when defining and checking rules. Type-only coupling may still cross an ownership boundary, but it is not a runtime import. Investigate cycles for concrete initialization, change-coupling, or testing consequences rather than classifying every cycle as a runtime bug.
+
 ## Standard Layout Inside a Scope
 
-Use the applicable role folders directly beneath the owning scope:
+Small cohesive owner scopes may keep implementation modules flat. When role folders improve clarity, use the applicable folders directly beneath the owning scope:
 
 ```text
 scope/
@@ -34,15 +40,15 @@ scope/
 
 - Create only the role folders the scope actually needs.
 - Before adding an abstraction or permanent command, apply the [upkeep guidance in Optimization Operations](./optimization-operations.md); a place in this layout does not justify a new tool.
-- Keep executable entrypoints thin and move reusable behavior into `lib/` or `utils/`.
-- Do not keep ordinary implementation modules loose at the scope root when one of these roles describes them.
+- Keep executable entrypoints thin. Extract modules when they clarify responsibility, isolate effects, or provide demonstrated reuse or testability; use a local module, `lib/`, or `utils/` as appropriate to the scope.
+- Do not split cohesive code merely to satisfy a role-folder or one-function-per-file convention.
 - Purpose-named subscopes may repeat this layout when one owner contains multiple independently understandable surfaces.
 
 ## Workspace Packages
 
 - In a Bun workspace monorepo, treat `packages/` as a grouping boundary and each workspace package as an owning scope.
 - Keep the workspace root focused on repository coordination, shared development tooling, and cross-package commands. Mark it private instead of making it double as a publishable aggregate package.
-- Apply the normal role folders independently inside each package. A thin package-root entrypoint such as `index.js` or `index.ts` may remain at the package root when the published package contract requires it.
+- Choose flat modules or useful role folders independently inside each package. Preserve package entrypoints and paths required by the published contract.
 - Import sibling packages through their declared package names and public exports rather than relative paths into another package's implementation.
 - Keep ordinary tests with their package. Use a monorepo-root `test/` directory only for intentional cross-package behavior.
 - When implementation is genuinely shared across packages, prefer a clearly owned workspace package over loose code at the monorepo root.
@@ -61,24 +67,24 @@ scope/
 
 - Use `scripts/` for internal command entrypoints used by skills, agents, automation, builds, validation, or maintainers.
 - Internal scripts may expose CLI-like arguments, help, output, and exit codes, but they are not a supported public interface.
-- Keep scripts thin over `lib/` and `utils/`; do not use `scripts/` as a blanket container for libraries or testable units.
-- Use role-encoded suffixes for repo-root scripts: `-cli.js` or `-cli.ts` for human-invoked internal commands and `-task.js` or `-task.ts` for automation entrypoints. Move import-only modules to `lib/`.
+- Keep scripts thin over their owning modules; do not use `scripts/` as a blanket container for libraries or testable units.
+- Use role-encoded suffixes for repo-root scripts: `-cli.js` or `-cli.ts` for human-invoked internal commands and `-task.js` or `-task.ts` for automation entrypoints. Keep import-only modules with their implementation owner outside `scripts/`.
 - Commit directly executable scripts with a shebang and executable mode. Do not mark non-shebang JavaScript or TypeScript executable.
 
 ## `lib/` Boundary
 
-- Use `lib/` for surface-specific libraries, stateful clients, orchestration, and domain-shaped implementation modules.
+- When using role folders, use `lib/` for surface-specific libraries, stateful clients, orchestration, and domain-shaped implementation modules.
 - Library modules may own product vocabulary, multi-step workflows, state, and boundary coordination that would make a utility misleading.
 - Keep public or internal command entrypoints out of `lib/`; commands should import the library instead.
 - Prefer short purpose-driven filenames and avoid broad type buckets such as `helpers/` or `classes/`.
 
 ## `utils/` Boundary
 
-- Use `utils/` for independently testable, function-shaped units with narrow inputs, outputs, and side effects.
-- Each utility file should export one main function by default and have a focused matching spec when behavior is non-trivial.
+- When a separate utility scope helps, use `utils/` for independently testable, function-shaped units with narrow inputs, outputs, and side effects.
+- Keep closely related functions together when they form one coherent responsibility; use focused tests for non-trivial behavior without requiring one function or spec per file.
 - Utilities should be lower-coupling than their callers, but they may retain vocabulary from their owning scope; cross-scope portability is not required.
-- Extract logic into a utility when it can be tested honestly without constructing the larger library or command surface.
-- Keep stateful orchestration and multi-step product workflows in `lib/` even when private helper functions remain there.
+- Extract logic into a utility when testing it without constructing the larger library or command surface provides a concrete benefit.
+- Keep stateful orchestration and multi-step product workflows with their owning module, using `lib/` when role folders are useful; private helper functions may remain there.
 - Normalize raw inputs near the top, use early returns for trivial cases, and prefer straight-line data flow with named constants.
 - Keep side effects out unless the utility explicitly owns one narrow boundary such as loading, writing, or process execution.
 

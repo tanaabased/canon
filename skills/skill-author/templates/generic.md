@@ -4,13 +4,13 @@ default_category_tag: workflow
 optional_top_level_headings:
   - '## Required Reading'
   - '## Preferred Tools'
-  - '## Optimization'
+  - '## Review Criteria'
 ---
 
 ---
 
 name: {{skill_id}}
-description: {{description}}
+description: {{description_yaml}}
 license: {{license}}
 metadata:
   type: {{type}}
@@ -52,20 +52,33 @@ metadata:
 
 ## Workflow
 
+- After explicit authorization, make the smallest safe change within the owned surface and preserve unrelated state.
+
 1. Confirm the request matches this skill's single owned surface.
 2. Load only the canon, inputs, and local resources required for this task.
 3. Do the work using the narrowest reliable approach for this surface.
 4. Validate the result before finishing.
 
-## Optimization
+
+## Review Criteria
+
+Retain and tailor this section only for a persistent surface this skill can assess. Keep criteria read-only; implementation belongs in Workflow and execution checks in Validation. Remove inapplicable specialist subsections rather than leaving placeholders.
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this owned surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory the existing files, state, and evidence that belong to this skill's singular surface.
 - **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Evaluate the observed surface against its durable local and shared contracts, including contradictions, duplication, overloaded artifacts, misplaced material, and obsolete state; classify unrelated areas as not applicable.
 - **Recommend:** Preserve aligned state; reconcile conflicting representations; and prioritize justified deduplication, consolidation, splitting, extraction, movement, tightening, or removal.
-- **Apply:** After explicit authorization, make the smallest safe change within the owned surface and preserve unrelated state.
-- **Verify:** Run the narrowest checks that prove the surface is aligned, then report any remaining uncertainty.
+
+### Architecture
+
+- Retain only when this surface has architectural decisions to assess. Name the owned responsibilities, boundaries, or dependencies and concrete evidence that would justify keeping or changing them.
+- Require the relevant existing sections and governing references before assessment, using direct links and explicit applicability; do not copy their doctrine or prescribe a universal layout.
+
+### Testing
+
+- Retain only when this surface has test contracts to assess. Name the guarantees and appropriate evidence boundaries, including what would justify retaining, replacing, or removing coverage.
+- Require the relevant existing Testing or Validation sections and governing references before assessment. These criteria assess evidence; they do not authorize running the implementation workflow or live checks.
 
 ## Bundled Resources
 
@@ -73,6 +86,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Keep local resources local unless they clearly pass the hoist test.
 
 ## Validation
+
+- Run the narrowest checks that prove the surface is aligned, then report any remaining uncertainty.
 
 - List the concrete checks required before returning work.
 - Prefer targeted validation that matches the owned surface.

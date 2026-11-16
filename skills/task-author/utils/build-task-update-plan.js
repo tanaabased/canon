@@ -38,7 +38,7 @@ function nativeValue(field) {
 export function buildTaskUpdatePlan(
   draft,
   current,
-  { revisionSummary = '', reviewedLabels = [] } = {},
+  { revisionSummary = '', revisionKind, reviewedLabels = [] } = {},
 ) {
   const errors = [];
   const labels = reconciledLabels(current.issue, draft.labels.apply, reviewedLabels);
@@ -99,6 +99,7 @@ export function buildTaskUpdatePlan(
     errors,
     plan: {
       target: `${draft.target.slug}#${draft.target.issueNumber}`,
+      ...(revisionKind ? { revisionKind } : {}),
       issue: {
         title: draft.title,
         body: draft.body,

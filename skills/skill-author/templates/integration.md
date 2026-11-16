@@ -5,13 +5,13 @@ optional_top_level_headings:
   - '## Required Reading'
   - '## Preferred Tools'
   - '## Release Workflow'
-  - '## Optimization'
+  - '## Review Criteria'
 ---
 
 ---
 
 name: {{skill_id}}
-description: {{description}}
+description: {{description_yaml}}
 license: {{license}}
 metadata:
   type: {{type}}
@@ -73,10 +73,13 @@ metadata:
 
 ## Workflow
 
+- After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
+
 1. Confirm the request matches this skill's external-system surface.
 2. Load only the canon, tools, and external context required for the integration path.
 3. Execute the narrowest reliable sequence against the target system.
 4. Validate the resulting state and surface any remote uncertainty explicitly.
+
 
 ## Release Workflow
 
@@ -84,15 +87,25 @@ metadata:
 - Include one canonical mechanism and one minimal example only when it materially shapes the skill.
 - Do not widen this section into full workflow-topology ownership.
 
-## Optimization
+## Review Criteria
+
+Retain and tailor this section only for a persistent surface this skill can assess. Keep criteria read-only; implementation belongs in Workflow and execution checks in Validation. Remove inapplicable specialist subsections rather than leaving placeholders.
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this integration surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Resolve the exact target, prerequisites, authorization, and current local or remote state through read-only operations first.
 - **Compare:** Apply the shared Preferred Tools adoption and freshness assessment: compare actual usage with the latest compatible stable release, recommend justified adoption or updates, and report retained exceptions or unverified evidence. Tailor compatibility, behavior, and migration-cost checks to this surface. Normalize current and canonical state into an exact managed diff, reconcile conflicting representations, and distinguish duplicated management paths or coupled effects while keeping unmanaged fields out of scope.
 - **Recommend:** Preserve aligned and unmanaged state; prioritize confirmed drift, safe consolidation or separation of effects, tighter authorization, and removal only where the managed contract requires it.
-- **Apply:** After explicit authorization, mutate only the approved target and managed fields; preserve rollback and retry boundaries.
-- **Verify:** Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.
+
+### Architecture
+
+- Retain only when this surface has architectural decisions to assess. Name the owned responsibilities, boundaries, or dependencies and concrete evidence that would justify keeping or changing them.
+- Require the relevant existing sections and governing references before assessment, using direct links and explicit applicability; do not copy their doctrine or prescribe a universal layout.
+
+### Testing
+
+- Retain only when this surface has test contracts to assess. Name the guarantees and appropriate evidence boundaries, including what would justify retaining, replacing, or removing coverage.
+- Require the relevant existing Testing or Validation sections and governing references before assessment. These criteria assess evidence; they do not authorize running the implementation workflow or live checks.
 
 ## Bundled Resources
 
@@ -100,6 +113,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - Keep local resources local unless they clearly pass the hoist test.
 
 ## Validation
+
+- Re-read the resulting state through the narrowest reliable interface and report remaining drift or remote uncertainty.
 
 - Confirm prerequisites, inputs, outputs, and failure handling are all explicit.
 - Validate the resulting external or local state with the narrowest reliable checks.

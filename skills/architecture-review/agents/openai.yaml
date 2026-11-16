@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Architecture Review'
+  short_description: 'Tanaab-based architecture review and refactoring plans.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-architecture-review to trace the implemented architecture of this repository or selected workflow, explain consequential findings with source evidence and useful diagrams, and recommend the smallest worthwhile refactoring plan in chat. Write a Markdown report only when requested.'

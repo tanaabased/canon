@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { YAML } from 'bun';
 
 import { getBundledLargeIconPath, getBundledSmallIconPath } from '../lib/skill-contract.js';
 import { initializeSkill } from '../lib/skill-scaffolder.js';
@@ -66,6 +67,29 @@ describe('skills/skill-author/lib/skill-ownership', () => {
       assert.deepEqual(await readFile(path.join(skillDir, 'assets', name)), await readFile(source));
     }
     assert.deepEqual((await validateSkillDir(skillDir)).errors, []);
+  });
+
+  it('should serialize punctuation in discovery text and reject malformed authored metadata', async () => {
+    const description = 'Compare fields: show "quoted" changes and # references.';
+    const { skillDir, result } = await scaffold({ description });
+    assert.deepEqual(result.errors, []);
+    const source = await readFile(path.join(skillDir, 'SKILL.md'), 'utf8');
+    assert.equal(YAML.parse(source.split('---')[1]).description, `Tanaab-based ${description}`);
+    assert.ok(source.includes(`## Overview\n\nTanaab-based ${description}`));
+    await rewriteSkill(skillDir, (text) =>
+      text.replace(/^description:.*$/m, 'description: Compare fields: show changes.'),
+    );
+    assert.ok(
+      (await validateSkillDir(skillDir)).errors.some((error) => error.includes('frontmatter')),
+    );
+    await writeFile(path.join(skillDir, 'SKILL.md'), source);
+    await writeFile(
+      path.join(skillDir, 'agents', 'openai.yaml'),
+      'interface:\n  display_name: Invalid: YAML\n',
+    );
+    assert.ok(
+      (await validateSkillDir(skillDir)).errors.some((error) => error.includes('valid YAML')),
+    );
   });
 
   it('should keep owner independent of namespace and every supported container', async () => {

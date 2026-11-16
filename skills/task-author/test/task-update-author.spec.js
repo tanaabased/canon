@@ -51,6 +51,53 @@ function observedFields(draft, capabilities) {
 }
 
 describe('Task Author existing-issue modes', () => {
+  it('should allow an explicitly minor correction only with approval of that exact plan', () => {
+    const capabilities = personalCapabilities();
+    const input = {
+      mode: 'revise',
+      target: 'octo-user/widgets#80',
+      title: 'document the supported setup',
+      kind: 'Task',
+      sections: completeTaskSections,
+    };
+    const draft = authorTaskDraft(input, { githubClient: fakeClient(capabilities) });
+    const client = fakeGitHubTaskClient(capabilities, {
+      initialIssue: initialIssue(80, 'document the suported setup', draft.body),
+      initialComments: draft.comments.map(({ body }, index) => ({ id: index + 1, body })),
+    });
+    const material = updateTask(input, { githubClient: client });
+    assert.equal(material.status, 'blocked');
+    assert.ok(material.blockers.includes('A material revision requires revisionSummary.'));
+
+    const minorInput = { ...input, revisionKind: 'minor' };
+    const preview = updateTask(minorInput, { githubClient: client });
+    assert.equal(preview.status, 'approval_required');
+    assert.equal(preview.mutatesGitHub, false);
+    assert.deepEqual(preview.plannedMutation.mutation, { title: input.title });
+    assert.deepEqual(preview.plannedMutation.comments, []);
+
+    const summarized = { ...minorInput, revisionSummary: 'Correct title.' };
+    const summarizedPreview = updateTask(summarized, { githubClient: client });
+    const changed = updateTask(
+      {
+        ...approve(summarized, summarizedPreview),
+        revisionKind: 'material',
+      },
+      { githubClient: client },
+    );
+    assert.equal(changed.status, 'approval_required');
+    assert.ok(changed.publication.reasons.some((reason) => reason.includes('digest')));
+    assert.equal(changed.mutatesGitHub, false);
+    const invalid = updateTask({ ...minorInput, revisionKind: 'typo' }, { githubClient: client });
+    assert.equal(invalid.status, 'blocked');
+
+    const report = updateTask(approve(minorInput, preview), { githubClient: client });
+    assert.equal(report.status, 'updated');
+    assert.equal(report.verification.status, 'verified');
+    assert.equal(client.state.issue.title, input.title);
+    assert.deepEqual(report.writes, [{ operation: 'update issue', status: 'succeeded' }]);
+  });
+
   it('should preserve unassessed labels when revision omits eligibility inputs', () => {
     const capabilities = organizationCapabilities();
     const labels = [

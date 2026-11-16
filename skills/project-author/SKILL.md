@@ -33,7 +33,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Always:** [GitHub CLI Routing](../../references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
 - **Before proposing repository presentation prose:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -85,6 +85,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After the user confirms the exact diff, mutate only approved managed fields and obtain separate confirmation for branch renames or other distinct effects.
+
 1. Validate the explicit slug and prerequisites. For metadata-only work, follow Repository Presentation below; otherwise run read-only `inspect --json`.
 2. If the intent is audit-only, return the diff and any warnings. For creation or settings synchronization, stop if `owner_type` is not `Organization`. If `aligned`, report that no write is needed.
 3. If `missing`, prepare the description/topic plan below and show it with the public-plus-README creation preview. Treat an unambiguous request to create that exact slug as authorization; otherwise confirm before `create`.
@@ -101,13 +103,11 @@ Read each applicable document in full, or the explicitly named section, before d
 - GitHub's [topic update replaces the full set](https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics). The helper rejects target mismatches and changed snapshots, then verifies both fields after mutation. On stale or partial results, inspect and review a fresh plan; do not blindly retry the old one.
 - Prefer hiding the Packages section as a manual GitHub display preference. Keep it outside automated alignment and completion checks; do not add browser automation for it.
 
-## Optimization
+## Review Criteria
 
 - **Inspect:** Resolve an explicit `OWNER/REPO` and use the bundled read-only inspection path to collect managed repository settings; never infer a remote target.
 - **Compare:** Reconcile normalized current state with the checked-in canonical policy and report an exact managed diff, including contradictory or extra managed values, while leaving unmanaged settings out of scope. Assess presentation only when explicitly requested, using Repository Presentation above.
 - **Recommend:** Keep aligned and unmanaged state; correct confirmed managed drift; remove extra managed configuration where canonical exactness requires it; and treat content deduplication, consolidation, splitting, and extraction as not applicable to this remote policy surface.
-- **Apply:** After the user confirms the exact diff, mutate only approved managed fields and obtain separate confirmation for branch renames or other distinct effects.
-- **Verify:** Re-inspect the repository and report aligned, remaining, pending-invitation, or partial-failure state explicitly.
 
 ## Bundled Resources
 
@@ -118,6 +118,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./test/](./test/): scope-local direct unit, library-boundary, command-wrapper, and fake-GitHub coverage
 
 ## Validation
+
+- Re-inspect the repository and report aligned, remaining, pending-invitation, or partial-failure state explicitly.
 
 - Confirm inspection is read-only and mutation commands never prompt on their own; the skill owns authorization.
 - Confirm ordinary settings sync leaves description, topics, and unrelated settings untouched; metadata mutations match the reviewed complete plan.

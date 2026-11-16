@@ -34,8 +34,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before authoring or reviewing Leia workflows:** [Leia Markdown Scenarios — CI Guidance](../../references/leia-markdown-scenarios.md#ci-guidance).
 - **Before configuring Homebrew installation:** [Homebrew CI Freshness](./references/homebrew-ci-freshness.md).
 - **Before selecting release destinations:** [Release Destinations](../../references/release-destinations.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -97,6 +97,8 @@ Check each action's supported runners and inputs. Composed actions use `$/` refe
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is workflow-authoring-led rather than triage- or runtime-led.
@@ -121,15 +123,13 @@ Omit `workflow_dispatch` by default. Add it only for a named operator operation 
 - For Codex plugins, apply [Codex Plugin Author](../codex-plugin-author/SKILL.md) for npm payload checks and archive migration. The archive publisher is no longer Canon's default; upstream deprecation is tracked in [Actions #43](https://github.com/tanaabased/actions/issues/43).
 - Use [JavaScript Author's release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) for the npm lifecycle and add only the destinations the product actually ships.
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory workflow-file boundaries, status-check identities, triggers, permissions, action versions, runtime and package-manager freshness, job topology, release checkout refs and destination names, matrices, reusable calls, duplication, validation gates, and tracked-file mutations with their post-mutation checks. For each `workflow_dispatch`, identify its named operator operation, why event triggers or reruns cannot serve it, its inputs and validation, permissions, trusted source/ref handling, and concurrency/cancellation boundaries. For npm publication and channel syncing, identify token inputs, the selected `publish-npm` release and npm CLI version, and the configured trusted-publisher permissions.
 - **Compare:** Compare [Preferred Tools](#preferred-tools) with current steps, required inputs, runners, permissions, and destination-specific recovery; keep compatible adoption or justified exceptions. Reconcile workflow boundaries, triggers, permissions, action versions, jobs, matrices, reusable calls, and validation gates with the workflow contract; identify contradictory paths, duplicated steps, independently owned gates consolidated into one file, overloaded jobs, misplaced responsibilities, stale wiring, implicit Homebrew update behavior or disabled automatic updates without an explicit freshness check, and tracked-file mutations that lack post-mutation formatting or validation. For `workflow_dispatch`, distinguish a named operator operation from convenience or duplicate PR validation, and verify its inputs, permissions, trusted source/ref handling, and concurrency/cancellation boundaries. Treat npm tokens used only for publication or channel syncing as migration candidates only when the released `publish-npm` version and npm CLI support tokenless trusted publishing; unknown registry permissions or settings are unverified prerequisites, not configured facts.
 - **Recommend:** Keep valid workflows; simplify Leia setup under [CI Guidance](../../references/leia-markdown-scenarios.md#ci-guidance), removing unnecessary conditions, runtime installers, and preflights; split independent lint, unit-test, and other gate surfaces when their commands, runners, matrices, ownership, or status identities differ; deduplicate repeated steps; consolidate truly reusable paths; move product logic to its owner; tighten permissions and gates; remove `workflow_dispatch` used only for convenience or to duplicate ordinary PR validation; and remove stale wiring without manufacturing edits. Retain justified recovery, maintenance, or explicitly requested manual operations when normal events and reruns do not serve them, with meaningful validated inputs where needed and appropriate permissions, trusted source/ref handling, and concurrency/cancellation boundaries. For eligible npm workflows, use `publish-npm@v1.0.5` or later, which installs a compatible Node/npm toolchain, and verify trusted-publisher `npm publish` and `npm dist-tag` permissions. Then remove `channel-token`/`registry-token` wiring and the corresponding secret only when used solely for npm publication or channel syncing and no longer referenced elsewhere. Unknown registry permissions or settings are unverified prerequisites, not configured facts. Retain tokens needed for unsupported registries, runners, clients, private dependency installation, or GitHub repository synchronization; do not disable channel syncing merely to avoid configuring its permission.
-- **Apply:** After explicit authorization, make the smallest coherent graph operations while preserving the boundaries of runtime code and GitHub Action product surfaces.
-- **Verify:** Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
 
 ## Bundled Resources
 
@@ -137,6 +137,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [Homebrew Freshness in GitHub Actions](references/homebrew-ci-freshness.md): Homebrew client and metadata freshness when automatic updates are disabled in CI
 
 ## Validation
+
+- Validate syntax and available local checks, then identify any behavior that can only be proven by the remote runner.
 
 - Confirm the task stayed on workflow YAML, triggers, permissions, reusable workflow boundaries, matrix or job topology, or gate placement.
 - Confirm the skill did not absorb a narrower surface's canonical validation or deployment lifecycle when no independent trigger, permission, matrix, reusable-workflow, or gate-placement decision was actually in scope.
@@ -146,4 +148,5 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm workflows that install through Homebrew set `HOMEBREW_NO_AUTO_UPDATE` to `1` at workflow or job scope and run `brew update-if-needed` with an empty command-scoped value on every Homebrew-using runner, unless Homebrew is separately pinned or refreshed.
 - Validate the changed workflow files with the narrowest reliable local or repo-native checks.
 - Apply [Assertion Strength](../../references/verification-boundaries.md#assertion-strength) to workflow checks: validate parsed permissions, credential boundaries, artifact wiring, and check identities instead of freezing YAML layout or step text.
+- Keep workflow tests focused on the repository's event/ref selection, permission isolation, job dependencies, artifact handoffs, and cancellation behavior. Product command correctness belongs to its authoring owner; do not re-test GitHub's scheduler guarantees. Retain distinct privileged-event and artifact-routing cases after consolidation, and require hosted execution only for runner or event integration that local semantic checks cannot establish.
 - Surface unverified runner behavior instead of pretending local inspection fully proved it.

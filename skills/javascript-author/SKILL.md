@@ -22,8 +22,7 @@ metadata:
 Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package deployment work. Use when a user wants to modify JS or TS code or standardize npm publication in a Tanaab-managed repo.
 
 - Keep the broad JavaScript and TypeScript entrypoint for discovery, including library-shaped modules as well as helper extraction.
-- Keep public `bin/` and internal `scripts/` entrypoints thin over surface-specific `lib/` modules and lower-coupling `utils/` units.
-- Keep independently testable function-shaped logic in `utils/` when that decomposition is honest, even when the vocabulary remains local to the owning scope.
+- Keep public and internal entrypoints thin over cohesive, testable implementation owned by the nearest scope.
 
 ## Required Reading
 
@@ -35,14 +34,14 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Function Tests](./references/javascript-function-tests.md).
 - **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
 
 - Modify JavaScript or TypeScript source, Bun runtime plumbing, or ESM module shape when the task is primarily JS- or TS-led.
-- Shape library-facing JavaScript or TypeScript modules where a focused `lib/` class or module wraps reusable utility logic.
+- Shape library-facing JavaScript or TypeScript modules with clear responsibilities and boundaries.
 - Write, refactor, or extract low-coupling utility functions, especially single-file ESM helpers under `utils/` or another narrow code scope.
 - Organize a code-bearing skill, package, app, or plugin beneath its nearest owning scope rather than defaulting files to the repository root.
 - Implement workspace package APIs or aggregate-package re-exports when the task is primarily about JavaScript or TypeScript behavior rather than monorepo baseline normalization.
@@ -62,19 +61,14 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Constraints
 
-- Prefer one main exported function, one utility file, and one focused spec when a helper can be expressed that way honestly.
-- Do not force `utils/` extraction when the logic is tightly coupled to surface vocabulary, orchestration, or state.
+- Follow the shared [layout and extraction guidance](../../references/javascript-repo-structure.md#standard-layout-inside-a-scope); do not force role folders or one-function-per-file splits.
 
 ## Change Strategy
 
-- First identify the nearest owning scope, then place public commands in `bin/`, internal machine- or agent-facing commands in `scripts/`, orchestration in `lib/`, unit-shaped functions in `utils/`, and owned tests in `test/`.
-- Default the implementation path toward lower-coupling functions and directly tested `utils/` units.
-- For library-shaped code, keep the `lib/` class or module focused on orchestration, state, and surface-specific wrapping while extracting testable function logic into utilities when the split is honest.
-- Keep repo-coupled orchestration and surface vocabulary near the owning module instead of forcing them into `utils/`.
+- Identify the nearest owning scope and apply [JavaScript Repo Structure](../../references/javascript-repo-structure.md) to placement, extraction, and consequential dependency rules. Preserve cohesive local modules when a split offers no concrete benefit.
 - In a workspace repo, treat each package as an owning scope, consume sibling packages through declared dependencies and public exports, and avoid relative imports into another package's private implementation.
 - Keep aggregate packages thin: depend on leaf workspaces and re-export their public APIs instead of copying their utility implementations.
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS or TS surface instead of the default authored pattern.
-- Apply [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when repo layout or helper extraction is in scope.
 - Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
 - Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change.
 - Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
@@ -87,11 +81,13 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests that pass the shared value gate, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is primarily JS- or TS-runtime-led or uses the canonical npm package deployment lifecycle rather than being CLI-, workflow-graph-, or broader release-system-led.
 2. Load only the relevant JavaScript or TypeScript files, or the package manifest and release workflow for npm deployment, plus the shared references that directly shape the change.
-3. Check [Preferred Tools](#preferred-tools) when selecting merge behavior or lifecycle tooling. Prefer thin library wrappers and function-shaped extraction when the task allows that decomposition honestly.
+3. Check [Preferred Tools](#preferred-tools) when selecting merge behavior or lifecycle tooling. Apply the shared extraction criteria when choosing module boundaries.
 4. Keep any required package, module, or artifact edits coherent with that owned JS or TS surface.
 5. Validate the changed JS or TS surface with the repo's narrowest reliable checks, including the repo's type-check command when TypeScript changed.
 
@@ -106,9 +102,10 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Testing
 
 - Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
-- Use the [function-test guidance](./references/javascript-function-tests.md) for helper scope, assertion strength, and injected boundaries. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
+- Apply the shared [admission and retention gate](../../references/verification-boundaries.md#assertion-strength) and the [function-test criteria](./references/javascript-function-tests.md) to new and existing units and components. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
+- For package-contract tests, protect declared exports, required payload files, runtime dependencies, and supported consumer entrypoints using the prepared artifact. A source import or whole-file snapshot does not prove those contracts. Retain static payload checks and representative isolated consumer execution for their distinct risks; route CLI or native-host behavior to its owner, and justify additional installs by a consumer failure cheaper checks cannot detect.
 
 Minimal generic example:
 
@@ -152,15 +149,13 @@ Use this section as a reference map from the owned testing and deployment lifecy
 - When `## Deployment` applies, use that lifecycle and its linked npm release workflow template at the canonical `.github/workflows/release.yml` path rather than repeating authentication, build, formatting, or channel rules here.
 - Hand independent trigger, permission, job, matrix, reusable-workflow, or gate-placement changes to GitHub Workflow Author.
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, CI, and npm package deployment wiring; identify independently testable function logic embedded in entrypoints or larger libraries. For npm releases, note token inputs, the released `publish-npm` version, npm CLI version, and trusted-publisher permissions.
 - **Compare:** Assess [Preferred Tools](#preferred-tools) against merge mutation/array semantics and current runtime, packing, and publication paths before proposing replacements. Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon. Flag publication/channel tokens as migration candidates when workflows use `publish-npm@v1.0.5` or later, or otherwise use a compatible npm CLI; unknown npm permissions or settings remain unverified prerequisites.
-- **Recommend:** Keep cohesive stateful orchestration in `lib/`; deduplicate or consolidate repeated logic; split overloaded owners; extract honestly separable one-function utilities with narrow specs; move misplaced code; tighten boundaries; and remove proven dead code without forcing decomposition or style churn. For eligible npm workflows, use `publish-npm@v1.0.5` or later (which installs a compatible Node/npm toolchain), verify npm trusted-publisher permissions for `npm publish` and `npm dist-tag`, then remove obsolete `channel-token`/`registry-token` wiring and the corresponding secret if unused elsewhere. Keep tokens for unsupported registries, runners, or clients, private dependency installation, and GitHub repository synchronization.
-- **Apply:** After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
-- **Verify:** Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
+- **Recommend:** Preserve cohesive owners; deduplicate repeated logic; split or extract only under the shared repo-structure criteria; tighten boundaries; and remove proven dead code without forcing decomposition or style churn. For eligible npm workflows, use `publish-npm@v1.0.5` or later (which installs a compatible Node/npm toolchain), verify npm trusted-publisher permissions for `npm publish` and `npm dist-tag`, then remove obsolete `channel-token`/`registry-token` wiring and the corresponding secret if unused elsewhere. Keep tokens for unsupported registries, runners, or clients, private dependency installation, and GitHub repository synchronization.
 
 ## Bundled Resources
 
@@ -177,8 +172,10 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Validation
 
-- Confirm the skill still reads as the broad JavaScript and TypeScript entrypoint while funneling implementation toward thin library wrappers and lower-coupling utility functions when the task allows it.
-- Confirm public and internal entrypoints are thin, orchestration stays in `lib/`, and independently testable function logic moves to scoped `utils/` without creating a `classes/` bucket.
+- Run the narrowest relevant lint, type-check, build, tests, and smoke checks, then re-inspect the changed boundaries for remaining drift.
+
+- Confirm the skill remains the broad JavaScript and TypeScript entrypoint, with thin command boundaries and cohesive, testable implementation.
+- Confirm physical layout and dependency direction follow the shared repo-structure guidance, with a concrete benefit for module extraction.
 - Confirm tests remain flat within their owning scope and are hoisted only with their implementation or for intentional cross-scope coverage.
 - Confirm workspace packages use declared package boundaries, aggregate packages stay thin, and no package reaches into a sibling's private source paths.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.

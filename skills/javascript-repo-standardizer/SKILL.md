@@ -23,7 +23,7 @@ metadata:
 Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. Use when a user wants to align repo structure, npm package identity and publishing, Bun workspaces, lint and format defaults, or type-checking in a Tanaab-managed repo.
 
 - Keep this skill normalization-led rather than implementation-led.
-- Use it to bring a JS/TS/Bun repo onto the shared baseline for owning scopes, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, linting, formatting, type-checking when applicable, and related baseline scripts while leaving runtime authorship to the broader implementation skill.
+- Use it to align tooling, packaging, configuration, placement, and scripts with the shared baseline while leaving runtime authorship to the implementation owner.
 
 ## Required Reading
 
@@ -34,14 +34,14 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
 
 - Align a repo to the shared ESLint and standalone Prettier baseline.
-- Normalize JavaScript and TypeScript repo structure around owning scopes plus public `bin/`, internal `scripts/`, orchestration `lib/`, unit-shaped `utils/`, and flat scope-local `test/` surfaces.
+- Normalize placement within established owning scopes under the shared repo-structure guidance, preserving cohesive flat implementations and required framework or package layouts.
 - Review test placement with the same ownership and hoisting rules as implementation code, using human or agent judgment rather than a structural validator.
 - Normalize baseline scripts such as `lint:eslint`, `format:check`, `format:write`, and `lint`, plus a separate `typecheck` script when owned TypeScript source is present.
 - Normalize Tanaab-owned npm package identities to the canonical `@tanaab` scope across manifests, internal references, package-manager projections, release wiring, and package examples.
@@ -60,6 +60,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Do not use this skill for one-off formatting-only requests that do not change the repo baseline.
 - Do not use this skill for ordinary day-to-day code authorship just because repo structure is nearby.
 - Do not widen this skill into full repo-template authoring.
+- Product architecture and cross-component ownership belong to [Architecture Review](../architecture-review/SKILL.md); test value and coverage across layers belong to [Testing Review](../testing-review/SKILL.md). Baseline checks do not require either review automatically.
 
 ## Constraints
 
@@ -80,6 +81,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/main/setup-node/README.md):** Prefer project-declared runtime discovery in baseline CI. Select the owning package directory in workspaces; keep dependency installation, caching, lint, and type-check commands in the caller. Preserve direct upstream setup when required inputs or runners are unsupported.
 
 ## Workflow
+
+- After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, update package manifests before refreshing and validating lockfiles, and keep behavioral refactoring with JavaScript Author.
 
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
@@ -134,15 +137,13 @@ Use this section as a reference map from repo-baseline validation and npm-public
 - For a publishable npm package, flag missing or noncanonical release-published wiring, long-lived npm publish tokens, unconditional non-package builds, absent post-stamping format validation, missing package dry runs, or drift from the `latest` and `edge` channel contract.
 - Route the canonical `.github/workflows/release.yml` package lifecycle to [JavaScript Author's deployment guidance](../javascript-author/SKILL.md#deployment) and independent graph exceptions to GitHub Workflow Author.
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, conditional TypeScript or Vue surfaces, and npm deployment wiring. For npm identity and publication, inspect root and workspace `package.json` names, internal dependency keys and `npm:` aliases, workspace references, overrides, `.npmrc`, Bun/npm/pnpm/Yarn lockfiles, release workflows, trusted-publisher assumptions, package build inputs, format gates, dry runs, channels, docs, templates, fixtures, and npm-distributed plugin package roots.
 - **Compare:** Check [Preferred Tools](#preferred-tools) against [development and consumer runtime roles](../../references/coding-stack-preferences.md#test-runtimes), runtime declarations, workspace scope, and required setup inputs. Reconcile conflicting configs, scripts, dependencies, lock metadata, and publication paths; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, source-to-test locality drift, long-lived publish tokens, unconditional non-package builds, missing post-stamping format validation, and channel drift against conditional canon. Flag Tanaab-owned npm identities outside `@tanaab`, including legacy `@tanaabased/*` names and generic scope placeholders used as Tanaab examples, while preserving third-party scopes, GitHub URLs, and platform-native plugin identifiers.
-- **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; split distinct owning scopes; move files and flat tests to the correct role; tighten baseline dependencies; remove obsolete wiring; normalize Tanaab-owned npm identities at their manifest sources before generated projections and consumers; route canonical package publication to JavaScript Author; route independent workflow-graph exceptions to GitHub Workflow Author; and hand embedded runtime extraction to JavaScript Author.
-- **Apply:** After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, update package manifests before refreshing and validating lockfiles, and keep behavioral refactoring with JavaScript Author.
-- **Verify:** Run the applicable frozen install, lint, format, type-check, tests, build, package dry-run, and targeted npm identity searches, then report remaining conditional drift.
+- **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; preserve established owning scopes and justified flat layouts; correct placement drift within those boundaries; tighten baseline dependencies; remove obsolete wiring; normalize Tanaab-owned npm identities at their manifest sources before generated projections and consumers; route canonical package publication to JavaScript Author; route independent workflow-graph exceptions to GitHub Workflow Author; and hand embedded runtime extraction to JavaScript Author.
 
 ## Bundled Resources
 
@@ -161,6 +162,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared linting and formatting defaults
 
 ## Validation
+
+- Run the applicable frozen install, lint, format, type-check, tests, build, package dry-run, and targeted npm identity searches, then report remaining conditional drift.
 
 - Confirm the task stayed on repo baseline standardization rather than drifting into general JS or TS runtime work or implementation refactors.
 - Confirm repo structure keeps source and tests in their smallest owning scopes and applies the same hoisting test to both.

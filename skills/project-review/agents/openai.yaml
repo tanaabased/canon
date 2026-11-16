@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Project Review'
+  short_description: 'Tanaab-based project review and improvement planning.'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-project-review to audit this project or the requested subset of skills, documentation, code, or tests, report substantial improvements and small concrete cleanup separately, explain retained decisions and uncertainty, and plan every actionable finding in chat without implementing changes; write Markdown only when requested.'

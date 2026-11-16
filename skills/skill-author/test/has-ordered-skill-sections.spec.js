@@ -8,10 +8,10 @@ describe('skills/skill-author/utils/has-ordered-skill-sections', () => {
       '# ',
       '## Overview',
       '## Optional',
-      '## Optimization',
+      '## Review Criteria',
       '## Validation',
     ];
-    const optionalHeadings = ['## Optional', '## Optimization'];
+    const optionalHeadings = ['## Optional', '## Review Criteria'];
 
     assert.equal(
       hasOrderedSkillSections(
@@ -23,7 +23,7 @@ describe('skills/skill-author/utils/has-ordered-skill-sections', () => {
     );
     assert.equal(
       hasOrderedSkillSections(
-        '# Example\n## Overview\n## Optimization\n## Validation',
+        '# Example\n## Overview\n## Review Criteria\n## Validation',
         orderedHeadings,
         optionalHeadings,
       ),
@@ -31,7 +31,7 @@ describe('skills/skill-author/utils/has-ordered-skill-sections', () => {
     );
     assert.equal(
       hasOrderedSkillSections(
-        '# Example\n## Optimization\n## Overview\n## Validation',
+        '# Example\n## Review Criteria\n## Overview\n## Validation',
         orderedHeadings,
         optionalHeadings,
       ),

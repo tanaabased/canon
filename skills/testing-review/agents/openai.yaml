@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Testing Review'
+  short_description: 'Tanaab-based read-only review of test value, coverage, reliab...'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-testing-review to assess the requested tests against their product contracts and authoring owners, reconcile coverage gaps and duplication across layers, and propose a read-only improvement plan in chat. Include Leia when in scope; write Markdown only when requested.'

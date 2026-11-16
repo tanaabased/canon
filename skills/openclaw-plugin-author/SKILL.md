@@ -31,14 +31,15 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [Verification Boundaries](../../references/verification-boundaries.md).
 - **Before changing implementation logic:** [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
+- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md).
 - **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before changing plugin-owned commands:** [CLI Style Rules](../../references/cli-style-rules.md).
 - **Before adding or changing installed or runtime scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
 - **Before testing an external response contract or using mock-AI recordings or approval expectations:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -67,7 +68,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Keep static discovery and configuration metadata in `openclaw.plugin.json`; keep npm metadata, dependencies, install gates, and source/runtime entries in `package.json`; keep runtime registration in plugin code.
 - Every native plugin must ship a valid root `openclaw.plugin.json`, including a strict `configSchema` even when the plugin owns no configuration.
 - Keep manifest id, runtime entry id, declared capabilities, compatibility metadata, package files, and source/runtime entry pairs coherent.
-- Prefer narrow public SDK subpaths, injected runtime contexts, and host-owned lifecycle primitives over private OpenClaw internals, process-global behavior, or repository-owned copies. When no equivalent surface is available to the plugin's trust class, keep the product-specific behavior local and document that ownership boundary.
+- Apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to native ownership, workflow state, and execution binding. Prefer narrow public SDK subpaths and injected runtime contexts over private OpenClaw internals or process-global behavior.
 - Treat repository checks as distinct from plugin installation, Gateway startup, model invocation, and other machine-mutating operational validation; run the latter only when explicitly requested.
 - Keep credentials out of tracked files, logs, examples, and durable skill prose, and re-check time-sensitive registry authentication before changing release wiring.
 
@@ -109,6 +110,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request is native OpenClaw-code-plugin-led rather than bundle-, generic-JavaScript-, baseline-, workflow-, or host-operations-led.
@@ -129,6 +132,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Testing
 
+- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](../../references/plugin-runtime-contracts.md#verification) through the affected native adapters.
 - Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when correctness depends on an external CLI, SDK, RPC, or native-tool response shape, especially after a relevant version/interface change or a regression caused by an incorrect fake. Select captures by risk and payoff; retain adequate existing coverage and simple synthetic inputs when recordings add no needed fidelity.
 - Follow that policy's record, sanitize, independent review, accept, and check workflow. Replay reviewed captures through the relevant production parser, mapper, or request builder; label deliberate negative cases as derived and leave unsupported assumptions unverified. Unexpected fixture requests must fail clearly without a live fallback. Committed replay fixtures support ordinary CI; live recording and comparison remain explicit under the consuming repository's rules and do not replace installed-plugin proof.
 - Apply [JavaScript Author's direct-test contract](../javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
@@ -174,17 +178,15 @@ Use this section as a reference map from the owned testing and deployment lifecy
 - Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
 - Use the shared publishers as independent destination jobs under [Workflow Author's release composition](../github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports and injected runtime calls, plugin trust and installation class, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery. Identify external-response assumptions and whether fixtures are observed, deliberately derived, or unsupported.
 - **Compare:** Assess [Preferred Tools](#preferred-tools) against isolated runtime setup, existing fixtures, registry destinations, and exact-tarball validation. Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata. Check each SDK or runtime surface against the pinned installed contract and current official guidance for stability, intended audience, trust requirements, and lifecycle semantics; type visibility alone is insufficient. Identify protected or private calls, repository-owned duplicates of available host primitives, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
-- **Recommend:** Prefer the narrowest compatible host-owned surface and remove repository-owned duplication when behavior and trust boundaries match. Keep documented product-specific ownership when the only apparent host equivalent is private, bundled-only, trusted-official-only, or behaviorally incompatible; otherwise keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner. Prioritize response captures by consequence, interface-change risk, and expected fidelity gain; adequate coverage is a valid keep finding, without fixtures for every dependency or a new framework.
-- **Apply:** After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
-- **Verify:** Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inventory SDK imports and runtime calls and confirm every retained custom owner or protected-surface exclusion remains intentional. Check capture provenance and sanitization fidelity, independent review, production-parser coverage, and explicit failures for unexpected replay requests under the fixture policy. Report recorded-contract handling separately from live compatibility, model quality, and installed behavior; don't trigger live recording or comparison as an optimization check by default.
+- **Recommend:** Apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to host ownership, bookkeeping gates, and model-supplied binding fields. Keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner. Prioritize response captures by consequence, interface-change risk, and expected fidelity gain; adequate coverage is a valid keep finding, without fixtures for every dependency or a new framework.
 
 ## Bundled Resources
 
@@ -200,6 +202,8 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - [Leia Markdown scenarios](../../references/leia-markdown-scenarios.md): conditional end-to-end scenario contract
 
 ## Validation
+
+- Run the applicable repo checks, direct command and runtime tests, build, plugin validation, artifact inspection, and registry dry runs, then re-inventory SDK imports and runtime calls and confirm every retained custom owner or protected-surface exclusion remains intentional. Check capture provenance and sanitization fidelity, independent review, production-parser coverage, and explicit failures for unexpected replay requests under the fixture policy. Report recorded-contract handling separately from live compatibility, model quality, and installed behavior; don't trigger live recording or comparison as an optimization check by default.
 
 - Confirm the task remained on a native OpenClaw code-plugin surface and did not absorb bundle-plugin, generic JavaScript, repo-baseline, workflow-topology, or host-operations ownership.
 - Confirm npm package name, OpenClaw plugin id, ClawHub owner/listing, and source repository identity remain intentionally distinct and correctly used.

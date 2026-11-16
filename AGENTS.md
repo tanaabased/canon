@@ -85,8 +85,8 @@
 - Apply the shared [commit-subject convention](./references/commit-subjects.md) when authoring issue-backed commits.
 - When guidance is duplicated, move shared doctrine upward or delete the duplicate instead of preserving parallel copies.
 - Call out ambiguity directly when two skills claim overlapping ownership.
-- Before rolling a new canon release, invoke `tanaab-project-optimizer` for a whole-project, read-only review of this repository and review the resulting staged optimization plan.
-- Treat optimizer convergence and release readiness as separate conclusions. Reconcile the unreleased changelog against the latest versioned tag and run `tanaab-release-author` independently.
+- Before rolling a new canon release, invoke `tanaab-project-review` for a whole-project, read-only review of this repository and review the resulting staged optimization plan.
+- Treat project-review convergence and release readiness as separate conclusions. Reconcile the unreleased changelog against the latest versioned tag and run `tanaab-release-author` independently.
 
 ## Validation
 

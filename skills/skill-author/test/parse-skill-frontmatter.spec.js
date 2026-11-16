@@ -5,6 +5,16 @@ import parseSkillFrontmatter, {
 } from '../utils/parse-skill-frontmatter.js';
 
 describe('skills/skill-author/utils/parse-skill-frontmatter', () => {
+  it('should reject invalid YAML rather than accepting a second mapping colon', () => {
+    assert.equal(
+      parseSkillFrontmatter('---\ndescription: Compare fields: show changes.\n---\n'),
+      null,
+    );
+    assert.throws(() =>
+      splitLeadingSkillFrontmatter('---\ndescription: Compare fields: show changes.\n---\n'),
+    );
+  });
+
   it('should parse nested metadata, lists, and the remaining body', () => {
     const content = `---
 name: tanaab-example

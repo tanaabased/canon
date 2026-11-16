@@ -8,7 +8,13 @@ import globals from 'globals';
 import vueParser from 'vue-eslint-parser';
 
 const restrictedBuiltinImports = builtinModules
-  .filter((name) => !name.startsWith('_') && !name.startsWith('node:'))
+  .filter(
+    (name) =>
+      !name.startsWith('_') &&
+      !name.startsWith('node:') &&
+      name !== 'bun' &&
+      !name.startsWith('bun:'),
+  )
   .map((name) => ({
     name,
     message: `Use node:${name} instead of bare builtin imports.`,

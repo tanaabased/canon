@@ -33,8 +33,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before changing comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
 - **Before choosing or changing tests:** [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults), [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
 - **Before adapting a shell starter:** [Shell CLI Templates](./references/shell-cli-templates.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -68,6 +68,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the task is shell-CLI-led rather than workflow-, hosted-distribution-, or release-led.
@@ -91,6 +93,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
 - Use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. Retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
+- Preserve distinct quoting, argument forwarding, exit propagation, permissions, cleanup, and supported-shell behavior when consolidating scenarios. Test pure decisions cheaply; justify installed or platform runs by shell/OS behavior fakes cannot establish. Replaying the same wrapper path without a different contract or snapshotting incidental help formatting is low value; parser correctness and host-shell guarantees are not substitutes for the wrapper's own effects.
 
 Minimal generic example:
 
@@ -110,15 +113,13 @@ test -n "$(./dist/my-script.sh --version)"
 - Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
 - Keep this as an automation projection of the shell CLI test contract, not as general workflow-topology ownership.
 
-## Optimization
+## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/skill-standard.md#preferred-tools).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, Leia scenarios, and their packaging.
 - **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, stale paths, and scenario packaging drift.
 - **Recommend:** Keep aligned platform behavior; deduplicate or consolidate repeated branches; split materially different platform paths; extract testable shell units; move internal machinery behind wrappers; tighten safety guards; and remove stale paths without style-only rewrites.
-- **Apply:** After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
-- **Verify:** Run available static or parse checks, smoke help and version output, validate scenario packaging against the shared Leia contract, and execute the relevant Leia scenarios.
 
 ## Bundled Resources
 
@@ -135,6 +136,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
+
+- Run available static or parse checks, smoke help and version output, validate scenario packaging against the shared Leia contract, and execute the relevant Leia scenarios.
 
 - Confirm the task stayed on Bash or PowerShell CLI surfaces rather than drifting into workflow YAML or hosted repo-template standardization.
 - Confirm help output, version output, logging text, and error text remain the primary documentation surface for user-facing shell behavior.

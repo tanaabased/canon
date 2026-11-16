@@ -46,7 +46,7 @@ function normalizeSlug(value) {
 }
 
 function quoteYaml(value) {
-  return `"${String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  return JSON.stringify(String(value));
 }
 
 function makeOpenAiYaml({ brandColor, displayName, shortDescription, defaultPrompt }) {
@@ -155,6 +155,7 @@ export async function initializeSkill(options) {
 
   const skillContent = renderSkillTemplate(typeDefinition.templateBody, {
     description: normalizedDescription,
+    description_yaml: quoteYaml(normalizedDescription),
     display_name: displayName,
     license: CANON_SKILL_LICENSE,
     metadata_tags_yaml: renderMetadataTagsYaml(tags),

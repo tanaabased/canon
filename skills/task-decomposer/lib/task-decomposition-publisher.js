@@ -133,21 +133,35 @@ export function publishTaskDecomposition(input = {}, { client } = {}) {
       const operation = `create:${child.key}`;
       const result = client.createIssue(prepared.evidence.target, child.taskPlan.issue);
       if (!result.ok) return failedResult(prepared, writes, operation, result.error);
+      succeed(operation);
       const reference = {
-        id: Number(result.value.id),
-        number: Number(result.value.number),
-        url: result.value.html_url || result.value.url,
+        id: Number(result.value?.id),
+        number: Number(result.value?.number),
+        url: result.value?.html_url || result.value?.url,
       };
       if (!reference.id || !reference.number || !reference.url) {
-        return failedResult(
-          prepared,
+        return {
+          ...prepared,
+          status: 'partial',
+          mutatesGitHub: true,
           writes,
-          operation,
-          'GitHub created the issue without returning its id, number, and URL.',
-        );
+          completedOperations: writes.map(({ operation }) => operation),
+          remainingOperations: prepared.plan.operationOrder
+            .filter(({ id }) => !writes.some(({ operation }) => operation === id))
+            .map(({ id }) => id),
+          references: {
+            ...references,
+            [child.key]: Object.fromEntries(Object.entries(reference).filter(([, value]) => value)),
+          },
+          verification: {
+            status: 'unavailable',
+            errors: [
+              'GitHub created the issue without returning its id, number, and URL. Replan from fresh issue evidence before continuing.',
+            ],
+          },
+        };
       }
       references[child.key] = reference;
-      succeed(operation);
     }
 
     const comments = child.action === 'create' ? child.taskPlan.comments : child.missingComments;

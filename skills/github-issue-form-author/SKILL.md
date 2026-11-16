@@ -28,7 +28,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - **Before invoking GitHub CLI or planning repository changes:** [GitHub CLI Routing](../../references/github-cli-routing.md).
 - **Before changing form prose:** [Documentation Standards](../../references/documentation-standards.md).
 - **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -92,6 +92,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- Require exact repository, default branch, and digest authorization; create or update only the four managed paths, preserve compatible additions, and never delete unknown templates.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Resolve the repository mode and load the shared task-management schema.
@@ -119,13 +121,11 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 7. For submitted Markdown, extract only known generated headings, preserve unknown headings within their owning response, preserve the complete original Markdown, and stop on duplicate known headings.
 8. Hand the evidence package to Task Author for semantic normalization. Do not invoke deterministic task rendering until an agent has produced supported canonical sections, assessment provenance, rationales, and focused questions for missing evidence.
 
-## Optimization
+## Review Criteria
 
 - **Inspect:** Read the exact repository form paths, chooser configuration, repository ownership mode, and current issue-type and field capabilities before proposing alignment.
 - **Compare:** Diff Task, Bug, Feature, and chooser definitions against generated policy; identify duplicate IDs or labels, metadata pushed onto reporters, lost repository additions, and stale GitHub syntax.
 - **Recommend:** Keep compatible repository guidance and contact links; reconcile the approved intake questions and variant behavior; retire only previously managed controls or proven duplicates.
-- **Apply:** Require exact repository, default branch, and digest authorization; create or update only the four managed paths, preserve compatible additions, and never delete unknown templates.
-- **Verify:** Parse every rendered YAML document, simulate submitted Markdown, and prove complete response and raw-Markdown preservation. Canonical semantic convergence is a Task Author fixture concern after the agent assessment pass.
 
 ## Bundled Resources
 
@@ -140,6 +140,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - `../../test/task-management-equivalence.spec.js`: intentional cross-skill F01 and T01-T06 intake-preservation coverage.
 
 ## Validation
+
+- Parse every rendered YAML document, simulate submitted Markdown, and prove complete response and raw-Markdown preservation. Canonical semantic convergence is a Task Author fixture concern after the agent assessment pass.
 
 - Parse generated YAML and confirm the resulting forms preserve submitted evidence and match the authorized plan.
 

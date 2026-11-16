@@ -26,7 +26,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - **Always:** [Documentation Standards](../../references/documentation-standards.md) and [README Standards](../../references/readme-standards.md).
 - **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
-- **Before optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
 ## When to Use
@@ -45,6 +45,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Workflow
 
+- After explicit authorization, make the approved changes around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
+
 When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
 
 1. Confirm the request concerns a README or companion guide; leave source-owned API contracts and generated-reference tooling to their code owner, and VitePress pages to VitePress Author.
@@ -57,13 +59,11 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 8. Strongly prefer a centered real visual, a concise row of truthful badges, and a one- or two-sentence description, but do not fabricate missing assets or status claims.
 9. Validate that the final README matches one coherent mode and review VitePress when `README.md`, `ADVANCED.md`, and three or more topical guides are present.
 
-## Optimization
+## Review Criteria
 
 - **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, primary entrypoints, supported commands, configuration, and other repository evidence that can confirm or contradict documentation claims.
 - **Compare:** Apply the documentation change gate and [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review), then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful scenario explanations better placed in existing Leia examples with discovery links. Treat extraction signals as placement guidance for content that remains necessary.
 - **Recommend:** Keep the truthful common path; correct contradictions; deduplicate or consolidate repeated guidance; remove prose that fails the documentation change gate without requiring replacement; split overloaded sections; move short line-specific explanation into language-appropriate comments above the relevant code; extract and move justified long-tail material; tighten prose and ordering; and remove stale claims without fabricating behavior.
-- **Apply:** After explicit authorization, perform those operations around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
-- **Verify:** Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.
 
 ## Bundled Resources
 
@@ -79,6 +79,8 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - [./templates/readme-docs-wrapper/README.md](./templates/readme-docs-wrapper/README.md): starter for repositories that keep a strong README entrypoint but move durable docs into VitePress
 
 ## Validation
+
+- Check links, commands, badges, assets, entrypoints, and the selected README mode against the current repository.
 
 - Confirm added prose and any new guide pass the documentation change gate; unchanged documentation is valid when existing sources meet the reader's need.
 - When README structure changes, confirm it clearly fits one mode: full README, companion guides, GitHub Action README, or docs wrapper.

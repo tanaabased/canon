@@ -1,91 +1,11 @@
-import unquoteYaml from './unquote-yaml.js';
+import { YAML } from 'bun';
 
 function parseYamlBlock(rawBlock) {
-  const lines = String(rawBlock ?? '').split('\n');
-  const indentOf = (line) => line.match(/^ */)?.[0].length ?? 0;
-  const listPattern = (indent) => new RegExp(`^\\s{${indent}}-\\s+(.+)$`);
-  const keyPattern = (indent) => new RegExp(`^\\s{${indent}}([A-Za-z][A-Za-z0-9_-]*):(.*)$`);
-
-  function parseList(startIndex, indent) {
-    const items = [];
-    let index = startIndex;
-
-    while (index < lines.length) {
-      const line = lines[index];
-      if (!line.trim()) {
-        index += 1;
-        continue;
-      }
-      if (indentOf(line) < indent) break;
-
-      const match = line.match(listPattern(indent));
-      if (!match) break;
-      items.push(unquoteYaml(match[1]));
-      index += 1;
-    }
-
-    return { nextIndex: index, value: items };
+  const value = YAML.parse(rawBlock);
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error('Skill frontmatter must be a YAML mapping.');
   }
-
-  function parseMap(startIndex, indent) {
-    const entries = {};
-    let index = startIndex;
-
-    while (index < lines.length) {
-      const line = lines[index];
-      if (!line.trim()) {
-        index += 1;
-        continue;
-      }
-      if (indentOf(line) < indent) break;
-
-      const match = line.match(keyPattern(indent));
-      if (!match) break;
-
-      const [, key, rawValue] = match;
-      const value = rawValue.trim();
-      if (value) {
-        entries[key] =
-          value.startsWith('[') && value.endsWith(']')
-            ? value
-                .slice(1, -1)
-                .split(',')
-                .map((item) => unquoteYaml(item))
-                .filter(Boolean)
-            : unquoteYaml(value);
-        index += 1;
-        continue;
-      }
-
-      const nextLine = lines[index + 1];
-      if (!nextLine || !nextLine.trim() || indentOf(nextLine) <= indent) {
-        entries[key] = '';
-        index += 1;
-        continue;
-      }
-
-      if (nextLine.match(listPattern(indent + 2))) {
-        const parsed = parseList(index + 1, indent + 2);
-        entries[key] = parsed.value;
-        index = parsed.nextIndex;
-        continue;
-      }
-
-      if (nextLine.match(keyPattern(indent + 2))) {
-        const parsed = parseMap(index + 1, indent + 2);
-        entries[key] = parsed.value;
-        index = parsed.nextIndex;
-        continue;
-      }
-
-      entries[key] = '';
-      index += 1;
-    }
-
-    return { nextIndex: index, value: entries };
-  }
-
-  return parseMap(0, 0).value;
+  return value;
 }
 
 export function splitLeadingSkillFrontmatter(content) {
@@ -101,12 +21,17 @@ export function splitLeadingSkillFrontmatter(content) {
 }
 
 /**
- * Parses the constrained YAML frontmatter shape used by canon skills.
+ * Parses YAML frontmatter used by canon skills.
  *
  * @param {string} content SKILL.md content.
- * @returns {object | null} Parsed frontmatter or null when absent.
+ * @returns {object | null} Parsed frontmatter or null when absent or malformed.
  */
 export default function parseSkillFrontmatter(content) {
   const match = String(content ?? '').match(/^---\n([\s\S]*?)\n---/);
-  return match ? parseYamlBlock(match[1]) : null;
+  if (!match) return null;
+  try {
+    return parseYamlBlock(match[1]);
+  } catch {
+    return null;
+  }
 }
