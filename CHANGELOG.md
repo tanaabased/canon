@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.14.0 - [November 16, 2026](https://github.com/tanaabased/canon/releases/tag/v0.14.0)
+
 - Added canonical label inspection, planning, and synchronization across repositories to `tanaab-github-issue-schema-author`.
 - Added `tanaab-architecture-review` and `tanaab-testing-review` with source-grounded improvement plans. [#107](https://github.com/tanaabased/canon/pull/107)
 - Added evidence-based label reassessment to task workflows while preserving unrelated labels.
