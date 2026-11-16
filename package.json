@@ -8,6 +8,7 @@
     "@eslint/js": "^10.0.1",
     "@lando/leia": "^2.0.0",
     "@tanaab/codex-tools": "^1.0.3",
+    "clawhub": "^0.26.0",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.11.0",
@@ -67,12 +68,12 @@
       "./index.js"
     ],
     "compat": {
-      "pluginApi": ">=2026.9.5",
-      "minGatewayVersion": "2026.9.5"
+      "pluginApi": ">=2026.11.3",
+      "minGatewayVersion": "2026.11.3"
     },
     "build": {
-      "openclawVersion": "2026.9.5",
-      "pluginSdkVersion": "2026.9.5"
+      "openclawVersion": "2026.11.3",
+      "pluginSdkVersion": "2026.11.3"
     }
   }
 }

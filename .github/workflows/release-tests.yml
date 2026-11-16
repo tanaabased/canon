@@ -109,7 +109,6 @@ jobs:
       - name: Dry-run ClawHub publication
         uses: tanaabased/actions/publish-clawhub@v1
         with:
-          clawhub-version: 0.26.0
           tarball: ${{ steps.pack.outputs.tarball-path }}
           owner: tanaab
           tags: edge
