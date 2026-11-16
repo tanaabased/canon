@@ -24,7 +24,7 @@ Document alternate modes, uncommon integrations, customization, migrations, payl
 
 ## Verification Details
 
-Document complete health fields and diagnostic commands when they are useful references. Explain logs, manual checks, and recovery behavior where interpretation or operator judgment is required.
+Remove this section when readers need no additional verification guidance. Otherwise, document health fields and diagnostic commands that provide a useful reference beyond the primary command’s result. Explain logs, manual checks, and recovery behavior where interpretation or operator judgment is required.
 
 ## Troubleshooting
 

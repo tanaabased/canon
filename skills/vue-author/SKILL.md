@@ -175,8 +175,6 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Validation
 
-- Run the applicable lint, build, component tests, docs or playground checks, and focused accessibility verification.
-
 - Confirm the task stayed on the Vue 3 component surface rather than drifting into VitePress or docs-policy work.
 - Confirm Vue 3, the canonical SFC block order, and SCSS defaults remain unless the repository or user requires another path.
 - Confirm project-local components, docs, playgrounds, theme styles, and shared Markdown-page patterns were preferred before bundled fallbacks or bespoke docs-only UI.
@@ -186,4 +184,4 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm missing shared styling or component patterns were surfaced instead of hidden behind one-off markup or SCSS.
 - Confirm component tests cover changed public behavior and use separate discovery from helper tests; retain lint and production builds.
 - For published components, confirm public imports and styles survive packing and Vue remains external. Reuse the existing npm lifecycle and avoid duplicate consumer gates.
-- Run the narrowest relevant lint, test, build, or smoke checks for the touched Vue surface.
+- Run the relevant lint, build, component tests, docs or playground checks, and focused accessibility verification for the touched Vue surface.

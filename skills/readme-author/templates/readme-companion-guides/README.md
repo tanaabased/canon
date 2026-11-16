@@ -53,7 +53,7 @@ When one substantial optional subject has its own audience, rename `topic-guide.
 
 ## Verification
 
-Show the shortest supported check that confirms the primary workflow succeeded. Keep detailed fields, log interpretation, and recovery procedures in [Advanced](./ADVANCED.md#verification-details).
+Keep this section only when readers need a separate check or help interpreting success; otherwise remove it. Show the shortest supported check without repeating verification already guaranteed by the primary command. Keep detailed fields, log interpretation, and recovery procedures in [Advanced](./ADVANCED.md#verification-details).
 
 ## Development
 

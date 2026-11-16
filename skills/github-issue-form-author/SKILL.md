@@ -116,7 +116,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
      --approved-repository OWNER/REPO --approved-branch BRANCH --approved-digest SHA256 --json
    ```
 
-5. Re-read all four files, require an aligned idempotent plan, and report partial writes or SHA conflicts honestly.
+5. Inspect the apply result: the command re-reads all four files and checks alignment internally. Report its verification, partial writes, or SHA conflicts without repeating a successful readback.
 6. Validate each YAML document against the current GitHub form schema, unique IDs and labels, supported types, and the no-duplicate-native-metadata boundary.
 7. For submitted Markdown, extract only known generated headings, preserve unknown headings within their owning response, preserve the complete original Markdown, and stop on duplicate known headings.
 8. Hand the evidence package to Task Author for semantic normalization. Do not invoke deterministic task rendering until an agent has produced supported canonical sections, assessment provenance, rationales, and focused questions for missing evidence.
@@ -141,9 +141,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Validation
 
-- Parse every rendered YAML document, simulate submitted Markdown, and prove complete response and raw-Markdown preservation. Canonical semantic convergence is a Task Author fixture concern after the agent assessment pass.
-
-- Parse generated YAML and confirm the resulting forms preserve submitted evidence and match the authorized plan.
+- For rendered forms, parse the YAML and check the intake contract. For repository alignment, use the command’s returned verification. For submitted Markdown, confirm complete response and raw-Markdown preservation; semantic normalization remains with Task Author.
 
 ### When Maintaining This Skill
 
