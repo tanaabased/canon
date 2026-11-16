@@ -113,6 +113,7 @@ jobs:
       - name: Dry-run publication
         uses: tanaabased/actions/publish-clawhub@v1
         with:
+          clawhub-version: 0.26.0
           tarball: ${{ steps.pack.outputs.tarball-path }}
           owner: tanaab
           tags: ${{ github.event.release.prerelease && 'edge' || 'latest,edge' }}
@@ -120,6 +121,7 @@ jobs:
       - name: Publish ClawHub
         uses: tanaabased/actions/publish-clawhub@v1
         with:
+          clawhub-version: 0.26.0
           tarball: ${{ steps.pack.outputs.tarball-path }}
           owner: tanaab
           tags: ${{ github.event.release.prerelease && 'edge' || 'latest,edge' }}

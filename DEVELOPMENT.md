@@ -16,7 +16,7 @@ bun run lint
 
 ## Validation
 
-`bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
+`bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), [Codex discovery and cache recovery](https://github.com/tanaabased/canon/blob/main/examples/codex/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
 Check the actual npm payload without installing dependencies into it:
 

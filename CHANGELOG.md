@@ -2,6 +2,7 @@
 
 - Added canonical label inspection, planning, and synchronization across repositories to `tanaab-github-issue-schema-author`.
 - Added `tanaab-architecture-review` and `tanaab-testing-review` with source-grounded improvement plans. [#107](https://github.com/tanaabased/canon/pull/107)
+- Added evidence-based label reassessment to task workflows while preserving unrelated labels.
 - Clarified eligibility in all eight canonical label descriptions.
 - Fixed PowerShell CLI starter options losing precedence over environment defaults. [#107](https://github.com/tanaabased/canon/pull/107)
 - Fixed `tanaab-skill-author` YAML escaping and validation for descriptions containing punctuation. [#107](https://github.com/tanaabased/canon/pull/107)
