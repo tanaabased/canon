@@ -12,6 +12,10 @@ const repositoryRoot = path.resolve(skillRoot, '../..');
 const args = process.argv.slice(2);
 
 try {
+  if (args.length === 1 && ['--help', '-h'].includes(args[0])) {
+    process.stdout.write('Usage: bun run build:task-author [--check]\n');
+    process.exit(0);
+  }
   if (args.length > 1 || (args.length === 1 && args[0] !== '--check')) {
     throw new Error('Usage: bun run build:task-author [--check]');
   }
