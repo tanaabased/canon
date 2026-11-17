@@ -1,0 +1,26 @@
+{
+  "version": "0.14.0",
+  "runtime": "bun",
+  "commands": [
+    {
+      "path": "dist/draft-task.js",
+      "bytes": 31957,
+      "sha256": "a6e1da2a81838da5bfcb2b436df1592c01f867c5fc9e7b499534e32ba4f564d5"
+    },
+    {
+      "path": "dist/create-task.js",
+      "bytes": 45852,
+      "sha256": "09df7cc135dca9fe8065ee9623d5462608ed044492dbc81435a1df0147a7b10a"
+    },
+    {
+      "path": "dist/update-task.js",
+      "bytes": 53388,
+      "sha256": "c9f297909d45de561bf7e2d13c144a63a00998bb07ef2737521a0e96cf7d8b31"
+    },
+    {
+      "path": "dist/migrate-fallback.js",
+      "bytes": 36398,
+      "sha256": "f80323068bf7d8c27796c0cc470e63ce85e5ab4b07c5f0892fd5adb281d1601b"
+    }
+  ]
+}

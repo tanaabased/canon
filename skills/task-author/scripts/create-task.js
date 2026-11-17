@@ -4,7 +4,7 @@ import { createTask } from '../lib/task-create-author.js';
 import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../lib/task-json-command.js';
 
 function usage() {
-  return `Usage: bun skills/task-author/scripts/create-task.js --input <path|->
+  return `Usage: bun "${process.argv[1]}" --input <path|->
 
 Read a JSON Task Author request, print the exact publication plan, and create only when
 publication.safetyReviewed, publication.approvedTarget, and publication.approvedDigest

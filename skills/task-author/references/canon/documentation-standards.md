@@ -1,0 +1,67 @@
+# Documentation Standards
+
+Apply these standards to all documentation: READMEs, supplementary guides such as `ADVANCED.md`, API and CLI references, VitePress or other docs-site pages, generated documentation, and inline comments. The filename, renderer, and owning skill do not change the gate.
+
+## Documentation Style
+
+Before authoring or optimizing documentation, select the style in this order: explicit user direction, the target repository's declared house style, then the shared default below. Read any voice skill selected by the repository before editing. Apply the choice across contributors; a personal agent voice does not override the repository's documentation style. This selects expression without changing contributor identity, credentials, judgment, permissions, or conversational persona.
+
+The shared default follows [Agent System's documentation voice](https://github.com/tanaabased/openclaw-agent-system/blob/main/DOCUMENTATION.md#documentation-voice): clear, warm, direct, and practical for readers unfamiliar with the project.
+
+- Lead with what the reader can do or needs to know, then explain the reason, consequence, or next step. Name the tool or runtime when it performs the action.
+- Use familiar words and active verbs. Keep useful technical precision, and explain the practical effect of terms the reader needs to understand.
+- Use normal sentence capitalization, exact product and identifier casing, and natural contractions. Be personable without relying on familiarity, catchphrases, teasing, profanity, or inflated claims.
+- Keep paragraphs focused. Use lists for steps or parallel choices and tables for lookup details; cut repetition instead of compressing explanations into fragments.
+- State limitations and failures calmly and specifically. Explain the consequence and the next supported action. Distinguish configured state, accepted requests, execution, and verified completion.
+
+Leave already-clear passages alone and apply the [documentation change gate](#documentation-change-gate) to voice cleanup too. Preserve factual claims, commands, identifiers, code, quoted/source material, links and anchors, consequential defaults and caveats, permission boundaries, executable Leia blocks, required formats, and published release history. Style edits must not weaken requirements or imply unverified success. Required skill headings, changelog formats, and language-specific code/comment conventions retain their own rules.
+
+## Inventory
+
+Common places to inspect when relevant to the change, including but not limited to:
+
+- `README.md`, including package- and directory-level READMEs
+- `ADVANCED.md`
+- `DEVELOPMENT.md` and `CONTRIBUTING.md`
+- `API.md` and `CLI.md`
+- `PLUGINS.md`, `CODEX.md`, and `OPENCLAW.md`
+- `CONFIG.md` and `CONFIGURATION.md`
+- `OPERATIONS.md`, `TROUBLESHOOTING.md`, and `UPGRADING.md`
+- Markdown and MDX pages under `docs/`, `doc/`, `website/`, or the project's configured content directories
+- Generated references and their source annotations
+
+Follow existing links and site navigation to find other documentation. This inventory does not require creating missing files or editing every surface inspected.
+
+## Machine Names and Versions
+
+Use backticks for concrete machine names: packages, skills, channels, tools, files, identifiers, CLI commands and flags, and literal versions or version ranges. Name the affected surface explicitly when it helps the reader identify what changed; retain normal prose for human-facing product names. For example: `tanaab-vue-author`, `@tanaab/component-playground`, `edge`, `bun run test`, and `1.2.3`.
+
+## Compatibility and Links
+
+- Follow the project's [maturity and compatibility commitments](./coding-stack-preferences.md#project-maturity-and-compatibility) when describing stability, deprecation, or migration; do not invent guarantees or migration obligations for an unsettled surface.
+- Link to maintained upstream documentation or the upstream default branch for current guidance. Document minimum compatibility or a supported range only when it affects the reader's choice, such as `1.0.2+`, `^2.0.0`, or `2.x`; a range describes supported compatibility, not necessarily an open-ended minimum. Avoid release-tag and commit-pinned documentation links in ongoing guidance.
+- Read current runtime and dependency versions from project declarations rather than repeating them in prose. A current documentation link does not make unreleased features available in the installed package.
+- Preserve exact versions in release history, historical evidence, reproducible fixtures, lockfiles, and intentional execution pins. Record the release or commit inspected during an audit in its review report rather than turning that snapshot into a permanent guidance link.
+
+## Documentation Change Gate
+
+Apply this gate before adding, expanding, or relocating documentation on any surface. A code change does not automatically require documentation changes; no documentation change is a valid outcome.
+
+- Identify the reader and the task, decision, or concrete mistake the proposed prose helps them address. Add prose only when that need is unmet.
+- Check existing docs, help, schemas, tests, runtime errors, and Actions diagnostics first. Do not add troubleshooting prose for failures that already explain the problem and remedy; document only missing prerequisites, decisions, consequences, or recovery steps readers need.
+- Give each explanation one authoritative home. Keep machine contracts in schemas, tests, and runtime instructions; add a human explanation only when the reader needs it to act correctly.
+- Keep installation, configuration, operation, and recovery requirements in product docs. Put useful fixture rationale, regression context, and scenario-specific limitations in the owning executable example's README; a test change does not justify expanding product docs. Keep implementation invariants with the owning code.
+- Prefer correcting, replacing, deleting, or linking existing material over adding sections or files. Use the shortest explanation that closes the gap: a sentence may suffice, and removing unnecessary prose needs no replacement.
+- Keep temporary debugging history, abandoned approaches, and validation evidence in the pull request. Promote only reusable explanation that passes this gate into its appropriate durable home; do not relocate prose that should simply be omitted.
+- Preserve useful reference coverage and correct claims made inaccurate by behavior changes. Complete API, CLI, and configuration references can serve a real lookup need; explanatory prose should help readers choose, combine, or understand consequences rather than repeat the inventory.
+- Update generated references through their existing source and generator when their contract changes. Regeneration does not require an accompanying narrative, troubleshooting section, or new guide.
+- Apply the gate as an internal authoring and review decision, without a mandatory justification template, checklist response, or recurring boilerplate.
+
+## Documentation Placement Review
+
+During optimization, inspect the existing documentation structure, whether a single README, companion Markdown guides, or a VitePress site. Audit obscure informational detail, repetitive explanation, and lengthy edge cases against the reader's task, not a word-count target.
+
+- Keep essential installation, configuration, operation, recovery, and consequential limitations in product documentation. Keep useful general lookup material in its appropriate reference home.
+- Move useful scenario-specific explanation to an existing Leia example that actually demonstrates the behavior. Name the source passage and destination example in the proposal; do not create a test merely to store prose or force unrelated detail into an example.
+- Remove redundant narration and temporary debugging history instead of relocating it. Examples may explain more when that helps a reader understand the demonstrated behavior, but remain edited and coherent.
+- Link moved material from the relevant product documentation through a contextual link or a short Examples or Further Reading area when useful. Preserve navigation and discoverability without duplicating the explanation or requiring another section in every document.

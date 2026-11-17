@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Made `tanaab-task-author` self-contained with bundled commands, local references, and cloud copy-and-run guidance. [#110](https://github.com/tanaabased/canon/issues/110)
+
 ## v0.14.0 - [November 16, 2026](https://github.com/tanaabased/canon/releases/tag/v0.14.0)
 
 - Added canonical label inspection, planning, and synchronization across repositories to `tanaab-github-issue-schema-author`.

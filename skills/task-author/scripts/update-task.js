@@ -4,7 +4,7 @@ import { updateTask } from '../lib/task-update-author.js';
 import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../lib/task-json-command.js';
 
 function usage() {
-  return `Usage: bun skills/task-author/scripts/update-task.js --input <path|->
+  return `Usage: bun "${process.argv[1]}" --input <path|->
 
 Read a JSON revise or normalize request, print the exact plan, and update only when the
 safety attestation, exact OWNER/REPO#NUMBER target, and exact digest are approved. An agent

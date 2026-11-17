@@ -18,12 +18,14 @@
     "vue-eslint-parser": "^10.4.1"
   },
   "scripts": {
+    "build:task-author": "bun skills/task-author/scripts/build-distribution.js",
+    "check:task-author": "bun skills/task-author/scripts/build-distribution.js --check",
     "codex:check": "codex-tools cache check",
     "codex:sync": "codex-tools cache sync",
     "format:check": "bun run --bun prettier . --check --ignore-unknown",
     "format:write": "bun run --bun prettier . --write --ignore-unknown",
     "lint:eslint": "bun run --bun eslint .",
-    "lint": "bun run lint:eslint && bun run format:check",
+    "lint": "bun run lint:eslint && bun run format:check && bun run check:task-author",
     "test:unit": "bun run --bun mocha \"test/**/*.spec.js\" \"skills/**/test/**/*.spec.js\"",
     "test": "bun run test:unit",
     "check:package": "bun scripts/check-package-cli.js",

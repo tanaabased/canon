@@ -34,6 +34,7 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
           version: ${{ env.STAMPED_VERSION }}
@@ -84,6 +85,7 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
           version: ${{ env.STAMPED_VERSION }}
@@ -137,6 +139,7 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
           dry-run: true

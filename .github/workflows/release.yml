@@ -35,6 +35,7 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
       - name: Verify prepared formatting
         run: bun run format:check
       - name: Pack plugin
@@ -91,6 +92,7 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
       - name: Verify prepared formatting
         run: bun run format:check
       - name: Pack plugin
@@ -153,5 +155,6 @@ jobs:
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             bun run format:write
+            bun run build:task-author
             bun run format:check
           sync-token: ${{ secrets.TANAAB_COAXIUM_INJECTOR }}
