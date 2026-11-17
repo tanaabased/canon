@@ -32,7 +32,7 @@ For Codex, install the Node/npm [prerequisites](./INSTALLATION.md#codex), then r
 npx --yes --package=@tanaab/codex-tools@1 -- codex-tools install npm:@tanaab/canon
 ```
 
-For OpenClaw 2026.9.5 or newer:
+For OpenClaw `2026.11.3` or newer:
 
 ```sh
 openclaw plugins install npm:@tanaab/canon --accept-capabilities

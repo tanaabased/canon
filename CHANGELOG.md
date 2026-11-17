@@ -1,6 +1,8 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
 - Made `tanaab-task-author` self-contained with bundled commands, local references, and cloud copy-and-run guidance. [#110](https://github.com/tanaabased/canon/issues/110)
+- Raised the minimum supported OpenClaw version to `2026.11.3`. [#115](https://github.com/tanaabased/canon/pull/115)
+- Restored required ClawHub publication in the release workflow. [#115](https://github.com/tanaabased/canon/pull/115)
 
 ## v0.14.0 - [November 16, 2026](https://github.com/tanaabased/canon/releases/tag/v0.14.0)
 
