@@ -1,0 +1,180 @@
+# Coding Stack Preferences
+
+Use this reference for default runtime, framework, and tooling choices in Tanaab-managed coding repos.
+
+- This is a default stack, not a claim that every repo should force every tool.
+- Prefer one consistent stack unless the repository's actual surface or external contract clearly justifies an exception.
+- Keep this file focused on stable defaults and exception boundaries, not step-by-step implementation recipes.
+- Future live coding skills should cite this file instead of re-copying stack choices into each skill.
+
+## Project Maturity and Compatibility
+
+- Determine the affected surface's stability and compatibility commitments from repository guidance, supported public contracts, release policy, and explicit user decisions. A version number or prerelease label alone does not establish those commitments or authorize breaking them.
+- For an explicitly experimental or unsettled surface, prefer correcting the design and updating its consumers directly. Do not add aliases, facades, fallback paths, or deprecation machinery merely to preserve an abandoned design.
+- For a supported contract, preserve compatibility or follow an authorized breaking-change and migration plan. If the commitment is unclear and the change would break consumers, resolve that uncertainty before removing behavior.
+- Keep documentation proportionate to the supported contract: describe current use and necessary migration steps, without presenting unsettled implementation details as permanent guarantees or adding speculative compatibility guides.
+
+## Default Runtime
+
+- Prefer ESM JavaScript or TypeScript on Bun for repositories that have meaningful JS/TS tooling, CLI, docs, frontend, or automation surfaces.
+- Use Bun for dependency installation, source execution, lint, type-checking, unit tests, the Leia harness, and builds where the tools support it. The development toolchain does not determine the published runtime contract.
+- Read runtime versions from project declarations such as `.node-version`, `.bun-version`, `packageManager`, and `engines`; follow [compatibility and link guidance](./documentation-standards.md#compatibility-and-links) for upstream requirements and necessary minimums instead of copying changing versions into prose.
+- Use `node:` built-in modules when Bun provides Node-compatible support.
+- Do not introduce Bun into a repository that has no meaningful JavaScript or TypeScript surface just to satisfy stack consistency.
+- For saved automation commands intended to survive supported runtime upgrades, prefer a stable host-owned launcher or resolution through the configured host `PATH` over a version-specific installation path. Check the executing runtime against the package's declared compatibility before accessing operational state, and report missing or unsupported runtimes with an actionable remedy. Preserve intentional exact-runtime pins and required executable identity checks; this does not prohibit absolute paths. When changing durable launch behavior, use a disposable replacement-runtime case to verify that removing the old executable does not strand the saved command.
+
+### Source and Distribution
+
+- Use `#!/usr/bin/env bun` for executable JS/TS source entrypoints. Ordinary modules and scripts invoked explicitly through Bun need no shebang.
+- Build shipped CLI artifacts for their declared consumer runtime, usually Node for npm distribution; Bun remains valid when it is the supported runtime. Set the [Bun build target](https://bun.com/docs/bundler#target) explicitly and have the build emit or replace the artifact's shebang accordingly, preserving executable permissions and leaving source unchanged.
+- Keep Node-distributed code and dependencies Node-compatible; changing a shebang or build target does not translate Bun-only APIs. Align package `bin`, `exports`, and `engines` with the shipped artifacts, and generate only the ESM/CommonJS formats the package promises.
+
+## npm Package Identity
+
+- Use `@tanaab` as the canonical npm scope for every Tanaab-owned package, including libraries, CLIs, workspaces, npm-published GitHub Actions, and npm-distributed Codex or OpenClaw plugins.
+- Put that identity in `package.json#name` and use `@tanaab/<package>` consistently in internal dependency declarations, package-manager configuration, publish automation, and package examples.
+- Treat `@tanaabased/*` as a noncanonical npm identity. Keep GitHub repositories and their metadata under `github.com/tanaabased`; the GitHub organization name does not define the npm scope.
+- Keep platform-native plugin identifiers separate from npm package identity. For example, an npm-distributed plugin may use `@tanaab/openclaw-devguard` in `package.json` while its `openclaw.plugin.json#id` remains `devguard`; Codex plugin manifest names likewise follow the Codex contract.
+- Preserve third-party scopes such as `@types`, `@actions`, and `@eslint`; the Tanaab scope rule applies only to Tanaab-owned package identities.
+- Treat lockfiles as generated projections of package manifests. Change the owning manifests first, then refresh and validate their lockfiles with the package manager; never treat a lockfile-only identity edit as the source of truth.
+
+## npm Package Publishing
+
+- Keep the single-package `release.published` lifecycle with [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment), including shared preparation, exact-tarball validation and publication, and independent repository synchronization. Leave multi-package release orchestration explicit.
+- Prefer tokenless npm trusted publishing on a supported GitHub-hosted runner. Let the shared publisher select a compatible project Node/npm toolchain and grant `id-token: write` only to its job.
+- Keep three signals separate: a SemVer prerelease suffix (for example, `1.0.0-beta.2`) describes version syntax; GitHub reports whether a published release is Latest or a prerelease; npm `latest` and `edge` are distribution tags. npm `latest` is the default install tag, not a stability guarantee.
+- On `release.published`, `publish-npm` uses the reported GitHub status, regardless of SemVer syntax:
+
+  | Example                                         | GitHub status          | npm tag                                     |
+  | ----------------------------------------------- | ---------------------- | ------------------------------------------- |
+  | `v1.0.0-beta.2` deliberately selected as Latest | Regular Latest         | `latest`, optionally synchronized to `edge` |
+  | `v1.0.0-beta.2` marked as a GitHub prerelease   | Prerelease, non-Latest | `edge` only                                 |
+  | `v1.0.0` published without Latest status        | Regular non-Latest     | `edge` only                                 |
+
+  The same rule applies to a first release: a GitHub prerelease does not establish npm's default-install `latest` tag. Outside release events, the action falls back to SemVer syntax: versions with a prerelease suffix use `edge`, and other versions use `latest`.
+
+- Use the preferred `latest-tag`, `edge-tag`, and `sync-edge-tag` inputs when customizing channels. `publish-npm@v1.0.5` and later support tokenless trusted-publisher dist-tag updates; omit `channel-token` and `registry-token` for npm publication and channel syncing when using those releases. Token-based auth remains valid for registries, runners, or clients that cannot use trusted publishing.
+- npm trusted publishing requires a supported GitHub-hosted runner and `id-token: write` on the npm job. For [trusted publishing](https://docs.npmjs.com/trusted-publishers/), enable `npm publish` for publication and `npm dist-tag` for channel syncing. OIDC dist-tag updates require npm `11.21.0+` in the 11.x line or `12.2.0+` in the 12.x line.
+- Build only when the package ships generated output. Validate the final prepared artifact and preserve any release tool's stated limitations around mutation and synchronization.
+
+## TypeScript
+
+- Support JavaScript and TypeScript as first-class implementation languages under the same ownership and folder rules.
+- Preserve the language already used by an existing scope unless the repository or user selects TypeScript.
+- Use TypeScript for new work when the repo already uses it, an external contract requires it, or the user chooses it.
+- Treat migration of unrelated JavaScript as an explicit follow-on decision rather than automatic cleanup.
+- In mixed-language Bun repos, use `allowJs` to support gradual adoption and keep static type-checking separate from execution or bundling.
+
+## Frontend
+
+- Prefer Vue 3 for front-end component work.
+- Prefer VitePress 1 for static sites and documentation sites when a fuller docs surface is warranted.
+- For Tanaab-styled static sites, prefer subthemes built on `tanaabased/theme`.
+- Keep project-specific presentation changes in the local subtheme layer instead of forking the upstream theme when a subtheme is sufficient.
+
+## Styling
+
+- Prefer SCSS when a stylesheet preprocessor is appropriate.
+- Use plain CSS only when the task explicitly requires it or the surrounding toolchain does not support SCSS cleanly.
+- Do not choose Less or Stylus by default.
+
+## Linting and Formatting
+
+- Prefer ESLint for code-quality and static-analysis rules.
+- Prefer standalone Prettier for formatting.
+- Keep linting and formatting ownership separate instead of embedding formatting rules into ESLint by default.
+- In ESM-first repos, prefer `eslint.config.js` and `prettier.config.js` over `.mjs` variants unless the surrounding stack requires another shape.
+
+## Testing Defaults
+
+The shared behavioral model has three layers. Classify by the boundary exercised, not by runner, duration, or filename; Mocha can run both units and components.
+
+| layer       | boundary and example                                                                                                                                                                                         | placement                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| strict unit | an isolated decision or transformation with deterministic inputs and injected boundaries; for example, selecting a retry policy from supplied errors and time                                                | nearest owning scope's `test/`, such as `feature/test/retry-policy.spec.js` |
+| component   | a coherent subsystem with real internal wiring exercised through its boundary and fake external services; for example, backup creation and recovery through a local archive adapter with fake remote storage | the same owning `test/`, such as `feature/test/backup.component.js`         |
+| end-to-end  | a supported installed product flow through public interfaces and meaningful outcomes; for example, installing the candidate package and using its CLI to back up and restore a workspace                     | the owning Leia `examples/<flow>/README.md`, where applicable               |
+
+- Apply [Validation Selection](./verification-boundaries.md#validation-selection) when choosing local checks and [verification boundaries](./verification-boundaries.md) for additional post-success checks.
+- Strict units avoid real filesystem, subprocess, network, credential, and timing dependencies. Inject those boundaries; extract cohesive decisions into `utils/` when that simplifies the code rather than forcing every function out of its owner.
+- Components can cover a subsystem smaller than a library and need not be UI components. Allow small isolated filesystem, socket, or process fixtures when that native contract is the subject. Inject incidental dependencies, keep external services fake, and keep installed functional loops in end-to-end coverage.
+- End-to-end coverage includes bounded installed integration, such as importing one public package API in an isolated consumer, as well as multi-system journeys such as installation through service restart and recovery. Choose the smaller flow that establishes the supported contract; use deterministic model fixtures when model judgment is not the contract. Follow [Leia policy](./leia-markdown-scenarios.md) for execution and artifact isolation.
+- Choose the smallest layer that detects the regression. Composing functions does not require another suite; expose separately selectable fast units and components when their cost or boundary makes that useful. Use disjoint discovery patterns if splitting commands, such as `test/*.spec.js` and `test/*.component.js`, without another runner or mandatory component suite.
+- For expensive component suites, provide practical selection of coherent files or groups through the existing runner, preserving required build and fixture preparation. Select by affected contracts and consumers, including shared runtime adapters where applicable. Prefer explicit selection before adding a dependency-based selector; keep full coverage in its designated gate.
+- Classify [evidence per assertion](./verification-boundaries.md#evidence-and-static-checks), including in mixed suites. Lint, schema, build, packaging, and publication checks retain their distinct contracts; they do not require a fourth suite or establish runtime behavior by themselves.
+- When Mocha cases time out or repeatedly run slowly, review their boundary and execution cost. Reduce fixtures, inject incidental dependencies, and consolidate duplicate flows before a justified timeout increase. Elapsed time alone does not classify a test, and filesystem use does not automatically require Leia.
+- Apply the shared [admission and retention gate](./verification-boundaries.md#assertion-strength) when adding, consolidating, or removing coverage. Identify surviving meaningful protection for consequential safety, protocol, and platform contracts; low-consequence detail may deliberately remain untested without a replacement.
+- For JS/TS/Bun units and components, prefer Mocha plus built-in `node:` assertions and appropriate fixture helpers. Preserve [Vue Author's Vitest and Vue Test Utils defaults](https://github.com/tanaabased/canon/blob/main/skills/vue-author/SKILL.md#testing) and effective existing suites.
+- Add `c8` only when coverage reporting or enforcement is actually needed.
+- Prefer a `test/` directory inside the nearest scope that owns the implementation.
+- Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support code.
+- For helper modules such as `feature/utils/x.ts`, prefer matching specs such as `feature/test/x.spec.ts`.
+- Use a repository-root `test/` directory only for root-owned code or intentionally cross-scope coverage.
+- Use the module-under-test path without file extension as the `describe` value, relative to the repo root or nearest source root.
+- Start Mocha test names with `should` so each test reads as an expected behavior.
+- OS matrices and stress/volume coverage are independent of these layers; choose them for supported platform contracts and load risks.
+- For JS/TS/Bun unit and component workflows that validate developer-machine code, CLIs, or plugin tooling, prefer an Ubuntu plus current macOS runner matrix.
+- Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; a PowerShell script, wrapper, or template alone is not sufficient evidence.
+- When Windows CI is explicitly required, use a supported versioned runner label selected for that repository and never `windows-latest`.
+
+### Test Runtimes
+
+- Select [runtime setup actions](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
+- Before adding a runtime installer, inspect the selected actions' setup guarantees. Reuse a compatible runtime they already provide; an npm operation or Node-based action does not by itself require another caller-owned `setup-node` step.
+- Make the tool runtime explicit in package scripts, for example `bun ./node_modules/mocha/bin/mocha.js`. `bun run` alone can honor a tool's Node shebang. [Bun's `--bun` override](https://bun.com/docs/runtime/bunfig#run-bun-auto-alias-node-to-bun) also redirects child `node` commands, so keep it and equivalent configuration out of Node compatibility checks.
+- Exercise the prepared or packed artifact under its declared runtime: the installed CLI through its executable entrypoint, and public library exports through the promised `import`/`require` paths. A Bun-hosted check may launch real Node subprocesses; its own runtime does not prove the consumer's runtime.
+- Keep compatibility checks focused on the package contract and supported runtime boundary. Do not repeat the full development suite across runtimes or add post-publish registry probes without a distinct gap to cover.
+
+## Operational Scenario Testing
+
+- Use Leia-backed markdown scenarios when the main risk is end-to-end operational behavior, machine mutation, CLI contract, file layout, permissions, or log output.
+- Apply [Testing Defaults](#testing-defaults) before choosing Leia: small native-contract components can stay in the owning test runner; installed shell, bootstrap, and other public flows belong in executable scenarios.
+- Use direct command assertions when behavior is deterministic. Use a strict mock when the agent/tool loop matters but model judgment does not; reserve live models for interpretation or provider/native behavior that a mock cannot establish. Keep model selection in the owning runtime or repository configuration.
+- Treat machine-mutating Leia suites as CI-first coverage rather than a normal local-default test path.
+- Apply [Leia's artifact testing policy](./leia-markdown-scenarios.md#real-product-execution): exercise the candidate tarball or standalone executable through its consumer interface, with no checkout-source fallback. Select the declared consumer runtime through [Test Runtimes](#test-runtimes).
+
+## Shell and Scripting Exceptions
+
+- Prefer Bash, POSIX shell, or PowerShell only when shell is the actual maintained surface, distribution surface, or the clearer tool for the job.
+- Use shell for wrappers, bootstrap flows, or native shell automation when that surface is primary.
+- Do not choose shell for non-shell application logic just to avoid JavaScript.
+- When shell wrappers invoke repo-authored JavaScript or TypeScript helpers, prefer Bun-backed entrypoints over calling `node` directly.
+
+## GitHub Actions
+
+- Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
+- Select [Tanaab Actions runtime setup](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#preferred-tools) through [Test Runtimes](#test-runtimes), using project declarations and the correct package directory; retain direct upstream actions when required inputs or runners are unsupported.
+- Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
+- Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
+- For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
+- Use `.github/workflows/pr-examples-tests.yml` for Leia-backed consumer scenarios, `.github/workflows/pr-component-tests.yml` for separately gated component behavior, including Vue, `.github/workflows/pr-build-checks.yml` for frontend lint and builds, and `.github/workflows/release.yml` for a canonical release-published deployment lifecycle.
+- Add separate files such as `pr-options-tests.yml` or `pr-sync-tests.yml` when those surfaces need independent runners, permissions, ownership, or status checks.
+- Combine gates only when they are operationally inseparable and share the same runner, matrix, ownership, and status identity; do not consolidate independent lint and unit-test gates merely to reduce file count.
+- For Bun-backed actions authored in JavaScript or TypeScript, prefer composite wrappers that install Bun and invoke a stable built JavaScript runtime artifact such as `dist/index.js`.
+- Keep the action contract in `README.md` when the repository's primary product is a GitHub Action.
+
+## Documentation Surface Defaults
+
+- Apply [Documentation Standards](./documentation-standards.md) before selecting or expanding any documentation surface; these placement defaults do not require new content.
+
+- Prefer a full `README.md` by default when one durable file can realistically carry the repo's user-facing contract.
+- Prefer a companion-guides README when the common path belongs in `README.md` but one or two linear root-level references keep advanced or topical material focused.
+- Prefer the GitHub Action README shape when the repository's primary product is a GitHub Action.
+- Require an explicit VitePress review when a repository reaches `README.md`, `ADVANCED.md`, and three or more topical guides, or earlier when navigation, search, versioning, or multiple independent journeys are needed.
+- Keep the README as a strong entrypoint even when the repo later grows a docs site.
+
+## Baseline Repo Signals
+
+- Prefer `packageManager` in `package.json` and a committed `bun.lock` for Bun-managed repos.
+- Prefer `.bun-version` when the repo uses the shared Bun version-file convention.
+- Prefer `.tool-versions` only when the repo already tracks local tool versions there.
+- Prefer kebab-case for repo-authored filenames unless the ecosystem requires a fixed conventional name.
+
+## Pairing
+
+- Pair this reference with [release-destinations.md](./release-destinations.md) when deciding whether a package is npm-published, registry-delivered, or private in support of another release artifact.
+- Pair this reference with [javascript-repo-structure.md](./javascript-repo-structure.md) for JS/TS/Bun code layout and hoisting decisions.
+- Pair it with [javascript-function-data-flow.md](./javascript-function-data-flow.md) when the task is about JavaScript or TypeScript helper shape, mutation discipline, type flow, or import grouping.
+- Pair it with [readme-standards.md](./readme-standards.md) when the task is about repository README mode or docs-wrapper decisions.
+- Pair it with [front-end-preferences.md](./front-end-preferences.md) when the task is specifically frontend- or VitePress-led.
+- Pair it with the relevant surface-specific canon when the repo is frontend-, docs-, workflow-, shell-, or release-led.

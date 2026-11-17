@@ -1,0 +1,45 @@
+export default {
+  sourceBaseUrl: 'https://github.com/tanaabased/canon/blob/main/',
+  entrypoints: {
+    'scripts/draft-task.js': 'dist/draft-task.js',
+    'scripts/create-task.js': 'dist/create-task.js',
+    'scripts/update-task.js': 'dist/update-task.js',
+    'scripts/migrate-fallback.js': 'dist/migrate-fallback.js',
+  },
+  resources: {
+    'SKILL.md': 'SKILL.md',
+    'agents/openai.yaml': 'agents/openai.yaml',
+    'assets/icon-small.svg': 'assets/icon-small.svg',
+    'assets/icon-large.png': 'assets/icon-large.png',
+    'references/distribution-pilot.md': 'references/distribution-pilot.md',
+    '../../references/project-management-model.md': 'references/canon/project-management-model.md',
+    '../../references/task-management-contract.md': 'references/canon/task-management-contract.md',
+    '../../references/task-management-schema.json': 'references/canon/task-management-schema.json',
+    '../../references/task-management-fixtures.md': 'references/canon/task-management-fixtures.md',
+    '../../references/github-cli-routing.md': 'references/canon/github-cli-routing.md',
+    '../../references/documentation-standards.md': 'references/canon/documentation-standards.md',
+    '../../references/verification-boundaries.md': 'references/canon/verification-boundaries.md',
+    '../../references/commit-subjects.md': 'references/canon/commit-subjects.md',
+    '../../references/coding-stack-preferences.md': 'references/canon/coding-stack-preferences.md',
+    '../../references/javascript-repo-structure.md':
+      'references/canon/javascript-repo-structure.md',
+    '../../references/javascript-function-data-flow.md':
+      'references/canon/javascript-function-data-flow.md',
+    '../../references/release-destinations.md': 'references/canon/release-destinations.md',
+    '../../references/leia-markdown-scenarios.md': 'references/canon/leia-markdown-scenarios.md',
+    '../../references/optimization-operations.md': 'references/canon/optimization-operations.md',
+    '../../references/readme-standards.md': 'references/canon/readme-standards.md',
+    '../../references/front-end-preferences.md': 'references/canon/front-end-preferences.md',
+    '../../templates/task-completion-pull-request.md':
+      'references/canon/templates/task-completion-pull-request.md',
+  },
+  sourceLinks: [
+    '../project-milestone-author/SKILL.md',
+    '../task-decomposer/SKILL.md',
+    '../task-completion-check/SKILL.md',
+    '../codex-plugin-author/SKILL.md',
+    '../github-workflow-author/SKILL.md',
+    '../javascript-author/SKILL.md',
+    '../vue-author/SKILL.md',
+  ],
+};

@@ -4,7 +4,7 @@ import { migrateTaskFallback } from '../lib/task-fallback-migrator.js';
 import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../lib/task-json-command.js';
 
 function usage() {
-  return `Usage: bun skills/task-author/scripts/migrate-fallback.js --input <path|->
+  return `Usage: bun "${process.argv[1]}" --input <path|->
 
 Preview and apply one separately bounded fallback migration through exact target and digest
 approval. An agent may inspect and apply both passes in one turn after an explicit migration

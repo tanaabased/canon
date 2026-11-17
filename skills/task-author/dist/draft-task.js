@@ -1,0 +1,892 @@
+#!/usr/bin/env bun
+// @bun
+
+// lib/run-github-cli.js
+import { spawnSync } from "child_process";
+var INHERITED_PROCESS_OPTIONS = ["cwd", "env"];
+var GITHUB_API_VERSION_HEADER = "X-GitHub-Api-Version: 2026-03-10";
+function runGitHubCli(args, options = {}, dependencies = {}) {
+  for (const key of INHERITED_PROCESS_OPTIONS) {
+    if (Object.hasOwn(options, key)) {
+      throw new Error(`GitHub CLI must inherit the active process ${key}.`);
+    }
+  }
+  const spawn = dependencies.spawnSync ?? spawnSync;
+  return spawn("gh", args, { encoding: "utf8", ...options });
+}
+
+// skills/task-author/lib/github-capability-client.js
+function commandFailure(result, context) {
+  const detail = String(result.stderr ?? result.error?.message ?? "unknown error").trim();
+  return new Error(`${context}: ${detail}`);
+}
+function parseJson(result, context) {
+  try {
+    return JSON.parse(String(result.stdout));
+  } catch (error) {
+    throw new Error(`${context} returned invalid JSON: ${error.message}`, { cause: error });
+  }
+}
+function flattenCollection(payload, keys = []) {
+  const pages = Array.isArray(payload) ? payload : [payload];
+  return pages.flatMap((page) => {
+    if (Array.isArray(page))
+      return page;
+    for (const key of keys) {
+      if (Array.isArray(page?.[key]))
+        return page[key];
+    }
+    return [];
+  });
+}
+
+class GitHubCapabilityClient {
+  #runner;
+  constructor({ runner = runGitHubCli } = {}) {
+    this.#runner = runner;
+  }
+  #run(args) {
+    return this.#runner(args);
+  }
+  ensureAvailable() {
+    const version = this.#run(["--version"]);
+    if (version.error?.code === "ENOENT") {
+      throw new Error("GitHub CLI (gh) is required for repository capability discovery.");
+    }
+    if (version.status !== 0)
+      throw commandFailure(version, "GitHub CLI availability check failed");
+    const auth = this.#run(["auth", "status"]);
+    return auth.status === 0 ? [] : [
+      "GitHub CLI authentication could not be verified; public reads may still succeed, but private repository discovery can fail."
+    ];
+  }
+  resolveCurrentRepository() {
+    const result = this.#run(["repo", "view", "--json", "nameWithOwner"]);
+    if (result.status !== 0)
+      return null;
+    const payload = parseJson(result, "Current repository discovery");
+    return payload.nameWithOwner ?? null;
+  }
+  getJson(endpoint, { paginate = false, keys = [] } = {}) {
+    const args = ["api", endpoint, "-H", GITHUB_API_VERSION_HEADER];
+    if (paginate)
+      args.push("--paginate", "--slurp");
+    const result = this.#run(args);
+    if (result.status !== 0)
+      return { ok: false, error: commandFailure(result, `GET ${endpoint}`) };
+    try {
+      const payload = parseJson(result, `GET ${endpoint}`);
+      return { ok: true, value: paginate ? flattenCollection(payload, keys) : payload };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  }
+  inspectRepository(target) {
+    const warnings = [];
+    const repositoryRead = this.getJson(`/repos/${target.slug}`);
+    if (!repositoryRead.ok)
+      throw repositoryRead.error;
+    const repository = repositoryRead.value;
+    const ownerType = String(repository.owner?.type ?? "").toLowerCase();
+    const organizationOwned = ownerType === "organization";
+    const issueTypes = organizationOwned ? this.optionalCollection(`/repos/${target.slug}/issue-types`, ["issue_types", "issueTypes"], "repository issue types", warnings) : { status: "not_applicable", values: [] };
+    const issueFields = organizationOwned ? this.optionalCollection(`/orgs/${target.owner}/issue-fields?per_page=100`, ["fields", "issue_fields"], "organization issue fields", warnings) : { status: "not_applicable", values: [] };
+    const labels = this.optionalCollection(`/repos/${target.slug}/labels?per_page=100`, ["labels"], "repository labels", warnings);
+    return {
+      repository: {
+        slug: target.slug,
+        ownerLogin: repository.owner?.login ?? target.owner,
+        ownerType: repository.owner?.type ?? "Unknown",
+        private: Boolean(repository.private)
+      },
+      issueTypes,
+      issueFields,
+      labels,
+      warnings
+    };
+  }
+  optionalCollection(endpoint, keys, description, warnings) {
+    const result = this.getJson(endpoint, { paginate: true, keys });
+    if (result.ok)
+      return { status: "ok", values: result.value };
+    warnings.push(`Could not inspect ${description}: ${result.error.message}`);
+    return { status: "unavailable", values: [] };
+  }
+}
+// references/task-management-schema.json
+var task_management_schema_default = {
+  schemaVersion: "tanaab/task-management-schema/v2",
+  issueTypes: [
+    { key: "task", name: "Task", enabled: true },
+    { key: "bug", name: "Bug", enabled: true },
+    { key: "feature", name: "Feature", enabled: true }
+  ],
+  bodyShapes: {
+    task: [
+      { heading: "Context", key: "context", level: 2, required: true },
+      { heading: "Outcome", key: "outcome", level: 2, required: false },
+      { heading: "Scope", key: "scope", level: 2, required: false },
+      { heading: "Out of scope", key: "outOfScope", level: 3, required: false },
+      {
+        heading: "Acceptance criteria",
+        key: "acceptanceCriteria",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Delivery and verification",
+        key: "delivery",
+        level: 2,
+        required: false
+      },
+      {
+        heading: "Constraints and approvals",
+        key: "constraints",
+        level: 2,
+        required: false
+      }
+    ],
+    bug: [
+      {
+        heading: "Observed behavior",
+        key: "observedBehavior",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Expected behavior",
+        key: "expectedBehavior",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Reproduction or evidence",
+        key: "reproduction",
+        level: 2,
+        required: true
+      },
+      { heading: "Impact", key: "impactSummary", level: 2, required: false },
+      {
+        heading: "Delivery and verification",
+        key: "delivery",
+        level: 2,
+        required: false
+      },
+      {
+        heading: "Acceptance criteria",
+        key: "acceptanceCriteria",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Constraints and approvals",
+        key: "constraints",
+        level: 2,
+        required: false
+      }
+    ],
+    feature: [
+      {
+        heading: "Problem or opportunity",
+        key: "problem",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Desired outcome",
+        key: "desiredOutcome",
+        level: 2,
+        required: false
+      },
+      { heading: "Scope", key: null, level: 2, required: false },
+      { heading: "In scope", key: "inScope", level: 3, required: false },
+      { heading: "Out of scope", key: "outOfScope", level: 3, required: false },
+      {
+        heading: "Acceptance criteria",
+        key: "acceptanceCriteria",
+        level: 2,
+        required: true
+      },
+      {
+        heading: "Delivery and verification",
+        key: "delivery",
+        level: 2,
+        required: false
+      },
+      {
+        heading: "Alternatives and constraints",
+        key: "alternatives",
+        level: 2,
+        required: false
+      }
+    ]
+  },
+  issueFields: [
+    {
+      key: "priority",
+      name: "Priority",
+      dataType: "single_select",
+      fallbackKey: "priority",
+      options: ["Urgent", "High", "Medium", "Low"],
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    },
+    {
+      key: "workSize",
+      name: "Work size",
+      description: "Relative delivery size using 1, 2, 3, 5, 8, 13, and 21.",
+      dataType: "single_select",
+      fallbackKey: "work-size",
+      options: ["1", "2", "3", "5", "8", "13", "21"],
+      optionColors: {
+        "1": "green",
+        "2": "green",
+        "3": "green",
+        "5": "blue",
+        "8": "blue",
+        "13": "yellow",
+        "21": "red"
+      },
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    },
+    {
+      key: "complexity",
+      name: "Complexity",
+      description: "Model-neutral reasoning difficulty, ambiguity, novelty, and uncertainty.",
+      dataType: "single_select",
+      fallbackKey: "complexity",
+      options: ["Low", "Medium", "High"],
+      optionColors: { Low: "green", Medium: "yellow", High: "pink" },
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    },
+    {
+      key: "impact",
+      name: "Impact",
+      description: "Expected local value of completing the task, independent of work size.",
+      dataType: "single_select",
+      fallbackKey: "impact",
+      options: ["Low", "Medium", "High", "Very high"],
+      optionColors: {
+        Low: "gray",
+        Medium: "yellow",
+        High: "blue",
+        "Very high": "green"
+      },
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    },
+    {
+      key: "startDate",
+      name: "Start date",
+      dataType: "date",
+      fallbackKey: "start-date",
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    },
+    {
+      key: "targetDate",
+      name: "Target date",
+      dataType: "date",
+      fallbackKey: "target-date",
+      visibility: "organization_members_only",
+      pinnedIssueTypes: ["Task", "Bug", "Feature"]
+    }
+  ],
+  preservedUnmanagedFields: ["Effort"],
+  labels: [
+    {
+      name: "documentation",
+      description: "Documentation is a primary deliverable, not an incidental update",
+      color: "5ab0ff"
+    },
+    {
+      name: "breaking change",
+      description: "Requires consumers to migrate or coordinate adoption",
+      color: "db2777"
+    },
+    {
+      name: "regression",
+      description: "Evidence shows previously working behavior now fails or degrades",
+      color: "ff667d"
+    },
+    {
+      name: "blocked",
+      description: "Work cannot proceed until a documented external blocker clears; dependencies alone do not qualify",
+      color: "b4233c"
+    },
+    {
+      name: "needs triage",
+      description: "Task kind, actionable scope, or acceptance criteria need clarification",
+      color: "ffb000"
+    },
+    {
+      name: "needs reproduction",
+      description: "A bug lacks reproduction or diagnostic evidence needed to investigate",
+      color: "b67e00"
+    },
+    {
+      name: "good first issue",
+      description: "Small, low-complexity, actionable, unblocked work suitable for a first contribution",
+      color: "33d3a1"
+    },
+    {
+      name: "help wanted",
+      description: "Actionable work for which maintainers explicitly welcome outside contribution",
+      color: "00c88a"
+    }
+  ],
+  legacyUnmanagedLabels: ["bug", "enhancement", "duplicate", "invalid", "question", "wontfix"],
+  automationOwnedLabels: ["dependencies", "javascript", "github_actions"],
+  projectSpecificLabelLimit: 2
+};
+
+// skills/task-author/lib/task-author-contract.js
+var FALLBACK_SCHEMA_VERSION = "tanaab/task-metadata/v2";
+var TASK_KINDS = Object.freeze(Object.fromEntries(task_management_schema_default.issueTypes.map(({ key, name }) => [key, name])));
+var METADATA_DEFINITIONS = Object.freeze({
+  type: { fieldName: null, fieldType: "issue_type", fallbackKey: "type" },
+  ...Object.fromEntries(task_management_schema_default.issueFields.map(({ key, name, dataType, fallbackKey }) => [
+    key,
+    { fieldName: name, fieldType: dataType, fallbackKey }
+  ]))
+});
+var FALLBACK_KEY_ORDER = Object.freeze([
+  "type",
+  "priority",
+  "work-size",
+  "complexity",
+  "impact",
+  "start-date",
+  "target-date"
+]);
+function fieldOptions(key) {
+  return task_management_schema_default.issueFields.find((field) => field.key === key)?.options ?? [];
+}
+function normalizedOptions(key) {
+  return fieldOptions(key).map((value) => value.toLowerCase().replaceAll(" ", "-"));
+}
+var WORK_SIZES = Object.freeze(fieldOptions("workSize").map(Number));
+var PRIORITIES = Object.freeze(normalizedOptions("priority"));
+var COMPLEXITIES = Object.freeze(normalizedOptions("complexity"));
+var IMPACTS = Object.freeze(normalizedOptions("impact"));
+var CANONICAL_LABELS = Object.freeze(Object.fromEntries(task_management_schema_default.labels.map(({ name, color, description }) => [
+  name,
+  { color, description }
+])));
+function displayValue(value) {
+  if (value === null || value === undefined)
+    return null;
+  return String(value).split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+}
+
+// skills/task-author/utils/build-task-assessment.js
+var ASSESSMENT_KEYS = Object.freeze([
+  "priority",
+  "workSize",
+  "complexity",
+  "impact",
+  "startDate",
+  "targetDate"
+]);
+var SOURCES = Object.freeze(["agent", "human", "policy", "existing"]);
+var HUMAN_CONTROLLED = new Set(["priority", "startDate", "targetDate"]);
+function normalizedRecord(record) {
+  if (!record || typeof record !== "object" || Array.isArray(record))
+    return null;
+  return {
+    source: String(record.source ?? "").trim().toLowerCase(),
+    rationale: String(record.rationale ?? "").trim()
+  };
+}
+function effectiveValues(metadata) {
+  return Object.fromEntries(ASSESSMENT_KEYS.flatMap((key) => metadata[key] === undefined ? [] : [[key, metadata[key]]]));
+}
+function buildTaskAssessment(metadata = {}, input = {}) {
+  const errors = [];
+  const values = {};
+  const effective = effectiveValues(metadata);
+  for (const key of Object.keys(input ?? {})) {
+    if (!ASSESSMENT_KEYS.includes(key))
+      errors.push(`assessment.${key} is not supported.`);
+  }
+  for (const [key, value] of Object.entries(effective)) {
+    const record = normalizedRecord(input?.[key]);
+    if (!record) {
+      errors.push(`assessment.${key} requires source and rationale provenance.`);
+      continue;
+    }
+    if (!SOURCES.includes(record.source)) {
+      errors.push(`assessment.${key}.source must be one of: ${SOURCES.join(", ")}.`);
+    }
+    if (record.source === "agent" && !record.rationale) {
+      errors.push(`assessment.${key}.rationale is required for an agent estimate.`);
+    }
+    if (HUMAN_CONTROLLED.has(key) && record.source === "agent") {
+      errors.push(`${key} is human- or policy-controlled and cannot be authored as an agent estimate.`);
+    }
+    values[key] = { value, ...record };
+  }
+  for (const key of ASSESSMENT_KEYS) {
+    if (input?.[key] !== undefined && effective[key] === undefined) {
+      errors.push(`assessment.${key} cannot describe an unset value.`);
+    }
+  }
+  return { values, errors };
+}
+
+// skills/task-author/utils/classify-task-labels.js
+function classifyTaskLabels({
+  kind = null,
+  metadata = {},
+  signals = {},
+  actionable = false,
+  hasAcceptanceCriteria = false,
+  reproductionAvailable = null,
+  availableLabels = null,
+  relationships = {}
+} = {}) {
+  const desired = [];
+  const warnings = [];
+  const add = (label) => {
+    if (!desired.includes(label))
+      desired.push(label);
+  };
+  if (signals.documentation === true)
+    add("documentation");
+  if (signals.breakingChange === true)
+    add("breaking change");
+  if (kind === "bug" && signals.regression === true)
+    add("regression");
+  const blocked = signals.blocked === true || relationships.externalBlocker === true;
+  if (blocked)
+    add("blocked");
+  const needsTriage = signals.needsTriage === true || !kind || !actionable || !hasAcceptanceCriteria;
+  if (needsTriage)
+    add("needs triage");
+  if (kind === "bug" && reproductionAvailable === false)
+    add("needs reproduction");
+  const eligibleFirstIssue = signals.goodFirstIssue === true && actionable && hasAcceptanceCriteria && !needsTriage && !blocked && metadata.complexity === "low" && [1, 2, 3].includes(metadata.workSize);
+  if (eligibleFirstIssue)
+    add("good first issue");
+  else if (signals.goodFirstIssue === true) {
+    warnings.push("good first issue was not proposed because its eligibility rules are not met.");
+  }
+  const eligibleHelpWanted = signals.helpWanted === true && actionable && hasAcceptanceCriteria && !needsTriage;
+  if (eligibleHelpWanted)
+    add("help wanted");
+  else if (signals.helpWanted === true) {
+    warnings.push("help wanted was not proposed because the task is not fully actionable and triaged.");
+  }
+  const known = Array.isArray(availableLabels) ? new Set(availableLabels.map((label) => (typeof label === "string" ? label : label.name).toLowerCase())) : null;
+  const apply = known ? desired.filter((label) => known.has(label)) : [];
+  const missing = known ? desired.filter((label) => !known.has(label)) : [];
+  const unresolved = known ? [] : [...desired];
+  if (missing.length > 0) {
+    warnings.push(`Canonical label definitions are absent and will not be created: ${missing.join(", ")}.`);
+  }
+  if (unresolved.length > 0) {
+    warnings.push("Repository label availability could not be verified; label plans remain unresolved.");
+  }
+  return {
+    desired: desired.filter((label) => Object.hasOwn(CANONICAL_LABELS, label)),
+    apply,
+    missing,
+    unresolved,
+    warnings
+  };
+}
+
+// skills/task-author/utils/normalize-task-kind.js
+function normalizeTaskKind(input) {
+  if (input === null || input === undefined || String(input).trim() === "")
+    return null;
+  const value = String(input).trim().toLowerCase();
+  if (!Object.hasOwn(TASK_KINDS, value)) {
+    throw new Error(`Unsupported task kind: ${input}. Expected Task, Bug, or Feature.`);
+  }
+  return value;
+}
+
+// skills/task-author/utils/normalize-task-metadata.js
+var DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+var METADATA_KEYS = Object.freeze([
+  "priority",
+  "workSize",
+  "complexity",
+  "impact",
+  "startDate",
+  "targetDate"
+]);
+function normalizedEnum(value) {
+  return typeof value === "string" ? value.trim().toLowerCase().replaceAll(" ", "-") : value;
+}
+function validateEnum(values, key, allowed, errors) {
+  if (values[key] === null || values[key] === undefined || values[key] === "") {
+    delete values[key];
+    return;
+  }
+  values[key] = normalizedEnum(values[key]);
+  if (!allowed.includes(values[key])) {
+    errors.push(`${key} must be one of: ${allowed.join(", ")}.`);
+  }
+}
+function validateDate(values, key, errors) {
+  if (values[key] === null || values[key] === undefined || values[key] === "") {
+    delete values[key];
+    return;
+  }
+  const value = String(values[key]).trim();
+  const parsed = new Date(`${value}T00:00:00Z`);
+  const isExactDate = DATE_PATTERN.test(value) && !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+  if (!isExactDate) {
+    errors.push(`${key} must be a valid ISO YYYY-MM-DD date.`);
+  }
+  values[key] = value;
+}
+function normalizeTaskMetadata(input = {}) {
+  const values = Object.fromEntries(METADATA_KEYS.filter((key) => input?.[key] !== undefined).map((key) => [key, input[key]]));
+  const errors = Object.keys(input ?? {}).filter((key) => !METADATA_KEYS.includes(key)).map((key) => `metadata.${key} is not supported.`);
+  validateEnum(values, "priority", PRIORITIES, errors);
+  validateEnum(values, "complexity", COMPLEXITIES, errors);
+  validateEnum(values, "impact", IMPACTS, errors);
+  if (values.workSize === null || values.workSize === undefined || values.workSize === "") {
+    delete values.workSize;
+  } else {
+    values.workSize = Number(values.workSize);
+    if (!WORK_SIZES.includes(values.workSize)) {
+      errors.push(`workSize must be one of: ${WORK_SIZES.join(", ")}.`);
+    }
+  }
+  validateDate(values, "startDate", errors);
+  validateDate(values, "targetDate", errors);
+  return { errors, values };
+}
+
+// skills/task-author/utils/normalize-task-target.js
+var REPOSITORY_SLUG = /^([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)(?:#([1-9]\d*))?$/;
+function normalizeTaskTarget(input) {
+  if (typeof input !== "string" || input.trim() === "") {
+    throw new Error("A GitHub repository target is required as OWNER/REPO.");
+  }
+  let candidate = input.trim();
+  if (/^https?:\/\//i.test(candidate)) {
+    let url;
+    try {
+      url = new URL(candidate);
+    } catch {
+      throw new Error(`Invalid GitHub repository URL: ${candidate}`);
+    }
+    if (url.hostname.toLowerCase() !== "github.com") {
+      throw new Error(`Expected a github.com repository URL, received: ${url.hostname}`);
+    }
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (parts.length === 4 && parts[2] === "issues" && /^[1-9]\d*$/.test(parts[3])) {
+      candidate = `${parts[0]}/${parts[1].replace(/\.git$/i, "")}#${parts[3]}`;
+    } else if (parts.length === 2) {
+      candidate = `${parts[0]}/${parts[1].replace(/\.git$/i, "")}`;
+    } else {
+      throw new Error("Expected a GitHub repository or issue URL.");
+    }
+  } else {
+    candidate = candidate.replace(/\.git(?=#|$)/i, "");
+  }
+  const match = candidate.match(REPOSITORY_SLUG);
+  if (!match) {
+    throw new Error(`Expected OWNER/REPO or OWNER/REPO#NUMBER, received: ${input}`);
+  }
+  const [, owner, repo, issueNumber] = match;
+  return {
+    owner,
+    repo,
+    slug: `${owner}/${repo}`,
+    url: `https://github.com/${owner}/${repo}`,
+    issueNumber: issueNumber ? Number(issueNumber) : null,
+    issueUrl: issueNumber ? `https://github.com/${owner}/${repo}/issues/${issueNumber}` : null
+  };
+}
+
+// skills/task-author/utils/plan-task-metadata.js
+function normalizeFieldType(field) {
+  return String(field.data_type ?? field.type ?? field.field_type ?? "").toLowerCase().replaceAll("-", "_");
+}
+function fieldOptions2(field) {
+  return field.options ?? field.settings?.options ?? [];
+}
+function findNamed(values, name) {
+  return values.find((value) => String(value.name).toLowerCase() === name.toLowerCase());
+}
+function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackKeys = [] } = {}) {
+  const native = { type: null, fields: [] };
+  const fallback = {};
+  const unresolved = [];
+  const warnings = [];
+  const forced = new Set(forceFallbackKeys);
+  if (kind) {
+    const kindDisplay = TASK_KINDS[kind];
+    if (forced.has("type")) {
+      fallback.type = kind;
+    } else if (capabilities.issueTypes?.status === "ok") {
+      const issueType = findNamed(capabilities.issueTypes.values ?? [], kindDisplay);
+      if (issueType)
+        native.type = { id: issueType.id ?? null, name: issueType.name };
+      else
+        fallback.type = kind;
+    } else if (capabilities.issueTypes?.status === "not_applicable") {
+      fallback.type = kind;
+    } else {
+      unresolved.push({ key: "type", value: kind, reason: "issue type availability is unknown" });
+    }
+  }
+  for (const [key, definition] of Object.entries(METADATA_DEFINITIONS)) {
+    if (key === "type" || values[key] === undefined)
+      continue;
+    const value = values[key];
+    const status = capabilities.issueFields?.status;
+    if (forced.has(definition.fallbackKey)) {
+      fallback[definition.fallbackKey] = value;
+      continue;
+    }
+    if (status === "not_applicable") {
+      fallback[definition.fallbackKey] = value;
+      continue;
+    }
+    if (status !== "ok") {
+      unresolved.push({
+        key: definition.fallbackKey,
+        value,
+        reason: "issue field availability is unknown"
+      });
+      continue;
+    }
+    const field = findNamed(capabilities.issueFields.values ?? [], definition.fieldName);
+    if (!field) {
+      fallback[definition.fallbackKey] = value;
+      continue;
+    }
+    if (normalizeFieldType(field) !== definition.fieldType) {
+      fallback[definition.fallbackKey] = value;
+      warnings.push(`${definition.fieldName} has incompatible type ${normalizeFieldType(field) || "unknown"}; using fallback metadata.`);
+      continue;
+    }
+    let nativeValue = value;
+    if (definition.fieldType === "single_select") {
+      const option = findNamed(fieldOptions2(field), displayValue(value));
+      if (!option) {
+        fallback[definition.fallbackKey] = value;
+        warnings.push(`${definition.fieldName} lacks option ${displayValue(value)}; using fallback metadata.`);
+        continue;
+      }
+      nativeValue = { id: option.id ?? null, name: option.name };
+    }
+    native.fields.push({
+      id: field.id ?? null,
+      name: field.name,
+      type: definition.fieldType,
+      value: nativeValue
+    });
+  }
+  return { native, fallback, unresolved, warnings };
+}
+
+// skills/task-author/utils/render-fallback-metadata.js
+function yamlScalar(value) {
+  if (typeof value === "number")
+    return String(value);
+  return String(value).toLowerCase().replaceAll(" ", "-");
+}
+function renderFallbackMetadata(fallback = {}) {
+  const lines = FALLBACK_KEY_ORDER.filter((key) => fallback[key] !== undefined && fallback[key] !== null && fallback[key] !== "").map((key) => `  ${key}: ${yamlScalar(fallback[key])}`);
+  if (lines.length === 0)
+    return "";
+  return [
+    "### Task metadata",
+    "",
+    "```yaml",
+    `schema: ${FALLBACK_SCHEMA_VERSION}`,
+    "mode: fallback",
+    "fallback:",
+    ...lines,
+    "```",
+    ""
+  ].join(`
+`);
+}
+
+// skills/task-author/utils/render-task-body.js
+var BODY_SHAPES = Object.freeze(task_management_schema_default.bodyShapes);
+function present(value) {
+  return Array.isArray(value) ? value.length > 0 : typeof value === "string" && value.trim() !== "";
+}
+function renderValue(key, value) {
+  if (!present(value))
+    return "";
+  if (key === "acceptanceCriteria") {
+    return value.map((item) => `- [ ] ${String(item).trim()}`).join(`
+`);
+  }
+  return Array.isArray(value) ? value.map((item) => `- ${String(item).trim()}`).join(`
+`) : String(value).trim();
+}
+function hasChildContent(shape, index, sections) {
+  for (const child of shape.slice(index + 1)) {
+    if (child.level <= shape[index].level)
+      break;
+    if (present(sections[child.key]))
+      return true;
+  }
+  return false;
+}
+function renderTaskBody(kind, sections = {}) {
+  if (!BODY_SHAPES[kind])
+    throw new Error(`Cannot render body for unsupported task kind: ${kind}`);
+  const missing = [];
+  const blocks = [];
+  const shape = BODY_SHAPES[kind];
+  for (const [index, { heading, key, level = 2, required = true }] of shape.entries()) {
+    const value = key === null ? undefined : sections[key];
+    if (!required && !present(value) && !hasChildContent(shape, index, sections))
+      continue;
+    if (required && !present(value))
+      missing.push(key);
+    let content = renderValue(key, value);
+    if (kind === "bug" && key === "reproduction" && present(sections.environment)) {
+      content = [content, `### Environment
+
+${renderValue("environment", sections.environment)}`].filter(Boolean).join(`
+
+`);
+    }
+    blocks.push(`${"#".repeat(level)} ${heading}
+
+${content}`.trimEnd());
+  }
+  return { body: `${blocks.join(`
+
+`)}
+`, missing };
+}
+
+// skills/task-author/lib/task-draft-author.js
+function appendBlock(body, block) {
+  if (!block)
+    return body;
+  return `${body.trimEnd()}
+
+${block.trimStart()}`;
+}
+function authorTaskDraft(input = {}, { githubClient = new GitHubCapabilityClient } = {}) {
+  const warnings = [];
+  warnings.push(...githubClient.ensureAvailable());
+  const resolvedInput = input.target ?? githubClient.resolveCurrentRepository();
+  if (!resolvedInput) {
+    throw new Error("The GitHub repository target is ambiguous or unavailable. Supply an explicit OWNER/REPO.");
+  }
+  const target = normalizeTaskTarget(resolvedInput);
+  const capabilities = githubClient.inspectRepository(target);
+  warnings.push(...capabilities.warnings);
+  const kind = normalizeTaskKind(input.kind);
+  const metadataResult = normalizeTaskMetadata(input.metadata);
+  const assessment = buildTaskAssessment(metadataResult.values, input.assessment);
+  const renderedBody = kind ? renderTaskBody(kind, input.sections) : { body: String(input.originalBody ?? ""), missing: ["kind"] };
+  const acceptanceCriteria = input.sections?.acceptanceCriteria;
+  const hasAcceptanceCriteria = Array.isArray(acceptanceCriteria) && acceptanceCriteria.some((item) => String(item).trim());
+  const actionable = input.actionable ?? (kind !== null && renderedBody.missing.length === 0);
+  const metadataPlan = planTaskMetadata(kind, metadataResult.values, capabilities, {
+    forceFallbackKeys: input.forceFallbackKeys
+  });
+  const fallbackBlock = renderFallbackMetadata(metadataPlan.fallback);
+  const body = appendBlock(renderedBody.body, fallbackBlock);
+  const availableLabels = capabilities.labels.status === "ok" ? capabilities.labels.values : null;
+  const labels = classifyTaskLabels({
+    kind,
+    metadata: metadataResult.values,
+    signals: input.signals,
+    actionable,
+    hasAcceptanceCriteria,
+    reproductionAvailable: input.reproductionAvailable,
+    availableLabels,
+    relationships: input.relationships
+  });
+  warnings.push(...metadataPlan.warnings, ...labels.warnings);
+  if (metadataResult.values.workSize === 13) {
+    warnings.push("Work size 13 requires an explicit decomposition review before execution.");
+  } else if (metadataResult.values.workSize === 21) {
+    warnings.push("Work size 21 is oversized and should normally be an acknowledged parent or planning task before decomposition.");
+  }
+  const comments = [];
+  const needsInput = !kind || !String(input.title ?? "").trim() || renderedBody.missing.length > 0 || metadataResult.errors.length > 0 || assessment.errors.length > 0 || !actionable;
+  const incompleteCapabilities = warnings.length > 0 || metadataPlan.unresolved.length > 0 || labels.missing.length > 0 || labels.unresolved.length > 0;
+  return {
+    mode: "draft",
+    mutatesGitHub: false,
+    status: needsInput ? "needs_input" : incompleteCapabilities ? "partial" : "ready",
+    target,
+    title: String(input.title ?? "").trim(),
+    taskKind: kind ? { key: kind, name: TASK_KINDS[kind] } : null,
+    body,
+    bodyEvidence: { missing: renderedBody.missing },
+    metadata: {
+      values: metadataResult.values,
+      native: metadataPlan.native,
+      fallback: metadataPlan.fallback,
+      unresolved: metadataPlan.unresolved,
+      errors: metadataResult.errors,
+      warnings: metadataPlan.warnings
+    },
+    assessment,
+    labels,
+    relationships: input.relationships ?? {},
+    comments,
+    capabilities,
+    questions: input.questions ?? [],
+    warnings,
+    operations: ["read repository", "read issue types", "read issue fields", "read labels"]
+  };
+}
+
+// skills/task-author/lib/task-json-command.js
+import { readFileSync } from "fs";
+var TASK_JSON_INPUT_GUIDANCE = `Agents should prefer --input - and send JSON through standard input.
+If standard input is unavailable, use a repository-local ignored scratch path under the
+active workspace only after verifying the intended path with git check-ignore. Do not use an
+operating-system or user-level temporary directory for request JSON.`;
+function runTaskJsonCommand(argv, { errorPrefix, execute, failureStatuses = [], usage }, { readFile = readFileSync, stderr = process.stderr, stdout = process.stdout } = {}) {
+  try {
+    if (argv.includes("--help") || argv.includes("-h")) {
+      stdout.write(`${usage()}
+`);
+      return 0;
+    }
+    const inputIndex = argv.indexOf("--input");
+    if (inputIndex === -1 || !argv[inputIndex + 1]) {
+      throw new Error("--input <path|-> is required.");
+    }
+    const inputPath = argv[inputIndex + 1];
+    const source = inputPath === "-" ? readFile(0, "utf8") : readFile(inputPath, "utf8");
+    const result = execute(JSON.parse(source));
+    stdout.write(`${JSON.stringify(result, null, 2)}
+`);
+    return failureStatuses.includes(result.status) ? 1 : 0;
+  } catch (error) {
+    stderr.write(`${errorPrefix}: ${error.message}
+`);
+    return 1;
+  }
+}
+
+// skills/task-author/scripts/draft-task.js
+function usage() {
+  return `Usage: bun "${process.argv[1]}" --input <path|->
+
+Read a JSON Task Author request and print a read-only GitHub capability-aware draft.
+This command never creates or changes a GitHub issue, field, label, relationship, or comment.
+
+${TASK_JSON_INPUT_GUIDANCE}`;
+}
+process.exitCode = runTaskJsonCommand(process.argv.slice(2), {
+  errorPrefix: "Task Author failed",
+  execute: authorTaskDraft,
+  usage
+});
