@@ -6,12 +6,15 @@ function normalizeFieldType(field) {
     .replaceAll('-', '_');
 }
 
-function fieldOptions(field) {
-  return field.options ?? field.settings?.options ?? [];
-}
-
 function findNamed(values, name) {
   return values.find((value) => String(value.name).toLowerCase() === name.toLowerCase());
+}
+
+export function findEnabledIssueType(capabilities, name) {
+  return findNamed(
+    (capabilities.issueTypes?.values ?? []).filter(({ is_enabled }) => is_enabled !== false),
+    name,
+  );
 }
 
 /** Plan native versus fallback storage from observed GitHub capabilities. */
@@ -32,7 +35,7 @@ export function planTaskMetadata(
     if (forced.has('type')) {
       fallback.type = kind;
     } else if (capabilities.issueTypes?.status === 'ok') {
-      const issueType = findNamed(capabilities.issueTypes.values ?? [], kindDisplay);
+      const issueType = findEnabledIssueType(capabilities, kindDisplay);
       if (issueType) native.type = { id: issueType.id ?? null, name: issueType.name };
       else fallback.type = kind;
     } else if (capabilities.issueTypes?.status === 'not_applicable') {
@@ -56,7 +59,9 @@ export function planTaskMetadata(
       fallback[definition.fallbackKey] = value;
       continue;
     }
-    if (status !== 'ok') {
+    const field =
+      status === 'ok' && findNamed(capabilities.issueFields.values ?? [], definition.fieldName);
+    if (status !== 'ok' || (!field && capabilities.issueFields.complete === false)) {
       unresolved.push({
         key: definition.fallbackKey,
         value,
@@ -65,7 +70,6 @@ export function planTaskMetadata(
       continue;
     }
 
-    const field = findNamed(capabilities.issueFields.values ?? [], definition.fieldName);
     if (!field) {
       fallback[definition.fallbackKey] = value;
       continue;
@@ -80,8 +84,25 @@ export function planTaskMetadata(
     }
 
     let nativeValue = value;
+    if (!Number.isSafeInteger(Number(field.id)) || Number(field.id) <= 0) {
+      unresolved.push({
+        key: definition.fallbackKey,
+        value,
+        reason: 'issue field ID is unavailable',
+      });
+      continue;
+    }
     if (definition.fieldType === 'single_select') {
-      const option = findNamed(fieldOptions(field), displayValue(value));
+      const options = field.options ?? field.settings?.options;
+      if (!Array.isArray(options) || options.some((option) => !option?.name)) {
+        unresolved.push({
+          key: definition.fallbackKey,
+          value,
+          reason: 'issue field options are unavailable',
+        });
+        continue;
+      }
+      const option = findNamed(options, displayValue(value));
       if (!option) {
         fallback[definition.fallbackKey] = value;
         warnings.push(

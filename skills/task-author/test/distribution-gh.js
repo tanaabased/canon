@@ -29,8 +29,29 @@ if (methodIndex >= 0 && args[methodIndex + 1] !== 'GET') {
 }
 const responses = {
   '/repos/acme/widgets': { owner: { login: 'acme', type: 'Organization' }, private: false },
-  '/repos/acme/widgets/issue-types': fixture.capabilities.issueTypes.values,
-  '/orgs/acme/issue-fields?per_page=100': fixture.capabilities.issueFields.values,
+  '/repos/acme/widgets/issue-types': fixture.capabilities.issueTypes.values.map((type) => ({
+    ...type,
+    is_enabled: true,
+  })),
+  graphql: {
+    data: {
+      repository: {
+        viewerCanSeeIssueFields: true,
+        viewerPermission: 'ADMIN',
+        issueFields: {
+          totalCount: fixture.capabilities.issueFields.values.length,
+          pageInfo: { hasNextPage: false, endCursor: null },
+          nodes: fixture.capabilities.issueFields.values.map((field) => ({
+            id: `field-${field.id}`,
+            fullDatabaseId: String(field.id),
+            name: field.name,
+            dataType: field.data_type.toUpperCase(),
+            options: field.options,
+          })),
+        },
+      },
+    },
+  },
   '/repos/acme/widgets/labels?per_page=100': fixture.capabilities.labels.values,
   '/repos/acme/widgets/issues/91': fixture.issue,
   '/repos/acme/widgets/issues/91/issue-field-values?per_page=100': [],

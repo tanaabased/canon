@@ -64,16 +64,21 @@ export function organizationPayload({
   return {
     data: {
       organization: {
-        issueFields: { nodes: fields },
-        issueTypes: { nodes: types },
+        issueFields: { nodes: fields, pageInfo: { hasNextPage: false } },
+        issueTypes: { nodes: types, pageInfo: { hasNextPage: false } },
       },
       repository: {
         nameWithOwner: 'tanaabased/canon',
         isPrivate: false,
         viewerCanSeeIssueFields: true,
         owner: { __typename: 'Organization', login: 'tanaabased' },
-        issueFields: { nodes: fields },
-        issueTypes: { nodes: types },
+        viewerPermission: 'ADMIN',
+        issueFields: {
+          nodes: fields,
+          pageInfo: { hasNextPage: false, endCursor: null },
+          totalCount: fields.length,
+        },
+        issueTypes: { nodes: types, pageInfo: { hasNextPage: false } },
         labels: {
           totalCount: labels.length,
           pageInfo: { hasNextPage, endCursor },

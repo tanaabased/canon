@@ -12,6 +12,9 @@ function unpinnedIssueTypes() {
 function inspection(target, { fields, fieldsStatus = 'ok', ownerType = 'Organization', types }) {
   const organizationOwned = ownerType === 'Organization';
   const applicableTypes = types ?? unpinnedIssueTypes();
+  const pinning = organizationOwned
+    ? { status: 'ok', values: structuredClone(applicableTypes) }
+    : { status: 'not_applicable', values: [] };
   return {
     repository: {
       slug: target.slug,
@@ -26,6 +29,9 @@ function inspection(target, { fields, fieldsStatus = 'ok', ownerType = 'Organiza
     repositoryIssueTypes: organizationOwned
       ? { status: 'ok', values: structuredClone(applicableTypes) }
       : { status: 'not_applicable', values: [] },
+    organizationPinning: pinning,
+    repositoryPinning: pinning,
+    repositoryIssueFields: { status: 'ok', complete: true, values: [] },
     issueFields: !organizationOwned
       ? { status: 'not_applicable', values: [] }
       : fieldsStatus === 'ok'
