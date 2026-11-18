@@ -5,6 +5,12 @@
 import { spawnSync } from "child_process";
 var INHERITED_PROCESS_OPTIONS = ["cwd", "env"];
 var GITHUB_API_VERSION_HEADER = "X-GitHub-Api-Version: 2026-03-10";
+function githubCliResultStatus(result) {
+  return result.returncode ?? result.status ?? 1;
+}
+function githubCliResultDetail(result) {
+  return String(result.stderr ?? result.error?.message ?? result.stdout ?? "").trim();
+}
 function flattenGitHubPages(value) {
   if (!Array.isArray(value))
     return value;
@@ -18,6 +24,117 @@ function runGitHubCli(args, options = {}, dependencies = {}) {
   }
   const spawn = dependencies.spawnSync ?? spawnSync;
   return spawn("gh", args, { encoding: "utf8", ...options });
+}
+
+// lib/read-repository-issue-metadata.js
+var REPOSITORY_FIELDS_QUERY = `
+  query RepositoryIssueFields($owner: String!, $repo: String!, $cursor: String) {
+    repository(owner: $owner, name: $repo) {
+      viewerCanSeeIssueFields
+      viewerPermission
+      issueFields(first: 100, after: $cursor) {
+        totalCount
+        pageInfo { hasNextPage endCursor }
+        nodes {
+          ... on Node { id }
+          ... on IssueFieldCommon { name dataType description visibility }
+          ... on IssueFieldDate { fullDatabaseId }
+          ... on IssueFieldNumber { fullDatabaseId }
+          ... on IssueFieldText { fullDatabaseId }
+          ... on IssueFieldSingleSelect {
+            fullDatabaseId
+            options { id fullDatabaseId name color description }
+          }
+          ... on IssueFieldMultiSelect {
+            fullDatabaseId
+            options { id fullDatabaseId name color description }
+          }
+        }
+      }
+    }
+  }
+`;
+function readJson(runner, args, description) {
+  const result = runner(args);
+  try {
+    const payload = JSON.parse(result.stdout);
+    if (args[1] === "graphql" && Array.isArray(payload?.errors) && payload.errors.length > 0) {
+      return { payload };
+    }
+    if (githubCliResultStatus(result) === 0)
+      return { payload };
+  } catch {
+    if (githubCliResultStatus(result) === 0) {
+      return { error: `${description} returned invalid JSON.` };
+    }
+  }
+  return { error: githubCliResultDetail(result) || `${description} could not be read.` };
+}
+function unavailable(reason) {
+  return { status: "unavailable", values: [], reason };
+}
+function readRepositoryIssueFields(runner, target) {
+  const values = [];
+  const cursors = new Set;
+  let cursor = null;
+  let complete = true;
+  let totalCount;
+  do {
+    const args = [
+      "api",
+      "graphql",
+      "-f",
+      `query=${REPOSITORY_FIELDS_QUERY}`,
+      "-f",
+      `owner=${target.owner}`,
+      "-f",
+      `repo=${target.repo}`
+    ];
+    if (cursor)
+      args.push("-f", `cursor=${cursor}`);
+    const { payload, error } = readJson(runner, args, "Repository issue fields");
+    if (error)
+      return unavailable(error);
+    const errors = Array.isArray(payload?.errors) ? payload.errors : [];
+    const fieldErrors = errors.filter(({ path }) => path?.[0] !== "repository" || !["viewerPermission", "viewerCanSeeIssueFields"].includes(path[1]));
+    if (fieldErrors.length > 0) {
+      return unavailable(fieldErrors.map(({ message }) => message).join("; "));
+    }
+    const repository = payload?.data?.repository;
+    const { nodes, pageInfo, totalCount: pageCount } = repository?.issueFields ?? {};
+    totalCount ??= pageCount;
+    if (!Number.isSafeInteger(pageCount) || pageCount !== totalCount || !Array.isArray(nodes) || nodes.some((node) => !node?.id || !node.name || !node.dataType) || typeof pageInfo?.hasNextPage !== "boolean") {
+      return unavailable("GitHub did not return a complete issue field page.");
+    }
+    complete &&= errors.length === 0 && repository.viewerCanSeeIssueFields === true && repository.viewerPermission === "ADMIN";
+    values.push(...nodes);
+    cursor = pageInfo.hasNextPage ? pageInfo.endCursor : null;
+    if (pageInfo.hasNextPage && (!cursor || cursors.has(cursor))) {
+      return unavailable("GitHub did not return a usable issue field page cursor.");
+    }
+    cursors.add(cursor);
+  } while (cursor);
+  if (values.length !== totalCount || new Set(values.map(({ id }) => id)).size !== totalCount) {
+    return unavailable("GitHub did not return all issue fields visible to the viewer.");
+  }
+  return { status: "ok", values, complete };
+}
+function readRepositoryIssueTypes(runner, target) {
+  const { payload, error } = readJson(runner, [
+    "api",
+    `/repos/${target.slug}/issue-types`,
+    "-H",
+    GITHUB_API_VERSION_HEADER,
+    "--paginate",
+    "--slurp"
+  ], "Repository issue types");
+  if (error)
+    return unavailable(error);
+  const values = flattenGitHubPages(payload);
+  if (!Array.isArray(values) || values.some((type) => !type?.name || typeof type.is_enabled !== "boolean")) {
+    return unavailable("GitHub did not return a complete repository issue type list.");
+  }
+  return { status: "ok", values };
 }
 
 // skills/task-author/lib/github-capability-client.js
@@ -43,6 +160,23 @@ function flattenCollection(payload, keys = []) {
     }
     return [];
   });
+}
+function numericId(value) {
+  const id = Number(value);
+  return Number.isSafeInteger(id) && id > 0 ? id : null;
+}
+function taskField(field) {
+  return {
+    id: numericId(field.fullDatabaseId),
+    name: field.name,
+    data_type: field.dataType.toLowerCase(),
+    ...Array.isArray(field.options) ? {
+      options: field.options.map((option) => ({
+        id: numericId(option.fullDatabaseId),
+        name: option.name
+      }))
+    } : {}
+  };
 }
 
 class GitHubCapabilityClient {
@@ -92,10 +226,15 @@ class GitHubCapabilityClient {
     if (!repositoryRead.ok)
       throw repositoryRead.error;
     const repository = repositoryRead.value;
-    const ownerType = String(repository.owner?.type ?? "").toLowerCase();
-    const organizationOwned = ownerType === "organization";
-    const issueTypes = organizationOwned ? this.optionalCollection(`/repos/${target.slug}/issue-types`, ["issue_types", "issueTypes"], "repository issue types", warnings) : { status: "not_applicable", values: [] };
-    const issueFields = organizationOwned ? this.optionalCollection(`/orgs/${target.owner}/issue-fields?per_page=100`, ["fields", "issue_fields"], "organization issue fields", warnings) : { status: "not_applicable", values: [] };
+    const issueTypes = readRepositoryIssueTypes(this.#runner, target);
+    const fields = readRepositoryIssueFields(this.#runner, target);
+    for (const [name, collection] of [
+      ["issue types", issueTypes],
+      ["issue fields", fields]
+    ]) {
+      if (collection.reason)
+        warnings.push(`Could not inspect repository ${name}: ${collection.reason}`);
+    }
     const labels = this.optionalCollection(`/repos/${target.slug}/labels?per_page=100`, ["labels"], "repository labels", warnings);
     return {
       repository: {
@@ -105,7 +244,7 @@ class GitHubCapabilityClient {
         private: Boolean(repository.private)
       },
       issueTypes,
-      issueFields,
+      issueFields: { ...fields, values: fields.values.map(taskField) },
       labels,
       warnings
     };
@@ -676,11 +815,11 @@ function normalizeTaskTarget(input) {
 function normalizeFieldType(field) {
   return String(field.data_type ?? field.type ?? field.field_type ?? "").toLowerCase().replaceAll("-", "_");
 }
-function fieldOptions2(field) {
-  return field.options ?? field.settings?.options ?? [];
-}
 function findNamed(values, name) {
   return values.find((value) => String(value.name).toLowerCase() === name.toLowerCase());
+}
+function findEnabledIssueType(capabilities, name) {
+  return findNamed((capabilities.issueTypes?.values ?? []).filter(({ is_enabled }) => is_enabled !== false), name);
 }
 function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackKeys = [] } = {}) {
   const native = { type: null, fields: [] };
@@ -693,7 +832,7 @@ function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackK
     if (forced.has("type")) {
       fallback.type = kind;
     } else if (capabilities.issueTypes?.status === "ok") {
-      const issueType = findNamed(capabilities.issueTypes.values ?? [], kindDisplay);
+      const issueType = findEnabledIssueType(capabilities, kindDisplay);
       if (issueType)
         native.type = { id: issueType.id ?? null, name: issueType.name };
       else
@@ -717,7 +856,8 @@ function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackK
       fallback[definition.fallbackKey] = value;
       continue;
     }
-    if (status !== "ok") {
+    const field = status === "ok" && findNamed(capabilities.issueFields.values ?? [], definition.fieldName);
+    if (status !== "ok" || !field && capabilities.issueFields.complete === false) {
       unresolved.push({
         key: definition.fallbackKey,
         value,
@@ -725,7 +865,6 @@ function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackK
       });
       continue;
     }
-    const field = findNamed(capabilities.issueFields.values ?? [], definition.fieldName);
     if (!field) {
       fallback[definition.fallbackKey] = value;
       continue;
@@ -736,8 +875,25 @@ function planTaskMetadata(kind, values = {}, capabilities = {}, { forceFallbackK
       continue;
     }
     let nativeValue = value;
+    if (!Number.isSafeInteger(Number(field.id)) || Number(field.id) <= 0) {
+      unresolved.push({
+        key: definition.fallbackKey,
+        value,
+        reason: "issue field ID is unavailable"
+      });
+      continue;
+    }
     if (definition.fieldType === "single_select") {
-      const option = findNamed(fieldOptions2(field), displayValue(value));
+      const options = field.options ?? field.settings?.options;
+      if (!Array.isArray(options) || options.some((option) => !option?.name)) {
+        unresolved.push({
+          key: definition.fallbackKey,
+          value,
+          reason: "issue field options are unavailable"
+        });
+        continue;
+      }
+      const option = findNamed(options, displayValue(value));
       if (!option) {
         fallback[definition.fallbackKey] = value;
         warnings.push(`${definition.fieldName} lacks option ${displayValue(value)}; using fallback metadata.`);

@@ -86,7 +86,7 @@ Read each applicable document in full, or the explicitly named section, before d
 ## Outputs
 
 - Return one report with `aligned`, `missing`, `drifted`, `migration_required`, or `unresolved` findings.
-- Report organization issue types separately from repository-effective issue types.
+- Report organization issue types and fields separately from repository-effective types and visible fields. Report per-type pinning separately when GitHub withholds it.
 - Report managed fields, options, visibility, Task/Bug/Feature pinning, canonical labels, unmanaged labels, automation-owned labels, and association counts.
 - Classify GitHub's default `Effort` field as `preserved_unmanaged`. `Work size` is a distinct managed field; never rename, map, delete, or infer it from Effort.
 - Report organization-default labels as `manual`: GitHub exposes the setting to humans but has no public API that lists its current definitions.
@@ -106,7 +106,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Stop if the repository itself cannot be resolved or inspected.
 - Preserve usable repository data when GitHub returns a partial GraphQL response.
 - Mark a hidden field, type, or label surface `unresolved`; do not convert lack of access into a missing-schema claim.
-- Mark organization field and type surfaces `not_applicable` for personal repositories while still comparing repository labels.
+- For personal repositories, inspect repository types, fields, and labels. Mark organization-only findings `not_applicable`.
 - Never compensate for a read failure by attempting a write or a broader authorization flow.
 - In additive-field mode, stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
 - Stop on the first failed create. Never delete a successfully created field to simulate rollback; re-read and report partial success instead.

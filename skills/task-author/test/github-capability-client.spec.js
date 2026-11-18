@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 import { GitHubCapabilityClient } from '../lib/github-capability-client.js';
 import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
+import { planTaskMetadata } from '../utils/plan-task-metadata.js';
 
 function success(value = null) {
   return {
@@ -16,7 +17,30 @@ function failure(message) {
   return { status: 1, stdout: '', stderr: message, error: null };
 }
 
-function remote({ ownerType = 'Organization', failFields = false } = {}) {
+const workSize = {
+  id: 'IFSS_node',
+  fullDatabaseId: '300',
+  name: 'Work size',
+  dataType: 'SINGLE_SELECT',
+  options: [{ id: 'IFSSO_node', fullDatabaseId: '12', name: '5' }],
+};
+
+const startDate = {
+  id: 'IFD_node',
+  fullDatabaseId: '301',
+  name: 'Start date',
+  dataType: 'DATE',
+};
+
+function remote({
+  ownerType = 'Organization',
+  failFields = false,
+  failNextPage = false,
+  viewerPermission = 'ADMIN',
+  visibilityError = false,
+  fields = [workSize],
+  types = [{ id: 1, name: 'Task', is_enabled: true }],
+} = {}) {
   const calls = [];
   return {
     calls,
@@ -30,12 +54,35 @@ function remote({ ownerType = 'Organization', failFields = false } = {}) {
         return success({ private: false, owner: { login: 'acme', type: ownerType } });
       }
       if (endpoint === '/repos/acme/widgets/issue-types') {
-        return success([[{ id: 1, name: 'Task' }]]);
+        return success([types]);
       }
-      if (endpoint === '/orgs/acme/issue-fields?per_page=100') {
-        return failFields
-          ? failure('gh: Resource not accessible by integration (HTTP 403)')
-          : success([{ fields: [{ id: 'priority', name: 'Priority' }] }]);
+      if (endpoint === 'graphql') {
+        const nextPage = args.includes('cursor=page-two');
+        if (failFields || (nextPage && failNextPage)) {
+          return failure('gh: Resource not accessible by integration (HTTP 403)');
+        }
+        const hasNextPage = !nextPage && fields.length > 1;
+        const page = success({
+          ...(visibilityError
+            ? {
+                errors: [
+                  { message: 'Permission unavailable', path: ['repository', 'viewerPermission'] },
+                ],
+              }
+            : {}),
+          data: {
+            repository: {
+              viewerCanSeeIssueFields: true,
+              viewerPermission,
+              issueFields: {
+                totalCount: fields.length,
+                pageInfo: { hasNextPage, endCursor: hasNextPage ? 'page-two' : null },
+                nodes: nextPage ? fields.slice(1) : fields.slice(0, 1),
+              },
+            },
+          },
+        });
+        return { ...page, status: visibilityError ? 1 : 0 };
       }
       if (endpoint === '/repos/acme/widgets/labels?per_page=100') {
         return success([[{ name: 'needs triage' }]]);
@@ -56,7 +103,14 @@ describe('Task Author GitHub capability client', () => {
     assert.equal(report.issueTypes.status, 'ok');
     assert.equal(report.issueFields.status, 'ok');
     assert.equal(report.labels.status, 'ok');
-    assert.equal(report.issueFields.values[0].name, 'Priority');
+    assert.deepEqual(report.issueFields.values, [
+      {
+        id: 300,
+        name: 'Work size',
+        data_type: 'single_select',
+        options: [{ id: 12, name: '5' }],
+      },
+    ]);
 
     const apiCalls = fake.calls.filter((args) => args[0] === 'api');
     assert.equal(apiCalls.length, 4);
@@ -64,14 +118,8 @@ describe('Task Author GitHub capability client', () => {
       apiCalls.some((args) => args.includes('--method')),
       false,
     );
-    assert.equal(
-      apiCalls.some((args) => args.includes('-f')),
-      false,
-    );
-    assert.equal(
-      apiCalls.some((args) => args.includes('-F')),
-      false,
-    );
+    assert.match(apiCalls.find((args) => args[1] === 'graphql')[3], /query RepositoryIssueFields/);
+    assert.ok(apiCalls.every((args) => !args[1].startsWith('/orgs/')));
   });
 
   it('should surface optional permission failures as unresolved capabilities', () => {
@@ -84,21 +132,84 @@ describe('Task Author GitHub capability client', () => {
     assert.match(report.warnings[0], /Resource not accessible/);
   });
 
-  it('should classify organization-only types and fields as not applicable for a user owner', () => {
+  it('should use native metadata for a personal repo and fall back for proven gaps', () => {
     const fake = remote({ ownerType: 'User' });
     const report = new GitHubCapabilityClient({ runner: fake.runner }).inspectRepository(
       normalizeTaskTarget('acme/widgets'),
     );
 
-    assert.equal(report.issueTypes.status, 'not_applicable');
-    assert.equal(report.issueFields.status, 'not_applicable');
-    assert.equal(
-      fake.calls.some((args) => args[1]?.includes('issue-types')),
-      false,
+    const placement = planTaskMetadata('task', { workSize: 5, complexity: 'medium' }, report);
+    assert.equal(placement.native.type.name, 'Task');
+    assert.deepEqual(
+      placement.native.fields.map(({ id }) => id),
+      [300],
     );
-    assert.equal(
-      fake.calls.some((args) => args[1]?.includes('issue-fields')),
-      false,
+    assert.deepEqual(placement.fallback, { complexity: 'medium' });
+    assert.deepEqual(placement.unresolved, []);
+  });
+
+  it('should paginate visible definitions and leave omitted fields unresolved for an app', () => {
+    const fake = remote({ viewerPermission: null, fields: [startDate, workSize] });
+    const report = new GitHubCapabilityClient({ runner: fake.runner }).inspectRepository(
+      normalizeTaskTarget('acme/widgets'),
     );
+    assert.ok(fake.calls.some((args) => args.includes('cursor=page-two')));
+    const placement = planTaskMetadata('task', { workSize: 5, impact: 'high' }, report);
+    assert.deepEqual(
+      placement.native.fields.map(({ id }) => id),
+      [300],
+    );
+    assert.deepEqual(placement.fallback, {});
+    assert.deepEqual(
+      placement.unresolved.map(({ key }) => key),
+      ['impact'],
+    );
+  });
+
+  it('should distinguish a confirmed missing option from failed pagination', () => {
+    const target = normalizeTaskTarget('acme/widgets');
+    const visible = remote({ viewerPermission: null });
+    const limited = new GitHubCapabilityClient({ runner: visible.runner }).inspectRepository(
+      target,
+    );
+    assert.deepEqual(planTaskMetadata('task', { workSize: 3 }, limited).fallback, {
+      'work-size': 3,
+    });
+
+    const interrupted = remote({ fields: [startDate, workSize], failNextPage: true });
+    const unavailable = new GitHubCapabilityClient({
+      runner: interrupted.runner,
+    }).inspectRepository(target);
+    const placement = planTaskMetadata('task', { workSize: 5 }, unavailable);
+    assert.deepEqual(placement.fallback, {});
+    assert.deepEqual(
+      placement.unresolved.map(({ key }) => key),
+      ['work-size'],
+    );
+  });
+
+  it('should retain known definitions when the viewer permission lookup itself fails', () => {
+    const fake = remote({ visibilityError: true });
+    const report = new GitHubCapabilityClient({ runner: fake.runner }).inspectRepository(
+      normalizeTaskTarget('acme/widgets'),
+    );
+    const placement = planTaskMetadata('task', { workSize: 5, impact: 'high' }, report);
+    assert.deepEqual(
+      placement.native.fields.map(({ id }) => id),
+      [300],
+    );
+    assert.deepEqual(placement.fallback, {});
+    assert.deepEqual(
+      placement.unresolved.map(({ key }) => key),
+      ['impact'],
+    );
+  });
+
+  it('should use fallback for a disabled repository issue type', () => {
+    const fake = remote({ types: [{ id: 1, name: 'Task', is_enabled: false }] });
+    const report = new GitHubCapabilityClient({ runner: fake.runner }).inspectRepository(
+      normalizeTaskTarget('acme/widgets'),
+    );
+    assert.deepEqual(planTaskMetadata('task', {}, report).fallback, { type: 'task' });
   });
 });

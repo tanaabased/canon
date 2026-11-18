@@ -22,7 +22,7 @@ metadata:
 
 ## Overview
 
-Assess, draft, create, revise, or normalize one canonical GitHub-backed Task, Bug, or Feature. Inspect the target repository's issue types, organization issue fields, and labels. Show the source and rationale for accepted estimates, use native values where available, and render fallback metadata only where needed. Verify every managed value after a write.
+Assess, draft, create, revise, or normalize one canonical GitHub-backed Task, Bug, or Feature. Inspect issue types, issue fields, and labels for the target repository. Show the source and rationale for accepted estimates, use native values where available, and render fallback metadata only where needed. Verify every managed value after a write.
 
 Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary revision and normalization keep existing fallback keys in fallback even when native fields later appear. The separately authorized migration mode writes and verifies native values before removing only their verified fallback keys. Task Author does not own schema definitions or relationship mutations.
 
@@ -47,7 +47,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Migrate verified fallback metadata into newly available native fields through a separate two-phase plan.
 - Assess Work size, Complexity, and Impact from supported evidence before invoking the deterministic helper.
 - Preview native issue type and issue-field values, fallback metadata, existing labels, relationships, assessment evidence, and comments.
-- Inspect whether an organization-backed repository provides the canonical native metadata surfaces.
+- Inspect native metadata in both organization-owned and personal repositories.
 - Identify missing evidence or incomplete capabilities before creation.
 
 ## When Not to Use
@@ -119,7 +119,7 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 - Show the resolved target, normalized title and body, expected delivery evidence, effective metadata values, assessment provenance and rationale, native plan, fallback-only capsule, unresolved metadata, desired/applicable/missing labels, relationships, planned comments, capability evidence, and warnings.
 - Show the complete creation payload, comments, publication digest, write results, created issue URL, and per-value verification checks.
 - Treat `partial` as an honest discovery result, not permission to guess whether unavailable fields or labels exist.
-- A missing canonical field in a successfully inspected organization schema may use fallback metadata. An unavailable inspection remains unresolved because absence was not proven.
+- Use fallback metadata when inspection establishes that a field or required option is unavailable. Leave placement unresolved when a read fails, pagination is incomplete, or a visibility-limited result omits the field.
 
 ## Failure Handling
 
@@ -138,7 +138,7 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 
 1. Resolve and display one exact target. Stop if it remains ambiguous. Draft only the supported outcome and necessary obligations under the shared scope rules.
 2. Before rendering the publication preview, discover and read the authoring agent's applicable voice skill from the available skills; do not select a voice from the assignee or impose a Canon-wide persona. An explicitly requested voice or house style wins; use plain prose when no voice skill is available. Preserve facts, uncertainty, quotations, technical identifiers, acceptance conditions, and permission boundaries; keep sensitive and machine-facing content plain. Trim repetition after styling, then freeze the text for preview and digest approval. A later wording change requires a fresh digest.
-3. Run the bundled draft or create command with JSON on standard input. If standard input is unavailable, verify one repository-local ignored scratch path with `git check-ignore` before writing the request there. Both commands check `gh`, read repository ownership, and inspect only the applicable issue-type, organization-field, and repository-label endpoints before any write.
+3. Run the bundled draft or create command with JSON on standard input. If standard input is unavailable, verify one repository-local ignored scratch path with `git check-ignore` before writing the request there. Both commands check `gh` and inspect repository issue types, issue fields, and labels before any write.
 4. Review missing substantive evidence, task-specific verification, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
 5. Review assessment provenance and rationales. Keep agent estimates evidence-based and human-controlled values out of agent ownership.
 6. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
