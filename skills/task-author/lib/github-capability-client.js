@@ -1,4 +1,8 @@
 import runGitHubCli, { GITHUB_API_VERSION_HEADER } from '../../../lib/run-github-cli.js';
+import {
+  readRepositoryIssueFields,
+  readRepositoryIssueTypes,
+} from '../../../lib/read-repository-issue-metadata.js';
 
 function commandFailure(result, context) {
   const detail = String(result.stderr ?? result.error?.message ?? 'unknown error').trim();
@@ -22,6 +26,27 @@ function flattenCollection(payload, keys = []) {
     }
     return [];
   });
+}
+
+function numericId(value) {
+  const id = Number(value);
+  return Number.isSafeInteger(id) && id > 0 ? id : null;
+}
+
+function taskField(field) {
+  return {
+    id: numericId(field.fullDatabaseId),
+    name: field.name,
+    data_type: field.dataType.toLowerCase(),
+    ...(Array.isArray(field.options)
+      ? {
+          options: field.options.map((option) => ({
+            id: numericId(option.fullDatabaseId),
+            name: option.name,
+          })),
+        }
+      : {}),
+  };
 }
 
 /** Read-only GitHub capability discovery with an injected command runner for tests. */
@@ -78,24 +103,15 @@ export class GitHubCapabilityClient {
     if (!repositoryRead.ok) throw repositoryRead.error;
 
     const repository = repositoryRead.value;
-    const ownerType = String(repository.owner?.type ?? '').toLowerCase();
-    const organizationOwned = ownerType === 'organization';
-    const issueTypes = organizationOwned
-      ? this.optionalCollection(
-          `/repos/${target.slug}/issue-types`,
-          ['issue_types', 'issueTypes'],
-          'repository issue types',
-          warnings,
-        )
-      : { status: 'not_applicable', values: [] };
-    const issueFields = organizationOwned
-      ? this.optionalCollection(
-          `/orgs/${target.owner}/issue-fields?per_page=100`,
-          ['fields', 'issue_fields'],
-          'organization issue fields',
-          warnings,
-        )
-      : { status: 'not_applicable', values: [] };
+    const issueTypes = readRepositoryIssueTypes(this.#runner, target);
+    const fields = readRepositoryIssueFields(this.#runner, target);
+    for (const [name, collection] of [
+      ['issue types', issueTypes],
+      ['issue fields', fields],
+    ]) {
+      if (collection.reason)
+        warnings.push(`Could not inspect repository ${name}: ${collection.reason}`);
+    }
     const labels = this.optionalCollection(
       `/repos/${target.slug}/labels?per_page=100`,
       ['labels'],
@@ -111,7 +127,7 @@ export class GitHubCapabilityClient {
         private: Boolean(repository.private),
       },
       issueTypes,
-      issueFields,
+      issueFields: { ...fields, values: fields.values.map(taskField) },
       labels,
       warnings,
     };

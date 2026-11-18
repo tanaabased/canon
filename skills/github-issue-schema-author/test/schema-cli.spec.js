@@ -24,7 +24,17 @@ describe('skills/github-issue-schema-author CLI', () => {
       status: 'missing',
       issueTypes: {
         organization: { status: 'aligned', missing: [], drifted: [] },
-        repository: { status: 'aligned', missing: [], drifted: [] },
+        repository: {
+          status: 'aligned',
+          values: [{ name: 'Task', enabled: true }],
+          missing: [],
+          drifted: [],
+        },
+      },
+      repositoryIssueFields: { status: 'ok', complete: false, values: [{ name: 'Effort' }] },
+      pinning: {
+        organization: { status: 'unavailable', values: [] },
+        repository: { status: 'unavailable', values: [] },
       },
       issueFields: {
         status: 'missing',
@@ -44,7 +54,9 @@ describe('skills/github-issue-schema-author CLI', () => {
 
     assert.match(rendered, /mutates GitHub: no/);
     assert.match(rendered, /issueFields\.Work size/);
-    assert.match(rendered, /Effort/);
+    assert.ok(rendered.includes('visible repository issue fields:\n  - Effort'));
+    assert.ok(rendered.includes('repository issue types:\n  - Task (enabled)'));
+    assert.match(rendered, /repository issue type pinning: unavailable/);
   });
 
   it('should expose help without constructing a GitHub client', () => {

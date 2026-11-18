@@ -4,23 +4,23 @@
   "commands": [
     {
       "path": "dist/draft-task.js",
-      "bytes": 31957,
-      "sha256": "a6e1da2a81838da5bfcb2b436df1592c01f867c5fc9e7b499534e32ba4f564d5"
+      "bytes": 37515,
+      "sha256": "91f58d4f3d760667ff2bd3f13987c067921d789159038f86698457702dee91d0"
     },
     {
       "path": "dist/create-task.js",
-      "bytes": 45852,
-      "sha256": "09df7cc135dca9fe8065ee9623d5462608ed044492dbc81435a1df0147a7b10a"
+      "bytes": 51264,
+      "sha256": "7efec1165f43ac1d71029b05f47f60334f23e1526590796bcc4bf0c11b8f7850"
     },
     {
       "path": "dist/update-task.js",
-      "bytes": 53388,
-      "sha256": "c9f297909d45de561bf7e2d13c144a63a00998bb07ef2737521a0e96cf7d8b31"
+      "bytes": 58800,
+      "sha256": "b78dce1147169ea366a7e7b7c0571677dd818b9b0f70b00948a29f3cccf4fdaa"
     },
     {
       "path": "dist/migrate-fallback.js",
-      "bytes": 36398,
-      "sha256": "f80323068bf7d8c27796c0cc470e63ce85e5ab4b07c5f0892fd5adb281d1601b"
+      "bytes": 41541,
+      "sha256": "e252cf2b111789434afc3b138c703721efa2e6202d9c27493c7aaea9d468d945"
     }
   ]
 }

@@ -37,10 +37,11 @@ export function inspectGitHubIssueSchema(
     observed.organizationIssueTypes,
     observed.repositoryIssueTypes,
   );
+  issueTypes.repository.values = observed.repositoryIssueTypes.values;
   const issueFields = compareIssueFields(
     policy.issueFields,
     observed.issueFields,
-    observed.repositoryIssueTypes,
+    observed.repositoryPinning,
     policy.preservedUnmanagedFields,
   );
   const repositoryLabels = classifySchemaLabels(policy, observed.repositoryLabels);
@@ -48,6 +49,7 @@ export function inspectGitHubIssueSchema(
     issueTypes.organization.status,
     issueTypes.repository.status,
     issueFields.status,
+    observed.repositoryIssueFields.status === 'unavailable' ? 'unresolved' : 'aligned',
     repositoryLabels.status,
   ];
 
@@ -61,10 +63,11 @@ export function inspectGitHubIssueSchema(
     repository: observed.repository,
     issueTypes,
     pinning: {
-      organization: normalizePinningSurface(observed.organizationIssueTypes),
-      repository: normalizePinningSurface(observed.repositoryIssueTypes),
+      organization: normalizePinningSurface(observed.organizationPinning),
+      repository: normalizePinningSurface(observed.repositoryPinning),
     },
     issueFields,
+    repositoryIssueFields: observed.repositoryIssueFields,
     labels: {
       repository: repositoryLabels,
       organizationDefaults: observed.organizationDefaultLabels,

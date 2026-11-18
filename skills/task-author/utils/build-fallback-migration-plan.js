@@ -1,5 +1,6 @@
 import { METADATA_DEFINITIONS, TASK_KINDS, displayValue } from '../lib/task-author-contract.js';
 import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
+import { findEnabledIssueType } from './plan-task-metadata.js';
 import { renderMigratedTaskBody } from './render-migrated-task-body.js';
 
 function findNamed(values, name) {
@@ -37,7 +38,7 @@ export function buildFallbackMigrationPlan(target, capabilities, current, parsed
         continue;
       }
       const desiredName = TASK_KINDS[String(value).toLowerCase()];
-      const available = findNamed(capabilities.issueTypes.values, desiredName);
+      const available = findEnabledIssueType(capabilities, desiredName);
       if (!available) {
         unavailable.push({ key: fallbackKey, reason: `Issue type ${desiredName} is unavailable.` });
         continue;
@@ -63,7 +64,12 @@ export function buildFallbackMigrationPlan(target, capabilities, current, parsed
     }
     const [, definition] = entry;
     const field = findNamed(capabilities.issueFields.values, definition.fieldName);
-    if (!field || String(field.data_type).toLowerCase() !== definition.fieldType) {
+    if (
+      !field ||
+      !Number.isSafeInteger(Number(field.id)) ||
+      Number(field.id) <= 0 ||
+      String(field.data_type).toLowerCase() !== definition.fieldType
+    ) {
       unavailable.push({ key: fallbackKey, reason: 'A compatible native field is unavailable.' });
       continue;
     }

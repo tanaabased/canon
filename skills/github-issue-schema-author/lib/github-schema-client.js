@@ -2,27 +2,14 @@ import runGitHubCli, {
   githubCliResultDetail,
   githubCliResultStatus,
 } from '../../../lib/run-github-cli.js';
+import {
+  readRepositoryIssueFields,
+  readRepositoryIssueTypes,
+} from '../../../lib/read-repository-issue-metadata.js';
 import normalizeSchemaVisibility from '../utils/normalize-schema-visibility.js';
 
 export const SCHEMA_INSPECTION_QUERY = `
   query SchemaInspection($owner: String!, $repo: String!, $labelCursor: String) {
-    organization(login: $owner) {
-      issueTypes(first: 100) {
-        nodes {
-          id
-          name
-          isEnabled
-          pinnedFields {
-            ...IssueFieldData
-          }
-        }
-      }
-      issueFields(first: 100) {
-        nodes {
-          ...IssueFieldData
-        }
-      }
-    }
     repository(owner: $owner, name: $repo) {
       nameWithOwner
       isPrivate
@@ -30,21 +17,6 @@ export const SCHEMA_INSPECTION_QUERY = `
       owner {
         __typename
         login
-      }
-      issueTypes(first: 100) {
-        nodes {
-          id
-          name
-          isEnabled
-          pinnedFields {
-            ...IssueFieldData
-          }
-        }
-      }
-      issueFields(first: 100) {
-        nodes {
-          ...IssueFieldData
-        }
       }
       labels(first: 100, after: $labelCursor) {
         totalCount
@@ -67,6 +39,34 @@ export const SCHEMA_INSPECTION_QUERY = `
         }
       }
     }
+  }
+`;
+
+const SCHEMA_DETAILS_QUERY = `
+  query SchemaDetails($owner: String!, $repo: String!, $organizationOwned: Boolean!) {
+    organization(login: $owner) @include(if: $organizationOwned) {
+      issueTypes(first: 100) {
+        pageInfo { hasNextPage }
+        nodes { ...TypePinning }
+      }
+      issueFields(first: 100) {
+        pageInfo { hasNextPage }
+        nodes { ...IssueFieldData }
+      }
+    }
+    repository(owner: $owner, name: $repo) {
+      issueTypes(first: 100) {
+        pageInfo { hasNextPage }
+        nodes { ...TypePinning }
+      }
+    }
+  }
+
+  fragment TypePinning on IssueType {
+    id
+    name
+    isEnabled
+    pinnedFields { ...IssueFieldData }
   }
 
   fragment IssueFieldData on IssueFields {
@@ -122,7 +122,6 @@ function normalizeIssueType(issueType) {
     id: issueType.id ?? null,
     name: issueType.name,
     enabled: issueType.isEnabled !== false,
-    pinnedFields: (issueType.pinnedFields ?? []).map(normalizeField),
   };
 }
 
@@ -155,18 +154,37 @@ function parsePayload(result) {
 }
 
 function hasErrorPath(payload, rootName, surfaceName) {
-  return (payload?.errors ?? []).some(({ path = [] }) => {
-    const pathText = path.map(String).join('.');
-    return pathText.includes(rootName) && pathText.includes(surfaceName);
-  });
+  return (payload?.errors ?? []).some(
+    ({ path }) => !path || (path[0] === rootName && (path.length === 1 || path[1] === surfaceName)),
+  );
 }
 
-function partialReason(payload, rootName, surfaceName, fallback) {
-  const match = (payload?.errors ?? []).find(({ path = [] }) => {
-    const pathText = path.map(String).join('.');
-    return pathText.includes(rootName) && pathText.includes(surfaceName);
-  });
-  return match?.message ?? fallback;
+function completeNodes(connection) {
+  return (
+    connection?.pageInfo?.hasNextPage === false &&
+    Array.isArray(connection.nodes) &&
+    connection.nodes.every((node) => node?.name)
+  );
+}
+
+function inspectPinning(payload, rootName) {
+  const types = payload?.data?.[rootName]?.issueTypes;
+  if (
+    hasErrorPath(payload, rootName, 'issueTypes') ||
+    !completeNodes(types) ||
+    types.nodes.some(
+      ({ pinnedFields }) =>
+        !Array.isArray(pinnedFields) || pinnedFields.some((field) => !field?.name),
+    )
+  ) {
+    return unavailable('Per-type issue field pinning could not be inspected.');
+  }
+  return available(
+    types.nodes.map((type) => ({
+      ...normalizeIssueType(type),
+      pinnedFields: type.pinnedFields.map(normalizeField),
+    })),
+  );
 }
 
 /** Read-only GitHub issue schema inspection with an injectable process boundary. */
@@ -226,7 +244,6 @@ export class GitHubSchemaClient {
     const warnings = (firstPayload.errors ?? []).map(({ message }) => message);
     const ownerType = firstRepository.owner?.__typename ?? 'Unknown';
     const organizationOwned = ownerType === 'Organization';
-    const organization = firstPayload.data.organization;
 
     let labels = [...(firstRepository.labels?.nodes ?? [])];
     let pageInfo = firstRepository.labels?.pageInfo;
@@ -254,10 +271,39 @@ export class GitHubSchemaClient {
       pageInfo = pageLabels.pageInfo;
     }
 
-    const repositoryTypesUnavailable = hasErrorPath(firstPayload, 'repository', 'issueTypes');
-    const repositoryFieldsUnavailable = hasErrorPath(firstPayload, 'repository', 'issueFields');
-    const organizationTypesUnavailable = hasErrorPath(firstPayload, 'organization', 'issueTypes');
-    const organizationFieldsUnavailable = hasErrorPath(firstPayload, 'organization', 'issueFields');
+    const detailsResult = this.#run([
+      'api',
+      'graphql',
+      '-f',
+      `query=${SCHEMA_DETAILS_QUERY}`,
+      '-f',
+      `owner=${target.owner}`,
+      '-f',
+      `repo=${target.repo}`,
+      '-F',
+      `organizationOwned=${organizationOwned}`,
+    ]);
+    const details = parsePayload(detailsResult);
+    const organization = details?.data?.organization;
+    warnings.push(...(details?.errors ?? []).map(({ message }) => message));
+    if (!details?.data && !details?.errors?.length) {
+      warnings.push(
+        resultError(
+          detailsResult,
+          'Organization schema and per-type pinning could not be inspected.',
+        ),
+      );
+    }
+    const repositoryTypes = readRepositoryIssueTypes(this.#runner, target);
+    const repositoryFields = readRepositoryIssueFields(this.#runner, target);
+    for (const [name, collection] of [
+      ['issue types', repositoryTypes],
+      ['issue fields', repositoryFields],
+    ]) {
+      if (collection.reason)
+        warnings.push(`Could not inspect repository ${name}: ${collection.reason}`);
+    }
+    const notApplicable = { status: 'not_applicable', values: [] };
 
     return {
       repository: {
@@ -268,41 +314,33 @@ export class GitHubSchemaClient {
         viewerCanSeeIssueFields: Boolean(firstRepository.viewerCanSeeIssueFields),
       },
       organizationIssueTypes: organizationOwned
-        ? organizationTypesUnavailable || !organization?.issueTypes
-          ? unavailable(
-              partialReason(
-                firstPayload,
-                'organization',
-                'issueTypes',
-                'Organization issue types could not be inspected.',
-              ),
-            )
-          : available(organization.issueTypes.nodes.map(normalizeIssueType))
-        : { status: 'not_applicable', values: [] },
-      repositoryIssueTypes: organizationOwned
-        ? repositoryTypesUnavailable || !firstRepository.issueTypes
-          ? unavailable(
-              partialReason(
-                firstPayload,
-                'repository',
-                'issueTypes',
-                'Repository issue types could not be inspected.',
-              ),
-            )
-          : available(firstRepository.issueTypes.nodes.map(normalizeIssueType))
-        : { status: 'not_applicable', values: [] },
+        ? completeNodes(organization?.issueTypes) &&
+          !hasErrorPath(details, 'organization', 'issueTypes')
+          ? available(organization.issueTypes.nodes.map(normalizeIssueType))
+          : unavailable('Organization issue types could not be inspected.')
+        : notApplicable,
+      repositoryIssueTypes: {
+        ...repositoryTypes,
+        values: repositoryTypes.values.map(({ node_id, id, name, is_enabled }) => ({
+          id: node_id ?? id,
+          name,
+          enabled: is_enabled,
+        })),
+      },
+      organizationPinning: organizationOwned
+        ? inspectPinning(details, 'organization')
+        : notApplicable,
+      repositoryPinning: inspectPinning(details, 'repository'),
+      repositoryIssueFields: {
+        ...repositoryFields,
+        values: repositoryFields.values.map(normalizeField),
+      },
       issueFields: organizationOwned
-        ? organizationFieldsUnavailable || repositoryFieldsUnavailable
-          ? unavailable(
-              partialReason(
-                firstPayload,
-                repositoryFieldsUnavailable ? 'repository' : 'organization',
-                'issueFields',
-                'Issue fields could not be inspected.',
-              ),
-            )
-          : available((organization?.issueFields?.nodes ?? []).map(normalizeField))
-        : { status: 'not_applicable', values: [] },
+        ? !completeNodes(organization?.issueFields) ||
+          hasErrorPath(details, 'organization', 'issueFields')
+          ? unavailable('Organization issue fields could not be inspected.')
+          : available(organization.issueFields.nodes.map(normalizeField))
+        : notApplicable,
       repositoryLabels: labelsAvailable
         ? available(labels.map(normalizeLabel))
         : unavailable('Repository labels could not be completely inspected.'),
