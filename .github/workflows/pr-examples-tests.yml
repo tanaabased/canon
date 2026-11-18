@@ -35,8 +35,6 @@ jobs:
         uses: tanaabased/actions/setup-openclaw@v1
         with:
           package-field: openclaw.build.openclawVersion
-      - name: Prepare Task Author
-        run: bun run build:task-author --release
       - name: Pack candidate
         id: pack
         uses: tanaabased/actions/npm-pack@v1

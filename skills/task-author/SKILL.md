@@ -30,11 +30,11 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](./references/canon/project-management-model.md), [Task Management Contract](./references/canon/task-management-contract.md), [Task Management Schema](./references/canon/task-management-schema.json), and [GitHub CLI Routing](./references/canon/github-cli-routing.md).
-- **Before assessing, drafting, creating, revising, normalizing, or migrating a task:** read [Shared Assertions](./references/canon/task-management-fixtures.md#shared-assertions) and the [Fixture Matrix](./references/canon/task-management-fixtures.md#fixture-matrix), then read the case sections matching the task kind, repository capabilities, lifecycle operation, and evidence gaps.
-- **When maintaining this skill or reviewing cross-skill convergence:** read the complete [Task Management Fixtures](./references/canon/task-management-fixtures.md).
-- **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](./references/canon/documentation-standards.md#documentation-change-gate).
-- **Before choosing validation checks:** [Verification Boundaries](./references/canon/verification-boundaries.md).
+- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [GitHub CLI Routing](../../references/github-cli-routing.md).
+- **Before assessing, drafting, creating, revising, normalizing, or migrating a task:** read [Shared Assertions](../../references/task-management-fixtures.md#shared-assertions) and the [Fixture Matrix](../../references/task-management-fixtures.md#fixture-matrix), then read the case sections matching the task kind, repository capabilities, lifecycle operation, and evidence gaps.
+- **When maintaining this skill or reviewing cross-skill convergence:** read the complete [Task Management Fixtures](../../references/task-management-fixtures.md).
+- **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](../../references/documentation-standards.md#documentation-change-gate).
+- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
 
 ## When to Use
 
@@ -52,48 +52,28 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When Not to Use
 
-- Do not close, reopen, delete, assign, or change relationship state. Route milestone lifecycle and explicit task-membership changes to [Project Milestone Author](https://github.com/tanaabased/canon/blob/main/skills/project-milestone-author/SKILL.md).
+- Do not close, reopen, delete, assign, or change relationship state. Route milestone lifecycle and explicit task-membership changes to [Project Milestone Author](../project-milestone-author/SKILL.md).
 - Do not create, recolor, rename, or delete label definitions; create mode may apply only observed existing canonical labels.
-- Do not create or change issue types, organization issue fields, field options, milestones, dependencies, parents, or sub-issues; route shallow hierarchy and dependency publication to [Task Decomposer](https://github.com/tanaabased/canon/blob/main/skills/task-decomposer/SKILL.md).
+- Do not create or change issue types, organization issue fields, field options, milestones, dependencies, parents, or sub-issues; route shallow hierarchy and dependency publication to [Task Decomposer](../task-decomposer/SKILL.md).
 - Do not set assignees through the current create mode, and do not bundle milestone membership with task creation.
 - Do not create a task with requested relationship mutations; keep that preview blocked until relationship support is implemented.
-- Do not use this skill to assess completion; use [Task Completion Check](https://github.com/tanaabased/canon/blob/main/skills/task-completion-check/SKILL.md).
+- Do not use this skill to assess completion; use [Task Completion Check](../task-completion-check/SKILL.md).
 - Do not infer a target from a directory name. If neither an explicit target nor one unambiguous verified GitHub binding exists, request `OWNER/REPO`.
 
 ## Prerequisites
 
 - Require `bun` and GitHub CLI `gh`. When the host supplies a local skill directory, use it as `<skill-path>` and run the commands from the current project.
-- Apply [the shared GitHub CLI routing contract](./references/canon/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
+- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Prefer an explicit `OWNER/REPO` or `OWNER/REPO#NUMBER`; otherwise accept only a repository that `gh repo view` resolves unambiguously from the active project.
 - Check `gh auth status`. A failed auth probe is a visible warning because public reads may still work; never conceal a private-repository discovery failure.
 - Create mode requires GitHub Issues write access. Native type, label, and issue-field values require repository push access and may otherwise be silently dropped, so a successful create response is never sufficient verification.
-- Apply [the task management contract](./references/canon/task-management-contract.md) and the applicable cases from its [fixture corpus](./references/canon/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
-
-### Packaged Command Execution
-
-This skill's commands are prebuilt single-file Bun scripts. Require Bun and the host-provided
-`gh`; do not install dependencies or compile the scripts before running them.
-
-- If the host only supplies readable skill resources, read the [runtime file inventory](./runtime-files.json) from this installed
-  skill and select the required command. Read its complete resource through the ordinary skill
-  reader, following every page without truncation. Write the exact contents into a fresh task-local
-  temporary directory at the listed relative path. Verify its byte length and SHA-256 against the
-  inventory before execution. If a read is incomplete or verification fails, stop; do not reconstruct
-  the code, fetch a different release, or execute a partial copy.
-- Use that temporary directory as `<skill-path>` for the copied command. Keep the task's working
-  directory, environment, and `PATH` unchanged. The executable may live elsewhere; do not `cd` into
-  its directory. Continue sending request JSON through standard input under the existing rules.
-- Read policy documents directly through the skill reader. Each command needs only its listed
-  JavaScript file. Use files from the current installed release and a fresh temporary copy.
-- Source links to other skills are handoffs: discover and load the applicable installed skill from
-  the catalog when needed. Development source and test links are for maintenance in Canon's checkout,
-  not runtime dependencies. Copying files grants no additional execution or publication authority.
+- Apply [the task management contract](../../references/task-management-contract.md) and the applicable cases from its [fixture corpus](../../references/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
 
 ## Inputs
 
 - Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, a supported problem or requested outcome, and checkable acceptance criteria. Use the compact body defaults in the shared contract; separate outcome, scope, exclusions, and delivery sections are conditional, not readiness requirements.
-- Apply the shared [title guidance and examples](./references/canon/task-management-contract.md#task-kinds-and-body-shapes) when creating tasks or explicitly revising titles; retain the exact title in the publication preview and approval plan.
-- Apply the shared contract's [scope and proportionality rules](./references/canon/task-management-contract.md#scope-and-proportionality) before drafting obligations. Preserve material evidence, boundaries, and task-specific verification without copying routine PR mechanics or creating speculative deliverables.
+- Apply the shared [title guidance and examples](../../references/task-management-contract.md#task-kinds-and-body-shapes) when creating tasks or explicitly revising titles; retain the exact title in the publication preview and approval plan.
+- Apply the shared contract's [scope and proportionality rules](../../references/task-management-contract.md#scope-and-proportionality) before drafting obligations. Preserve material evidence, boundaries, and task-specific verification without copying routine PR mechanics or creating speculative deliverables.
 - For a Bug, preserve observed and expected behavior plus reporter reproduction or direct evidence. Keep worker-owned verification proportional and use the safest suitable environment; preserve unresolved reproduction gaps and approval boundaries.
 - For a Feature, identify one useful, bounded capability and its consumer-visible acceptance conditions. Keep an oversized or umbrella request unready and recommend decomposition rather than inventing a delivery checklist.
 - Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
@@ -103,10 +83,10 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 - Optional label signals must be explicit. `regression`, `needs reproduction`, `good first issue`, and `help wanted` still pass their canonical eligibility checks.
 - For label reassessment, send supported boolean `signals` and `reproductionAvailable` values; omit unassessed values. To clear resolved conditions, use `signals.blocked: false`, `signals.needsTriage: false`, or `reproductionAvailable: true` only after reviewing the evidence. Explicit signals still pass eligibility checks; missing inputs never authorize removing an existing label.
 - For agent-owned command execution, prefer `--input -` and send the JSON request through the execution session's standard input. Start the Bun command directly; do not use `printf`, `echo`, a here-document, or a shell pipeline to feed the request because that can embed publication data in a command approval rule. Request elevated execution only for the stable Task Author command prefix, never for request content. If the harness cannot provide standard input, use a repository-local ignored scratch path under the active workspace, verify the intended path with `git check-ignore` before writing, and do not add a tracked placeholder merely to retain the directory.
-- Run `bun <skill-path>/dist/draft-task.js --input <path|->` for a read-only draft.
-- Run `bun <skill-path>/dist/create-task.js --input <path|->` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
-- Run `bun <skill-path>/dist/update-task.js --input <path|->` with `mode` set to `revise` or `normalize`. Revision defaults to `revisionKind: "material"` and requires a concise `revisionSummary` when the issue changes. Use `revisionKind: "minor"` only for wording, formatting, or typo corrections that preserve task meaning; the classification is part of the exact approved plan. Incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
-- Run `bun <skill-path>/dist/migrate-fallback.js --input <path|->` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
+- Run `bun <skill-path>/scripts/draft-task.js --input <path|->` for a read-only draft.
+- Run `bun <skill-path>/scripts/create-task.js --input <path|->` first without publication approval to obtain the exact plan and digest. If an explicit imperative already authorizes that exact bounded creation and the inspected plan contains no material surprise, rerun in the same turn with `publication.safetyReviewed: true`, the exact `publication.approvedTarget`, and the returned `publication.approvedDigest`; do not ask for a second approval solely because the digest is now known.
+- Run `bun <skill-path>/scripts/update-task.js --input <path|->` with `mode` set to `revise` or `normalize`. Revision defaults to `revisionKind: "material"` and requires a concise `revisionSummary` when the issue changes. Use `revisionKind: "minor"` only for wording, formatting, or typo corrections that preserve task meaning; the classification is part of the exact approved plan. Incomplete normalization may preserve raw evidence and apply lifecycle labels without claiming completion.
+- Run `bun <skill-path>/scripts/migrate-fallback.js --input <path|->` only after an explicit fallback-migration imperative for the exact task. Preview its separately bounded two-phase plan first, then use the same exact publication approval fields in the same turn only when the plan contains no material surprise.
 - Every command accepts `--input -`; file input is the fallback. Use `--help` for the stable command contract.
 
 ## Outputs
@@ -136,7 +116,7 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 
 1. Resolve and display one exact target. Stop if it remains ambiguous. Draft only the supported outcome and necessary obligations under the shared scope rules.
 2. Before rendering the publication preview, discover and read the authoring agent's applicable voice skill from the available skills; do not select a voice from the assignee or impose a Canon-wide persona. An explicitly requested voice or house style wins; use plain prose when no voice skill is available. Preserve facts, uncertainty, quotations, technical identifiers, acceptance conditions, and permission boundaries; keep sensitive and machine-facing content plain. Trim repetition after styling, then freeze the text for preview and digest approval. A later wording change requires a fresh digest.
-3. Run the bundled draft or create command with JSON on standard input. If standard input is unavailable, verify one repository-local ignored scratch path with `git check-ignore` before writing the request there. Both commands check `gh` and inspect repository issue types, issue fields, and labels before any write.
+3. Run the draft or create command with JSON on standard input. If standard input is unavailable, verify one repository-local ignored scratch path with `git check-ignore` before writing the request there. Both commands check `gh` and inspect repository issue types, issue fields, and labels before any write.
 4. Review missing substantive evidence, task-specific verification, authorization boundaries, and metadata errors. Ask focused questions instead of filling gaps with low values or generic acceptance criteria.
 5. Review assessment provenance and rationales. Keep agent estimates evidence-based and human-controlled values out of agent ownership.
 6. Review native versus fallback planning. Native values win; the fallback capsule includes only proven-unavailable native concepts.
@@ -150,20 +130,20 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 
 ## Bundled Resources
 
-- [task-management-contract.md](./references/canon/task-management-contract.md): shared semantic contract
-- [task-management-fixtures.md](./references/canon/task-management-fixtures.md): cross-skill golden cases
-- [draft-task.js](./dist/draft-task.js): JSON-in/read-only-preview-out Bun entrypoint
-- [create-task.js](./dist/create-task.js): digest-gated JSON-in/create-and-verify Bun entrypoint
-- [update-task.js](./dist/update-task.js): digest-gated revise/normalize entrypoint
-- [migrate-fallback.js](./dist/migrate-fallback.js): two-phase fallback migration entrypoint
-- [task-draft-author.js](https://github.com/tanaabased/canon/blob/main/skills/task-author/lib/task-draft-author.js): draft orchestration over an injected GitHub client
-- [task-create-author.js](https://github.com/tanaabased/canon/blob/main/skills/task-author/lib/task-create-author.js): publication, mutation, and verification orchestration over an injected GitHub client
-- [task-state-reader.js](https://github.com/tanaabased/canon/blob/main/skills/task-author/lib/task-state-reader.js): shared issue, field, and comment read-back normalization
-- [github-capability-client.js](https://github.com/tanaabased/canon/blob/main/skills/task-author/lib/github-capability-client.js): read-only `gh` discovery boundary
-- [github-task-client.js](https://github.com/tanaabased/canon/blob/main/skills/task-author/lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
-- [utilities](https://github.com/tanaabased/canon/blob/main/skills/task-author/utils): focused assessment, normalization, rendering, metadata, and labeling units
-- [tests](https://github.com/tanaabased/canon/blob/main/skills/task-author/test): flat utility, client-boundary, shared-fixture, and revision coverage
-- [task-management-fixtures.js](https://github.com/tanaabased/canon/blob/main/test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
+- [task-management-contract.md](../../references/task-management-contract.md): shared semantic contract
+- [task-management-fixtures.md](../../references/task-management-fixtures.md): cross-skill golden cases
+- [draft-task.js](./scripts/draft-task.js): JSON-in/read-only-preview-out Bun entrypoint
+- [create-task.js](./scripts/create-task.js): digest-gated JSON-in/create-and-verify Bun entrypoint
+- [update-task.js](./scripts/update-task.js): digest-gated revise/normalize entrypoint
+- [migrate-fallback.js](./scripts/migrate-fallback.js): two-phase fallback migration entrypoint
+- [task-draft-author.js](./lib/task-draft-author.js): draft orchestration over an injected GitHub client
+- [task-create-author.js](./lib/task-create-author.js): publication, mutation, and verification orchestration over an injected GitHub client
+- [task-state-reader.js](./lib/task-state-reader.js): shared issue, field, and comment read-back normalization
+- [github-capability-client.js](./lib/github-capability-client.js): read-only `gh` discovery boundary
+- [github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
+- [utilities](./utils): focused assessment, normalization, rendering, metadata, and labeling units
+- [tests](./test): flat utility, client-boundary, shared-fixture, and revision coverage
+- [task-management-fixtures.js](../../test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 
 ## Validation
 
@@ -173,8 +153,6 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 
 Run these checks only when changing the skill or its implementation, not during ordinary use.
 
-- When changing Task Author, follow the [distribution build instructions](./references/distribution-pilot.md) in Canon's source checkout.
-
 - Run `bun run test` for the fast behavior checks, including shared consumers.
-- Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir dist/task-author --container codex-plugin --namespace tanaab` after staging the build.
+- Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/task-author --container codex-plugin --namespace tanaab`.
 - Exercise a live create only against an explicitly approved disposable repository, first showing the exact digest-bound plan. Verify the live issue through the installed skill and retain any partial result for diagnosis rather than deleting evidence automatically.

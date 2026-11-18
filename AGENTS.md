@@ -79,7 +79,6 @@
 - Keep repo-root `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked internal commands and `-task.js` for automation entrypoints. Put import-only modules in `lib/`.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 - If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.
-- Task Author ships from `skills/task-author/`. Follow its [build instructions](./skills/task-author/references/distribution-pilot.md) to edit the authored instructions, stage the installed skill, and verify the release output. Keep the build scoped to Task Author.
 
 ## Change Discipline
 

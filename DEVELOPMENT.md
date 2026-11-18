@@ -18,10 +18,9 @@ bun run lint
 
 `bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), [Codex discovery and cache recovery](https://github.com/tanaabased/canon/blob/main/examples/codex/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
-In a disposable checkout, prepare and check the actual npm payload without installing dependencies into it:
+Check the actual npm payload without installing dependencies into it:
 
 ```sh
-bun run build:task-author --release
 npm pack --ignore-scripts --pack-destination /tmp
 version="$(bun -p '(await Bun.file("package.json").json()).version')"
 candidate="$(mktemp -d)"
@@ -41,6 +40,6 @@ For Me-managed installations, deliberately update the designated source checkout
 
 Use trusted publishing for npm publication and `latest`-to-`edge` channel syncing from `tanaabased/canon` and `.github/workflows/release.yml`, with `npm publish` and `npm dist-tag` permissions. No npm token is required; see the [npm publishing contract](./references/coding-stack-preferences.md#npm-package-publishing).
 
-ClawHub publication is a required release job and uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests before rebuilding Task Author's generated assets.
+ClawHub publication is a required release job and uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests.
 
 See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.
