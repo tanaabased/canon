@@ -56,14 +56,18 @@ function finishFieldMutation({
     );
   }
   if (plan.operations.length === 0) {
+    const verification = verifyAligned ? verify(client, plan) : EMPTY_VERIFICATION;
+    const aligned = verification.status === 'verified';
     return withOperations(
       {
         ...base,
-        status: 'aligned',
+        status: aligned ? 'aligned' : 'blocked',
         mutatesGitHub: false,
-        blockers: [],
+        blockers: aligned
+          ? []
+          : [`Field verification is ${verification.status} for ${plan.target}.`],
         writes: [],
-        verification: verifyAligned ? verify(client, plan) : EMPTY_VERIFICATION,
+        verification,
       },
       [],
       includeOperations,

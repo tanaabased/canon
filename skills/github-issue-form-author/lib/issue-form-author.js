@@ -41,7 +41,7 @@ function validateElements(body) {
 }
 
 /** Build one low-friction GitHub intake form without writing files or publishing to GitHub. */
-export function authorIssueForm(kind, repositoryMode) {
+export function authorIssueForm(kind, repositoryMode, enabledTypes) {
   validateRepositoryMode(repositoryMode);
   const taskKind = TASK_KINDS[kind];
   if (!taskKind) throw new Error(`Unsupported task kind: ${kind}`);
@@ -58,6 +58,7 @@ export function authorIssueForm(kind, repositoryMode) {
   ];
   validateElements(body);
 
+  const includeType = enabledTypes?.includes(kind) ?? repositoryMode === 'organization';
   const name = issueFormName(kind);
   if (name.length <= 3)
     throw new Error('GitHub issue-form names must be longer than 3 characters.');
@@ -68,16 +69,16 @@ export function authorIssueForm(kind, repositoryMode) {
       kind === 'feature'
         ? 'Suggest a new or improved capability for triage and normalization.'
         : `Share a ${taskKind.name.toLowerCase()} for triage and normalization.`,
-    ...(repositoryMode === 'organization' ? { type: kind } : {}),
+    ...(includeType ? { type: kind } : {}),
     body,
   };
 }
 
 /** Build the complete Task, Bug, Feature, and chooser file set for one repository mode. */
-export function authorIssueFormSet(repositoryMode) {
+export function authorIssueFormSet(repositoryMode, enabledTypes) {
   validateRepositoryMode(repositoryMode);
   const forms = Object.keys(TASK_KINDS).map((kind) => {
-    const document = authorIssueForm(kind, repositoryMode);
+    const document = authorIssueForm(kind, repositoryMode, enabledTypes);
     return {
       kind,
       path: `.github/ISSUE_TEMPLATE/${kind}.yml`,
@@ -103,11 +104,6 @@ export function authorIssueFormSet(repositoryMode) {
     ],
     warnings: [
       'GitHub issue forms remain in public preview and must be revalidated against the current form schema before publication.',
-      ...(repositoryMode === 'personal'
-        ? [
-            'Personal repositories lack issue types and issue fields; Task Author adds supported fallback metadata after semantic normalization.',
-          ]
-        : []),
     ],
     operations: [],
   };

@@ -1,5 +1,11 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added personal-account setup for Work size, Complexity, and Impact to `tanaab-github-issue-schema-author`. [#120](https://github.com/tanaabased/canon/issues/120) [#121](https://github.com/tanaabased/canon/pull/121)
+- Fixed `tanaab-github-issue-form-author` to use enabled repository types and preserve native field values from personal repositories.
+- Fixed `tanaab-github-issue-schema-author` to report readable repository fields and types when organization or pinning reads fail. [#119](https://github.com/tanaabased/canon/issues/119) [#122](https://github.com/tanaabased/canon/pull/122)
+- Fixed `tanaab-github-issue-schema-author` to require successful repository verification before reporting personal fields as aligned.
+- Updated `tanaab-task-author` to discover issue types and estimate fields from the target repository and keep uncertain placements unresolved. [#119](https://github.com/tanaabased/canon/issues/119) [#122](https://github.com/tanaabased/canon/pull/122)
+
 ## v0.14.1 - [November 17, 2026](https://github.com/tanaabased/canon/releases/tag/v0.14.1)
 
 - Made `tanaab-task-author` self-contained with bundled commands, local references, and cloud copy-and-run guidance. [#110](https://github.com/tanaabased/canon/issues/110)

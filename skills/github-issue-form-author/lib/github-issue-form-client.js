@@ -1,3 +1,4 @@
+import { readRepositoryIssueTypes } from '../../../lib/read-repository-issue-metadata.js';
 import runGitHubCli, {
   GITHUB_API_VERSION_HEADER,
   githubCliResultDetail,
@@ -119,6 +120,13 @@ export class GitHubIssueFormClient {
     const defaultBranch = String(repository.default_branch ?? '').trim();
     if (!defaultBranch) throw new Error(`Repository ${target.slug} has no default branch.`);
 
+    const issueTypes = readRepositoryIssueTypes(this.#runner, target);
+    if (issueTypes.status !== 'ok') {
+      throw new Error(
+        `Cannot determine enabled issue types for ${target.slug}: ${issueTypes.reason}`,
+      );
+    }
+
     const directoryEndpoint = contentEndpoint(target.slug, TEMPLATE_DIRECTORY, defaultBranch);
     const directoryResult = this.#run(['api', directoryEndpoint, '-H', GITHUB_API_VERSION_HEADER]);
     let directoryEntries = [];
@@ -142,6 +150,9 @@ export class GitHubIssueFormClient {
     return {
       target,
       ownerType: repository.owner?.type ?? 'Unknown',
+      enabledTypes: issueTypes.values
+        .filter((type) => type.is_enabled)
+        .map((type) => type.name.toLowerCase()),
       defaultBranch,
       files: MANAGED_ISSUE_FORM_PATHS.map((path) =>
         this.#readFile(target.slug, path, defaultBranch),
