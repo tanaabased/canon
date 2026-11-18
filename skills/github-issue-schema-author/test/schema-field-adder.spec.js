@@ -126,19 +126,102 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
     assert.ok(client.state.fields.some(({ name }) => name === 'Work size'));
   });
 
-  it('should block personal repositories and unresolved organization field inspection', () => {
+  it('should block an unresolved owner field inventory', () => {
     for (const client of [
-      fakeFieldAdditionClient({ ownerType: 'User' }),
+      fakeFieldAdditionClient({ ownerType: 'User', fieldsStatus: 'unavailable' }),
       fakeFieldAdditionClient({ fieldsStatus: 'unavailable' }),
     ]) {
       const report = addMissingGitHubIssueFields('tanaabased/big-test-bucket', { client });
       assert.equal(report.status, 'blocked');
       assert.equal(report.mutatesGitHub, false);
+      assert.equal(report.authorization.digest, null);
+      assert.deepEqual(report.plannedMutation.operations, []);
       assert.equal(
         client.calls.some((call) => call.operation === 'createIssueField'),
         false,
       );
     }
+  });
+
+  it('should require a fresh personal-account approval and preserve existing definitions', () => {
+    const target = 'example-owner/example-repo';
+    const client = fakeFieldAdditionClient({ ownerType: 'User' });
+    const originalFields = structuredClone(client.state.fields);
+    const preview = addMissingGitHubIssueFields(target, { client });
+    const plan = preview.plannedMutation;
+
+    assert.equal(preview.status, 'approval_required');
+    assert.equal(plan.account, 'example-owner');
+    assert.deepEqual(
+      plan.operations.map(({ method, endpoint, body }) => [
+        method,
+        endpoint,
+        body.name,
+        body.visibility,
+      ]),
+      ['Work size', 'Complexity', 'Impact'].map((name) => [
+        'POST',
+        '/user/issue-fields',
+        name,
+        'restricted',
+      ]),
+    );
+    const personalApproval = {
+      approvedAccount: plan.account,
+      approvedDigest: preview.authorization.digest,
+    };
+    const wrongApproval = addMissingGitHubIssueFields(target, {
+      client,
+      authorization: {
+        approvedOrganization: plan.account,
+        approvedDigest: personalApproval.approvedDigest,
+      },
+    });
+    assert.equal(wrongApproval.status, 'approval_required');
+    assert.equal(wrongApproval.mutatesGitHub, false);
+
+    // Another process added one field after the preview. The stale approval cannot authorize the smaller plan.
+    client.createPersonalIssueField({ login: plan.account }, plan.operations[0].body);
+    const refreshed = addMissingGitHubIssueFields(target, {
+      client,
+      authorization: personalApproval,
+    });
+    assert.equal(refreshed.status, 'approval_required');
+    assert.deepEqual(
+      refreshed.plannedMutation.operations.map(({ body }) => body.name),
+      ['Complexity', 'Impact'],
+    );
+    assert.equal(refreshed.mutatesGitHub, false);
+
+    const applied = addMissingGitHubIssueFields(target, {
+      client,
+      authorization: { ...personalApproval, approvedDigest: refreshed.authorization.digest },
+    });
+    assert.equal(applied.status, 'added');
+    assert.equal(applied.verification.account.status, 'verified');
+    assert.equal(applied.verification.repository.status, 'verified');
+    assert.deepEqual(client.state.fields.slice(0, originalFields.length), originalFields);
+    const secondPlan = addMissingGitHubIssueFields(target, { client });
+    assert.equal(secondPlan.status, 'aligned');
+    assert.deepEqual(secondPlan.plannedMutation.operations, []);
+  });
+
+  it('should report partial success when the personal fields cannot be verified through the selected repository', () => {
+    const target = 'example-owner/example-repo';
+    const client = fakeFieldAdditionClient({ ownerType: 'User', repositoryFieldsVisible: false });
+    const preview = addMissingGitHubIssueFields(target, { client });
+    const report = addMissingGitHubIssueFields(target, {
+      client,
+      authorization: {
+        approvedAccount: preview.account,
+        approvedDigest: preview.authorization.digest,
+      },
+    });
+
+    assert.equal(report.status, 'partial');
+    assert.equal(report.mutatesGitHub, true);
+    assert.equal(report.verification.account.status, 'verified');
+    assert.equal(report.verification.repository.status, 'unavailable');
   });
 
   it('should reject an approval for a different organization or plan digest', () => {

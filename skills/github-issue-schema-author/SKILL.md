@@ -1,6 +1,6 @@
 ---
 name: tanaab-github-issue-schema-author
-description: Tanaab-based GitHub issue schema inspection and bounded synchronization. Use to compare repository schema with canonical task policy, align managed fields, or inspect, plan, and synchronize canonical labels across an organization and explicit repositories without deletions.
+description: Tanaab-based GitHub issue schema inspection and bounded synchronization. Use to compare repository schema with canonical task policy, add missing managed fields to an organization or personal account, align organization fields, or synchronize canonical labels without deletions.
 license: MIT
 metadata:
   type: integration
@@ -37,7 +37,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Use when a user wants to inspect or compare GitHub issue schema for an explicit `OWNER/REPO`.
 - Use before planning issue-field, issue-type, pinning, visibility, or canonical-label alignment.
 - Use to determine whether a repository is aligned, missing definitions, drifted, needs a separately authorized migration, or cannot be fully inspected.
-- Use additive mode when an organization owner explicitly authorizes creation of the three missing canonical fields without changing any existing state.
+- Use additive mode to plan creation of missing canonical fields for an organization or the authenticated personal account and apply an explicitly approved plan.
 - Use color mode when an organization owner explicitly authorizes the exact canonical color diff for the three managed single-select fields.
 - Use pinning mode when an organization owner explicitly authorizes the exact managed field-to-type associations for Task, Bug, and Feature.
 - Use visibility mode when an organization owner explicitly authorizes only the managed fields whose visibility differs from the canonical organization-members-only policy.
@@ -63,8 +63,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Verify GitHub CLI availability and authentication without exposing credentials.
 - Treat private repositories and organization schema as permission-sensitive. Preserve partial read results and mark inaccessible surfaces unresolved.
-- Additive mode requires an organization administrator or a token with organization Issue Fields write permission.
-- Field-definition changes, including visibility and pinning, require an organization owner or equivalent organization Issue Fields write permission. Applying a pinning plan also requires a signed-in browser session with that access.
+- Organization field-definition changes, including additions, visibility, and pinning, require an organization owner or equivalent organization Issue Fields write permission. Applying a pinning plan also requires a signed-in browser session with that access.
+- Personal field additions require authentication as the repository owner. Planning requires personal Issue Fields read permission (`read:user` for OAuth or classic tokens). Applying requires personal Issue Fields write permission (`user` for OAuth or classic tokens). See [GitHub's personal issue field API](https://docs.github.com/en/rest/users/issue-fields).
 - Setting a field value on an individual issue is separate from schema management and requires triage access or greater to that repository. Canonical field visibility exposes values to organization members and repository collaborators with read access or greater; it does not grant value-editing or schema-editing permission.
 
 ## Inputs
@@ -72,7 +72,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Required: one explicit `OWNER/REPO` or GitHub repository URL; label batch mode instead accepts `--organization ORG`, repeatable `--repository OWNER/REPO`, or both.
 - Optional: `--json` for the complete machine-readable report.
 - Additive planning: `bun <skill-path>/scripts/add-fields.js plan OWNER/REPO --json`.
-- Additive apply: rerun with `apply`, the exact `--approved-organization`, and the previewed `--approved-digest`.
+- For additive apply, rerun with `apply` and the previewed `--approved-digest`. Name the owner with `--approved-organization ORG` or `--approved-account LOGIN`, as shown in the plan.
 - Color planning: `bun <skill-path>/scripts/recolor-fields.js plan OWNER/REPO --json`.
 - Color apply: rerun with `apply`, the exact `--approved-organization`, and the previewed `--approved-digest`.
 - Visibility planning and apply: use `scripts/set-field-visibility.js`, with a separate exact organization and digest approval.
@@ -91,7 +91,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Classify GitHub's default `Effort` field as `preserved_unmanaged`. `Work size` is a distinct managed field; never rename, map, delete, or infer it from Effort.
 - Report organization-default labels as `manual`: GitHub exposes the setting to humans but has no public API that lists its current definitions.
 - Inspect mode produces no GitHub changes and no mutation plan.
-- Additive planning returns `approval_required` with three or fewer exact POST operations, an organization-bound digest, and empty update and deletion lists.
+- Additive planning returns `approval_required` with three or fewer exact POST operations, an owner-bound digest, and empty update and deletion lists.
 - Additive apply returns `added` only after every created definition verifies; `partial` preserves successful additions after a later failure; `failed` means no field is known to have been created; and `aligned` is an idempotent no-op.
 - Color planning returns `approval_required` with zero to three exact PATCH operations, empty create and deletion lists, all retained option identities, and each current-to-canonical color change.
 - Color apply returns `updated` only after every field and option property verifies; `partial` preserves an earlier successful recolor after a later failure; `failed` means no field is known to have changed; and `aligned` is an idempotent no-op.
@@ -108,7 +108,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Mark a hidden field, type, or label surface `unresolved`; do not convert lack of access into a missing-schema claim.
 - For personal repositories, inspect repository types, fields, and labels. Mark organization-only findings `not_applicable`.
 - Never compensate for a read failure by attempting a write or a broader authorization flow.
-- In additive-field mode, stop before mutation if field absence is unproven, the owner is not an organization, the organization or digest differs, or the plan contains anything except the allowed create operations.
+- In additive-field mode, an unreadable or incomplete owner inventory blocks the plan. Apply requires the exact owner and digest from a fresh preview. For personal accounts, the active GitHub login must own the selected repository.
 - Stop on the first failed create. Never delete a successfully created field to simulate rollback; re-read and report partial success instead.
 - Stop color synchronization if any field is missing or has a different type, option membership, order, ID, or priority. Never use color synchronization to add, remove, recreate, or reorder an option.
 - Stop on the first failed color update. Never roll back a successful update by issuing an unplanned second replacement; re-read and report partial success instead.
@@ -133,9 +133,9 @@ Read each applicable document in full, or the explicitly named section, before d
 
 5. Compare organization definitions, repository-effective definitions, fields, pinning, visibility, and all repository labels.
 6. Present exact findings and preserve all unmanaged state. Explain that organization-default labels require manual inspection.
-7. For additive fields, run the bundled plan command and review the complete field names, descriptions, types, visibility, options, organization, digest, and explicit empty update and deletion lists.
-8. After authorization for that exact organization and digest, run additive apply. It creates fields sequentially through the organization issue-field POST endpoint and stops on the first failure.
-9. Re-read organization fields and verify names, descriptions, types, organization-members-only visibility, and ordered select options. Report any remaining pinning, visibility, label, type, or unmanaged drift without changing it.
+7. For additive fields, run the bundled plan command and review the owner, digest, and exact field definitions and options. Personal fields apply across the owner's repositories. Their restricted visibility gives access to the owner and repository collaborators.
+8. After authorization for that exact owner and digest, run additive apply. It creates fields sequentially and stops on the first failure.
+9. Check the verification result. Personal apply checks the canonical definitions and ordered options through both the account and the selected repository. A fresh plan shows whether any additions remain.
 10. For canonical colors, run the bundled color plan and confirm it retains every option ID, name, description, and priority while changing only the displayed colors.
 11. After authorization for that exact organization and digest, run color apply. Re-read through the organization REST field surface and verify every preserved field and option property plus each requested color.
 12. For canonical pinning, run the bundled pin plan and confirm its only updates replace managed field associations with Task, Bug, and Feature, leave issues without a type unselected, preserve unmanaged pins, and project no more than ten fields per type.
@@ -182,7 +182,7 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `scripts/sync-labels.js`: digest-gated canonical repository-label entrypoint.
 - `scripts/sync-labels-batch.js`: organization and explicit-repository label inspection, planning, and digest-gated distribution entrypoint.
 - `lib/github-schema-client.js`: injected read-only GraphQL boundary.
-- `lib/github-issue-field-client.js`: organization-field REST read, additive POST, color, and visibility PATCH boundary.
+- `lib/github-issue-field-client.js`: organization and personal field reads and additive POSTs, plus organization color and visibility PATCH requests.
 - `lib/github-label-client.js`: repository-label create and definition-only update boundary.
 - `lib/schema-label-batch-synchronizer.js`: repository discovery, batch authorization, and sequential per-repository synchronization.
 - `lib/schema-inspector.js`: deterministic comparison orchestration.
@@ -204,6 +204,6 @@ Run these checks only when changing the skill or its implementation, not during 
 - Run `bun run --bun mocha "skills/github-issue-schema-author/test/**/*.spec.js"`.
 - Run Skill Author validation against this directory.
 - Perform one live read-only inspection of an explicit repository and verify `mutatesGitHub: false` and an empty `operations` array.
-- Exercise live additive mode only after an organization owner explicitly authorizes the complete digest-bound plan. Confirm it contains no updates or deletions, then verify the installed skill is idempotent after creation.
+- Exercise live additive apply only after the owner explicitly authorizes the complete digest-bound plan. Confirm the verification result and rerun the plan to check that it proposes zero additions.
 - Exercise live color mode only after an organization owner explicitly authorizes the complete digest-bound plan. Confirm every existing option ID and non-color property is retained, then verify the installed skill is idempotent after the update.
 - Exercise live pinning mode only after an organization owner explicitly authorizes the complete digest-bound manifest. Apply it through GitHub's signed-in settings UI, confirm no other field control changed, then verify the installed skill is idempotent after the update.

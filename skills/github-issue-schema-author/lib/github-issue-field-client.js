@@ -5,6 +5,8 @@ import runGitHubCli, {
 } from '../../../lib/run-github-cli.js';
 import { GitHubSchemaClient } from './github-schema-client.js';
 
+const PERSONAL_FIELDS_ENDPOINT = '/user/issue-fields';
+
 function parseJson(result, method, endpoint) {
   try {
     return { ok: true, value: JSON.parse(String(result.stdout)) };
@@ -33,7 +35,25 @@ function normalizeField(field) {
   };
 }
 
-/** GitHub boundary for organization issue-field reads and the two supported REST mutations. */
+function completeField(field) {
+  return (
+    Number.isSafeInteger(field?.id) &&
+    typeof field.name === 'string' &&
+    field.name.trim() !== '' &&
+    typeof field.data_type === 'string' &&
+    typeof field.visibility === 'string' &&
+    (!field.data_type.endsWith('_select') ||
+      (Array.isArray(field.options) &&
+        field.options.every(
+          (option) =>
+            typeof option?.name === 'string' &&
+            typeof option.color === 'string' &&
+            Number.isSafeInteger(option.priority),
+        )))
+  );
+}
+
+/** GitHub REST boundary for additive fields and organization field updates. */
 export class GitHubIssueFieldClient {
   #reader;
   #runner;
@@ -51,7 +71,7 @@ export class GitHubIssueFieldClient {
     return this.#reader.inspect(target);
   }
 
-  #request(method, endpoint, payload) {
+  #request(method, endpoint, payload, { paginate = false } = {}) {
     const args = ['api', endpoint];
     const options = {};
     if (method !== 'GET') {
@@ -59,6 +79,7 @@ export class GitHubIssueFieldClient {
       options.input = JSON.stringify(payload);
     } else {
       args.push('-H', GITHUB_API_VERSION_HEADER);
+      if (paginate) args.push('--paginate', '--slurp');
     }
     const result = this.#runner(args, options);
     if (githubCliResultStatus(result) !== 0) {
@@ -82,6 +103,47 @@ export class GitHubIssueFieldClient {
 
   createIssueField(organization, payload) {
     return this.#request('POST', `/orgs/${organization}/issue-fields`, payload);
+  }
+
+  #verifyPersonalAccount({ login, id }) {
+    const result = this.#request('GET', '/user');
+    if (!result.ok) return result;
+    const account = result.value;
+    if (
+      typeof account?.login !== 'string' ||
+      account.login.toLowerCase() !== login.toLowerCase() ||
+      !Number.isSafeInteger(account.id) ||
+      (id !== undefined && account.id !== id)
+    ) {
+      return { ok: false, error: `The authenticated GitHub account must be ${login}.` };
+    }
+    return { ok: true, account: { login: account.login, id: account.id } };
+  }
+
+  listPersonalIssueFields(owner) {
+    const identity = this.#verifyPersonalAccount(owner);
+    if (!identity.ok) return identity;
+    const result = this.#request('GET', PERSONAL_FIELDS_ENDPOINT, undefined, { paginate: true });
+    if (!result.ok) return { ...result, account: identity.account };
+    const pages = result.value;
+    if (
+      !Array.isArray(pages) ||
+      pages.length === 0 ||
+      !pages.every((page) => Array.isArray(page) && page.every(completeField))
+    ) {
+      return {
+        ok: false,
+        account: identity.account,
+        error: `GET ${PERSONAL_FIELDS_ENDPOINT} returned an incomplete field inventory.`,
+      };
+    }
+    return { ...identity, value: pages.flat().map(normalizeField) };
+  }
+
+  createPersonalIssueField(account, payload) {
+    const identity = this.#verifyPersonalAccount(account);
+    if (!identity.ok) return identity;
+    return this.#request('POST', PERSONAL_FIELDS_ENDPOINT, payload);
   }
 
   recolorIssueField(organization, fieldId, options) {
