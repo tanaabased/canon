@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import {
+  cp,
   copyFile,
   mkdir,
   mkdtemp,
@@ -30,13 +31,14 @@ const repositoryRoot = path.resolve(skillRoot, '../..');
 
 describe('skills/task-author/lib/build-distribution', function () {
   this.timeout(15000);
-  let root, outputRoot, runtimeRoot, projectRoot, env, result;
+  let root, outputRoot, runtimeRoot, projectRoot, env, result, authoredInstructions;
 
   before(async () => {
     root = await realpath(await mkdtemp(path.join(tmpdir(), 'task-author-distribution-')));
     outputRoot = path.join(root, 'artifact/task-author');
     runtimeRoot = path.join(root, 'execution-copy');
     projectRoot = path.join(root, 'active-project');
+    authoredInstructions = await readFile(path.join(skillRoot, 'SKILL.source.md'), 'utf8');
     result = await buildDistribution({
       skillRoot,
       repositoryRoot,
@@ -125,8 +127,17 @@ describe('skills/task-author/lib/build-distribution', function () {
       }
     }
     const skill = await readFile(path.join(outputRoot, 'SKILL.md'), 'utf8');
-    for (const command of result.commands)
-      assert.ok(skill.includes(`<skill-path>/${command.path}`));
+    assert.equal(
+      await readFile(path.join(skillRoot, 'SKILL.source.md'), 'utf8'),
+      authoredInstructions,
+    );
+    assert.equal(skill.match(/^### Packaged Command Execution$/gm)?.length, 1);
+    assert.match(skill, /\]\(\.\/runtime-files\.json\)/);
+    for (const [source, command] of Object.entries(config.entrypoints)) {
+      assert.ok(authoredInstructions.includes(`<skill-path>/${source}`));
+      assert.ok(!skill.includes(`<skill-path>/${source}`));
+      assert.ok(skill.includes(`<skill-path>/${command}`));
+    }
     assert.equal(
       files.some((name) => name.startsWith('lib/') || name.startsWith('test/')),
       false,
@@ -171,7 +182,7 @@ describe('skills/task-author/lib/build-distribution', function () {
       buildDistribution({
         skillRoot,
         repositoryRoot,
-        outputRoot: skillRoot,
+        outputRoot: path.join(root, 'would-overwrite-source'),
         version: 'test',
         config: {
           ...config,
@@ -185,53 +196,38 @@ describe('skills/task-author/lib/build-distribution', function () {
     );
   });
 
-  it('should refresh in place, preserve authored files, and detect stale output without writing', async () => {
-    const repository = path.join(root, 'in-place');
-    const skill = path.join(repository, 'skills/task-author');
-    await mkdir(path.join(skill, 'scripts'), { recursive: true });
-    const instructions = '# Skill\n\n[policy](./references/policy.md) [command](./dist/run.js)\n';
-    await writeFile(path.join(skill, 'SKILL.md'), instructions);
-    await writeFile(path.join(skill, 'scripts/run.js'), 'console.log("fixture");\n');
-    await writeFile(path.join(skill, 'unrelated.txt'), 'keep');
-    await writeFile(path.join(repository, 'policy.md'), '# Policy\n');
+  it('should detect stale or missing release output without writing', async () => {
+    const release = path.join(root, 'release/task-author');
+    await cp(outputRoot, release, { recursive: true });
     const options = {
-      skillRoot: skill,
-      repositoryRoot: repository,
-      outputRoot: skill,
-      version: '1.0.0',
-      config: {
-        resources: { 'SKILL.md': 'SKILL.md', '../../policy.md': 'references/policy.md' },
-        entrypoints: { 'scripts/run.js': 'dist/run.js' },
-        sourceLinks: [],
-      },
+      skillRoot,
+      repositoryRoot,
+      outputRoot: release,
+      version: result.version,
+      config,
+      check: true,
     };
-    await buildDistribution(options);
-    const bundle = path.join(skill, 'dist/run.js');
-    await writeFile(bundle, 'stale bundle');
-    await writeFile(path.join(repository, 'policy.md'), '# Changed policy\n');
-    await assert.rejects(buildDistribution({ ...options, check: true }), /Stale Task Author/);
-    assert.equal(await readFile(bundle, 'utf8'), 'stale bundle');
-    assert.equal(await readFile(path.join(skill, 'references/policy.md'), 'utf8'), '# Policy\n');
-    await buildDistribution({ ...options, version: '2.0.0' });
-    await buildDistribution({ ...options, version: '2.0.0', check: true });
-    assert.equal(await readFile(path.join(skill, 'SKILL.md'), 'utf8'), instructions);
-    assert.equal(await readFile(path.join(skill, 'unrelated.txt'), 'utf8'), 'keep');
-    assert.equal(
-      await readFile(path.join(skill, 'references/policy.md'), 'utf8'),
-      '# Changed policy\n',
-    );
-    const inventory = JSON.parse(await readFile(path.join(skill, 'runtime-files.json'), 'utf8'));
-    assert.equal(inventory.version, '2.0.0');
     const moduleUrl = new URL('../lib/build-distribution.js', import.meta.url).href;
     const otherDirectory = spawnSync(
       process.execPath,
       [
         '--eval',
-        `import { buildDistribution } from ${JSON.stringify(moduleUrl)}; await buildDistribution(${JSON.stringify({ ...options, version: '2.0.0', check: true })});`,
+        `import { buildDistribution } from ${JSON.stringify(moduleUrl)}; await buildDistribution(${JSON.stringify(options)});`,
       ],
       { cwd: root, encoding: 'utf8' },
     );
     assert.equal(otherDirectory.status, 0, otherDirectory.stderr);
+
+    const bundle = path.join(release, 'dist/draft-task.js');
+    const policy = path.join(release, 'references/canon/task-management-contract.md');
+    await writeFile(bundle, 'stale bundle');
+    await rm(policy);
+    await assert.rejects(
+      buildDistribution(options),
+      /Stale Task Author distribution: .*task-management-contract\.md, .*dist\/draft-task\.js/,
+    );
+    assert.equal(await readFile(bundle, 'utf8'), 'stale bundle');
+    await assert.rejects(readFile(policy), { code: 'ENOENT' });
   });
 
   it('should not rewrite a destination again when it matches another source link', () => {

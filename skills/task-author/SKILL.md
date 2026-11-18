@@ -62,7 +62,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Prerequisites
 
-- Require `bun` and GitHub CLI `gh`.
+- Require `bun` and GitHub CLI `gh`. When the host supplies a local skill directory, use it as `<skill-path>` and run the commands from the current project.
 - Apply [the shared GitHub CLI routing contract](./references/canon/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Prefer an explicit `OWNER/REPO` or `OWNER/REPO#NUMBER`; otherwise accept only a repository that `gh repo view` resolves unambiguously from the active project.
 - Check `gh auth status`. A failed auth probe is a visible warning because public reads may still work; never conceal a private-repository discovery failure.
@@ -74,7 +74,6 @@ Read each applicable document in full, or the explicitly named section, before d
 This skill's commands are prebuilt single-file Bun scripts. Require Bun and the host-provided
 `gh`; do not install dependencies or compile the scripts before running them.
 
-- If the host supplies a usable local skill directory, use it as `<skill-path>`.
 - If the host only supplies readable skill resources, read the [runtime file inventory](./runtime-files.json) from this installed
   skill and select the required command. Read its complete resource through the ordinary skill
   reader, following every page without truncation. Write the exact contents into a fresh task-local
@@ -84,9 +83,8 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 - Use that temporary directory as `<skill-path>` for the copied command. Keep the task's working
   directory, environment, and `PATH` unchanged. The executable may live elsewhere; do not `cd` into
   its directory. Continue sending request JSON through standard input under the existing rules.
-- Read policy documents directly through the skill reader; they are not executable sidecars. Each
-  command in this pilot needs only its listed JavaScript file. Do not reuse files from another
-  installed release or a previous temporary copy.
+- Read policy documents directly through the skill reader. Each command needs only its listed
+  JavaScript file. Use files from the current installed release and a fresh temporary copy.
 - Source links to other skills are handoffs: discover and load the applicable installed skill from
   the catalog when needed. Development source and test links are for maintenance in Canon's checkout,
   not runtime dependencies. Copying files grants no additional execution or publication authority.
@@ -175,8 +173,8 @@ This skill's commands are prebuilt single-file Bun scripts. Require Bun and the 
 
 Run these checks only when changing the skill or its implementation, not during ordinary use.
 
-- When changing commands or shared references, follow the [distribution build instructions](./references/distribution-pilot.md) in Canon's source checkout. Rebuild and include the generated files with the source change.
+- When changing Task Author, follow the [distribution build instructions](./references/distribution-pilot.md) in Canon's source checkout.
 
 - Run `bun run test` for the fast behavior checks, including shared consumers.
-- Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir skills/task-author --container codex-plugin --namespace tanaab`.
+- Run `bun skills/skill-author/scripts/validate-skill.js --skill-dir dist/task-author --container codex-plugin --namespace tanaab` after staging the build.
 - Exercise a live create only against an explicitly approved disposable repository, first showing the exact digest-bound plan. Verify the live issue through the installed skill and retain any partial result for diagnosis rather than deleting evidence automatically.

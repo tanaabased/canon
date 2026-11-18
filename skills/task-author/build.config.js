@@ -1,5 +1,6 @@
 export default {
   sourceBaseUrl: 'https://github.com/tanaabased/canon/blob/main/',
+  packagedExecution: 'templates/packaged-command-execution.md',
   entrypoints: {
     'scripts/draft-task.js': 'dist/draft-task.js',
     'scripts/create-task.js': 'dist/create-task.js',
@@ -7,7 +8,7 @@ export default {
     'scripts/migrate-fallback.js': 'dist/migrate-fallback.js',
   },
   resources: {
-    'SKILL.md': 'SKILL.md',
+    'SKILL.source.md': 'SKILL.md',
     'agents/openai.yaml': 'agents/openai.yaml',
     'assets/icon-small.svg': 'assets/icon-small.svg',
     'assets/icon-large.png': 'assets/icon-large.png',
@@ -41,5 +42,13 @@ export default {
     '../github-workflow-author/SKILL.md',
     '../javascript-author/SKILL.md',
     '../vue-author/SKILL.md',
+    './lib/task-draft-author.js',
+    './lib/task-create-author.js',
+    './lib/task-state-reader.js',
+    './lib/github-capability-client.js',
+    './lib/github-task-client.js',
+    './utils',
+    './test',
+    '../../test/task-management-fixtures.js',
   ],
 };

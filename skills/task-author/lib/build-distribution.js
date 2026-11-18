@@ -42,7 +42,22 @@ export function rewriteDistributionLinks(
   return markdown.replace(/\]\([^)]+\)/g, (literal) => replacements.get(literal) ?? literal);
 }
 
-/** Refresh declared generated files, or compare them without writing when check is true. */
+async function renderSkill(markdown, skillRoot, config) {
+  const marker = '<!-- packaged-command-execution -->';
+  const sections = markdown.split(marker);
+  if (sections.length !== 2) throw new Error('Expected one packaged command execution marker');
+  const execution = await readFile(path.join(skillRoot, config.packagedExecution), 'utf8');
+  const instructions = sections.join(execution.trim());
+  return instructions.replace(/<skill-path>\/[^\s`]+/g, (command) => {
+    const source = command.slice('<skill-path>/'.length);
+    if (!Object.hasOwn(config.entrypoints, source)) {
+      throw new Error(`Undeclared Task Author command: ${source}`);
+    }
+    return `<skill-path>/${config.entrypoints[source]}`;
+  });
+}
+
+/** Stage the declared files, or compare them without writing when check is true. */
 export async function buildDistribution({
   skillRoot,
   repositoryRoot,
@@ -55,12 +70,16 @@ export async function buildDistribution({
   repositoryRoot = path.resolve(repositoryRoot);
   outputRoot = path.resolve(outputRoot);
   const mappings = { ...config.resources, ...config.entrypoints };
-  const sources = new Set(Object.keys(mappings).map((source) => path.resolve(skillRoot, source)));
+  const sources = new Set(
+    [...Object.keys(mappings), config.packagedExecution].map((source) =>
+      path.resolve(skillRoot, source),
+    ),
+  );
   const destinations = new Map();
   for (const [source, destination] of Object.entries(mappings)) {
     const output = contained(outputRoot, destination);
     const authored = config.resources[source] === destination && source === destination;
-    if (sources.has(output) && !(authored && output === path.resolve(skillRoot, source))) {
+    if (sources.has(path.resolve(skillRoot, destination)) && !authored) {
       throw new Error(`Generated output would overwrite source: ${destination}`);
     }
     if ([...destinations.values()].includes(output)) {
@@ -91,6 +110,7 @@ export async function buildDistribution({
         sourceLinks,
       );
     }
+    if (destination === 'SKILL.md') contents = await renderSkill(contents, skillRoot, config);
     files.set(destination, contents);
   }
 
@@ -157,7 +177,7 @@ export async function buildDistribution({
   }
   if (stale.length) {
     throw new Error(
-      `Stale Task Author distribution: ${stale.join(', ')}. Run bun run build:task-author.`,
+      `Stale Task Author distribution: ${stale.join(', ')}. Prepare the release tree before checking it.`,
     );
   }
   return { outputRoot, files: files.size, ...inventory };
