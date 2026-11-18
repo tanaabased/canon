@@ -48,6 +48,73 @@ describe('skills/github-issue-schema-author/lib/github-issue-field-client', () =
     });
   });
 
+  it('should read every personal field page after verifying the active owner', () => {
+    const responses = [
+      { login: 'owner', id: 42 },
+      [
+        [{ id: 1, name: 'Start date', data_type: 'date', visibility: 'restricted' }],
+        [{ id: 2, name: 'Target date', data_type: 'date', visibility: 'all' }],
+      ],
+    ];
+    const calls = [];
+    const client = new GitHubIssueFieldClient({
+      runner(args) {
+        calls.push(args);
+        return { status: 0, stdout: JSON.stringify(responses.shift()) };
+      },
+    });
+
+    const fields = client.listPersonalIssueFields({ login: 'OWNER' });
+
+    assert.equal(fields.ok, true);
+    assert.deepEqual(fields.account, { login: 'owner', id: 42 });
+    assert.deepEqual(
+      fields.value.map(({ id }) => id),
+      [1, 2],
+    );
+    assert.deepEqual(
+      calls.map((args) => args[1]),
+      ['/user', '/user/issue-fields'],
+    );
+    assert.ok(calls[1].includes('--paginate') && calls[1].includes('--slurp'));
+  });
+
+  it('should reject an incomplete personal field page instead of treating missing definitions as absent', () => {
+    const client = new GitHubIssueFieldClient({
+      runner: ([, endpoint]) => ({
+        status: 0,
+        stdout: JSON.stringify(endpoint === '/user' ? { login: 'owner', id: 42 } : [[], null]),
+      }),
+    });
+
+    const fields = client.listPersonalIssueFields({ login: 'owner' });
+    assert.equal(fields.ok, false);
+    assert.match(fields.error, /incomplete field inventory/);
+  });
+
+  it('should keep a personal POST bound to the verified account identity', () => {
+    const calls = [];
+    const client = new GitHubIssueFieldClient({
+      runner(args, options) {
+        calls.push({ args, input: options.input });
+        return {
+          status: 0,
+          stdout: JSON.stringify(args[1] === '/user' ? { login: 'owner', id: 42 } : { id: 55 }),
+        };
+      },
+    });
+    const payload = { name: 'Impact', visibility: 'restricted' };
+
+    assert.equal(client.createPersonalIssueField({ login: 'owner', id: 51 }, payload).ok, false);
+    assert.deepEqual(
+      calls.map(({ args }) => args[1]),
+      ['/user'],
+    );
+    assert.equal(client.createPersonalIssueField({ login: 'owner', id: 42 }, payload).ok, true);
+    assert.deepEqual(calls[2].args.slice(0, 4), ['api', '/user/issue-fields', '--method', 'POST']);
+    assert.deepEqual(JSON.parse(calls[2].input), payload);
+  });
+
   it('should PATCH only the complete retained option array', () => {
     const calls = [];
     const runner = (args, options = {}) => {

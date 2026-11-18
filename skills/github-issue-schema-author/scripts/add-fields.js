@@ -9,10 +9,12 @@ function usage() {
   return `Usage:
   bun add-fields.js plan OWNER/REPO [--json]
   bun add-fields.js apply OWNER/REPO --approved-organization ORG --approved-digest SHA256 [--json]
+  bun add-fields.js apply OWNER/REPO --approved-account LOGIN --approved-digest SHA256 [--json]
 
-Creates only missing Work size, Complexity, and Impact organization fields.
+Creates only missing Work size, Complexity, and Impact fields for the repository owner.
 It never updates, renames, pins, changes visibility on, or deletes existing GitHub state.
-Run plan first and bind apply to its exact organization and digest.`;
+For a personal repository, sign in as its owner. Additions apply across that account's repositories.
+Run plan first and bind apply to the exact owner and digest.`;
 }
 
 function render(report) {
@@ -20,6 +22,7 @@ function render(report) {
   return renderSchemaMutationReport(report, {
     title: 'GitHub Issue Schema Author: additive fields',
     summaryLines: [
+      ...(report.account ? [`account: ${report.account}`] : []),
       `digest: ${report.authorization.digest}`,
       `creates: ${names.length > 0 ? names.join(', ') : 'none'}`,
       'updates: none',
@@ -33,7 +36,13 @@ export function runFieldAdditionCli(argv, dependencies = {}) {
   return runSchemaMutationCli(argv, dependencies, {
     execute: addMissingGitHubIssueFields,
     failureStatuses: ['blocked', 'partial', 'failed'],
-    parse: parseSchemaMutationArgs,
+    parse: (args) =>
+      parseSchemaMutationArgs(
+        args,
+        args.includes('--approved-account')
+          ? { approvalFlag: '--approved-account', approvalKey: 'approvedAccount' }
+          : undefined,
+      ),
     render,
     usage,
   });

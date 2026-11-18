@@ -83,6 +83,7 @@ export function fakeFieldAdditionClient({
   ownerType = 'Organization',
   fieldsStatus = 'ok',
   failAt = null,
+  repositoryFieldsVisible = true,
 } = {}) {
   const calls = [];
   const state = { fields: structuredClone(fields) };
@@ -96,7 +97,21 @@ export function fakeFieldAdditionClient({
     },
     inspect(target) {
       calls.push(`inspect:${target.slug}`);
-      return inspection(target, { fields: state.fields, fieldsStatus, ownerType });
+      return {
+        ...inspection(target, { fields: state.fields, fieldsStatus, ownerType }),
+        repositoryIssueFields: repositoryFieldsVisible
+          ? { status: 'ok', values: structuredClone(state.fields) }
+          : { status: 'unavailable', reason: 'Repository issue fields are unavailable.' },
+      };
+    },
+    listPersonalIssueFields({ login }) {
+      calls.push('listPersonalIssueFields');
+      return fieldsStatus === 'ok'
+        ? { ok: true, account: { login, id: 123 }, value: structuredClone(state.fields) }
+        : { ok: false, error: 'GET /user/issue-fields: HTTP 403' };
+    },
+    createPersonalIssueField(account, payload) {
+      return this.createIssueField(account.login, payload);
     },
     createIssueField(organization, payload) {
       createCount += 1;

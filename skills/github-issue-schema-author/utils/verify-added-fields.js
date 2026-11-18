@@ -20,14 +20,14 @@ function optionShape(options = []) {
   }));
 }
 
-/** Verify every created field against a fresh normalized organization-field read. */
+/** Verify the expected definitions against a normalized field read. */
 export function verifyAddedFields(plan, observedFields) {
-  if (observedFields.status !== 'ok') {
+  if (observedFields?.status !== 'ok') {
     return {
       status: 'unavailable',
       checks: [],
       mismatches: [],
-      errors: [observedFields.reason ?? 'Organization issue fields could not be re-read.'],
+      errors: [observedFields?.reason ?? 'Issue fields could not be re-read.'],
     };
   }
 

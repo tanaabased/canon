@@ -291,6 +291,13 @@ export class GitHubSchemaClient {
             )
           : available(firstRepository.issueTypes.nodes.map(normalizeIssueType))
         : { status: 'not_applicable', values: [] },
+      repositoryIssueFields:
+        repositoryFieldsUnavailable ||
+        !firstRepository.viewerCanSeeIssueFields ||
+        !Array.isArray(firstRepository.issueFields?.nodes) ||
+        firstRepository.issueFields.nodes.some((field) => typeof field?.name !== 'string')
+          ? unavailable('Repository issue fields could not be inspected.')
+          : available(firstRepository.issueFields.nodes.map(normalizeField)),
       issueFields: organizationOwned
         ? organizationFieldsUnavailable || repositoryFieldsUnavailable
           ? unavailable(

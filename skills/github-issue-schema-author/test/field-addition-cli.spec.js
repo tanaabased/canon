@@ -69,6 +69,32 @@ describe('skills/github-issue-schema-author/scripts/add-fields', () => {
     assert.equal(stderr.value(), '');
   });
 
+  it('should accept the personal plan digest and account through the CLI', () => {
+    const target = 'example-owner/example-repo';
+    const client = fakeFieldAdditionClient({ ownerType: 'User' });
+    const preview = capture();
+    assert.equal(
+      runFieldAdditionCli(['plan', target, '--json'], { client, stdout: preview.stream }),
+      0,
+    );
+    const plan = JSON.parse(preview.value());
+    const apply = capture();
+    const status = runFieldAdditionCli(
+      [
+        'apply',
+        target,
+        '--approved-account',
+        plan.account,
+        '--approved-digest',
+        plan.authorization.digest,
+        '--json',
+      ],
+      { client, stdout: apply.stream },
+    );
+    assert.equal(status, 0);
+    assert.equal(JSON.parse(apply.value()).status, 'added');
+  });
+
   it('should expose help without constructing a client', () => {
     const stdout = capture();
     const stderr = capture();

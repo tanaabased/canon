@@ -39,6 +39,7 @@ function finishFieldMutation({
   plan,
   successStatus,
   verify,
+  verifyAligned = false,
 }) {
   if (blockers.length > 0) {
     return withOperations(
@@ -62,7 +63,7 @@ function finishFieldMutation({
         mutatesGitHub: false,
         blockers: [],
         writes: [],
-        verification: EMPTY_VERIFICATION,
+        verification: verifyAligned ? verify(client, plan) : EMPTY_VERIFICATION,
       },
       [],
       includeOperations,
@@ -143,14 +144,62 @@ function unavailableFieldListReport(inspection, error, { includeOperations, poli
   );
 }
 
+function verifyPersonalFieldAdditions(client, target, owner, expected, inventory) {
+  const accountFields = inventory ?? client.listPersonalIssueFields(owner);
+  const account = verifyAddedFields(
+    expected,
+    accountFields.ok
+      ? { status: 'ok', values: accountFields.value }
+      : { status: 'unavailable', reason: accountFields.error },
+  );
+  let repository;
+  try {
+    const observed = client.inspect(target);
+    repository =
+      observed.repository.ownerType === 'User' &&
+      observed.repository.ownerLogin.toLowerCase() === owner.login.toLowerCase()
+        ? observed.repositoryIssueFields
+        : {
+            status: 'unavailable',
+            reason: 'The repository no longer belongs to the planned account.',
+          };
+  } catch (error) {
+    repository = { status: 'unavailable', reason: error.message };
+  }
+  const effective = verifyAddedFields(expected, repository);
+  const status = [account.status, effective.status];
+  return {
+    status: status.includes('unavailable')
+      ? 'unavailable'
+      : status.includes('drifted')
+        ? 'drifted'
+        : 'verified',
+    account,
+    repository: effective,
+  };
+}
+
 /** Preview or apply only missing Work size, Complexity, and Impact fields. */
 export function addMissingGitHubIssueFields(
   input,
   { authorization = {}, client = new GitHubIssueFieldClient(), policy = taskManagementSchema } = {},
 ) {
   const inspection = inspectGitHubIssueSchema(input, { client, policy });
-  const { blockers, plan } = buildFieldAdditionPlan(inspection);
-  const approval = evaluateFieldAdditionAuthorization(plan, planDigest(plan), authorization);
+  const personal = inspection.repository.ownerType === 'User';
+  const ownerLogin = inspection.repository.ownerLogin;
+  const personalInventory = personal
+    ? client.listPersonalIssueFields({ login: ownerLogin })
+    : undefined;
+  const { blockers, expected, plan } = buildFieldAdditionPlan(inspection, {
+    personalInventory,
+    policy,
+  });
+  const approval = evaluateFieldAdditionAuthorization(
+    plan,
+    blockers.length === 0 ? planDigest(plan) : null,
+    authorization,
+  );
+  const account = personalInventory?.account;
   return finishFieldMutation({
     approval,
     blockers,
@@ -161,7 +210,7 @@ export function addMissingGitHubIssueFields(
     base: {
       mode: 'add_missing_fields',
       target: inspection.target,
-      organization: plan.organization,
+      ...(personal ? { account: plan.account } : { organization: plan.organization }),
       policyVersion: inspection.policyVersion,
       inspection,
       plannedMutation: plan,
@@ -169,20 +218,33 @@ export function addMissingGitHubIssueFields(
       warnings: inspection.warnings,
     },
     apply: (fieldClient, fieldPlan, operation) => {
-      const result = fieldClient.createIssueField(fieldPlan.organization, operation.body);
+      const result = personal
+        ? fieldClient.createPersonalIssueField(account, operation.body)
+        : fieldClient.createIssueField(fieldPlan.organization, operation.body);
       return {
         result,
         summary: `create ${operation.body.name}`,
-        success: { fieldId: result.ok ? (result.value.id ?? null) : null },
+        success: { fieldId: result.ok ? (result.value?.id ?? null) : null },
       };
     },
     verify: (fieldClient, fieldPlan) => {
       try {
+        if (personal) {
+          const inventory = fieldPlan.operations.length === 0 ? personalInventory : undefined;
+          return verifyPersonalFieldAdditions(
+            fieldClient,
+            inspection.target,
+            account,
+            { operations: expected },
+            inventory,
+          );
+        }
         return verifyAddedFields(fieldPlan, fieldClient.inspect(inspection.target).issueFields);
       } catch (error) {
         return { status: 'unavailable', checks: [], mismatches: [], errors: [error.message] };
       }
     },
+    verifyAligned: personal,
   });
 }
 
