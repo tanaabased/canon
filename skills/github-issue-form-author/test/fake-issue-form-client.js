@@ -9,6 +9,7 @@ function entry(value, index) {
 export function fakeIssueFormClient({
   ownerType = 'Organization',
   defaultBranch = 'main',
+  enabledTypes = ownerType === 'Organization' ? ['task', 'bug', 'feature'] : [],
   files = {},
   unmanagedFiles = [],
   failAt = null,
@@ -16,6 +17,7 @@ export function fakeIssueFormClient({
   const state = {
     ownerType,
     defaultBranch,
+    enabledTypes,
     files: new Map(
       Object.entries(files).map(([path, value], index) => [path, entry(value, index)]),
     ),
@@ -41,6 +43,7 @@ export function fakeIssueFormClient({
           slug,
         },
         ownerType: state.ownerType,
+        enabledTypes: state.enabledTypes,
         defaultBranch: state.defaultBranch,
         files: MANAGED_ISSUE_FORM_PATHS.map((path) => {
           const current = state.files.get(path);

@@ -71,21 +71,23 @@ The projected form response.
     assert.deepEqual(Object.keys(normalized.intakeEvidence.responses), ['work', 'completion']);
   });
 
-  it('should retain observed organization metadata without asking for it in the form', () => {
-    const form = authorIssueForm('feature', 'organization');
-    const markdown = renderFormSubmission(form, {
-      problem: 'Automation lacks a stable inspection surface.',
-      outcome: 'Expose a supported JSON contract.',
-    });
-    const normalized = normalizeIssueFormSubmission(markdown, {
-      form,
-      repositoryMode: 'organization',
-      nativeMetadata: { priority: 'high' },
-    });
+  for (const repositoryMode of ['organization', 'personal']) {
+    it(`should retain observed metadata from a ${repositoryMode} repository`, () => {
+      const form = authorIssueForm('feature', repositoryMode);
+      const markdown = renderFormSubmission(form, {
+        problem: 'Automation lacks a stable inspection surface.',
+        outcome: 'Expose a supported JSON contract.',
+      });
+      const normalized = normalizeIssueFormSubmission(markdown, {
+        form,
+        repositoryMode,
+        nativeMetadata: { priority: 'high' },
+      });
 
-    assert.equal(normalized.kind, 'feature');
-    assert.deepEqual(normalized.metadata, { priority: 'high' });
-    assert.deepEqual(normalized.signals, {});
-    assert.deepEqual(normalized.relationships, {});
-  });
+      assert.equal(normalized.kind, 'feature');
+      assert.deepEqual(normalized.metadata, { priority: 'high' });
+      assert.deepEqual(normalized.signals, {});
+      assert.deepEqual(normalized.relationships, {});
+    });
+  }
 });

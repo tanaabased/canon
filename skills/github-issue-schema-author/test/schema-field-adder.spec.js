@@ -222,6 +222,22 @@ describe('skills/github-issue-schema-author/lib/schema-field-synchronizer additi
     assert.equal(report.mutatesGitHub, true);
     assert.equal(report.verification.account.status, 'verified');
     assert.equal(report.verification.repository.status, 'unavailable');
+
+    const retry = addMissingGitHubIssueFields(target, { client });
+    assert.equal(retry.status, 'blocked');
+    assert.equal(retry.verification.status, 'unavailable');
+    assert.equal(retry.mutatesGitHub, false);
+    assert.deepEqual(retry.writes, []);
+
+    const inspect = client.inspect;
+    client.inspect = (value) => ({
+      ...inspect(value),
+      repositoryIssueFields: { status: 'ok', values: [] },
+    });
+    const drift = addMissingGitHubIssueFields(target, { client });
+    assert.equal(drift.status, 'blocked');
+    assert.equal(drift.verification.repository.status, 'drifted');
+    assert.deepEqual(drift.writes, []);
   });
 
   it('should reject an approval for a different organization or plan digest', () => {

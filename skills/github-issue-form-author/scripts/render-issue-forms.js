@@ -11,7 +11,7 @@ export function usage() {
   bun render-issue-forms.js apply OWNER/REPO --approved-repository OWNER/REPO --approved-branch BRANCH --approved-digest SHA256 [--json]
 
 Options:
-  --repository-mode <mode>   Render organization-native or personal-fallback forms
+  --repository-mode <mode>   Select the offline example (typed organization or untyped personal)
   --approved-repository      Bind apply to the exact repository
   --approved-branch          Bind apply to the inspected default branch
   --approved-digest          Bind apply to the exact four-file mutation plan

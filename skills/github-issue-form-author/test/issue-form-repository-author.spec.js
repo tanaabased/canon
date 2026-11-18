@@ -274,7 +274,18 @@ describe('skills/github-issue-form-author/lib/issue-form-repository-author', () 
     assert.equal(client.calls.filter(({ operation }) => operation === 'putFile').length, 2);
   });
 
-  it('should infer the personal fallback variant from a user-owned repository', () => {
+  it('should align only enabled issue types on personal repositories and verify the result', () => {
+    const client = fakeIssueFormClient({ ownerType: 'User', enabledTypes: ['bug'] });
+    const preview = alignGitHubIssueForms(TARGET, { client });
+    const applied = alignGitHubIssueForms(TARGET, { client, authorization: authorize(preview) });
+    assert.equal(applied.status, 'aligned_after_write');
+    for (const kind of ['task', 'bug', 'feature']) {
+      const file = client.state.files.get(`.github/ISSUE_TEMPLATE/${kind}.yml`);
+      assert.equal(Bun.YAML.parse(file.content).type, kind === 'bug' ? 'bug' : undefined);
+    }
+  });
+
+  it('should omit the type when the personal repository has no enabled types', () => {
     const client = fakeIssueFormClient({ ownerType: 'User' });
     const report = alignGitHubIssueForms('pirog/personal-project', { client });
     const taskContent = report.plannedMutation.operations.find(({ path }) =>

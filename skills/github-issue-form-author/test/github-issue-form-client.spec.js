@@ -24,6 +24,14 @@ function createRunner() {
     if (args[0] === '--version') return success('gh version 2.0.0');
     if (args[0] === 'auth') return success('');
     const endpoint = args[1];
+    if (endpoint === `/repos/${TARGET}/issue-types`) {
+      return success([
+        [
+          { name: 'Bug', is_enabled: true },
+          { name: 'Task', is_enabled: false },
+        ],
+      ]);
+    }
     if (endpoint === `/repos/${TARGET}`) {
       return success({
         full_name: TARGET,
@@ -67,6 +75,7 @@ describe('skills/github-issue-form-author/lib/github-issue-form-client', () => {
     const inspection = client.inspectRepository(TARGET);
 
     assert.equal(inspection.ownerType, 'Organization');
+    assert.deepEqual(inspection.enabledTypes, ['bug']);
     assert.equal(inspection.defaultBranch, 'main');
     assert.equal(inspection.files[0].status, 'present');
     assert.equal(inspection.files[0].content, 'name: "Task"\n');
@@ -78,6 +87,17 @@ describe('skills/github-issue-form-author/lib/github-issue-form-client', () => {
       calls.some(({ args }) => args.includes('--method')),
       false,
     );
+  });
+
+  it('should stop inspection when repository issue types cannot be read', () => {
+    const { runner } = createRunner();
+    const client = new GitHubIssueFormClient({
+      runner: (args) =>
+        args[1]?.endsWith('/issue-types')
+          ? { status: 1, stdout: '', stderr: 'HTTP 403' }
+          : runner(args),
+    });
+    assert.throws(() => client.inspectRepository(TARGET), /enabled issue types.*403/);
   });
 
   it('should send one SHA-bound Contents API write through stdin rather than process arguments', () => {

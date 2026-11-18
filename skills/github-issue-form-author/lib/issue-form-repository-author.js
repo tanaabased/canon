@@ -25,7 +25,10 @@ function verifyAlignment(client, target, expectedMode) {
         errors: [`Repository mode changed from ${expectedMode} to ${mode ?? 'unknown'}.`],
       };
     }
-    const { blockers, plan } = buildIssueFormRepositoryPlan(inspection, authorIssueFormSet(mode));
+    const { blockers, plan } = buildIssueFormRepositoryPlan(
+      inspection,
+      authorIssueFormSet(mode, inspection.enabledTypes),
+    );
     return {
       status: blockers.length === 0 && plan.operations.length === 0 ? 'verified' : 'drifted',
       checks: plan.operations.length === 0 ? ['all four managed files align'] : [],
@@ -47,7 +50,7 @@ export function alignGitHubIssueForms(
   const inspection = client.inspectRepository(target);
   warnings.push(...inspection.warnings);
   const mode = repositoryMode(inspection.ownerType);
-  const desiredSet = authorIssueFormSet(mode ?? 'organization');
+  const desiredSet = authorIssueFormSet(mode ?? 'organization', inspection.enabledTypes);
   const { blockers, plan } = buildIssueFormRepositoryPlan(inspection, desiredSet);
   const digest = planDigest(plan);
   const approval = evaluateIssueFormRepositoryAuthorization(plan, digest, authorization);

@@ -34,7 +34,7 @@ Read each applicable document in full, or the explicitly named section, before d
 ## When to Use
 
 - Use when a project needs canonical `.github/ISSUE_TEMPLATE` Task, Bug, and Feature forms.
-- Use to render organization-native or personal-repository fallback variants.
+- Use to render offline examples or align forms with a repository's enabled issue types.
 - Use to inspect or align the four canonical repository-local form files without deleting unknown templates.
 - Use to extract submitted form Markdown into a lossless evidence handoff or compare existing forms with the intake contract.
 
@@ -53,7 +53,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Require Bun for the bundled render command and YAML validation.
 - Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Treat GitHub issue forms as a public-preview schema and verify current official syntax before publication.
-- Determine whether the target is organization-owned or personal; the variants have materially different metadata capabilities.
+- For a repository target, inspect its enabled issue types before planning changes.
 
 ## Inputs
 
@@ -61,7 +61,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Required for repository inspection: an explicit `OWNER/REPO`; infer organization or personal mode from the repository owner.
 - Required for mutation: the exact repository, inspected default branch, and SHA-256 plan digest returned by a fresh plan.
 - Required for normalization: the matching generated form and its submitted Markdown.
-- Organization normalization receives native issue-field values separately because pinned fields do not belong in the issue body.
+- Pass observed native field values separately when normalizing a submission from either repository mode.
 - Personal forms use their selected Task, Bug, or Feature form as task-kind evidence and ask the same questions as organization forms.
 - Shared sources: [`../../references/task-management-contract.md`](../../references/task-management-contract.md) and [`../../references/task-management-schema.json`](../../references/task-management-schema.json).
 
@@ -70,13 +70,13 @@ Read each applicable document in full, or the explicitly named section, before d
 - Render or align `.github/ISSUE_TEMPLATE/task.yml`, `bug.yml`, `feature.yml`, and `config.yml`.
 - Report each managed path as missing, aligned, drifted, or unavailable; list unknown template files as preserved and never propose deletion.
 - Preserve compatible title, assignee, project, Markdown-guidance, and chooser contact-link additions. Block custom submitted inputs or unsupported keys whose meaning cannot survive normalization safely.
-- Organization forms set the matching top-level `type`; personal forms omit it because user-owned repositories lack organization issue types.
+- Repository plans set the top-level `type` only when the matching type is enabled. If type discovery fails, stop before changing forms. Offline rendering keeps the typed organization and untyped personal examples.
 - Both variants use identical evidence questions. Task and Feature have two required responses plus optional context; Bug has three required responses plus optional context.
 - Task asks what needs to be done and why, how completion will be observed, and optionally which constraints, inputs, or approvals matter. It warns reporters not to publish secrets.
 - Bug asks only for observed behavior, expected behavior, and safe reproduction or investigation evidence. It does not ask the reporter to write a test, open a pull request, or execute risky or machine-mutating steps.
 - The human-facing Feature request asks for the affected problem or opportunity and useful outcome, plus optional examples or constraints. It does not require formal scope, acceptance criteria, implementation design, or a pull request.
 - Forms do not auto-apply labels or expose metadata controls. Task Author estimates supported values after semantic normalization and chooses native or fallback storage.
-- Extraction returns the selected kind, title, observed organization metadata, complete raw Markdown, labeled answered responses, and `normalizationRequired: true`.
+- Extraction returns the selected kind, title, observed native metadata, complete raw Markdown, labeled answered responses, and `normalizationRequired: true`.
 - Preserve unknown headings inside their owning response and preserve the complete original Markdown even when content sits outside known responses.
 
 ## Failure Handling
