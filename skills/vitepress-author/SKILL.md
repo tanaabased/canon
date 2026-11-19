@@ -28,13 +28,13 @@ Tanaab-based authoring and standardization of VitePress 1 site surfaces. Use whe
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Front End Preferences](../../references/front-end-preferences.md), [Coding Stack Preferences](../../references/coding-stack-preferences.md), and [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
-- **Before deciding whether documentation needs to change or authoring page prose:** [Documentation Standards](../../references/documentation-standards.md), including style selection.
-- **Before aligning the repository entrypoint:** [README Standards](../../references/readme-standards.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md) and [Documentation Standards](../../references/documentation-standards.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Front End Preferences](./references/front-end-preferences.md), [Coding Stack Preferences](./references/coding-stack-preferences.md), and [Vitepress Markdown Pages](./references/vitepress-markdown-pages.md).
+- **Before deciding whether documentation needs to change or authoring page prose:** [Documentation Standards](./references/documentation-standards.md), including style selection.
+- **Before aligning the repository entrypoint:** [README Standards](./references/readme-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md) and [Documentation Standards](./references/documentation-standards.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -61,9 +61,9 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Change Strategy
 
-- Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
-- Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before adding prose or pages; leave README-vs-docs-site selection to README Author.
+- Use [./references/front-end-preferences.md](./references/front-end-preferences.md) for VitePress, SCSS, and subtheme defaults.
+- Use [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md) for Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before adding prose or pages; leave README-vs-docs-site selection to README Author.
 - Keep implementation work on VitePress pages, local theme wiring, and subtheme structure rather than widening into docs policy or generic Vue ownership.
 - Keep Markdown page implementation centered on existing global components and call out missing shared-system primitives instead of hiding them inside one page.
 
@@ -82,7 +82,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After explicit authorization, make the smallest coherent VitePress-owned operations and reuse global components, styles, and subtheme extension points where appropriate.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request is VitePress-site-led and that the docs-site surface is already the chosen path.
 2. Classify the active surface as Markdown page implementation, site structure/config, local subtheme wiring, or a narrow combination of those surfaces.
@@ -93,9 +93,9 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat VitePress Markdown files as the primary documentation surface this skill writes and maintains.
-- Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for docs-site Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
+- Use [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md) for docs-site Markdown page UI, embedded Vue components, global component reuse, and page-local glue limits.
 - For reusable component docs pages, follow the shared reference's playground-first Usage pattern and leave reusable playground behavior to `tanaab-vue-author`.
 - Use clear frontmatter, task-shaped headings, concrete examples, reachable links, and existing page conventions before adding new page structure.
 - Prefer existing global components, theme styles, tokens, and layout patterns from the active theme and subthemes before solving a Markdown page locally.
@@ -125,18 +125,18 @@ bun run build
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory page reachability, navigation, VitePress config, theme reuse, Markdown structure, page-local glue, lint, and build health.
-- **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Apply [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) to excessive edge-case detail and useful scenario explanations that belong in existing Leia examples with discovery links. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
+- **Compare:** Check [Preferred Tools](#preferred-tools) against preparation, build, runner, and check-identity requirements. Apply [Documentation Placement Review](./references/documentation-standards.md#documentation-placement-review) to excessive edge-case detail and useful scenario explanations that belong in existing Leia examples with discovery links. Reconcile pages, navigation, config, theme behavior, and Markdown claims; identify duplicated content or glue, overloaded pages, unreachable routes, and misplaced components against shared canon and local patterns.
 - **Recommend:** Keep coherent site structure; remove prose or pages that fail the documentation change gate before splitting or relocating them; deduplicate content; consolidate theme glue; split overloaded pages; extract or move reusable components; tighten navigation; and remove unreachable material without introducing bespoke local systems.
 
 ## Bundled Resources
 
-- [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared VitePress, SCSS, and subtheme defaults
-- [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared VitePress Markdown page UI, global component reuse, and page-local glue rules
-- [../../references/readme-standards.md](../../references/readme-standards.md): boundary between README-only docs and a VitePress docs site
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend and docs-stack defaults
+- [./references/front-end-preferences.md](./references/front-end-preferences.md): shared VitePress, SCSS, and subtheme defaults
+- [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md): shared VitePress Markdown page UI, global component reuse, and page-local glue rules
+- [./references/readme-standards.md](./references/readme-standards.md): boundary between README-only docs and a VitePress docs site
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared frontend and docs-stack defaults
 - [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): surface-owned workflow starter for lint- and build-first pull-request validation
 
 ## Validation

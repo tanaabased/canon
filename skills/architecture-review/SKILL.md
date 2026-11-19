@@ -24,12 +24,12 @@ Explain the architecture implemented in source, identify consequential structura
 
 Read and apply each applicable document before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent assessment.
 
-- **Always:** [Optimization Operations](../../references/optimization-operations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Always:** [Review Standard](../../references/review-standard.md), including criteria loading, completeness, and the shared report format. Apply it to the requested scope and every selected owner.
+- **Always:** [Optimization Operations](./references/optimization-operations.md) and [Verification Boundaries](./references/verification-boundaries.md).
+- **Always:** [Review Standard](./references/review-standard.md), including criteria loading, completeness, and the shared report format. Apply it to the requested scope and every selected owner.
 - **Before assessing a target:** its applicable `AGENTS.md` and declared architecture or review constraints, including `.github/OPTIMIZATION.md` when present. Treat existing design documents as claims to check against source.
 - **Before assessing a language, framework, or runtime boundary:** the relevant owner's general Review Criteria and Architecture entry point, then its applicable required sections and references under the shared loading rule.
-- **Before assessing JavaScript or TypeScript organization and dependency boundaries:** [JavaScript Repo Structure](../../references/javascript-repo-structure.md), including its dependency-direction guidance.
-- **Before writing a requested report artifact or recommending documentation changes:** [Documentation Standards](../../references/documentation-standards.md).
+- **Before assessing JavaScript or TypeScript organization and dependency boundaries:** [JavaScript Repo Structure](./references/javascript-repo-structure.md), including its dependency-direction guidance.
+- **Before writing a requested report artifact or recommending documentation changes:** [Documentation Standards](./references/documentation-standards.md).
 
 ## When to Use
 
@@ -59,13 +59,13 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ### Reconstruct the Implementation
 
-4. Trace actual entry points into major subsystems, data models and state owners, shared utilities, and external integrations. Follow representative success and failure paths, including asynchronous or deferred work, and identify who owns decisions, effects, and recovery. Group components by responsibility, not directory labels. Account for the major journeys in scope under [Review Completeness](../../references/review-standard.md#review-completeness); one healthy path cannot establish repository-wide alignment.
+4. Trace actual entry points into major subsystems, data models and state owners, shared utilities, and external integrations. Follow representative success and failure paths, including asynchronous or deferred work, and identify who owns decisions, effects, and recovery. Group components by responsibility, not directory labels. Account for the major journeys in scope under [Review Completeness](./references/review-standard.md#review-completeness); one healthy path cannot establish repository-wide alignment.
 5. Inspect imports, module boundaries, registration, and dependency direction with available search, language-aware navigation, or static-analysis tools. Trace a realistic maintenance change through a consequential shared owner, even when no refactor has been proposed: identify independently maintained definitions, projections, and consumers that must change together. Verify significant relationships in concrete files and symbols, and compare consequential declared dependency rules with existing enforcement. Do not install a mandatory engine or build a generalized analysis framework; disclose analysis gaps for generated, dynamic, or unavailable code.
 6. Use readable Mermaid diagrams when they clarify current architecture or an important execution/data flow. Label meaningful calls, events, state writes, and failure boundaries. Tie diagram components and significant edges to source references; distinguish observed relationships from inference and current architecture from proposals.
 
 ### Assess and Recommend
 
-7. Apply the shared loading rule to the observed contracts and their owners before judging structure. Evaluate oversized responsibilities, tight coupling and cycles, semantic duplication, inconsistent abstractions, unnecessary indirection, and dependencies against actual behavior and change costs. Apply the shared [operation lenses](../../references/optimization-operations.md) without manufacturing findings. Separate demonstrated defects, evidenced maintenance costs, and subjective preferences; do not attribute complexity to AI without provenance.
+7. Apply the shared loading rule to the observed contracts and their owners before judging structure. Evaluate oversized responsibilities, tight coupling and cycles, semantic duplication, inconsistent abstractions, unnecessary indirection, and dependencies against actual behavior and change costs. Apply the shared [operation lenses](./references/optimization-operations.md) without manufacturing findings. Separate demonstrated defects, evidenced maintenance costs, and subjective preferences; do not attribute complexity to AI without provenance.
 8. Follow suspected duplication, scattered contracts, and failure coupling through definitions, callers, state, and tests before accepting or dismissing them. For each substantive finding, identify the files and symbols, observed evidence, user or maintenance consequence, confidence and uncertainty, smallest defensible recommendation, and a verification method. State what should stay unchanged and why. Apply the evidence limits below before presenting a structural signal as a defect.
 9. Explain cohesion, ownership, testability, simplicity, and maintenance tradeoffs where they affect the recommendation. Include a proposed architecture, responsibility map, or current-to-proposed module/directory mapping only when it clarifies a real improvement. Consider a smaller repair, deferral, or no change; do not manufacture a replacement architecture when two local fixes suffice.
 10. Check the plan against one representative maintenance change, such as adding a field or removing a capability. First trace that change through current source: where is its authoritative definition, who validates, transforms, persists, or consumes it, and which tests establish completeness? Then walk the same change through the proposed structure. Does it clarify ownership, reduce independently maintained definitions or hidden dependencies, and make verification easier without requiring a human or model to understand unrelated code? Simplify or drop recommendations that add structure without a concrete benefit. Fold this evidence into existing findings and recommendations; do not add a separate score, report section, or duplicate finding. Treat the proposed walkthrough as a source-grounded thought exercise, not implementation or runtime proof; no proposed refactor is required when the current structure is adequate.
@@ -78,11 +78,11 @@ Read and apply each applicable document before dependent work. Reuse complete re
 - Textual similarity does not establish duplicated responsibility. Separate native adapters may legitimately differ in lifecycle, permissions, or failure behavior; consolidate only when semantics and ownership match.
 - Examine whether optional context, presentation, diagnostics, or one malformed record can stop unrelated authorized work. When an operation selects one resource from a collection, inspect what is loaded and validated before selection; distinguish necessary ownership and uncertain-effect evidence from unrelated payload data. Require a concrete correctness, authorization, or resource-protection reason for coupling them. Recommend removing unnecessary prerequisites while preserving authorization, identity, destination, and duplicate-effect protections. Fold findings into the existing assessment rather than a separate checklist or report section.
 - Challenge speculative abstractions and guards by naming the concrete problem they solve and checking the existing owner first.
-- Static inspection can explain code paths and support a maintenance finding; it does not prove live runtime behavior, passing CI, or installation readiness. Use [Verification Boundaries](../../references/verification-boundaries.md) to select proportionate evidence and label unrun checks.
+- Static inspection can explain code paths and support a maintenance finding; it does not prove live runtime behavior, passing CI, or installation readiness. Use [Verification Boundaries](./references/verification-boundaries.md) to select proportionate evidence and label unrun checks.
 
 ### Deliver
 
-12. Use the shared [report format](../../references/review-standard.md#report-format), including its four-bucket coverage summary before findings. Explain the implemented architecture and retained decisions within Findings; put proposed structure and the prioritized roadmap within Plan. Preserve source-grounded diagrams and maintenance-change reasoning where useful. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
+12. Use the shared [report format](./references/review-standard.md#report-format), including its four-bucket coverage summary before findings. Explain the implemented architecture and retained decisions within Findings; put proposed structure and the prioritized roadmap within Plan. Preserve source-grounded diagrams and maintenance-change reasoning where useful. In chat mode, render useful diagrams inline and leave no report files. In Markdown mode, write only the requested artifact(s), link them, and summarize the consequential findings in chat.
 
 ## Checkpoints
 
@@ -98,7 +98,7 @@ Read and apply each applicable document before dependent work. Reuse complete re
 
 ## Bundled Resources
 
-- [Review Standard](../../references/review-standard.md): shared review contract and report format.
+- [Review Standard](./references/review-standard.md): shared review contract and report format.
 
 ## Validation
 
