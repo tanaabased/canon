@@ -10,7 +10,7 @@ The shared default follows [Agent System's documentation voice](https://github.c
 
 - Lead with what the reader can do or needs to know, then explain the reason, consequence, or next step. Name the tool or runtime when it performs the action.
 - Use familiar words and active verbs. Keep useful technical precision, and explain the practical effect of terms the reader needs to understand.
-- Use normal sentence capitalization, exact product and identifier casing, and natural contractions. Be personable without relying on familiarity, catchphrases, teasing, profanity, or inflated claims.
+- Use normal sentence capitalization, exact product and identifier casing, and natural contractions. For comments in source and code examples, apply [code comment casing](./inline-code-and-api-docs.md#code-comment-casing). Be personable without relying on familiarity, catchphrases, teasing, profanity, or inflated claims.
 - Keep paragraphs focused. Use lists for steps or parallel choices and tables for lookup details; cut repetition instead of compressing explanations into fragments.
 - State limitations and failures calmly and specifically. Explain the consequence and the next supported action. Distinguish configured state, accepted requests, execution, and verified completion.
 

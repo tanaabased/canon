@@ -80,7 +80,7 @@ Common scope examples, not an exhaustive menu:
 
 | Request                      | Review surfaces                                                                                                                                  |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Review documentation         | README, guides, docs site, and relevant examples; clarity, duplication, and placement of user guidance.                                          |
+| Review documentation         | README, guides, docs site, examples, and source comments; clarity, placement, and the applicable comment casing.                                 |
 | Review code and architecture | Owned implementation; naming, responsibility boundaries, unnecessary abstractions, and cohesive units.                                           |
 | Review tests and examples    | Unit tests, Leia scenarios, and necessary build/test wiring; meaningful coverage, readable examples, and packaged or compiled consumer behavior. |
 | Review CI and delivery       | Workflows, runtime setup, package artifacts, and release wiring; consistency, readability, and distinct delivery boundaries.                     |

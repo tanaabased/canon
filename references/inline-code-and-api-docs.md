@@ -10,6 +10,16 @@ Before deciding whether inline comments, API docs, or starter-file comments need
 - Keep comments sparse; prefer a small number of high-value teaching comments over comment-heavy files.
 - Do not add comments that merely restate obvious code or repeat names without adding meaning.
 
+## Code comment casing
+
+Use lowercase for natural-language prose in code comments, including JSDoc descriptions and comments in fenced code examples. Write proper names used in prose in ALL CAPS, such as GIT and GITHUB. This convention takes precedence over the surrounding documentation’s sentence capitalization.
+
+Preserve the exact spelling and casing of literal identifiers, including repository slugs, usernames, paths, environment variables, commands, flags, API names, and types. Preserve tool directives and required tags such as `# shellcheck disable=SC2016` and `@param`. For example:
+
+```sh
+# use GITHUB_TOKEN when the GITHUB CLI reads tanaabased/canon.
+```
+
 ## JSDoc Shape
 
 - Omit JSDoc when the public contract is already clear; use a summary-only block when a short explanation closes the gap. Exporting a helper does not itself require documentation or a full set of tags.
@@ -29,9 +39,9 @@ Before deciding whether inline comments, API docs, or starter-file comments need
 
 ```ts
 /**
- * Resolves a repository slug after validating its externally supplied owner and name.
+ * resolves a repository slug after validating its externally supplied owner and name.
  *
- * @throws {Error} When either slug segment is empty.
+ * @throws {Error} when either slug segment is empty.
  */
 export function repositorySlug(owner: string, name: string): string {
   // ...
@@ -42,7 +52,7 @@ Summary-only is enough for a tiny wrapper:
 
 ```js
 /**
- * Writes one line to the target stream.
+ * writes one line to the target stream.
  */
 export function writeLine(stream, message = '') {
   stream.write(`${message}\n`);
@@ -53,13 +63,13 @@ Use tags when the exported contract has defaults, accepted values, returned repo
 
 ```js
 /**
- * Parses one optional boolean value from an environment-like object.
+ * parses one optional boolean value from an environment-like object.
  *
- * @param {object | null | undefined} env Environment-like object to read from.
- * @param {string} key Own-property key to inspect.
- * @param {boolean} [fallback=false] Value used when the key is absent or present but blank.
- * @returns {boolean} Parsed enablement state.
- * @throws {Error} When the caller supplies an unsupported option value.
+ * @param {object | null | undefined} env environment-like object to read from.
+ * @param {string} key own-property key to inspect.
+ * @param {boolean} [fallback=false] value used when the key is absent or present but blank.
+ * @returns {boolean} parsed enablement state.
+ * @throws {Error} when the caller supplies an unsupported option value.
  */
 export function booleanFromEnv(env, key, fallback = false) {
   // ...
