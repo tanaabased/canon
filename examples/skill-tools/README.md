@@ -2,7 +2,7 @@
 
 Exercise Canon's bundled commands from a candidate npm tarball without checkout dependencies. The Examples workflow supplies `CANON_TARBALL`, Bun, and Leia's isolated `TMPDIR`. No GitHub access or host installation is needed.
 
-This scenario covers packaged command loading, skill scaffolding and validation, malformed-input rejection, and issue-form rendering. It does not perform authenticated GitHub operations or prove their remote effects. Native plugin loading belongs in [OpenClaw installation](../openclaw/README.md), and standalone starter behavior belongs in [CLI templates](../cli-templates/README.md).
+This scenario covers packaged command loading, skill scaffolding and validation, read-only task inspection against a fixture, malformed-input rejection, and issue-form rendering. It does not perform authenticated GitHub operations or prove their remote effects. Native plugin loading belongs in [OpenClaw installation](../openclaw/README.md), and standalone starter behavior belongs in [CLI templates](../cli-templates/README.md).
 
 ## Setup
 
@@ -22,22 +22,29 @@ for command in skills/*/scripts/*.js; do
  done
 
 # should scaffold from a verified temporary command copy
+scenario="$PWD"
 cd "$TMPDIR"
 skill="$TMPDIR/package/skills/skill-author"
 copy="$TMPDIR/copied-skill"
 command="scripts/init-skill.js"
-jq -er --arg command "$command" '.commands[] | select(.path == $command) | (., .resources[]?) | [.path, .bytes, .sha256] | @tsv' "$skill/runtime-files.json" > "$TMPDIR/files.tsv"
-while read -r file bytes sha256; do
-  mkdir -p "$copy/$(dirname "$file")"
-  cp "$skill/$file" "$copy/$file"
-  test "$(wc -c < "$copy/$file")" -eq "$bytes" || exit 1
-  printf '%s  %s\n' "$sha256" "$copy/$file" | shasum -a 256 --check || exit 1
-done < "$TMPDIR/files.tsv"
+sh "$scenario/copy-verified-command.sh" "$skill" "$command" "$copy"
 bun --no-install "$copy/$command" --type generic --slug example-skill --display-name 'Example Skill' --description 'Scaffold a focused example skill.' --openclaw-emoji '🧩' --openclaw-homepage https://example.com/skills/example-skill --container standalone --output-dir "$TMPDIR/standalone"
 cmp "$skill/assets/icon-large.png" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-large.png"
 cmp "$skill/assets/icon-small.svg" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-small.svg"
 bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/standalone/tanaab-example-skill" --container standalone
 bun -e 'import assert from "node:assert/strict"; const s=await Bun.file(process.argv[1]).text(); const f=Bun.YAML.parse(s.split("---")[1]); assert.equal(f.name,"tanaab-example-skill"); assert.equal(f.metadata.openclaw.emoji,"🧩"); assert.equal(f.metadata.openclaw.homepage,"https://example.com/skills/example-skill");' "$TMPDIR/standalone/tanaab-example-skill/SKILL.md"
+
+# should inspect a fixture issue from a verified Task Decomposer command copy
+copy="$TMPDIR/copied-decomposer"
+command="scripts/inspect-task-decomposition.js"
+sh ./copy-verified-command.sh "$TMPDIR/package/skills/task-decomposer" "$command" "$copy"
+mkdir -p "$TMPDIR/fixture-bin"
+cp ./inspector-gh.sh "$TMPDIR/fixture-bin/gh"
+chmod +x "$TMPDIR/fixture-bin/gh"
+bun_path="$(command -v bun)"
+cd "$TMPDIR"
+PATH="$TMPDIR/fixture-bin" "$bun_path" --no-install "$copy/$command" acme/widgets#7 --json > evidence.json
+jq -e '.status == "ready" and .mutatesGitHub == false and .target.slug == "acme/widgets" and .issue.number == 7 and .issue.title == "fixture parent" and .warnings == []' evidence.json
 
 # should preserve a custom namespace and plugin identity
 cd "$TMPDIR"

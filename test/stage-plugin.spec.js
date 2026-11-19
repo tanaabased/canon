@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import stagePlugin from '../lib/stage-plugin.js';
 import checkSkillDistribution from '../lib/check-skill-distribution.js';
+import checkPackage from '../lib/package-checker.js';
 
 const repository = fileURLToPath(new URL('../', import.meta.url));
 const skillPath = 'skills/task-author';
@@ -86,6 +87,14 @@ describe('plugin staging', function () {
     await assert.rejects(lstat(path.join(output, 'skills/changelog-author/runtime-files.json')), {
       code: 'ENOENT',
     });
+    const skillAuthor = path.join(output, 'skills/skill-author');
+    const skillAuthorInventory = JSON.parse(
+      await readFile(path.join(skillAuthor, 'runtime-files.json')),
+    );
+    const validator = skillAuthorInventory.commands.find(
+      ({ path }) => path === 'scripts/validate-skill.js',
+    );
+    assert.deepEqual(validator.resources ?? [], []);
 
     const { version, commands } = JSON.parse(
       await readFile(path.join(skill, 'runtime-files.json'), 'utf8'),
@@ -115,6 +124,11 @@ describe('plugin staging', function () {
     );
 
     const bundle = path.join(skill, 'scripts/draft-task.js');
+    await rm(path.join(output, 'skills/changelog-author/references/inline-code-and-api-docs.md'));
+    await assert.rejects(
+      checkPackage(output),
+      /changelog-author\/references\/inline-code-and-api-docs\.md/,
+    );
     const contents = await readFile(bundle);
     contents[0] ^= 1;
     await writeFile(bundle, contents);
@@ -138,6 +152,7 @@ describe('plugin staging', function () {
       'references/original.txt': 'linked contents',
       'references/nested/needed.txt': 'needed',
       'references/private.txt': 'excluded',
+      'templates/packaged-command-execution.md': 'build instructions',
       [prefix + 'SKILL.md']: '[needed](./references/nested/needed.txt)',
       [prefix + 'references/owned.txt']: 'skill override',
       [prefix + 'scripts/nested/run.js']:
@@ -145,7 +160,7 @@ describe('plugin staging', function () {
       [prefix + 'scripts/nested/helper.js']: "export const message = 'bundled helper';",
       [prefix + 'build.config.js']: `export default {
         entrypoints: ['!**/helper.js', 'scripts/**/*.js'],
-        copy: ['!references/private.txt', 'references/**'],
+        copy: ['!references/private.txt', 'references/**', 'templates/**'],
       };`,
     };
     for (const [relative, contents] of Object.entries(files)) {
@@ -163,6 +178,9 @@ describe('plugin staging', function () {
 
     const stage = await stagePlugin(checkout, path.join(scratch, 'plugin'));
     const skill = path.join(stage, prefix);
+    await assert.rejects(lstat(path.join(skill, 'templates/packaged-command-execution.md')), {
+      code: 'ENOENT',
+    });
     const { commands } = JSON.parse(await readFile(path.join(skill, 'runtime-files.json'), 'utf8'));
     assert.deepEqual(
       commands.map((command) => command.path),
@@ -184,6 +202,35 @@ describe('plugin staging', function () {
       await assert.rejects(lstat(path.join(skill, 'references', name)), { code: 'ENOENT' });
     }
   });
+
+  for (const configuration of ['copy-only', 'unconfigured']) {
+    it(`rejects the execution marker for ${configuration} skills`, async () => {
+      const checkout = path.join(scratch, 'checkout');
+      const skill = path.join(checkout, 'skills/prose');
+      await mkdir(skill, { recursive: true });
+      await writeFile(path.join(checkout, 'package.json'), '{"version":"1.0.0","type":"module"}');
+      await mkdir(path.join(checkout, 'templates'));
+      await writeFile(
+        path.join(checkout, 'templates/packaged-command-execution.md'),
+        'read the command inventory',
+      );
+      await writeFile(path.join(skill, 'SKILL.md'), '# Prose\n<!-- packaged-execution -->');
+      if (configuration === 'copy-only') {
+        await writeFile(
+          path.join(skill, 'build.config.js'),
+          "export default { copy: ['references/**'] };",
+        );
+      }
+      execFileSync('git', ['init', '-q'], { cwd: checkout });
+      execFileSync('git', ['add', '.'], { cwd: checkout });
+      const staging = path.join(scratch, 'plugin');
+      await assert.rejects(
+        stagePlugin(checkout, staging),
+        /execution marker requires.*entrypoint.*skills\/prose/i,
+      );
+      await assert.rejects(lstat(staging), { code: 'ENOENT' });
+    });
+  }
 
   it('rejects a symlink to untracked content and removes the failed staging directory', async () => {
     const checkout = path.join(scratch, 'checkout');

@@ -1,5 +1,13 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added per-skill globs to `bun run build:plugin` for selecting commands and copying shared files into unoccupied paths. [#127](https://github.com/tanaabased/canon/issues/127) [#129](https://github.com/tanaabased/canon/pull/129)
+- Bundled `tanaab-skill-author` and `tanaab-task-decomposer` commands for standalone execution. Only the scaffolder needs the default icons. [#127](https://github.com/tanaabased/canon/issues/127) [#129](https://github.com/tanaabased/canon/pull/129)
+- Excluded the build-only execution template from shared files copied into packaged skills.
+- Made shared references readable inside packaged `tanaab-changelog-author` and flattened resource paths in `tanaab-task-author`. [#127](https://github.com/tanaabased/canon/issues/127) [#129](https://github.com/tanaabased/canon/pull/129)
+- Rejected the packaged execution marker in skills without bundled commands so their instructions cannot point to a missing inventory.
+- Updated `check:package` to detect broken links inside the reference documents shipped with `tanaab-changelog-author`.
+- Updated `tanaab-project-review` to check comment casing in source code and documentation examples.
+
 ## v0.15.1 - [November 19, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.1)
 
 - Added `bun run build:plugin` to bundle `tanaab-task-author` commands and copy shared resources into the release package. [#126](https://github.com/tanaabased/canon/issues/126) [#128](https://github.com/tanaabased/canon/pull/128)
