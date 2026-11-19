@@ -28,9 +28,9 @@ Label batch mode discovers an explicit organization's accessible repositories an
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md), [Task Management Schema](../../references/task-management-schema.json), and [GitHub CLI Routing](../../references/github-cli-routing.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Always:** [Project Management Model](./references/project-management-model.md), [Task Management Contract](./references/task-management-contract.md), [Task Management Schema](./references/task-management-schema.json), and [GitHub CLI Routing](./references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
 
 ## When to Use
 
@@ -60,7 +60,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
 
 - Require Bun and the GitHub CLI (`gh`).
-- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Verify GitHub CLI availability and authentication without exposing credentials.
 - Treat private repositories and organization schema as permission-sensitive. Preserve partial read results and mark inaccessible surfaces unresolved.
 - Organization field-definition changes, including additions, visibility, and pinning, require an organization owner or equivalent organization Issue Fields write permission. Applying a pinning plan also requires a signed-in browser session with that access.
@@ -80,8 +80,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Label batch status, planning, and apply: use `scripts/sync-labels-batch.js inspect|plan|apply` with the same explicit selectors. Apply requires the previewed `--approved-digest` for the complete batch.
 - Pinning planning: `bun <skill-path>/scripts/pin-fields.js plan OWNER/REPO --json`.
 - Pinning authorization: rerun with `authorize`, the exact `--approved-organization`, and the previewed `--approved-digest`; then execute only that manifest through GitHub's signed-in organization settings UI.
-- Canonical policy: [`../../references/task-management-schema.json`](../../references/task-management-schema.json).
-- Human contract: [`../../references/task-management-contract.md`](../../references/task-management-contract.md).
+- Canonical policy: [`./references/task-management-schema.json`](./references/task-management-schema.json).
+- Human contract: [`./references/task-management-contract.md`](./references/task-management-contract.md).
 
 ## Outputs
 
@@ -117,6 +117,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Stop visibility sync if any managed field is missing or lacks a numeric REST ID. PATCH only `visibility`, stop on the first failure, and verify the entire field snapshot.
 - Stop label sync when labels cannot be fully inspected. Never rename or delete a label, and verify association counts after definition updates.
 - For label batches, inspect every target before any write. Block the entire batch on an incomplete inventory or unresolved label read. Reject a stale digest, recheck each changing repository before writing, and stop on the first failed or uncertain result. Preserve successful writes, report the remainder, and obtain a fresh plan before continuing; never automatically retry or roll back.
+
+<!-- packaged-execution -->
 
 ## Workflow
 

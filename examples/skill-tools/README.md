@@ -15,11 +15,18 @@ tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 ## Testing
 
 ```bash
-# should load every packaged command without development dependencies
-cd "$TMPDIR/package"
-for command in skills/*/scripts/*.js; do
-  bun --no-install "$command" --help
- done
+# should load every inventoried command from a verified copy
+scenario="$PWD"
+cd "$TMPDIR"
+for inventory in "$TMPDIR"/package/skills/*/runtime-files.json; do
+  skill="$(dirname "$inventory")"
+  jq -er '.commands[].path' "$inventory" > "$TMPDIR/commands.txt"
+  while IFS= read -r command; do
+    copy="$TMPDIR/help/$(basename "$skill")/$(basename "$command" .js)"
+    sh "$scenario/copy-verified-command.sh" "$skill" "$command" "$copy"
+    bun --no-install "$copy/$command" --help
+  done < "$TMPDIR/commands.txt"
+done
 
 # should scaffold from a verified temporary command copy
 scenario="$PWD"
@@ -83,7 +90,10 @@ cat "$TMPDIR/metadata.log"
 test "$status" -eq 1
 grep -F "metadata must contain 'openclaw'" "$TMPDIR/metadata.log"
 
-# should render every issue form from the package
+# should render every issue form from a verified command copy
+copy="$TMPDIR/copied-issue-forms"
+command="scripts/render-issue-forms.js"
+sh ./copy-verified-command.sh "$TMPDIR/package/skills/github-issue-form-author" "$command" "$copy"
 cd "$TMPDIR"
-bun --no-install "$TMPDIR/package/skills/github-issue-form-author/scripts/render-issue-forms.js" render --repository-mode organization --json | bun -e 'import assert from "node:assert/strict"; const r=await Bun.stdin.json(); assert.equal(r.mutatesGitHub,false); assert.deepEqual(r.files.map(f=>f.path).sort(),[".github/ISSUE_TEMPLATE/bug.yml",".github/ISSUE_TEMPLATE/config.yml",".github/ISSUE_TEMPLATE/feature.yml",".github/ISSUE_TEMPLATE/task.yml"]); for(const f of r.files) assert.ok(Bun.YAML.parse(f.content));'
+bun --no-install "$copy/$command" render --repository-mode organization --json | bun -e 'import assert from "node:assert/strict"; const r=await Bun.stdin.json(); assert.equal(r.mutatesGitHub,false); assert.deepEqual(r.files.map(f=>f.path).sort(),[".github/ISSUE_TEMPLATE/bug.yml",".github/ISSUE_TEMPLATE/config.yml",".github/ISSUE_TEMPLATE/feature.yml",".github/ISSUE_TEMPLATE/task.yml"]); for(const f of r.files) assert.ok(Bun.YAML.parse(f.content));'
 ```

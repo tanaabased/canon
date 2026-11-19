@@ -30,11 +30,11 @@ This skill owns one project-container policy surface implemented through GitHub 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [GitHub CLI Routing](../../references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
-- **Before proposing repository presentation prose:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [GitHub CLI Routing](./references/github-cli-routing.md) and [Canonical Repository Settings](./references/canonical-repository-settings.json).
+- **Before proposing repository presentation prose:** [Documentation Standards](./references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -54,10 +54,10 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Require an explicit GitHub slug in `OWNER/REPO` form; never infer a mutation target from a nearby checkout.
 - Confirm `gh` is installed, authenticated to the intended GitHub host, and authorized to administer the target owner and repository.
-- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory. Do not force a Homebrew or other absolute executable when a host shim is active.
 - If sandboxed `gh auth status` disagrees with the interactive terminal, retry the read-only probe with Keychain access before declaring authentication invalid.
 - Load [the checked-in policy](./references/canonical-repository-settings.json) as the only runtime source of desired managed settings; description and topic proposals remain repository-specific. Do not recapture policy from the live `tanaabased/canon` repository.
-- GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](../../references/commit-subjects.md) when authoring issue-backed commits.
+- GitHub merge and squash settings choose message sources; apply the shared [commit-subject convention](./references/commit-subjects.md) when authoring issue-backed commits.
 - The canonical `main` push allowlist contains only `pirog` and `tanaabot`, with no teams or apps, and is separate from review bypass. [GitHub supports this restriction only for organization repositories and retains administrator push access](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#restrict-who-can-push-to-matching-branches); the existing `enforce_admins: false` policy is unchanged. Personal or unknown owners remain inspectable, with an owner-type warning; only creation and settings apply are blocked before writes. Metadata-only operations remain available.
 
 ## Inputs
@@ -82,6 +82,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - If an existing empty repository lacks `main`, require approval to create its initial `README.md` before passing `--initialize`.
 - Treat a pending `tanaabot` invitation as incomplete configuration. Do not claim success or continue to branch protection until effective `write` access is visible.
 - If creation succeeds only in part, keep the repository. Report the completed steps and exact failure, then rerun inspection to identify and apply the remaining authorized changes. Never delete a repository to roll back partial creation.
+
+<!-- packaged-execution -->
 
 ## Workflow
 

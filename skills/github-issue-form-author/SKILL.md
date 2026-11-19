@@ -24,12 +24,12 @@ Generate, inspect, and align low-friction GitHub Task, Bug, and Feature intake f
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Task Management Contract](../../references/task-management-contract.md) and [Task Management Schema](../../references/task-management-schema.json).
-- **Before invoking GitHub CLI or planning repository changes:** [GitHub CLI Routing](../../references/github-cli-routing.md).
-- **Before changing form prose:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Project Management Model](./references/project-management-model.md), [Task Management Contract](./references/task-management-contract.md) and [Task Management Schema](./references/task-management-schema.json).
+- **Before invoking GitHub CLI or planning repository changes:** [GitHub CLI Routing](./references/github-cli-routing.md).
+- **Before changing form prose:** [Documentation Standards](./references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -51,7 +51,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Resolve bundled `scripts/` paths relative to this `SKILL.md` and use the absolute skill directory as `<skill-path>`. Preserve the caller's working directory and environment when invoking commands.
 
 - Require Bun for the bundled render command and YAML validation.
-- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Treat GitHub issue forms as a public-preview schema and verify current official syntax before publication.
 - For a repository target, inspect its enabled issue types before planning changes.
 
@@ -63,7 +63,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Required for normalization: the matching generated form and its submitted Markdown.
 - Pass observed native field values separately when normalizing a submission from either repository mode.
 - Personal forms use their selected Task, Bug, or Feature form as task-kind evidence and ask the same questions as organization forms.
-- Shared sources: [`../../references/task-management-contract.md`](../../references/task-management-contract.md) and [`../../references/task-management-schema.json`](../../references/task-management-schema.json).
+- Shared sources: [`./references/task-management-contract.md`](./references/task-management-contract.md) and [`./references/task-management-schema.json`](./references/task-management-schema.json).
 
 ## Outputs
 
@@ -90,11 +90,13 @@ Read each applicable document in full, or the explicitly named section, before d
 - Warn that repository-local templates suppress organization-default issue templates and require an explicit alignment review before publication.
 - Treat required-field validation as public-repository behavior because GitHub does not enforce it identically for private repositories.
 
+<!-- packaged-execution -->
+
 ## Workflow
 
 - Require exact repository, default branch, and digest authorization; create or update only the four managed paths, preserve compatible additions, and never delete unknown templates.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Resolve the repository mode and load the shared task-management schema.
 2. Render all four desired files without touching the target repository:
