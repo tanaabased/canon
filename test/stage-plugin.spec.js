@@ -8,7 +8,6 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import stagePlugin from '../lib/stage-plugin.js';
 import checkSkillDistribution from '../lib/check-skill-distribution.js';
-import config from '../skills/task-author/build.config.js';
 
 const repository = fileURLToPath(new URL('../', import.meta.url));
 const skillPath = 'skills/task-author';
@@ -119,7 +118,71 @@ describe('plugin staging', function () {
     const contents = await readFile(bundle);
     contents[0] ^= 1;
     await writeFile(bundle, contents);
-    await assert.rejects(checkSkillDistribution(skill, version, config), /Incorrect hash/);
+    await assert.rejects(
+      checkSkillDistribution(
+        skill,
+        version,
+        commands.map((command) => command.path),
+      ),
+      /Incorrect hash/,
+    );
+  });
+
+  it('selects nested commands and fills only missing skill paths from tracked resources', async () => {
+    const checkout = path.join(scratch, 'checkout');
+    const prefix = 'skills/pilot/';
+    const files = {
+      'package.json': '{"version":"1.0.0","type":"module"}',
+      'references/owned.txt': 'shared',
+      'references/linked.txt': 'shared',
+      'references/original.txt': 'linked contents',
+      'references/nested/needed.txt': 'needed',
+      'references/private.txt': 'excluded',
+      [prefix + 'SKILL.md']: '[needed](./references/nested/needed.txt)',
+      [prefix + 'references/owned.txt']: 'skill override',
+      [prefix + 'scripts/nested/run.js']:
+        "import { message } from './helper.js'; console.log(message);",
+      [prefix + 'scripts/nested/helper.js']: "export const message = 'bundled helper';",
+      [prefix + 'build.config.js']: `export default {
+        entrypoints: ['!**/helper.js', 'scripts/**/*.js'],
+        copy: ['!references/private.txt', 'references/**'],
+      };`,
+    };
+    for (const [relative, contents] of Object.entries(files)) {
+      const file = path.join(checkout, relative);
+      await mkdir(path.dirname(file), { recursive: true });
+      await writeFile(file, contents);
+    }
+    await symlink(
+      '../../../references/original.txt',
+      path.join(checkout, prefix, 'references/linked.txt'),
+    );
+    execFileSync('git', ['init', '-q'], { cwd: checkout });
+    execFileSync('git', ['add', '.'], { cwd: checkout });
+    await writeFile(path.join(checkout, 'references/untracked.txt'), 'untracked');
+
+    const stage = await stagePlugin(checkout, path.join(scratch, 'plugin'));
+    const skill = path.join(stage, prefix);
+    const { commands } = JSON.parse(await readFile(path.join(skill, 'runtime-files.json'), 'utf8'));
+    assert.deepEqual(
+      commands.map((command) => command.path),
+      ['scripts/nested/run.js'],
+    );
+    assert.equal(
+      await readFile(path.join(skill, 'references/owned.txt'), 'utf8'),
+      'skill override',
+    );
+    assert.equal(
+      await readFile(path.join(skill, 'references/linked.txt'), 'utf8'),
+      'linked contents',
+    );
+    assert.equal(
+      await readFile(path.join(skill, 'references/nested/needed.txt'), 'utf8'),
+      'needed',
+    );
+    for (const name of ['private.txt', 'untracked.txt']) {
+      await assert.rejects(lstat(path.join(skill, 'references', name)), { code: 'ENOENT' });
+    }
   });
 
   it('rejects a symlink to untracked content and removes the failed staging directory', async () => {

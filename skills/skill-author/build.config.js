@@ -1,3 +1,3 @@
 export default {
-  entrypointDirectory: 'scripts',
+  entrypoints: ['scripts/*.js'],
 };
