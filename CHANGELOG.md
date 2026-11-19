@@ -1,5 +1,8 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added `bun run build:plugin` to bundle `tanaab-task-author` commands and copy shared resources into the release package. [#126](https://github.com/tanaabased/canon/issues/126) [#128](https://github.com/tanaabased/canon/pull/128)
+- Moved packaged `tanaab-task-author` commands from `dist/` to `scripts/` so direct callers can use the same paths in a checkout and an installed package. [#126](https://github.com/tanaabased/canon/issues/126) [#128](https://github.com/tanaabased/canon/pull/128)
+
 ## v0.15.0 - [November 18, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.0)
 
 - Added personal-account setup for Work size, Complexity, and Impact to `tanaab-github-issue-schema-author`. [#120](https://github.com/tanaabased/canon/issues/120) [#121](https://github.com/tanaabased/canon/pull/121)
