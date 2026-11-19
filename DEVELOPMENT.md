@@ -32,7 +32,7 @@ bun run check:package "$scratch/extracted"
 
 The package check validates identities, metadata, entrypoints, and skill/resource links in the extracted payload. Leia owns executable consumer behavior. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
 
-Task Author runs directly from the checkout. To package it, the build copies tracked checkout files into a new staging directory, materializes the skill's shared symlinks, and bundles JavaScript commands from the directory named in its [build config](./skills/task-author/build.config.js). The staged commands keep their source-relative paths. Add new resources and commands to Git before building.
+Use skill-relative `entrypoints` globs in the [build config](./skills/task-author/build.config.js) to select commands. Optional repo-relative `copy` globs fill missing paths in the staged skill from tracked files. Both selectors support `*`, `**`, and `!` exclusions that win in any order. Add the `<!-- packaged-execution -->` marker where the packaged instructions belong. For shared resources, track a relative symlink at the path the skill uses. The build materializes linked files and directories in staging. Add new links, targets, and commands to Git before building. Prose-only skills need no build config.
 
 ## Codex cache
 

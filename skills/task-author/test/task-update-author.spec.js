@@ -10,7 +10,7 @@ import {
   fakeClient,
   organizationCapabilities,
   personalCapabilities,
-} from '../../../test/task-management-fixtures.js';
+} from './task-management-fixtures.js';
 
 function approve(input, preview) {
   return {

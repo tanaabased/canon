@@ -1,4 +1,4 @@
 export default {
-  entrypointDirectory: 'scripts',
-  packagedExecution: 'templates/packaged-command-execution.md',
+  entrypoints: ['scripts/*.js'],
+  copy: ['references/**', 'templates/**', '!templates/packaged-command-execution.md'],
 };

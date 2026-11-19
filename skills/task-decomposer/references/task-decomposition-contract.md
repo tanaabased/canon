@@ -2,7 +2,7 @@
 
 Contract version: `tanaab/task-decomposition/v2`
 
-Use this contract to recommend whether to split one canonical task, prepare a milestone handoff, and publish an approved split through the deterministic helper. The shared [task-management contract](../../../references/task-management-contract.md) remains authoritative for every child Task, Bug, or Feature.
+Use this contract to recommend whether to split one canonical task, prepare a milestone handoff, and publish an approved split through the deterministic helper. The shared [task-management contract](./task-management-contract.md) remains authoritative for every child Task, Bug, or Feature.
 
 ## Modes and Authority
 
