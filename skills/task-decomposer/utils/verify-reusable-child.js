@@ -2,7 +2,7 @@ import {
   observedIssueFieldValue,
   observedIssueTypeName,
   observedLabelNames,
-} from '../../task-author/lib/task-observation.js';
+} from '../../../lib/task-observation.js';
 
 /** Verify that an existing issue is an exact reusable child without rejecting unmanaged extras. */
 export default function verifyReusableChild(plan, { issue, fields = [], comments = [] }) {

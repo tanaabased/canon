@@ -18,7 +18,7 @@ metadata:
 
 ## Overview
 
-Own the installable Codex plugin: its manifest, bundled resources, npm payload, and delivery contract. Keep skill content with [Skill Author](../skill-author/SKILL.md) and npm publishing mechanics with [JavaScript Author](../javascript-author/SKILL.md#deployment).
+Own the installable Codex plugin: its manifest, bundled resources, npm payload, and delivery contract. Keep skill content with `$tanaab-skill-author` and npm publishing mechanics with [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment).
 
 ## Required Reading
 
@@ -44,8 +44,8 @@ Read each applicable document in full, or the explicitly named section, before d
 ## When Not to Use
 
 - For installation or cache maintenance alone, use Codex Tools' setup or maintenance skill.
-- For native OpenClaw code plugins, use [OpenClaw Plugin Author](../openclaw-plugin-author/SKILL.md).
-- For independent workflow topology, use [GitHub Workflow Author](../github-workflow-author/SKILL.md).
+- For native OpenClaw code plugins, use `$tanaab-openclaw-plugin-author`.
+- For independent workflow topology, use `$tanaab-github-workflow-author`.
 
 ## Constraints
 
@@ -101,7 +101,7 @@ For runtime integration, use supported native owners and separate model-authored
 
 ## Deployment
 
-- Default to npm through [JavaScript Author's deployment lifecycle](../javascript-author/SKILL.md#deployment) and [release template](../javascript-author/templates/bun-npm-package-release-workflow.yml). Stamp the plugin and package together before packing, validate the extracted payload, and publish that exact tarball.
+- Default to npm through [JavaScript Author's deployment lifecycle](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) and [release template](../../templates/bun-npm-package-release-workflow.yml). Stamp the plugin and package together before packing, validate the extracted payload, and publish that exact tarball.
 - Keep GitHub release notes and repository synchronization where the project uses them. An npm destination replaces redundant archive publication, not the release's source/version record.
 - For an archive migration, prove package and install parity first, update marketplace/install references, then remove the redundant publisher. Keep historical release assets available; retain archive delivery only for a verified consumer need.
 - Apply [verification boundaries](../../references/verification-boundaries.md) after publication. Treat publisher success as completion; check registry visibility or installed behavior separately only when the requested outcome or a concrete uncovered failure mode requires it.
@@ -109,7 +109,7 @@ For runtime integration, use supported native owners and separate model-authored
 ## GitHub Actions
 
 - `.github/workflows/release-tests.yml`: project the [Testing](#testing) checks onto a prepared package and a native npm publication dry run; no publication credentials or live registry writes in PRs.
-- `.github/workflows/release.yml`: adapt the [npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) with plugin stamping and the same extracted-package checks before publication. Follow [release composition](../github-workflow-author/SKILL.md#release-composition) for independent destinations.
+- `.github/workflows/release.yml`: adapt the [npm release template](../../templates/bun-npm-package-release-workflow.yml) with plugin stamping and the same extracted-package checks before publication. Follow [release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for independent destinations.
 
 ## Review Criteria
 
@@ -122,7 +122,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 ## Bundled Resources
 
 - [../../references/release-destinations.md](../../references/release-destinations.md): package identity and destination defaults
-- [../javascript-author/templates/bun-npm-package-release-workflow.yml](../javascript-author/templates/bun-npm-package-release-workflow.yml): shared npm publication workflow
+- [../../templates/bun-npm-package-release-workflow.yml](../../templates/bun-npm-package-release-workflow.yml): shared npm publication workflow
 
 ## Validation
 

@@ -463,4 +463,4 @@ Additional task types, Severity, Area, Confidence, workflow Status, arbitrary la
 
 - [Machine-readable task management schema](./task-management-schema.json)
 - [GitHub-backed project management model](./project-management-model.md)
-- [Task Completion Check](../skills/task-completion-check/SKILL.md)
+- `$tanaab-task-completion-check`

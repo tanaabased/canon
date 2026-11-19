@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { authorIssueForm } from '../skills/github-issue-form-author/lib/issue-form-author.js';
 import { normalizeIssueFormSubmission } from '../skills/github-issue-form-author/lib/issue-form-normalizer.js';
 import { renderFormSubmission } from '../skills/github-issue-form-author/utils/render-form-submission.js';
-import { renderTaskBody } from '../skills/task-author/utils/render-task-body.js';
-import extractAcceptanceCriteria from '../skills/task-completion-check/utils/extract-acceptance-criteria.js';
+import { renderTaskBody } from '../utils/render-task-body.js';
+import extractAcceptanceCriteria from '../utils/extract-acceptance-criteria.js';
 import classifyTaskCompletion from '../skills/task-completion-check/utils/classify-task-completion.js';
 import fixtures from './task-management-fixtures.js';
 

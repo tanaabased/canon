@@ -1,4 +1,4 @@
-import { normalizeTaskTarget } from '../../task-author/utils/normalize-task-target.js';
+import { normalizeTaskTarget } from '../../../utils/normalize-task-target.js';
 import buildTaskDecompositionEvidence from '../utils/build-task-decomposition-evidence.js';
 
 function unresolvedEvidence(target, error) {

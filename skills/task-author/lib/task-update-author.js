@@ -4,7 +4,7 @@ import { readTaskState } from './task-state-reader.js';
 import { buildTaskUpdatePlan } from '../utils/build-task-update-plan.js';
 import planDigest from '../../../utils/plan-digest.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
-import { parseFallbackMetadata } from '../utils/parse-fallback-metadata.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
 import { verifyCreatedTask } from '../utils/verify-created-task.js';
 
 const FALLBACK_TO_METADATA = Object.freeze({

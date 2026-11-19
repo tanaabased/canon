@@ -107,7 +107,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Testing
 
 - Use site builds and lint for the owned VitePress surface.
-- Delegate embedded Vue component behavior to [Vue Author's testing contract](../vue-author/SKILL.md#testing); keep site rendering and navigation checks here.
+- Delegate embedded Vue component behavior to [Vue Author's testing contract](https://github.com/tanaabased/canon/blob/main/skills/vue-author/SKILL.md#testing); keep site rendering and navigation checks here.
 - Treat repo-native `build` and `lint` commands as the canonical direct-test mechanism when they exist.
 
 Minimal generic example:

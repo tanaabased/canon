@@ -1,12 +1,12 @@
-import extractAcceptanceCriteria from '../../task-completion-check/utils/extract-acceptance-criteria.js';
+import extractAcceptanceCriteria from '../../../utils/extract-acceptance-criteria.js';
 import {
   normalizeObservedComment,
   normalizeObservedIssueField,
   observedIssueTypeName,
   observedLabelNames,
   observedWorkSize,
-} from '../../task-author/lib/task-observation.js';
-import { parseFallbackMetadata } from '../../task-author/utils/parse-fallback-metadata.js';
+} from '../../../lib/task-observation.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
 import extractTaskConstraints from './extract-task-constraints.js';
 import { stripParentRollup } from './render-parent-rollup.js';
 

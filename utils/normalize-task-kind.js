@@ -1,4 +1,4 @@
-import { TASK_KINDS } from '../lib/task-author-contract.js';
+import { TASK_KINDS } from '../lib/task-management-contract.js';
 
 /** Normalize a supported task kind; an omitted kind remains unknown. */
 export function normalizeTaskKind(input) {

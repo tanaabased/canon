@@ -143,11 +143,11 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 - For npm component libraries, use Vite library mode, externalize Vue, and declare it as a peer dependency. Export only promised module formats and public entrypoints, including the generated stylesheet when present.
 - Keep framework adapters in separate exports with optional framework peers so ordinary Vue consumers do not load VitePress or another host accidentally.
-- Separate `build:package` from `build:docs`. Use [JavaScript Author](../javascript-author/SKILL.md#deployment) for npm publication and the [package example](./references/component-package-example.md) for a minimal consumer check against the prepared tarball.
+- Separate `build:package` from `build:docs`. Use [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) for npm publication and the [package example](./references/component-package-example.md) for a minimal consumer check against the prepared tarball.
 
 ## GitHub Actions
 
-- Use [Repo Standardizer's preferred runtime setup](../javascript-repo-standardizer/SKILL.md#preferred-tools), adding Node for component tests where required.
+- Use [Repo Standardizer's preferred runtime setup](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#preferred-tools), adding Node for component tests where required.
 - Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./templates/bun-pr-component-tests.yml). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./templates/bun-pr-build-checks.yml).
 - For published libraries, add a prepared-tarball consumer build to `.github/workflows/pr-examples-tests.yml`. Test each supported host only where its import or rendering contract differs; avoid a second equivalent release smoke suite.
 

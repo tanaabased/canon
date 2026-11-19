@@ -2,7 +2,7 @@ import {
   observedIssueFieldValue,
   observedIssueTypeName,
   observedLabelNames,
-} from '../lib/task-observation.js';
+} from '../../../lib/task-observation.js';
 
 function check(key, expected, actual) {
   return {

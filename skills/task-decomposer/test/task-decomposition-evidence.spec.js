@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { renderFallbackMetadata } from '../../task-author/utils/render-fallback-metadata.js';
+import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
 import { inspectTaskDecompositionEvidence } from '../lib/task-decomposition-inspector.js';
 import { fakeGitHubTaskDecomposerClient } from './fake-github-task-decomposer-client.js';
 import { parentFields, parentIssue, sharedConstraint } from './task-decomposition-fixtures.js';

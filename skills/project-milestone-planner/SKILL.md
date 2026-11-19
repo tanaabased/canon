@@ -45,12 +45,12 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When Not to Use
 
-- Do not create, revise, schedule, close, or reopen the milestone; use [Project Milestone Author](../project-milestone-author/SKILL.md).
+- Do not create, revise, schedule, close, or reopen the milestone; use `$tanaab-project-milestone-author`.
 - Do not search an organization, use an unbounded backlog, or treat every open repository task as eligible.
-- Do not silently revise an ambiguous existing task, invent Priority, or change task metadata to favor the milestone; use [Task Author](../task-author/SKILL.md) for a separate task revision.
-- Do not decompose one oversized task as the primary request; use [Task Decomposer](../task-decomposer/SKILL.md).
-- Do not assess task or milestone completion. Use [Task Completion Check](../task-completion-check/SKILL.md) for individual tasks.
-- Do not create a tag or GitHub Release; use [Release Author](../release-author/SKILL.md).
+- Do not silently revise an ambiguous existing task, invent Priority, or change task metadata to favor the milestone; use `$tanaab-task-author` for a separate task revision.
+- Do not decompose one oversized task as the primary request; use `$tanaab-task-decomposer`.
+- Do not assess task or milestone completion. Use `$tanaab-task-completion-check` for individual tasks.
+- Do not create a tag or GitHub Release; use `$tanaab-release-author`.
 - Do not manage a GitHub Projects board or cross-project strategic goals.
 
 ## Preconditions

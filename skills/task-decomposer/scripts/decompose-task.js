@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { runTaskJsonCommand } from '../../task-author/lib/task-json-command.js';
+import { runTaskJsonCommand } from '../../../lib/task-json-command.js';
 import { GitHubTaskDecomposerClient } from '../lib/github-task-decomposer-client.js';
 import { publishTaskDecomposition } from '../lib/task-decomposition-publisher.js';
 

@@ -1,6 +1,6 @@
 import evaluateDecompositionThreshold from './evaluate-decomposition-threshold.js';
-import { normalizeTaskKind } from '../../task-author/utils/normalize-task-kind.js';
-import { renderTaskBody } from '../../task-author/utils/render-task-body.js';
+import { normalizeTaskKind } from '../../../utils/normalize-task-kind.js';
+import { renderTaskBody } from '../../../utils/render-task-body.js';
 import extractTaskConstraints from './extract-task-constraints.js';
 import validateMilestoneReframingHandoff from './validate-milestone-reframing-handoff.js';
 

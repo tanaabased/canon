@@ -1,9 +1,9 @@
-import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
+import { CANONICAL_LABELS } from '../../../lib/task-management-contract.js';
 import {
   observedIssueFieldValue,
   observedIssueTypeName,
   observedLabelNames,
-} from '../lib/task-observation.js';
+} from '../../../lib/task-observation.js';
 import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
 
 function comparable(value) {

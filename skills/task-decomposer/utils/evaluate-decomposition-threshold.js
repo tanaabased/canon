@@ -1,4 +1,4 @@
-import { WORK_SIZES } from '../../task-author/lib/task-author-contract.js';
+import { WORK_SIZES } from '../../../lib/task-management-contract.js';
 
 /** Project the shared Work size rubric into decomposition-review guidance. */
 export default function evaluateDecompositionThreshold(workSize) {

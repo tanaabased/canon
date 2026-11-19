@@ -3,8 +3,8 @@ import { readTaskState } from './task-state-reader.js';
 import planDigest from '../../../utils/plan-digest.js';
 import { buildFallbackMigrationPlan } from '../utils/build-fallback-migration-plan.js';
 import { evaluateTaskPublication } from '../utils/evaluate-task-publication.js';
-import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
-import { parseFallbackMetadata } from '../utils/parse-fallback-metadata.js';
+import { normalizeTaskTarget } from '../../../utils/normalize-task-target.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
 import { verifyCreatedTask } from '../utils/verify-created-task.js';
 
 function phaseHasMutation(phase) {

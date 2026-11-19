@@ -52,12 +52,12 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When Not to Use
 
-- Do not close, reopen, delete, assign, or change relationship state. Route milestone lifecycle and explicit task-membership changes to [Project Milestone Author](../project-milestone-author/SKILL.md).
+- Do not close, reopen, delete, assign, or change relationship state. Route milestone lifecycle and explicit task-membership changes to `$tanaab-project-milestone-author`.
 - Do not create, recolor, rename, or delete label definitions; create mode may apply only observed existing canonical labels.
-- Do not create or change issue types, organization issue fields, field options, milestones, dependencies, parents, or sub-issues; route shallow hierarchy and dependency publication to [Task Decomposer](../task-decomposer/SKILL.md).
+- Do not create or change issue types, organization issue fields, field options, milestones, dependencies, parents, or sub-issues; route shallow hierarchy and dependency publication to `$tanaab-task-decomposer`.
 - Do not set assignees through the current create mode, and do not bundle milestone membership with task creation.
 - Do not create a task with requested relationship mutations; keep that preview blocked until relationship support is implemented.
-- Do not use this skill to assess completion; use [Task Completion Check](../task-completion-check/SKILL.md).
+- Do not use this skill to assess completion; use `$tanaab-task-completion-check`.
 - Do not infer a target from a directory name. If neither an explicit target nor one unambiguous verified GitHub binding exists, request `OWNER/REPO`.
 
 ## Prerequisites

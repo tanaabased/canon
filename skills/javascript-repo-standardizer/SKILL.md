@@ -60,7 +60,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Do not use this skill for one-off formatting-only requests that do not change the repo baseline.
 - Do not use this skill for ordinary day-to-day code authorship just because repo structure is nearby.
 - Do not widen this skill into full repo-template authoring.
-- Product architecture and cross-component ownership belong to [Architecture Review](../architecture-review/SKILL.md); test value and coverage across layers belong to [Testing Review](../testing-review/SKILL.md). Baseline checks do not require either review automatically.
+- Product architecture and cross-component ownership belong to `$tanaab-architecture-review`; test value and coverage across layers belong to `$tanaab-testing-review`. Baseline checks do not require either review automatically.
 
 ## Constraints
 
@@ -127,7 +127,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 ### Pull Request Baseline Validation
 
 - Use the [preferred runtime setup actions](#preferred-tools) according to [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes), with version selection owned by project declarations rather than repeated workflow literals.
-- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow template](./templates/bun-pr-linter-workflow.yml).
+- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow template](../../templates/bun-pr-linter-workflow.yml).
 - Keep the linter workflow separate from `.github/workflows/pr-unit-tests.yml` when the repo owns both independent surfaces.
 - Add a separate `bun run typecheck` step when the repo owns TypeScript source.
 - Flag automation that rewrites tracked files without applying the repository formatter afterward.
@@ -135,7 +135,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 ### npm Publication Routing
 
 - For a publishable npm package, flag missing or noncanonical release-published wiring, long-lived npm publish tokens, unconditional non-package builds, absent post-stamping format validation, missing package dry runs, or drift from the `latest` and `edge` channel contract.
-- Route the canonical `.github/workflows/release.yml` package lifecycle to [JavaScript Author's deployment guidance](../javascript-author/SKILL.md#deployment) and independent graph exceptions to GitHub Workflow Author.
+- Route the canonical `.github/workflows/release.yml` package lifecycle to [JavaScript Author's deployment guidance](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) and independent graph exceptions to GitHub Workflow Author.
 
 ## Review Criteria
 
@@ -154,7 +154,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
 - [./templates/.prettierignore](./templates/.prettierignore): shared Prettier ignore baseline
 - [./templates/tsconfig.json](./templates/tsconfig.json): conditional Bun-compatible TypeScript baseline
-- [./templates/bun-pr-linter-workflow.yml](./templates/bun-pr-linter-workflow.yml): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
+- [../../templates/bun-pr-linter-workflow.yml](../../templates/bun-pr-linter-workflow.yml): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
 - [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules

@@ -40,8 +40,8 @@ Read and apply each applicable document before dependent work. Reuse complete re
 ## When Not to Use
 
 - Implement changes, design a new product without an existing implementation, or certify runtime readiness.
-- For a deep assessment of test value, reliability, cost, or total coverage, use [Testing Review](../testing-review/SKILL.md). Inspect tests here only as evidence for architectural findings; retain cross-component reasoning and the maintenance-change walkthrough.
-- Run a general canon-compliance, dependency-freshness, or release audit. [Project Review](../project-review/SKILL.md) owns that broader assessment; neither skill automatically invokes the other.
+- For a deep assessment of test value, reliability, cost, or total coverage, use `$tanaab-testing-review`. Inspect tests here only as evidence for architectural findings; retain cross-component reasoning and the maintenance-change walkthrough.
+- Run a general canon-compliance, dependency-freshness, or release audit. `$tanaab-project-review` owns that broader assessment; neither skill automatically invokes the other.
 
 ## Preconditions
 

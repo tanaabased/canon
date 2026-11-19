@@ -24,7 +24,7 @@ Tanaab-based `CHANGELOG.md` authoring and maintenance. Use when a user wants to 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Changelog Format and Examples](./references/changelog-format-and-examples.md) and [Documentation Standards](../../references/documentation-standards.md).
+- **Always:** [Changelog Format and Examples](../../references/changelog-format-and-examples.md) and [Documentation Standards](../../references/documentation-standards.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
 
@@ -58,7 +58,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 1. Confirm the work is changelog-led and complete Required Reading.
 2. Inspect the existing changelog and gather commit, issue, and pull-request evidence for the selected range.
 3. Select material user or developer outcomes, excluding changes already covered by released entries.
-4. Select the applicable [documentation style](../../references/documentation-standards.md#documentation-style), then edit the unreleased section using [Changelog Format and Examples](./references/changelog-format-and-examples.md) for the heading, bullet shape, ordering, machine names, and source links. Preserve released history.
+4. Select the applicable [documentation style](../../references/documentation-standards.md#documentation-style), then edit the unreleased section using [Changelog Format and Examples](../../references/changelog-format-and-examples.md) for the heading, bullet shape, ordering, machine names, and source links. Preserve released history.
 5. Validate the entries against their evidence and stop without drafting or publishing a release.
 
 ## Checkpoints
@@ -81,12 +81,12 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Bundled Resources
 
-- [./references/changelog-format-and-examples.md](./references/changelog-format-and-examples.md): exact `prepare-release` unreleased heading and canonical bullet examples
+- [../../references/changelog-format-and-examples.md](../../references/changelog-format-and-examples.md): exact `prepare-release` unreleased heading and canonical bullet examples
 
 ## Validation
 
 - Recheck heading shape, concise alphabetized bullets, deduplication, links, and the evidence boundary used for every entry.
 
 - Compare each new entry with its source evidence and existing released entries.
-- Check the edited block against [Changelog Format and Examples](./references/changelog-format-and-examples.md), including the exact unreleased heading.
+- Check the edited block against [Changelog Format and Examples](../../references/changelog-format-and-examples.md), including the exact unreleased heading.
 - Confirm the diff preserves released history and contains no release-state mutation.

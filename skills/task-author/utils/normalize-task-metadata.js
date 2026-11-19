@@ -1,4 +1,9 @@
-import { COMPLEXITIES, IMPACTS, PRIORITIES, WORK_SIZES } from '../lib/task-author-contract.js';
+import {
+  COMPLEXITIES,
+  IMPACTS,
+  PRIORITIES,
+  WORK_SIZES,
+} from '../../../lib/task-management-contract.js';
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const METADATA_KEYS = Object.freeze([

@@ -40,7 +40,7 @@ Use this reference for default runtime, framework, and tooling choices in Tanaab
 
 ## npm Package Publishing
 
-- Keep the single-package `release.published` lifecycle with [JavaScript Author](../skills/javascript-author/SKILL.md#deployment), including shared preparation, exact-tarball validation and publication, and independent repository synchronization. Leave multi-package release orchestration explicit.
+- Keep the single-package `release.published` lifecycle with [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment), including shared preparation, exact-tarball validation and publication, and independent repository synchronization. Leave multi-package release orchestration explicit.
 - Prefer tokenless npm trusted publishing on a supported GitHub-hosted runner. Let the shared publisher select a compatible project Node/npm toolchain and grant `id-token: write` only to its job.
 - Keep three signals separate: a SemVer prerelease suffix (for example, `1.0.0-beta.2`) describes version syntax; GitHub reports whether a published release is Latest or a prerelease; npm `latest` and `edge` are distribution tags. npm `latest` is the default install tag, not a stability guarantee.
 - On `release.published`, `publish-npm` uses the reported GitHub status, regardless of SemVer syntax:
@@ -104,7 +104,7 @@ The shared behavioral model has three layers. Classify by the boundary exercised
 - Classify [evidence per assertion](./verification-boundaries.md#evidence-and-static-checks), including in mixed suites. Lint, schema, build, packaging, and publication checks retain their distinct contracts; they do not require a fourth suite or establish runtime behavior by themselves.
 - When Mocha cases time out or repeatedly run slowly, review their boundary and execution cost. Reduce fixtures, inject incidental dependencies, and consolidate duplicate flows before a justified timeout increase. Elapsed time alone does not classify a test, and filesystem use does not automatically require Leia.
 - Apply the shared [admission and retention gate](./verification-boundaries.md#assertion-strength) when adding, consolidating, or removing coverage. Identify surviving meaningful protection for consequential safety, protocol, and platform contracts; low-consequence detail may deliberately remain untested without a replacement.
-- For JS/TS/Bun units and components, prefer Mocha plus built-in `node:` assertions and appropriate fixture helpers. Preserve [Vue Author's Vitest and Vue Test Utils defaults](../skills/vue-author/SKILL.md#testing) and effective existing suites.
+- For JS/TS/Bun units and components, prefer Mocha plus built-in `node:` assertions and appropriate fixture helpers. Preserve [Vue Author's Vitest and Vue Test Utils defaults](https://github.com/tanaabased/canon/blob/main/skills/vue-author/SKILL.md#testing) and effective existing suites.
 - Add `c8` only when coverage reporting or enforcement is actually needed.
 - Prefer a `test/` directory inside the nearest scope that owns the implementation.
 - Keep each scoped `test/` directory flat by default, including its specs, fixtures, fakes, and support code.
@@ -119,7 +119,7 @@ The shared behavioral model has three layers. Classify by the boundary exercised
 
 ### Test Runtimes
 
-- Select [runtime setup actions](../skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
+- Select [runtime setup actions](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#preferred-tools) by what each job executes: `setup-bun` for development checks; add `setup-node` for Node consumers or Node-only tooling. A Bun harness testing a Node CLI needs both, using project-declared versions.
 - Before adding a runtime installer, inspect the selected actions' setup guarantees. Reuse a compatible runtime they already provide; an npm operation or Node-based action does not by itself require another caller-owned `setup-node` step.
 - Make the tool runtime explicit in package scripts, for example `bun ./node_modules/mocha/bin/mocha.js`. `bun run` alone can honor a tool's Node shebang. [Bun's `--bun` override](https://bun.com/docs/runtime/bunfig#run-bun-auto-alias-node-to-bun) also redirects child `node` commands, so keep it and equivalent configuration out of Node compatibility checks.
 - Exercise the prepared or packed artifact under its declared runtime: the installed CLI through its executable entrypoint, and public library exports through the promised `import`/`require` paths. A Bun-hosted check may launch real Node subprocesses; its own runtime does not prove the consumer's runtime.
@@ -143,7 +143,7 @@ The shared behavioral model has three layers. Classify by the boundary exercised
 ## GitHub Actions
 
 - Prefer Bun-first workflow wiring when a repository's runtime surface is JavaScript or TypeScript.
-- Select [Tanaab Actions runtime setup](../skills/github-workflow-author/SKILL.md#preferred-tools) through [Test Runtimes](#test-runtimes), using project declarations and the correct package directory; retain direct upstream actions when required inputs or runners are unsupported.
+- Select [Tanaab Actions runtime setup](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#preferred-tools) through [Test Runtimes](#test-runtimes), using project declarations and the correct package directory; retain direct upstream actions when required inputs or runners are unsupported.
 - Keep dependency installation, package caching, lint, and tests caller-owned. Runtime installers do not replace those steps.
 - Prefer one workflow file per independent pull-request gate when checks differ in command surface, runner or matrix, failure ownership, or required-check identity.
 - For JS/TS/Bun repos with both surfaces, use `.github/workflows/pr-linter.yml` for lint, format, type-check, and repo-specific static validation, and `.github/workflows/pr-unit-tests.yml` for unit tests and their operating-system matrix.
