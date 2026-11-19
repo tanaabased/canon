@@ -1,7 +1,7 @@
-import { copyFile, mkdir, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import bundledLargeIconImport from '../assets/icon-large.png' with { type: 'file' };
+import bundledLargeIconImport from '../assets/icon-large.base64.txt' with { type: 'file' };
 import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
 
 import pathExists from '../../../utils/path-exists.js';
@@ -147,6 +147,10 @@ export async function initializeSkill(options) {
   if ((await pathExists(skillDir)) && !options.force) {
     throw new Error(`Skill directory already exists: ${skillDir}`);
   }
+  const largeIcon = Buffer.from(
+    await readFile(path.resolve(import.meta.dir, bundledLargeIconImport), 'utf8'),
+    'base64',
+  );
   if (options.force) await rm(skillDir, { force: true, recursive: true });
 
   const agentsDir = path.join(skillDir, 'agents');
@@ -183,10 +187,7 @@ export async function initializeSkill(options) {
       path.resolve(import.meta.dir, bundledSmallIconImport),
       path.join(assetsDir, 'icon-small.svg'),
     ),
-    copyFile(
-      path.resolve(import.meta.dir, bundledLargeIconImport),
-      path.join(assetsDir, 'icon-large.png'),
-    ),
+    writeFile(path.join(assetsDir, 'icon-large.png'), largeIcon),
   ]);
 
   const result = await validateSkillDir(skillDir, {
