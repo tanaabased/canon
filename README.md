@@ -54,7 +54,7 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 | Skill                                                                       | Owns                                                                         |
 | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | [`tanaab-github-issue-form-author`](./skills/github-issue-form-author/)     | Task, Bug, and Feature issue forms and intake extraction.                    |
-| [`tanaab-github-issue-schema-author`](./skills/github-issue-schema-author/) | Organization issue fields and repository labels.                             |
+| [`tanaab-github-issue-schema-author`](./skills/github-issue-schema-author/) | Personal and organization issue fields, organization pins, and repo labels.  |
 | [`tanaab-project-author`](./skills/project-author/)                         | GitHub repository creation, settings, descriptions, and topics.              |
 | [`tanaab-project-milestone-author`](./skills/project-milestone-author/)     | Milestone state, due dates, and verified task membership.                    |
 | [`tanaab-project-milestone-planner`](./skills/project-milestone-planner/)   | Milestone coverage, task selection, and owner handoffs.                      |

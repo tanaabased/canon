@@ -4,7 +4,6 @@ import os from 'node:os';
 import path from 'node:path';
 import { YAML } from 'bun';
 
-import { getBundledLargeIconPath, getBundledSmallIconPath } from '../lib/skill-contract.js';
 import { initializeSkill } from '../lib/skill-scaffolder.js';
 import { validateSkillDir } from '../lib/skill-validator.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
@@ -60,11 +59,9 @@ describe('skills/skill-author/lib/skill-ownership', () => {
     assert.equal(openai.brand_color, '#00c88a');
     assert.equal(openai.display_name, 'Example');
     assert.match(openai.default_prompt, /\$tanaab-example/);
-    for (const [name, source] of [
-      ['icon-small.svg', getBundledSmallIconPath()],
-      ['icon-large.png', getBundledLargeIconPath()],
-    ]) {
-      assert.deepEqual(await readFile(path.join(skillDir, 'assets', name)), await readFile(source));
+    for (const name of ['icon-small.svg', 'icon-large.png']) {
+      const expected = await readFile(new URL(`../assets/${name}`, import.meta.url));
+      assert.deepEqual(await readFile(path.join(skillDir, 'assets', name)), expected);
     }
     assert.deepEqual((await validateSkillDir(skillDir)).errors, []);
   });

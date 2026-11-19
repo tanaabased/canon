@@ -1,8 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import bundledLargeIconImport from '../assets/icon-large.png' with { type: 'file' };
-import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
 import codingTemplateText from '../templates/coding.md' with { type: 'text' };
 import extractTopLevelSkillHeadings from '../utils/extract-top-level-skill-headings.js';
 import genericTemplateText from '../templates/generic.md' with { type: 'text' };
@@ -96,18 +94,6 @@ export function isKnownSkillType(type) {
 
 export function formatSkillTypeIds() {
   return SKILL_TYPE_IDS.join(', ');
-}
-
-export function getBundledSmallIconPath() {
-  return path.isAbsolute(bundledSmallIconImport)
-    ? bundledSmallIconImport
-    : path.resolve(LIB_DIR, bundledSmallIconImport);
-}
-
-export function getBundledLargeIconPath() {
-  return path.isAbsolute(bundledLargeIconImport)
-    ? bundledLargeIconImport
-    : path.resolve(LIB_DIR, bundledLargeIconImport);
 }
 
 export function renderMetadataTagsYaml(tags) {

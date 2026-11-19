@@ -1,6 +1,9 @@
 import { copyFile, mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import bundledLargeIconImport from '../assets/icon-large.png' with { type: 'file' };
+import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
+
 import pathExists from '../../../utils/path-exists.js';
 import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
 import inferSkillCategoryTag from '../utils/infer-skill-category-tag.js';
@@ -24,8 +27,6 @@ import {
   SKILLS_ROOT_DIR,
   formatSkillTypeIds,
   getSkillNamespacePrefix,
-  getBundledLargeIconPath,
-  getBundledSmallIconPath,
   getSkillType,
   isPluginSkillContainer,
   renderMetadataTagsYaml,
@@ -178,8 +179,14 @@ export async function initializeSkill(options) {
   await Promise.all([
     writeFile(path.join(skillDir, 'SKILL.md'), skillContent, 'utf8'),
     writeFile(path.join(agentsDir, 'openai.yaml'), openAiContent, 'utf8'),
-    copyFile(getBundledSmallIconPath(), path.join(assetsDir, 'icon-small.svg')),
-    copyFile(getBundledLargeIconPath(), path.join(assetsDir, 'icon-large.png')),
+    copyFile(
+      path.resolve(import.meta.dir, bundledSmallIconImport),
+      path.join(assetsDir, 'icon-small.svg'),
+    ),
+    copyFile(
+      path.resolve(import.meta.dir, bundledLargeIconImport),
+      path.join(assetsDir, 'icon-large.png'),
+    ),
   ]);
 
   const result = await validateSkillDir(skillDir, {
