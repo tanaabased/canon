@@ -21,9 +21,21 @@ for command in skills/*/scripts/*.js; do
   bun --no-install "$command" --help
  done
 
-# should scaffold and validate a standalone skill
+# should scaffold from a verified temporary command copy
 cd "$TMPDIR"
-bun --no-install "$TMPDIR/package/skills/skill-author/scripts/init-skill.js" --type generic --slug example-skill --display-name 'Example Skill' --description 'Scaffold a focused example skill.' --openclaw-emoji '🧩' --openclaw-homepage https://example.com/skills/example-skill --container standalone --output-dir "$TMPDIR/standalone"
+skill="$TMPDIR/package/skills/skill-author"
+copy="$TMPDIR/copied-skill"
+command="scripts/init-skill.js"
+jq -er --arg command "$command" '.commands[] | select(.path == $command) | (., .resources[]?) | [.path, .bytes, .sha256] | @tsv' "$skill/runtime-files.json" > "$TMPDIR/files.tsv"
+while read -r file bytes sha256; do
+  mkdir -p "$copy/$(dirname "$file")"
+  cp "$skill/$file" "$copy/$file"
+  test "$(wc -c < "$copy/$file")" -eq "$bytes" || exit 1
+  printf '%s  %s\n' "$sha256" "$copy/$file" | shasum -a 256 --check || exit 1
+done < "$TMPDIR/files.tsv"
+bun --no-install "$copy/$command" --type generic --slug example-skill --display-name 'Example Skill' --description 'Scaffold a focused example skill.' --openclaw-emoji '🧩' --openclaw-homepage https://example.com/skills/example-skill --container standalone --output-dir "$TMPDIR/standalone"
+cmp "$skill/assets/icon-large.png" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-large.png"
+cmp "$skill/assets/icon-small.svg" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-small.svg"
 bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/standalone/tanaab-example-skill" --container standalone
 bun -e 'import assert from "node:assert/strict"; const s=await Bun.file(process.argv[1]).text(); const f=Bun.YAML.parse(s.split("---")[1]); assert.equal(f.name,"tanaab-example-skill"); assert.equal(f.metadata.openclaw.emoji,"🧩"); assert.equal(f.metadata.openclaw.homepage,"https://example.com/skills/example-skill");' "$TMPDIR/standalone/tanaab-example-skill/SKILL.md"
 

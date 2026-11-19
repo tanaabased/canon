@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { migrateTaskFallback } from '../lib/task-fallback-migrator.js';
 import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
 import { fakeGitHubTaskClient } from './fake-github-task-client.js';
-import { organizationCapabilities } from '../../../test/task-management-fixtures.js';
+import { organizationCapabilities } from './task-management-fixtures.js';
 
 function issue(body) {
   return {

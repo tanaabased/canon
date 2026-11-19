@@ -7,7 +7,7 @@ import fixtures, {
   compactFeatureSections,
   fakeClient,
   organizationCapabilities,
-} from '../../../test/task-management-fixtures.js';
+} from './task-management-fixtures.js';
 
 describe('skills/task-author/lib/task-draft-author', () => {
   it('should accept compact tasks without inventing sections or delivery obligations', () => {

@@ -30,11 +30,11 @@ Existing-issue modes preserve unmanaged labels and earlier comments. Ordinary re
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](./canon/references/project-management-model.md), [Task Management Contract](./canon/references/task-management-contract.md), [Task Management Schema](./canon/references/task-management-schema.json), and [GitHub CLI Routing](./canon/references/github-cli-routing.md).
-- **Before assessing, drafting, creating, revising, normalizing, or migrating a task:** read [Shared Assertions](./canon/references/task-management-fixtures.md#shared-assertions) and the [Fixture Matrix](./canon/references/task-management-fixtures.md#fixture-matrix), then read the case sections matching the task kind, repository capabilities, lifecycle operation, and evidence gaps.
-- **When maintaining this skill or reviewing cross-skill convergence:** read the complete [Task Management Fixtures](./canon/references/task-management-fixtures.md).
-- **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](./canon/references/documentation-standards.md#documentation-change-gate).
-- **Before choosing validation checks:** [Verification Boundaries](./canon/references/verification-boundaries.md).
+- **Always:** [Project Management Model](./references/project-management-model.md), [Task Management Contract](./references/task-management-contract.md), [Task Management Schema](./references/task-management-schema.json), and [GitHub CLI Routing](./references/github-cli-routing.md).
+- **Before assessing, drafting, creating, revising, normalizing, or migrating a task:** read [Shared Assertions](./references/task-management-fixtures.md#shared-assertions) and the [Fixture Matrix](./references/task-management-fixtures.md#fixture-matrix), then read the case sections matching the task kind, repository capabilities, lifecycle operation, and evidence gaps.
+- **When maintaining this skill or reviewing cross-skill convergence:** read the complete [Task Management Fixtures](./references/task-management-fixtures.md).
+- **Before proposing documentation deliverables:** [Documentation Standards — Documentation Change Gate](./references/documentation-standards.md#documentation-change-gate).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
 
 ## When to Use
 
@@ -63,19 +63,19 @@ Read each applicable document in full, or the explicitly named section, before d
 ## Prerequisites
 
 - Require `bun` and GitHub CLI `gh`. When the host supplies a local skill directory, use it as `<skill-path>` and run the commands from the current project.
-- Apply [the shared GitHub CLI routing contract](./canon/references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Prefer an explicit `OWNER/REPO` or `OWNER/REPO#NUMBER`; otherwise accept only a repository that `gh repo view` resolves unambiguously from the active project.
 - Check `gh auth status`. A failed auth probe is a visible warning because public reads may still work; never conceal a private-repository discovery failure.
 - Create mode requires GitHub Issues write access. Native type, label, and issue-field values require repository push access and may otherwise be silently dropped, so a successful create response is never sufficient verification.
-- Apply [the task management contract](./canon/references/task-management-contract.md) and the applicable cases from its [fixture corpus](./canon/references/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
+- Apply [the task management contract](./references/task-management-contract.md) and the applicable cases from its [fixture corpus](./references/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
 
 <!-- packaged-execution -->
 
 ## Inputs
 
 - Required for a ready draft: title, Task/Bug/Feature kind, one exact repository target or verified binding, a supported problem or requested outcome, and checkable acceptance criteria. Use the compact body defaults in the shared contract; separate outcome, scope, exclusions, and delivery sections are conditional, not readiness requirements.
-- Apply the shared [title guidance and examples](./canon/references/task-management-contract.md#task-kinds-and-body-shapes) when creating tasks or explicitly revising titles; retain the exact title in the publication preview and approval plan.
-- Apply the shared contract's [scope and proportionality rules](./canon/references/task-management-contract.md#scope-and-proportionality) before drafting obligations. Preserve material evidence, boundaries, and task-specific verification without copying routine PR mechanics or creating speculative deliverables.
+- Apply the shared [title guidance and examples](./references/task-management-contract.md#task-kinds-and-body-shapes) when creating tasks or explicitly revising titles; retain the exact title in the publication preview and approval plan.
+- Apply the shared contract's [scope and proportionality rules](./references/task-management-contract.md#scope-and-proportionality) before drafting obligations. Preserve material evidence, boundaries, and task-specific verification without copying routine PR mechanics or creating speculative deliverables.
 - For a Bug, preserve observed and expected behavior plus reporter reproduction or direct evidence. Keep worker-owned verification proportional and use the safest suitable environment; preserve unresolved reproduction gaps and approval boundaries.
 - For a Feature, identify one useful, bounded capability and its consumer-visible acceptance conditions. Keep an oversized or umbrella request unready and recommend decomposition rather than inventing a delivery checklist.
 - Optional canonical metadata: Priority, Work size, Complexity, Impact, Start date, and Target date. Priority and dates require human, policy, or existing provenance; never submit them as agent estimates.
@@ -132,8 +132,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Bundled Resources
 
-- [task-management-contract.md](./canon/references/task-management-contract.md): shared semantic contract
-- [task-management-fixtures.md](./canon/references/task-management-fixtures.md): cross-skill golden cases
+- [task-management-contract.md](./references/task-management-contract.md): shared semantic contract
+- [task-management-fixtures.md](./references/task-management-fixtures.md): cross-skill golden cases
 - [draft-task.js](./scripts/draft-task.js): JSON-in/read-only-preview-out Bun entrypoint
 - [create-task.js](./scripts/create-task.js): digest-gated JSON-in/create-and-verify Bun entrypoint
 - [update-task.js](./scripts/update-task.js): digest-gated revise/normalize entrypoint
@@ -145,7 +145,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - [github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
 - [utilities](./utils): focused assessment, normalization, rendering, metadata, and labeling units
 - [tests](./test): flat utility, client-boundary, shared-fixture, and revision coverage
-- [task-management-fixtures.js](./canon/test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
+- [task-management-fixtures.js](./test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 
 ## Validation
 

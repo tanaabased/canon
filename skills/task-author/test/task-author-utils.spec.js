@@ -11,7 +11,7 @@ import {
   completeBugSections,
   completeFeatureSections,
   completeTaskSections,
-} from '../../../test/task-management-fixtures.js';
+} from './task-management-fixtures.js';
 
 describe('Task Author deterministic utilities', () => {
   it('should normalize explicit repository and issue targets without directory inference', () => {

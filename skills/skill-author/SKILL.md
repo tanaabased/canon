@@ -44,15 +44,15 @@ Use this skill when the skill itself is the artifact being created, standardized
 
 Read and apply every applicable document before the dependent work. A summary or resource listing does not replace the read; reuse complete reads already available in the active context.
 
-- **Always:** [Skill Standard](../../references/skill-standard.md), including its required-reading contract.
-- **Before reviewing or optimizing a skill or collection:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before choosing a project-management skill name:** [Project Management Model](../../references/project-management-model.md).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
-- **Before maintaining a dedicated review skill:** [Review Standard](../../references/review-standard.md).
-- **Before reviewing preferred-tool recommendations:** [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before changing skill prose or references, or reviewing their style:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
-- **Before changing skill-owned JavaScript or TypeScript:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [Skill Standard](./references/skill-standard.md), including its required-reading contract.
+- **Before reviewing or optimizing a skill or collection:** [Optimization Operations](./references/optimization-operations.md).
+- **Before choosing a project-management skill name:** [Project Management Model](./references/project-management-model.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
+- **Before maintaining a dedicated review skill:** [Review Standard](./references/review-standard.md).
+- **Before reviewing preferred-tool recommendations:** [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment) and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before changing skill prose or references, or reviewing their style:** [Documentation Standards](./references/documentation-standards.md), including style selection for the target repository.
+- **Before changing skill-owned JavaScript or TypeScript:** [Coding Stack Preferences](./references/coding-stack-preferences.md), [JavaScript Repo Structure](./references/javascript-repo-structure.md), and [JavaScript Function Data Flow](./references/javascript-function-data-flow.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
 - **Before scaffolding or reviewing type shape:** the matching [generic](./templates/generic.md), [coding](./templates/coding.md), [integration](./templates/integration.md), [workflow](./templates/workflow.md), or [meta](./templates/meta.md) template; read only the selected type.
 
 ## When to Use
@@ -83,7 +83,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - Use the smallest type that clearly fits the skill's owned surface.
 - For project-management skills, keep domain naming separate from implementation detail and choose `integration` or `workflow` from the actual permission and lifecycle boundary.
 - Keep structure and metadata aligned with the shared canon contract.
-- Require explicit policy reads under the [required-reading contract](../../references/skill-standard.md#required-reading); a valid link alone does not establish that the workflow loads or follows the policy.
+- Require explicit policy reads under the [required-reading contract](./references/skill-standard.md#required-reading); a valid link alone does not establish that the workflow loads or follows the policy.
 - Keep skill ownership separate from product-facing namespace, description, prompt, folder, and brand identity.
 - Keep OpenClaw display metadata in `SKILL.md` and Codex interface metadata in `agents/openai.yaml`.
 - Keep validation results tied to the shared contract and canonical local templates rather than personal preference.
@@ -125,13 +125,17 @@ Read and apply every applicable document before the dependent work. A summary or
 - Review criteria applicability before finalizing a new or standardized skill; retain and tailor the full-template section or remove it deliberately.
 - When optimizing a collection, inventory every skill before proposing portfolio changes and prefer clarification, movement, or extraction before adding another skill.
 
+Use the local skill directory as `<skill-path>` when the host exposes it.
+
+<!-- packaged-execution -->
+
 ## Workflow
 
 - After explicit authorization, make the smallest contract-aligned individual and portfolio changes, deliberately retain and tailor or remove each Review Criteria facet, and update every affected skill ID, prompt, link, metadata reference, and consumer.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
-1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `owner`, `namespace`, or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`../../references/project-management-model.md`](../../references/project-management-model.md) before choosing a domain- or provider-led name.
+1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `owner`, `namespace`, or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`./references/project-management-model.md`](./references/project-management-model.md) before choosing a domain- or provider-led name.
 
 2. Complete the applicable Required Reading before making dependent decisions.
 
@@ -139,13 +143,13 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 4. For authorized creation, standardization, or implementation of an optimization plan, scaffold or patch the skill.
 
-- Use [`./scripts/init-skill.js`](./scripts/init-skill.js) when the task is a clean scaffold.
+- For a clean scaffold, run [`bun <skill-path>/scripts/init-skill.js`](./scripts/init-skill.js). When running from a temporary copy, pass the intended skills directory with `--output-dir` and supply `--openclaw-homepage`.
 - Pass project-declared identity context explicitly with `--owner <tanaab|pirog>`, `--namespace <id>` and `--container <standalone|codex-plugin|openclaw-plugin>`; do not expect deterministic scripts to parse `AGENTS.md` prose.
 - Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
 - Tailor `Required Reading` to the actual governing policies with explicit Always or Before triggers. Keep essential constraints at the decision point, detailed policy in its authoritative reference, and optional background in the resource inventory.
-- Review the scaffolded `Review Criteria` section under the [shared contract](../../references/skill-standard.md#review-criteria). Retain and tailor general criteria for persistent surfaces; add Architecture or Testing entry points only when applicable, linking existing authoritative sections before writing new criteria. Remove unused scaffolding and report applicable content gaps without inventing policy.
-- Retain `Preferred Tools` only for concrete recommendations under the [shared contract](../../references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Review Criteria checks, and remove unused scaffold guidance. For an upstream recommendation review, follow [Review Preferred Tools](#review-preferred-tools).
+- Review the scaffolded `Review Criteria` section under the [shared contract](./references/skill-standard.md#review-criteria). Retain and tailor general criteria for persistent surfaces; add Architecture or Testing entry points only when applicable, linking existing authoritative sections before writing new criteria. Remove unused scaffolding and report applicable content gaps without inventing policy.
+- Retain `Preferred Tools` only for concrete recommendations under the [shared contract](./references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Review Criteria checks, and remove unused scaffold guidance. For an upstream recommendation review, follow [Review Preferred Tools](#review-preferred-tools).
 - Keep support material local by default.
 - Organize skill-owned JavaScript by role at the skill root: public commands in `bin/`, internal commands in `scripts/`, orchestration in `lib/`, independently testable units in `utils/`, and tests in `test/`.
 - Keep skill-owned `test/` directories flat by default, with specs, fixtures, fakes, and support JavaScript as siblings.
@@ -154,7 +158,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 5. Validate before finishing authorized authoring.
 
-- Run [`./scripts/validate-skill.js`](./scripts/validate-skill.js) against the generated or updated skill.
+- Run [`bun <skill-path>/scripts/validate-skill.js`](./scripts/validate-skill.js) against the generated or updated skill.
 - Fix every `[error]` before finishing.
 - Pass the same explicit owner, namespace, and container used for scaffolding; validation defaults to `tanaab` ownership.
 - Review `[warn]` and `[manual]` results explicitly instead of treating them as silent success.
@@ -165,7 +169,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 Use this workflow for requests to refresh what selected skills recommend. Keep the review read-only; Project Review owns adoption and freshness in a consuming project.
 
 1. Complete the applicable Required Reading. Use the skills or upstream repositories named in the request; if neither supplies a bounded scope, ask for one rather than scanning an organization or every installed skill.
-2. Start from those skills' existing tool links and explicitly supplied new sources. Inspect authoritative releases, maintained documentation, and package or action contracts under [Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment). Distinguish shipped compatible capabilities from unreleased or inaccessible candidates; record reviewed releases and uncertainty in the report, while proposed guidance links maintained documentation.
+2. Start from those skills' existing tool links and explicitly supplied new sources. Inspect authoritative releases, maintained documentation, and package or action contracts under [Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment). Distinguish shipped compatible capabilities from unreleased or inaccessible candidates; record reviewed releases and uncertainty in the report, while proposed guidance links maintained documentation.
 3. Assign each justified recommendation to the narrowest existing skill owner. Assess applicability, runtime and platform limits, behavior, migration cost, and maintenance benefit; retain existing choices when replacement has no material payoff.
 4. Reconcile each proposed change with its point-of-use instructions, Review Criteria facet, templates, and shared references. Remove stale or duplicated guidance; keep API and input details upstream. Report ownership gaps without inventing another skill.
 5. Return justified changes and material deferrals with owners, affected paths, upstream evidence, and proportional validation. Stop before editing guidance, installing tools, migrating projects, or publishing anything; implementation requires a later explicit request.
@@ -173,7 +177,7 @@ Use this workflow for requests to refresh what selected skills recommend. Keep t
 ## Review Criteria
 
 - **Inspect:** Inventory every in-scope skill's discovery text, owned surface, type, metadata, section shape, bundled resources, code and test placement, Review Criteria applicability, and live consumers. Trace workflow decisions to governing references and their reading triggers, including dependencies hidden behind other references.
-- **Compare:** Evaluate each skill against the shared standard and selected type template, including [Preferred Tools](../../references/skill-standard.md#preferred-tools) ownership, applicability, adoption and freshness checks, and point-of-use consistency, then compare the collection for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior; treat generic facet boilerplate as drift.
+- **Compare:** Evaluate each skill against the shared standard and selected type template, including [Preferred Tools](./references/skill-standard.md#preferred-tools) ownership, applicability, adoption and freshness checks, and point-of-use consistency, then compare the collection for contradictions, duplicated doctrine, fragmented variants, unclear ownership, and mega-skill behavior; treat generic facet boilerplate as drift.
 - **Recommend:** Label evidence-backed findings with the applicable shared operation. Preserve clear owners; reconcile contradictions; deduplicate or consolidate repeated doctrine; split overloaded skills; extract or move misplaced resources; tighten scope and discovery; and rename or remove only when identity or live use warrants it. Flag missing, vague, late, or inventory-only policy reads, conflicting summaries, unnecessary required material, and governing policies without effective consumers.
 
 ### Portfolio Review
@@ -186,9 +190,9 @@ Use this workflow for requests to refresh what selected skills recommend. Keep t
 
 ## Bundled Resources
 
-- [../../references/skill-standard.md](../../references/skill-standard.md): naming, structure, metadata, and validation contract
-- [../../references/optimization-operations.md](../../references/optimization-operations.md): shared evidence-led operations for persistent-surface and portfolio optimization
-- [../../references/project-management-model.md](../../references/project-management-model.md): domain naming, GitHub mappings, lifecycle ownership, and project-management skill type boundaries
+- [./references/skill-standard.md](./references/skill-standard.md): naming, structure, metadata, and validation contract
+- [./references/optimization-operations.md](./references/optimization-operations.md): shared evidence-led operations for persistent-surface and portfolio optimization
+- [./references/project-management-model.md](./references/project-management-model.md): domain naming, GitHub mappings, lifecycle ownership, and project-management skill type boundaries
 - [./templates/meta.md](./templates/meta.md): canonical full-template model for `meta` skills; sibling templates define the other type shapes
 - [./scripts/init-skill.js](./scripts/init-skill.js): deterministic scaffolder for canonical full templates
 - [./scripts/validate-skill.js](./scripts/validate-skill.js): validation entrypoint for skill directories
