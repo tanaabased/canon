@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.15.1 - [November 19, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.1)
+
 - Added `bun run build:plugin` to bundle `tanaab-task-author` commands and copy shared resources into the release package. [#126](https://github.com/tanaabased/canon/issues/126) [#128](https://github.com/tanaabased/canon/pull/128)
 - Moved packaged `tanaab-task-author` commands from `dist/` to `scripts/` so direct callers can use the same paths in a checkout and an installed package. [#126](https://github.com/tanaabased/canon/issues/126) [#128](https://github.com/tanaabased/canon/pull/128)
 
