@@ -16,7 +16,7 @@ import {
   isKnownSkillType,
   stripSkillNamespace,
 } from './skill-contract.js';
-import extractRelativeMarkdownLinks from '../utils/extract-relative-markdown-links.js';
+import extractRelativeMarkdownLinks from '../../../utils/extract-relative-markdown-links.js';
 import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
 import normalizeSkillNamespace from '../utils/normalize-skill-namespace.js';

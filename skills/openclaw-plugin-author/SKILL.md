@@ -53,10 +53,10 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When Not to Use
 
-- Do not use this skill for generic JavaScript or TypeScript work when no OpenClaw plugin contract is central; use [JavaScript Author](../javascript-author/SKILL.md).
-- Do not use it for general lint, format, Bun, TypeScript, workspace, package-identity, or folder-baseline normalization; use [JavaScript Repo Standardizer](../javascript-repo-standardizer/SKILL.md).
-- Do not treat an OpenClaw-registered subcommand as a standalone `package.json#bin` product; use [JavaScript CLI Author](../javascript-cli-author/SKILL.md) only when a true package-level CLI is the primary surface.
-- Do not use it for independent GitHub Actions trigger, permission, job, matrix, gate, or reusable-workflow design; use [GitHub Workflow Author](../github-workflow-author/SKILL.md).
+- Do not use this skill for generic JavaScript or TypeScript work when no OpenClaw plugin contract is central; use `$tanaab-javascript-author`.
+- Do not use it for general lint, format, Bun, TypeScript, workspace, package-identity, or folder-baseline normalization; use `$tanaab-javascript-repo-standardizer`.
+- Do not treat an OpenClaw-registered subcommand as a standalone `package.json#bin` product; use `$tanaab-javascript-cli-author` only when a true package-level CLI is the primary surface.
+- Do not use it for independent GitHub Actions trigger, permission, job, matrix, gate, or reusable-workflow design; use `$tanaab-github-workflow-author`.
 - Do not use it for README-versus-docs-site decisions, GitHub Release drafting, host preparation, Gateway administration, or routine installed-plugin operations.
 - Do not apply the native manifest contract to Codex-, Claude-, or Cursor-compatible bundle-only plugins unless they also own a native OpenClaw code-plugin surface.
 
@@ -74,7 +74,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Change Strategy
 
-- Apply [JavaScript Author](../javascript-author/SKILL.md) for JS/TS implementation and npm package behavior, [JavaScript repo structure](../../references/javascript-repo-structure.md) for owning scopes and role folders, and [coding stack preferences](../../references/coding-stack-preferences.md) for Bun, TypeScript, and npm defaults.
+- Apply `$tanaab-javascript-author` for JS/TS implementation and npm package behavior, [JavaScript repo structure](../../references/javascript-repo-structure.md) for owning scopes and role folders, and [coding stack preferences](../../references/coding-stack-preferences.md) for Bun, TypeScript, and npm defaults.
 - Apply [JavaScript function data flow](../../references/javascript-function-data-flow.md) when plugin logic can honestly be separated from SDK registration or runtime state.
 - Inspect project-local plugin patterns and current OpenClaw guidance before using a fallback structure; do not turn DevGuard-specific supervision, policy, or scenario design into a universal plugin baseline.
 - Keep the root manifest and declared package entries platform-correct, registration thin, stateful orchestration in `lib/`, independently testable logic in `utils/`, internal development tasks in `scripts/`, and flat owned tests in `test/`.
@@ -106,7 +106,7 @@ Read each applicable document in full, or the explicitly named section, before d
 ## Preferred Tools
 
 - **Tanaab Actions 1.x — [setup-openclaw](https://github.com/tanaabased/actions/blob/main/setup-openclaw/README.md) and [run-leia](https://github.com/tanaabased/actions/blob/main/run-leia/README.md):** Prefer for justified installed-plugin or Gateway scenarios on isolated supported runners. Keep direct unit tests fake-backed; request Agent System, credentials, SSH fixtures, or unattended policy only when the scenario requires them.
-- **Tanaab Actions 1.x — [npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md) and [publish-clawhub](https://github.com/tanaabased/actions/blob/main/publish-clawhub/README.md):** Prefer for code-plugin artifact packing and ClawHub delivery. The publisher does not apply to skill-only bundles; npm delivery follows [JavaScript Author](../javascript-author/SKILL.md#deployment).
+- **Tanaab Actions 1.x — [npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md) and [publish-clawhub](https://github.com/tanaabased/actions/blob/main/publish-clawhub/README.md):** Prefer for code-plugin artifact packing and ClawHub delivery. The publisher does not apply to skill-only bundles; npm delivery follows [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment).
 
 ## Workflow
 
@@ -124,7 +124,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work; use [README Author](../readme-author/SKILL.md) for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
+- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work; use `$tanaab-readme-author` for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
 - Document the supported explicit install sources, such as `npm:` and `clawhub:`, with the npm package identity while using the platform plugin id for enable, inspect, configuration, and plugin-owned command examples.
 - State compatibility requirements, activation or configuration needs, one short first verification, and any meaningful permissions, side effects, trust assumptions, or safety limits.
 - Apply [inline code and API documentation](../../references/inline-code-and-api-docs.md) to exported plugin contracts and surprising SDK lifecycle or failure behavior without narrating obvious registration code.
@@ -135,7 +135,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](../../references/plugin-runtime-contracts.md#verification) through the affected native adapters.
 - Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when correctness depends on an external CLI, SDK, RPC, or native-tool response shape, especially after a relevant version/interface change or a regression caused by an incorrect fake. Select captures by risk and payoff; retain adequate existing coverage and simple synthetic inputs when recordings add no needed fidelity.
 - Follow that policy's record, sanitize, independent review, accept, and check workflow. Replay reviewed captures through the relevant production parser, mapper, or request builder; label deliberate negative cases as derived and leave unsupported assumptions unverified. Unexpected fixture requests must fail clearly without a live fallback. Committed replay fixtures support ordinary CI; live recording and comparison remain explicit under the consuming repository's rules and do not replace installed-plugin proof.
-- Apply [JavaScript Author's direct-test contract](../javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
+- Apply [JavaScript Author's direct-test contract](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
 - Prefer injected or faked SDK contexts for direct tests and assert manifest/runtime agreement, registered contract identity, and error behavior where those are stable public contracts.
 - For a plugin-local logger adapter, fake the host logger and assert one call at the original level, one plugin-id-derived namespace without a leading `openclaw-` when host attribution is absent, no repeated namespace when attribution is present, and no direct console fallback.
 - For plugin-owned commands, fake the narrow host command interface and inject output, logger, and style dependencies. Assert the command namespace, subcommands, descriptions, options, human and no-color summaries, machine-output purity, diagnostic separation, and exit behavior that the plugin owns.
@@ -148,14 +148,14 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Deployment
 
 - Use [release destinations](../../references/release-destinations.md) for the shared product-surface routing while keeping this section authoritative for native OpenClaw plugin packaging and publication.
-- Apply [JavaScript Author's npm deployment lifecycle](../javascript-author/SKILL.md#deployment) for release preparation, build ordering, npm trusted publishing, dry runs, and stable or prerelease channels instead of duplicating that doctrine here.
+- Apply [JavaScript Author's npm deployment lifecycle](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) for release preparation, build ordering, npm trusted publishing, dry runs, and stable or prerelease channels instead of duplicating that doctrine here.
 - Treat publication as one plugin-package contract with two independently operable destinations. npm and ClawHub may prepare, build, and pack in separate pipelines; require both to derive from the same release source and version and to validate the same manifest, built runtime entries, package-file contract, and compatibility metadata.
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
 - Use the [preferred `npm-pack` action](#preferred-tools) with lifecycle scripts disabled; inspect required/excluded files and prove runtime dependencies and built entries from its exact tarball.
 - Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Supply the intended owner, code-plugin family, source commit, compatibility, and tags; retain package-specific checks only for contracts the action does not cover, under [verification boundaries](../../references/verification-boundaries.md).
 - Publish from trusted automation, keep npm and ClawHub credentials scoped to their own steps, and re-check current ClawHub trusted-publisher support rather than assuming prior registry state.
-- Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to [GitHub Workflow Author](../github-workflow-author/SKILL.md).
+- Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to `$tanaab-github-workflow-author`.
 
 ## GitHub Actions
 
@@ -163,8 +163,8 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Pull Request Validation
 
-- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow template](../javascript-author/templates/bun-unit-tests-workflow.yml).
-- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow template](../javascript-repo-standardizer/templates/bun-pr-linter-workflow.yml).
+- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow template](../../templates/bun-unit-tests-workflow.yml).
+- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow template](../../templates/bun-pr-linter-workflow.yml).
 - Use `.github/workflows/pr-examples-tests.yml` with the [shared Leia workflow template](../../templates/leia-pr-examples-tests.yml) only when the plugin owns justified installed or runtime scenarios.
 
 ### Release Package Validation
@@ -175,8 +175,8 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Release Publication
 
-- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../javascript-author/templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
-- Use the shared publishers as independent destination jobs under [Workflow Author's release composition](../github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
+- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../../templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
+- Use the shared publishers as independent destination jobs under [Workflow Author's release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
 
 ## Review Criteria
 
@@ -190,10 +190,10 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 
 ## Bundled Resources
 
-- [JavaScript Author](../javascript-author/SKILL.md): JS/TS implementation, direct tests, and npm deployment lifecycle
-- [JavaScript Repo Standardizer](../javascript-repo-standardizer/SKILL.md): Bun, TypeScript, lint, format, package identity, and repository baseline
-- [GitHub Workflow Author](../github-workflow-author/SKILL.md): independent workflow graph, permission, job, matrix, and reusable-workflow ownership
-- [README Author](../readme-author/SKILL.md): repository entry-surface selection and authoring
+- `$tanaab-javascript-author`: JS/TS implementation, direct tests, and npm deployment lifecycle
+- `$tanaab-javascript-repo-standardizer`: Bun, TypeScript, lint, format, package identity, and repository baseline
+- `$tanaab-github-workflow-author`: independent workflow graph, permission, job, matrix, and reusable-workflow ownership
+- `$tanaab-readme-author`: repository entry-surface selection and authoring
 - [Release destinations](../../references/release-destinations.md): shared product-surface-to-release-destination routing
 - [JavaScript repo structure](../../references/javascript-repo-structure.md): owning scopes, role directories, test placement, and hoisting
 - [Coding stack preferences](../../references/coding-stack-preferences.md): Bun-first runtime and npm identity defaults

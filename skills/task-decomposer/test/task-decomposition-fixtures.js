@@ -1,4 +1,4 @@
-import { renderTaskBody } from '../../task-author/utils/render-task-body.js';
+import { renderTaskBody } from '../../../utils/render-task-body.js';
 
 export const parentAcceptanceCriteria = Object.freeze([
   'Operators can inspect one normalized report',

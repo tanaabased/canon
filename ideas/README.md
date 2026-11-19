@@ -6,6 +6,6 @@ Ideas are proposals, not adopted policy, commitments, or queued work. Agents sho
 
 Keep files flat with descriptive, hyphenated names. Explain the idea, why it might be useful, and the open questions or conditions that would justify pursuing it. Use only the structure the idea needs; there is no required template or category system. The [branding accessibility proposal](./branding-accessibility-skill.md) is one example.
 
-When an idea becomes actionable, create or link its task in the owning repository through the normal authorized issue workflow. That issue owns scope, delivery, and task status. Link it from the idea instead of maintaining a second task tracker here. Move adopted Canon material into its appropriate guidance, reference, or skill surface.
+When an idea becomes actionable, create or link its task in the owning repository through the normal authorized issue workflow. That issue owns scope, delivery, and task status. Link it from the idea instead of maintaining a second task tracker here. Move adopted Canon material to its owning instructions, reference, template, or skill.
 
 See [Canon](../README.md) for the repository's live guidance and skills.

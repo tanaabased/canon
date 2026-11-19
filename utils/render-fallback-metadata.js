@@ -1,4 +1,4 @@
-import { FALLBACK_KEY_ORDER, FALLBACK_SCHEMA_VERSION } from '../lib/task-author-contract.js';
+import { FALLBACK_KEY_ORDER, FALLBACK_SCHEMA_VERSION } from '../lib/task-management-contract.js';
 
 function yamlScalar(value) {
   if (typeof value === 'number') return String(value);

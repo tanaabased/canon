@@ -1,4 +1,8 @@
-import { METADATA_DEFINITIONS, TASK_KINDS, displayValue } from '../lib/task-author-contract.js';
+import {
+  METADATA_DEFINITIONS,
+  TASK_KINDS,
+  displayValue,
+} from '../../../lib/task-management-contract.js';
 import { buildReplacementIssueFieldValues } from './build-replacement-issue-field-values.js';
 import { findEnabledIssueType } from './plan-task-metadata.js';
 import { renderMigratedTaskBody } from './render-migrated-task-body.js';

@@ -1,4 +1,4 @@
-import taskManagementSchema from '../../../references/task-management-schema.json' with { type: 'json' };
+import taskManagementSchema from '../references/task-management-schema.json' with { type: 'json' };
 
 const BODY_SHAPES = Object.freeze(taskManagementSchema.bodyShapes);
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { migrateTaskFallback } from '../lib/task-fallback-migrator.js';
-import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../lib/task-json-command.js';
+import { runTaskJsonCommand, TASK_JSON_INPUT_GUIDANCE } from '../../../lib/task-json-command.js';
 
 function usage() {
   return `Usage: bun "${process.argv[1]}" --input <path|->

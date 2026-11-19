@@ -1,4 +1,4 @@
-import { renderFallbackMetadata } from './render-fallback-metadata.js';
+import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
 
 /** Render a body after verified fallback keys have been removed. */
 export function renderMigratedTaskBody(baseBody, fallback, removedKeys = []) {

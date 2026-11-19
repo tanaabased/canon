@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { GitHubCapabilityClient } from '../lib/github-capability-client.js';
-import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
+import { normalizeTaskTarget } from '../../../utils/normalize-task-target.js';
 import { planTaskMetadata } from '../utils/plan-task-metadata.js';
 
 function success(value = null) {

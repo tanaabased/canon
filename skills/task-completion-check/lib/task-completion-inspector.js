@@ -1,5 +1,5 @@
 import classifyTaskCompletion from '../utils/classify-task-completion.js';
-import extractAcceptanceCriteria from '../utils/extract-acceptance-criteria.js';
+import extractAcceptanceCriteria from '../../../utils/extract-acceptance-criteria.js';
 import extractCheckIdentifiers from '../utils/extract-check-identifiers.js';
 import extractFailureSnippet, { tailFailureLines } from '../utils/extract-failure-snippet.js';
 import isFailingCheck from '../utils/is-failing-check.js';

@@ -4,8 +4,8 @@ import {
   observedIssueTypeName,
   observedLabelNames,
   observedWorkSize,
-} from '../../task-author/lib/task-observation.js';
-import { parseFallbackMetadata } from '../../task-author/utils/parse-fallback-metadata.js';
+} from '../../../lib/task-observation.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
 
 function milestoneIdentity(milestone) {
   if (!milestone || milestone.number === undefined || milestone.number === null) return null;

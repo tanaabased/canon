@@ -1,13 +1,13 @@
 import { GitHubCapabilityClient } from './github-capability-client.js';
-import { TASK_KINDS } from './task-author-contract.js';
+import { TASK_KINDS } from '../../../lib/task-management-contract.js';
 import { buildTaskAssessment } from '../utils/build-task-assessment.js';
 import { classifyTaskLabels } from '../utils/classify-task-labels.js';
-import { normalizeTaskKind } from '../utils/normalize-task-kind.js';
+import { normalizeTaskKind } from '../../../utils/normalize-task-kind.js';
 import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
-import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
+import { normalizeTaskTarget } from '../../../utils/normalize-task-target.js';
 import { planTaskMetadata } from '../utils/plan-task-metadata.js';
-import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
-import { renderTaskBody } from '../utils/render-task-body.js';
+import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
+import { renderTaskBody } from '../../../utils/render-task-body.js';
 
 function appendBlock(body, block) {
   if (!block) return body;

@@ -1,7 +1,7 @@
-import { normalizeTaskKind } from '../../task-author/utils/normalize-task-kind.js';
-import { parseFallbackMetadata } from '../../task-author/utils/parse-fallback-metadata.js';
-import { renderFallbackMetadata } from '../../task-author/utils/render-fallback-metadata.js';
-import { renderTaskBody } from '../../task-author/utils/render-task-body.js';
+import { normalizeTaskKind } from '../../../utils/normalize-task-kind.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
+import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
+import { renderTaskBody } from '../../../utils/render-task-body.js';
 import extractTaskConstraints from './extract-task-constraints.js';
 import { renderParentRollup, resolveParentRollup } from './render-parent-rollup.js';
 

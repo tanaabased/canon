@@ -1,4 +1,4 @@
-import { CANONICAL_LABELS } from '../lib/task-author-contract.js';
+import { CANONICAL_LABELS } from '../../../lib/task-management-contract.js';
 
 /** Classify canonical label intent separately from repository availability. */
 export function classifyTaskLabels({

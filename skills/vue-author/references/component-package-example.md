@@ -40,4 +40,4 @@ npm run build
 
 The fixture owns its app and build dependencies; avoid checkout aliases, workspace links, or imports from `src/`. This build checks public exports, styles, and bundler integration. Add a browser assertion only when mounted behavior is the uncovered contract. Reuse this check in the owning examples gate rather than adding equivalent release steps.
 
-See [Component Playground's consumer examples](https://github.com/tanaabased/component-playground/tree/main/examples) for Vue and VitePress implementations. Delegate tarball creation, trusted publishing, and release channels to [JavaScript Author](../../javascript-author/SKILL.md#deployment).
+See [Component Playground's consumer examples](https://github.com/tanaabased/component-playground/tree/main/examples) for Vue and VitePress implementations. Delegate tarball creation, trusted publishing, and release channels to [JavaScript Author](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment).

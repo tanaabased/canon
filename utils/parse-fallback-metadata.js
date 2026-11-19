@@ -1,4 +1,4 @@
-import { FALLBACK_KEY_ORDER, FALLBACK_SCHEMA_VERSION } from '../lib/task-author-contract.js';
+import { FALLBACK_KEY_ORDER, FALLBACK_SCHEMA_VERSION } from '../lib/task-management-contract.js';
 
 const CAPSULE = /(?:\n\n)?### Task metadata\n\n```yaml\n([\s\S]*?)```\s*$/;
 

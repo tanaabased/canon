@@ -1,4 +1,8 @@
-import { METADATA_DEFINITIONS, TASK_KINDS, displayValue } from '../lib/task-author-contract.js';
+import {
+  METADATA_DEFINITIONS,
+  TASK_KINDS,
+  displayValue,
+} from '../../../lib/task-management-contract.js';
 
 function normalizeFieldType(field) {
   return String(field.data_type ?? field.type ?? field.field_type ?? '')

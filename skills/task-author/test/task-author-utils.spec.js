@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import { buildTaskAssessment } from '../utils/build-task-assessment.js';
 import { classifyTaskLabels } from '../utils/classify-task-labels.js';
 import { normalizeTaskMetadata } from '../utils/normalize-task-metadata.js';
-import { normalizeTaskTarget } from '../utils/normalize-task-target.js';
-import { parseFallbackMetadata } from '../utils/parse-fallback-metadata.js';
-import { renderFallbackMetadata } from '../utils/render-fallback-metadata.js';
-import { renderTaskBody } from '../utils/render-task-body.js';
+import { normalizeTaskTarget } from '../../../utils/normalize-task-target.js';
+import { parseFallbackMetadata } from '../../../utils/parse-fallback-metadata.js';
+import { renderFallbackMetadata } from '../../../utils/render-fallback-metadata.js';
+import { renderTaskBody } from '../../../utils/render-task-body.js';
 import {
   completeBugSections,
   completeFeatureSections,

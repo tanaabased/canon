@@ -50,8 +50,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## When Not to Use
 
-- Do not create, revise, select, or change membership for a project milestone. Send a separately authorized reframe handoff to [Project Milestone Author](../project-milestone-author/SKILL.md), then use [Project Milestone Planner](../project-milestone-planner/SKILL.md) only after an exact milestone exists.
-- Do not create or revise one unrelated task; use [Task Author](../task-author/SKILL.md).
+- Do not create, revise, select, or change membership for a project milestone. Send a separately authorized reframe handoff to `$tanaab-project-milestone-author`, then use `$tanaab-project-milestone-planner` only after an exact milestone exists.
+- Do not create or revise one unrelated task; use `$tanaab-task-author`.
 - Do not assess completion, close issues, create schema or labels, or manage a GitHub Projects board.
 - Do not create recursive hierarchies, move a child from another parent, or add a dependency merely to express execution preference.
 - Do not infer publication authorization from Work size, recommendation output, issue state, or a planning request.
