@@ -42,4 +42,4 @@ Use trusted publishing for npm publication and `latest`-to-`edge` channel syncin
 
 ClawHub publication is a required release job and uses `TANAAB_LOBSTER_BOAT`, whose actor needs publishing access to owner `tanaab`. Repository synchronization retains `TANAAB_COAXIUM_INJECTOR`. All three jobs stamp the same release version into the package and both plugin manifests.
 
-See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership and the [architecture guide](./guidance/skills-agents-canon-model.md) for context loading and packaging.
+See [AGENTS.md](./AGENTS.md#canon-design) for directory ownership.

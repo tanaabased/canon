@@ -3,7 +3,7 @@
 ## Purpose
 
 - This repo is the shared Tanaab canon surface for Tanaab employees, Codex, OpenClaw, and future agents.
-- It may contain both executable skills and broader canon such as guidance, ideas, references, prompts, templates, scripts, and standards.
+- It contains executable skills, shared standards and templates, repository tooling, and exploratory ideas.
 - Treat `skills/` as the live skill surface.
 
 ## Core Model
@@ -15,7 +15,7 @@
 
 ## Documentation House Style
 
-- All contributors use the shared [documentation style](./references/documentation-standards.md#documentation-style) for Canon's checked-in documentation, including root guides, `SKILL.md` instructions, references, guidance, ideas, examples, and template prose. Read it before editing those surfaces; a contributor's personal voice does not override this repository style. Explicit user direction still wins.
+- All contributors use the shared [documentation style](./references/documentation-standards.md#documentation-style) for Canon's checked-in documentation, including root guides, `SKILL.md` instructions, references, ideas, examples, and template prose. Read it before editing those surfaces; a contributor's personal voice does not override this repository style. Explicit user direction still wins.
 - This choice governs documentation expression only; contributors retain their own identity, credentials, judgment, permissions, and conversational persona.
 
 ## Project Management Model
@@ -33,7 +33,8 @@
 - Hoist support material to repo root only when it is used by 2+ live skills or 2+ live repo entrypoints, is a true repo-wide contract or shared tooling surface, or is a cold-path human doc with standalone value.
 - A hoisted file must reduce total complexity instead of merely moving it.
 - Hoisted files with only one meaningful live consumer should be reviewed for demotion.
-- `guidance/` and `ideas/` are cold-path canon and may remain hoisted with one live consumer, but should not be pulled into live skill hot paths by default.
+- Put shared runtime code in root `lib/` or `utils/`. Shared code should depend on shared resources and code; skill workflows compose those modules in their own directories.
+- For a workflow handoff, name the skill to load from the catalog. Link to maintained upstream documentation when a reader needs a specific section. Put files that multiple skills need to read or copy in root `references/` or `templates/`.
 - Do not rely on `AGENTS.md` files inside skill storage paths to affect runtime behavior.
 - Verify skill discovery after installation or cache synchronization. [Codex detects skill changes automatically](https://learn.chatgpt.com/docs/build-skills); if updated guidance is unavailable, try a fresh task, then restart only if it remains unavailable. Cache equality alone does not prove runtime pickup.
 
@@ -55,7 +56,7 @@
 
 ## Canon Design
 
-- Keep `guidance/`, `ideas/`, `references/`, `prompts/`, `scripts/`, and `templates/` flat by default.
+- Keep `ideas/`, `references/`, `prompts/`, `bin/`, `scripts/`, and `templates/` flat by default.
 - Use hyphenated filenames with scoped prefixes when needed, such as `skill-standard.md`.
 - Add nested folders inside the flat canon buckets only after repeated pressure shows flat naming is no longer the simpler model.
 - Shared coding-stack defaults for runtime, frameworks, and tooling live in `references/coding-stack-preferences.md`.
@@ -63,20 +64,17 @@
 - Shared JS/TS function-shape guidance lives in `references/javascript-function-data-flow.md`.
 - Apply [Documentation Standards](./references/documentation-standards.md) to all documentation changes, including supplementary guides, generated references, and docs-site pages.
 - Shared CLI, README, and frontend preference canon lives in `references/cli-style-rules.md`, `references/readme-standards.md`, and `references/front-end-preferences.md`.
-- That repo-structure guidance applies inside every code-bearing owning scope, including individual skills, and in future coding repos. It does not override the flat top-level canon bucket rule in this repo.
-- Inside a code-bearing scope, use `bin/` for public human-facing commands, `scripts/` for internal machine- or agent-facing commands, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.
+- Apply that repo-structure guidance in every code-bearing scope, including individual skills, together with the Canon placement rules here.
+- In Canon, put commands intended for people to invoke in `bin/`, including maintainer commands that CI also calls. Use `scripts/` for agent or automation entrypoints, `lib/` for orchestration, `utils/` for independently testable units, and `test/` for tests owned by that scope.
 - Keep each scope's `test/` directory flat by default. Put specs, fakes, fixtures, and test-support code directly beneath `test/` with descriptive filenames instead of mirroring source-role folders.
 - Apply the same hoisting test to tests as to source; root `test/` is only for root-owned or intentionally cross-scope coverage.
-- Put standards, decision-shaping guidance, and durable explanation in `guidance/` instead of overloading skills with philosophy.
-- Put exploratory Tanaab proposals in `ideas/`, including future products, modules, features, repositories, and Canon skills or guidance. These proposals are not adopted policy, commitments, or authorization to act; follow the [ideas guidance](./ideas/README.md) for scope and handoff to actionable work.
+- Keep exploratory Tanaab proposals in the source repository's `ideas/` directory. Consult them for relevant exploration and discussion. Before implementing an idea, establish the task and authorization through the owning repository's normal issue workflow.
 - Put stable lookup material such as contracts, naming rules, and other reference canon in `references/`.
 - Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
 - Use skills as workflow entrypoints. Keep skill-specific procedures in the owning `SKILL.md` or its explicitly required resources; root `prompts/` is for reusable request starters with value beyond one skill, not otherwise undiscoverable workflow policy.
 - Put reusable scaffolds and fragments in `templates/` when reuse is proven, when they are a repo-wide tooling surface, or when they are canonical human-facing starters with standalone copy/adapt value.
 - If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
-- Put repo-level scripts in `scripts/` when they support shared canon maintenance, validation, packaging, export, or install flows across multiple skills or folders.
-- Keep `scripts/` code-only. Machine-readable data should live with the smallest justified owner instead of being hoisted by default.
-- Keep repo-root `scripts/` flat and role-encoded by suffix: `-cli.js` for human-invoked internal commands and `-task.js` for automation entrypoints. Put import-only modules in `lib/`.
+- Keep `bin/` and `scripts/` code-only. Put import-only modules in `lib/` or `utils/` and machine-readable data with its smallest appropriate owner.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.
 - If a script may be bundled or exported, import its repo-owned runtime dependencies explicitly so `bun build` can follow them.
 
