@@ -38,9 +38,13 @@ jobs:
             bun run format:write
       - name: Verify prepared formatting
         run: bun run format:check
+      - name: Stage plugin
+        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
+        with:
+          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:
@@ -95,9 +99,13 @@ jobs:
             bun run format:write
       - name: Verify prepared formatting
         run: bun run format:check
+      - name: Stage plugin
+        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
+        with:
+          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:

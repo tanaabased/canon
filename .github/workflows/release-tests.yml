@@ -40,9 +40,13 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
+      - name: Stage plugin
+        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
+        with:
+          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:
@@ -91,9 +95,13 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
+      - name: Stage plugin
+        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
+        with:
+          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:
@@ -151,5 +159,9 @@ jobs:
           test "v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')" = "$STAMPED_VERSION"
           test "v$(bun --eval 'const plugin = JSON.parse(await Bun.file("openclaw.plugin.json").text()); console.log(plugin.version)')" = "$STAMPED_VERSION"
           grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" CHANGELOG.md
+      - name: Stage plugin from prepared repository
+        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Validate prepared repository plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
+        with:
+          plugin-directory: ${{ runner.temp }}/canon-plugin

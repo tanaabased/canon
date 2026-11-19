@@ -18,17 +18,21 @@ bun run lint
 
 `bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), [Codex discovery and cache recovery](https://github.com/tanaabased/canon/blob/main/examples/codex/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
-Check the actual npm payload without installing dependencies into it:
+Build from a Git checkout and check the actual npm payload without installing dependencies into it:
 
 ```sh
-npm pack --ignore-scripts --pack-destination /tmp
+scratch="$(mktemp -d)"
+bun run build:plugin "$scratch/plugin"
+npm pack "$scratch/plugin" --ignore-scripts --pack-destination "$scratch"
 version="$(bun -p '(await Bun.file("package.json").json()).version')"
-candidate="$(mktemp -d)"
-tar -xzf "/tmp/tanaab-canon-$version.tgz" -C "$candidate" --strip-components=1
-bun run check:package "$candidate"
+mkdir "$scratch/extracted"
+tar -xzf "$scratch/tanaab-canon-$version.tgz" -C "$scratch/extracted" --strip-components=1
+bun run check:package "$scratch/extracted"
 ```
 
 The package check validates identities, metadata, entrypoints, and skill/resource links in the extracted payload. Leia owns executable consumer behavior. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
+
+Task Author runs directly from the checkout. To package it, the build copies tracked checkout files into a new staging directory, materializes the skill's shared symlinks, and bundles JavaScript commands from the directory named in its [build config](./skills/task-author/build.config.js). The staged commands keep their source-relative paths. Add new resources and commands to Git before building.
 
 ## Codex cache
 
