@@ -29,18 +29,18 @@ Tanaab-based authoring, validation, packaging, and deployment of OpenClaw code p
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before changing implementation logic:** [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
-- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
-- **Before changing plugin-owned commands:** [CLI Style Rules](../../references/cli-style-rules.md).
-- **Before adding or changing installed or runtime scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
-- **Before testing an external response contract or using mock-AI recordings or approval expectations:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Coding Stack Preferences](./references/coding-stack-preferences.md), [JavaScript Repo Structure](./references/javascript-repo-structure.md), and [Verification Boundaries](./references/verification-boundaries.md).
+- **Before changing implementation logic:** [JavaScript Function Data Flow](./references/javascript-function-data-flow.md).
+- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before changing API documentation or comments:** [Inline Code and API Docs](./references/inline-code-and-api-docs.md).
+- **Before changing plugin-owned commands:** [CLI Style Rules](./references/cli-style-rules.md).
+- **Before adding or changing installed or runtime scenarios:** [Leia Markdown Scenarios](./references/leia-markdown-scenarios.md).
+- **Before selecting package privacy or publication:** [Release Destinations](./references/release-destinations.md).
+- **Before testing an external response contract or using mock-AI recordings or approval expectations:** [Recorded Responses and Mock-AI Fixtures](./references/mock-ai-fixtures.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -68,14 +68,14 @@ Read each applicable document in full, or the explicitly named section, before d
 - Keep static discovery and configuration metadata in `openclaw.plugin.json`; keep npm metadata, dependencies, install gates, and source/runtime entries in `package.json`; keep runtime registration in plugin code.
 - Every native plugin must ship a valid root `openclaw.plugin.json`, including a strict `configSchema` even when the plugin owns no configuration.
 - Keep manifest id, runtime entry id, declared capabilities, compatibility metadata, package files, and source/runtime entry pairs coherent.
-- Apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to native ownership, workflow state, and execution binding. Prefer narrow public SDK subpaths and injected runtime contexts over private OpenClaw internals or process-global behavior.
+- Apply [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md) to native ownership, workflow state, and execution binding. Prefer narrow public SDK subpaths and injected runtime contexts over private OpenClaw internals or process-global behavior.
 - Treat repository checks as distinct from plugin installation, Gateway startup, model invocation, and other machine-mutating operational validation; run the latter only when explicitly requested.
 - Keep credentials out of tracked files, logs, examples, and durable skill prose, and re-check time-sensitive registry authentication before changing release wiring.
 
 ## Change Strategy
 
-- Apply `$tanaab-javascript-author` for JS/TS implementation and npm package behavior, [JavaScript repo structure](../../references/javascript-repo-structure.md) for owning scopes and role folders, and [coding stack preferences](../../references/coding-stack-preferences.md) for Bun, TypeScript, and npm defaults.
-- Apply [JavaScript function data flow](../../references/javascript-function-data-flow.md) when plugin logic can honestly be separated from SDK registration or runtime state.
+- Apply `$tanaab-javascript-author` for JS/TS implementation and npm package behavior, [JavaScript repo structure](./references/javascript-repo-structure.md) for owning scopes and role folders, and [coding stack preferences](./references/coding-stack-preferences.md) for Bun, TypeScript, and npm defaults.
+- Apply [JavaScript function data flow](./references/javascript-function-data-flow.md) when plugin logic can honestly be separated from SDK registration or runtime state.
 - Inspect project-local plugin patterns and current OpenClaw guidance before using a fallback structure; do not turn DevGuard-specific supervision, policy, or scenario design into a universal plugin baseline.
 - Keep the root manifest and declared package entries platform-correct, registration thin, stateful orchestration in `lib/`, independently testable logic in `utils/`, internal development tasks in `scripts/`, and flat owned tests in `test/`.
 - Put each non-trivial plugin-owned OpenClaw subcommand in a focused `cli/<command>.js` or `cli/<command>.ts` module. Keep host registration and shared command orchestration in `lib/`; these commands extend the OpenClaw CLI and are not package-level `bin/` entrypoints.
@@ -100,7 +100,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Register commands beneath one plugin-owned command namespace through the current public OpenClaw CLI API and its discovery metadata. Let OpenClaw own top-level parsing, help, and version behavior unless the plugin command has a distinct documented contract.
 - Keep command registration thin over the `cli/` modules. Parse host arguments and options at that boundary, then pass typed values and injected dependencies into the owning command implementation.
-- Follow [shared CLI style rules](../../references/cli-style-rules.md) for human summaries, streams, machine-readable output, color, and errors. Use the public OpenClaw runtime output surface for primary output and the `PluginLogger` injected into the CLI registrar for diagnostics. Prefer those API surfaces directly; add a small plugin-local adapter only to apply shared styling to primary output or add diagnostic context, redaction, or test injection without changing stream, log-level, or machine-output semantics.
+- Follow [shared CLI style rules](./references/cli-style-rules.md) for human summaries, streams, machine-readable output, color, and errors. Use the public OpenClaw runtime output surface for primary output and the `PluginLogger` injected into the CLI registrar for diagnostics. Prefer those API surfaces directly; add a small plugin-local adapter only to apply shared styling to primary output or add diagnostic context, redaction, or test injection without changing stream, log-level, or machine-output semantics.
 - Keep JSON and JSONL modes free of human decoration and ANSI styling, derive them from the same command result as human output, and preserve child or command exit status across every output mode.
 
 ## Preferred Tools
@@ -112,48 +112,48 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After explicit authorization, make the smallest coherent plugin-owned changes without opportunistic framework migration, live installation, Gateway mutation, or publication.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request is native OpenClaw-code-plugin-led rather than bundle-, generic-JavaScript-, baseline-, workflow-, or host-operations-led.
 2. Classify the active surface as identity/manifest, SDK entry and registration, runtime behavior, configuration, plugin-owned commands, package proof, or deployment.
 3. Load only the relevant shared canon, local plugin files, installed SDK types, and current official OpenClaw references for that surface.
-4. Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change. Reconcile contradictions among the manifest, package metadata, runtime entry, existing documentation, tests, and built artifact without treating them as files that must all change.
+4. Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change. Reconcile contradictions among the manifest, package metadata, runtime entry, existing documentation, tests, and built artifact without treating them as files that must all change.
 5. Make the smallest coherent plugin-owned change and run the narrowest repo-native lint, format, type-check, unit-test, build, and plugin-contract checks that apply.
 6. When package contents or delivery changed, create and inspect each pipeline's npm-pack artifact, then run that registry's dry run against the artifact its pipeline produced.
 7. Run installed-package, Gateway, model, or agent scenarios only when task scope explicitly requires operational proof.
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work; use `$tanaab-readme-author` for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work; use `$tanaab-readme-author` for a justified repository entry-surface change. Keep first use short and retain companion development or operator guidance only when it serves a recurring reader task.
 - Document the supported explicit install sources, such as `npm:` and `clawhub:`, with the npm package identity while using the platform plugin id for enable, inspect, configuration, and plugin-owned command examples.
 - State compatibility requirements, activation or configuration needs, one short first verification, and any meaningful permissions, side effects, trust assumptions, or safety limits.
-- Apply [inline code and API documentation](../../references/inline-code-and-api-docs.md) to exported plugin contracts and surprising SDK lifecycle or failure behavior without narrating obvious registration code.
+- Apply [inline code and API documentation](./references/inline-code-and-api-docs.md) to exported plugin contracts and surprising SDK lifecycle or failure behavior without narrating obvious registration code.
 - Keep linked-source development and installed-package proof distinct so source-checkout success is not presented as proof of the published dependency and runtime shape.
 
 ## Testing
 
-- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](../../references/plugin-runtime-contracts.md#verification) through the affected native adapters.
-- Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when correctness depends on an external CLI, SDK, RPC, or native-tool response shape, especially after a relevant version/interface change or a regression caused by an incorrect fake. Select captures by risk and payoff; retain adequate existing coverage and simple synthetic inputs when recordings add no needed fidelity.
+- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](./references/plugin-runtime-contracts.md#verification) through the affected native adapters.
+- Apply [Recorded Responses and Mock-AI Fixtures](./references/mock-ai-fixtures.md) when correctness depends on an external CLI, SDK, RPC, or native-tool response shape, especially after a relevant version/interface change or a regression caused by an incorrect fake. Select captures by risk and payoff; retain adequate existing coverage and simple synthetic inputs when recordings add no needed fidelity.
 - Follow that policy's record, sanitize, independent review, accept, and check workflow. Replay reviewed captures through the relevant production parser, mapper, or request builder; label deliberate negative cases as derived and leave unsupported assumptions unverified. Unexpected fixture requests must fail clearly without a live fallback. Committed replay fixtures support ordinary CI; live recording and comparison remain explicit under the consuming repository's rules and do not replace installed-plugin proof.
 - Apply [JavaScript Author's direct-test contract](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#testing) as the canonical mechanism: focused Mocha tests for plugin logic, utilities, registration adapters, configuration, and SDK boundaries.
 - Prefer injected or faked SDK contexts for direct tests and assert manifest/runtime agreement, registered contract identity, and error behavior where those are stable public contracts.
 - For a plugin-local logger adapter, fake the host logger and assert one call at the original level, one plugin-id-derived namespace without a leading `openclaw-` when host attribution is absent, no repeated namespace when attribution is present, and no direct console fallback.
 - For plugin-owned commands, fake the narrow host command interface and inject output, logger, and style dependencies. Assert the command namespace, subcommands, descriptions, options, human and no-color summaries, machine-output purity, diagnostic separation, and exit behavior that the plugin owns.
 - Keep build and plugin metadata checks in the validation path rather than inventing another direct-test framework.
-- Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary. Use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
+- Apply [Tanaab's Leia usage policy](./references/leia-markdown-scenarios.md) only when the owned behavior crosses a real OpenClaw command, installation, Gateway, agent, hook, restart, or other lifecycle boundary. Use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - For justified CI runtime scenarios, use [preferred setup and Leia actions](#preferred-tools). Select the required OpenClaw version and isolated profile explicitly; Agent System and fixture options are conditional on the scenario.
 - When a fresh unattended CI scenario must exercise an OpenClaw tool call, synchronize no-approval exec policy inside the scenario setup with `openclaw exec-policy preset yolo`. Restrict this to isolated ephemeral state; CI or a missing TTY does not itself bypass approvals, and routine local validation must not apply the preset to a developer's normal profile.
-- Follow the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): use the existing runner for units and bounded components with fake external services, making them separately selectable when useful. Keep installed Leia flows in separate commands and CI checks; routine local validation must not require machine mutation or live OpenClaw flows.
+- Follow the [shared testing layers](./references/coding-stack-preferences.md#testing-defaults): use the existing runner for units and bounded components with fake external services, making them separately selectable when useful. Keep installed Leia flows in separate commands and CI checks; routine local validation must not require machine mutation or live OpenClaw flows.
 
 ## Deployment
 
-- Use [release destinations](../../references/release-destinations.md) for the shared product-surface routing while keeping this section authoritative for native OpenClaw plugin packaging and publication.
+- Use [release destinations](./references/release-destinations.md) for the shared product-surface routing while keeping this section authoritative for native OpenClaw plugin packaging and publication.
 - Apply [JavaScript Author's npm deployment lifecycle](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) for release preparation, build ordering, npm trusted publishing, dry runs, and stable or prerelease channels instead of duplicating that doctrine here.
 - Treat publication as one plugin-package contract with two independently operable destinations. npm and ClawHub may prepare, build, and pack in separate pipelines; require both to derive from the same release source and version and to validate the same manifest, built runtime entries, package-file contract, and compatibility metadata.
 - Keep `package.json#openclaw.compat.pluginApi` and `package.json#openclaw.build.openclawVersion` explicit for external ClawHub code plugins; do not use the package version as a compatibility fallback.
 - When `openclaw.plugin.json` declares a version, stamp it from the same release version as `package.json`, format after generated changes, and validate the prepared state before packing.
 - Use the [preferred `npm-pack` action](#preferred-tools) with lifecycle scripts disabled; inspect required/excluded files and prove runtime dependencies and built entries from its exact tarball.
-- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Supply the intended owner, code-plugin family, source commit, compatibility, and tags; retain package-specific checks only for contracts the action does not cover, under [verification boundaries](../../references/verification-boundaries.md).
+- Use [preferred `publish-clawhub`](#preferred-tools) with `dry-run: true` against that tarball before live delivery. Supply the intended owner, code-plugin family, source commit, compatibility, and tags; retain package-specific checks only for contracts the action does not cover, under [verification boundaries](./references/verification-boundaries.md).
 - Publish from trusted automation, keep npm and ClawHub credentials scoped to their own steps, and re-check current ClawHub trusted-publisher support rather than assuming prior registry state.
 - Hand independent release-event, job, permission, reusable-workflow, or gate-topology changes to `$tanaab-github-workflow-author`.
 
@@ -163,9 +163,9 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Pull Request Validation
 
-- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow template](../../templates/bun-unit-tests-workflow.yml).
-- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow template](../../templates/bun-pr-linter-workflow.yml).
-- Use `.github/workflows/pr-examples-tests.yml` with the [shared Leia workflow template](../../templates/leia-pr-examples-tests.yml) only when the plugin owns justified installed or runtime scenarios.
+- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow template](./templates/bun-unit-tests-workflow.yml).
+- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow template](./templates/bun-pr-linter-workflow.yml).
+- Use `.github/workflows/pr-examples-tests.yml` with the [shared Leia workflow template](./templates/leia-pr-examples-tests.yml) only when the plugin owns justified installed or runtime scenarios.
 
 ### Release Package Validation
 
@@ -175,18 +175,18 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Release Publication
 
-- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](../../templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
+- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release template](./templates/bun-npm-package-release-workflow.yml) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
 - Use the shared publishers as independent destination jobs under [Workflow Author's release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **consolidate/merge**, **split**, **extract**, **move**, **tighten**, and **remove**—only where they fit this plugin surface; do not manufacture changes to satisfy the list.
 
 - **Inspect:** Inventory plugin and package identities, manifest/config contracts, SDK imports and injected runtime calls, plugin trust and installation class, source/runtime entries, registration, plugin-owned commands, runtime modules, documentation, direct tests, operational scenarios, package contents, CI, and npm/ClawHub delivery. Identify external-response assumptions and whether fixtures are observed, deliberately derived, or unsupported.
 - **Compare:** Assess [Preferred Tools](#preferred-tools) against isolated runtime setup, existing fixtures, registry destinations, and exact-tarball validation. Reconcile manifest, package, runtime, command tree, human and machine output, docs, tests, built output, and registry metadata. Check each SDK or runtime surface against the pinned installed contract and current official guidance for stability, intended audience, trust requirements, and lifecycle semantics; type visibility alone is insufficient. Identify protected or private calls, repository-owned duplicates of available host primitives, duplicated registration, overloaded entrypoints, command-placement or output drift, stale compatibility, missing artifact proof, and divergent publication artifacts.
-- **Recommend:** Apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to host ownership, bookkeeping gates, and model-supplied binding fields. Keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner. Prioritize response captures by consequence, interface-change risk, and expected fidelity gain; adequate coverage is a valid keep finding, without fixtures for every dependency or a new framework.
+- **Recommend:** Apply [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md) to host ownership, bookkeeping gates, and model-supplied binding fields. Keep aligned platform behavior, deduplicate repeated contracts, split overloaded runtime owners, extract testable logic, move misplaced modules or metadata, tighten boundaries, and remove proven stale paths while routing generic baseline work to its owner. Prioritize response captures by consequence, interface-change risk, and expected fidelity gain; adequate coverage is a valid keep finding, without fixtures for every dependency or a new framework.
 
 ## Bundled Resources
 
@@ -194,12 +194,12 @@ Use the shared operation lenses—**keep**, **reconcile**, **deduplicate**, **co
 - `$tanaab-javascript-repo-standardizer`: Bun, TypeScript, lint, format, package identity, and repository baseline
 - `$tanaab-github-workflow-author`: independent workflow graph, permission, job, matrix, and reusable-workflow ownership
 - `$tanaab-readme-author`: repository entry-surface selection and authoring
-- [Release destinations](../../references/release-destinations.md): shared product-surface-to-release-destination routing
-- [JavaScript repo structure](../../references/javascript-repo-structure.md): owning scopes, role directories, test placement, and hoisting
-- [Coding stack preferences](../../references/coding-stack-preferences.md): Bun-first runtime and npm identity defaults
-- [JavaScript function data flow](../../references/javascript-function-data-flow.md): function shape and mutation boundaries
-- [Inline code and API documentation](../../references/inline-code-and-api-docs.md): public-contract and comment guidance
-- [Leia Markdown scenarios](../../references/leia-markdown-scenarios.md): conditional end-to-end scenario contract
+- [Release destinations](./references/release-destinations.md): shared product-surface-to-release-destination routing
+- [JavaScript repo structure](./references/javascript-repo-structure.md): owning scopes, role directories, test placement, and hoisting
+- [Coding stack preferences](./references/coding-stack-preferences.md): Bun-first runtime and npm identity defaults
+- [JavaScript function data flow](./references/javascript-function-data-flow.md): function shape and mutation boundaries
+- [Inline code and API documentation](./references/inline-code-and-api-docs.md): public-contract and comment guidance
+- [Leia Markdown scenarios](./references/leia-markdown-scenarios.md): conditional end-to-end scenario contract
 
 ## Validation
 

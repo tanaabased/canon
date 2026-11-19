@@ -1,0 +1,1 @@
+../../../templates/leia-markdown-example-readme.md

@@ -24,16 +24,16 @@ Own the installable Codex plugin: its manifest, bundled resources, npm payload, 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Release Destinations](../../references/release-destinations.md) and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](../../references/coding-stack-preferences.md) and [JavaScript Repo Structure](../../references/javascript-repo-structure.md).
-- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md).
-- **Before changing skill content:** [Skill Standard](../../references/skill-standard.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before using recorded responses or approval expectations in mock-AI tests:** [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Release Destinations](./references/release-destinations.md) and [Verification Boundaries](./references/verification-boundaries.md).
+- **Before choosing implementation, runtime, or test boundaries:** [Coding Stack Preferences](./references/coding-stack-preferences.md) and [JavaScript Repo Structure](./references/javascript-repo-structure.md).
+- **Before designing, changing, or reviewing runtime integration, workflow state, or model-facing tools and commands:** [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md).
+- **Before changing skill content:** [Skill Standard](./references/skill-standard.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](./references/leia-markdown-scenarios.md).
+- **Before using recorded responses or approval expectations in mock-AI tests:** [Recorded Responses and Mock-AI Fixtures](./references/mock-ai-fixtures.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -56,7 +56,7 @@ Read each applicable document in full, or the explicitly named section, before d
 ## Change Strategy
 
 - Prefer one npm artifact for the whole plugin, including shared resources referenced outside individual skill directories.
-- Keep npm package identity separate from the plugin's native name; follow [release destinations](../../references/release-destinations.md).
+- Keep npm package identity separate from the plugin's native name; follow [release destinations](./references/release-destinations.md).
 - Reuse existing packaging and validation commands. Add plugin-specific checks only for contracts generic validation cannot establish.
 
 ## Preferred Tools
@@ -69,7 +69,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After authorization, migrate package contents, workflow, and install guidance together; preserve identities and unrelated marketplace entries.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Inspect the plugin manifest, package manifest, installed resource paths, current consumers, and release workflow. Establish host and tooling compatibility before selecting a manifest format.
 2. Apply [Preferred Tools](#preferred-tools) and the owning Skill Author contract for changed skills. Keep the plugin focused on its product surface.
@@ -78,19 +78,19 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 Keep `package.json#files` authoritative for the npm payload. Codex Tools `managedPaths` controls cache reconciliation, not what native installation copies. See its [package and cache contract](https://github.com/tanaabased/codex-tools/blob/main/ADVANCED.md).
 
-For runtime integration, use supported native owners and separate model-authored choices from verified execution binding under [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md). For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
+For runtime integration, use supported native owners and separate model-authored choices from verified execution binding under [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md). For hook-bearing plugins, resolve shipped resources through `PLUGIN_ROOT` and writable state through `PLUGIN_DATA`. Keep injected context bounded and non-secret; treat manifest metadata as data, never instructions. Follow the [native hook contract](https://learn.chatgpt.com/docs/hooks) and preserve the owning runtime's authority.
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate). Keep prerequisites, installation, upgrade, and a first useful invocation in the README.
 - Explain npm source selection and marketplace registration using the official packaging contract or Codex Tools setup guidance. Preserve existing marketplace identity during upgrades; publishing a package does not install or activate it.
 - Record any retained archive consumer and its supported install path. Keep developer cache commands separate from consumer installation.
 
 ## Testing
 
-- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](../../references/plugin-runtime-contracts.md#verification) through the affected native adapters.
-- Apply [Recorded Responses and Mock-AI Fixtures](../../references/mock-ai-fixtures.md) when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary synthetic plugin fixtures do not require that workflow.
-- Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults): deterministic units for decisions, bounded components for subsystem wiring with fake external services, and Leia for installed consumer or native host flows. Static extracted-package checks establish metadata and resource invariants. Preserve distinct contracts when consolidating; do not repeat a scenario in release checks without a distinct release-shaping gap.
+- For runtime integration, workflow state, or model-facing contract changes, apply [Plugin Runtime Contracts — Verification](./references/plugin-runtime-contracts.md#verification) through the affected native adapters.
+- Apply [Recorded Responses and Mock-AI Fixtures](./references/mock-ai-fixtures.md) when mock-AI coverage uses recorded external responses or approval-style expectations; ordinary synthetic plugin fixtures do not require that workflow.
+- Apply the [shared testing layers](./references/coding-stack-preferences.md#testing-defaults): deterministic units for decisions, bounded components for subsystem wiring with fake external services, and Leia for installed consumer or native host flows. Static extracted-package checks establish metadata and resource invariants. Preserve distinct contracts when consolidating; do not repeat a scenario in release checks without a distinct release-shaping gap.
 - Pack once, extract into a disposable directory outside the checkout, and validate the extracted plugin with the preferred validator plus the repository's policy checks.
 - Retain distinct payload, native discovery, and upgrade-preservation guarantees when consolidating package checks. Avoid duplicate inventories or full manifest snapshots already covered by the owning validator; justify an installed run by a discovery, trust, or consumer-loading failure static payload validation cannot establish.
 - Verify manifest/package version agreement, discoverable skills, referenced files, and representative executable entrypoints without installing development dependencies. Exercise real behavior where help-only checks would miss runtime imports or generated resources.
@@ -101,28 +101,28 @@ For runtime integration, use supported native owners and separate model-authored
 
 ## Deployment
 
-- Default to npm through [JavaScript Author's deployment lifecycle](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) and [release template](../../templates/bun-npm-package-release-workflow.yml). Stamp the plugin and package together before packing, validate the extracted payload, and publish that exact tarball.
+- Default to npm through [JavaScript Author's deployment lifecycle](https://github.com/tanaabased/canon/blob/main/skills/javascript-author/SKILL.md#deployment) and [release template](./templates/bun-npm-package-release-workflow.yml). Stamp the plugin and package together before packing, validate the extracted payload, and publish that exact tarball.
 - Keep GitHub release notes and repository synchronization where the project uses them. An npm destination replaces redundant archive publication, not the release's source/version record.
 - For an archive migration, prove package and install parity first, update marketplace/install references, then remove the redundant publisher. Keep historical release assets available; retain archive delivery only for a verified consumer need.
-- Apply [verification boundaries](../../references/verification-boundaries.md) after publication. Treat publisher success as completion; check registry visibility or installed behavior separately only when the requested outcome or a concrete uncovered failure mode requires it.
+- Apply [verification boundaries](./references/verification-boundaries.md) after publication. Treat publisher success as completion; check registry visibility or installed behavior separately only when the requested outcome or a concrete uncovered failure mode requires it.
 
 ## GitHub Actions
 
 - `.github/workflows/release-tests.yml`: project the [Testing](#testing) checks onto a prepared package and a native npm publication dry run; no publication credentials or live registry writes in PRs.
-- `.github/workflows/release.yml`: adapt the [npm release template](../../templates/bun-npm-package-release-workflow.yml) with plugin stamping and the same extracted-package checks before publication. Follow [release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for independent destinations.
+- `.github/workflows/release.yml`: adapt the [npm release template](./templates/bun-npm-package-release-workflow.yml) with plugin stamping and the same extracted-package checks before publication. Follow [release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for independent destinations.
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Read manifests, npm file selection, resource imports, install/upgrade instructions, and archive/npm release jobs without changing the repository or installed state.
-- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer. For runtime surfaces, apply [Plugin Runtime Contracts](../../references/plugin-runtime-contracts.md) to duplicated host behavior, bookkeeping gates, and model-supplied binding fields.
+- **Compare:** Assess [Preferred Tools](#preferred-tools), host support, and migration cost. Check extracted-package usability, materialized resources, version agreement, cache upgrade coverage, native skill discovery, hook boundaries where owned, and whether archive publication serves a real consumer. For runtime surfaces, apply [Plugin Runtime Contracts](./references/plugin-runtime-contracts.md) to duplicated host behavior, bookkeeping gates, and model-supplied binding fields.
 - **Recommend:** Reconcile conflicting install paths, repair missing runtime resources, and replace redundant archive jobs with the existing npm lifecycle when parity is demonstrable. Keep justified exceptions and aligned implementations.
 
 ## Bundled Resources
 
-- [../../references/release-destinations.md](../../references/release-destinations.md): package identity and destination defaults
-- [../../templates/bun-npm-package-release-workflow.yml](../../templates/bun-npm-package-release-workflow.yml): shared npm publication workflow
+- [./references/release-destinations.md](./references/release-destinations.md): package identity and destination defaults
+- [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml): shared npm publication workflow
 
 ## Validation
 
