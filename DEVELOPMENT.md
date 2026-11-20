@@ -10,6 +10,7 @@ Use the Node and Bun versions in [`.node-version`](./.node-version) and [`.bun-v
 git clone git@github.com:tanaabased/canon.git
 cd canon
 bun install --frozen-lockfile --ignore-scripts
+bun run setup:codex-tools
 bun run test
 bun run lint
 ```
@@ -22,8 +23,6 @@ Follow the [Canon skill contribution guide](./skills/AGENTS.md) when creating or
 
 ```sh
 scratch="$(mktemp -d)"
-CODEX_TOOLS_CLI=$(bash scripts/build-cloud-pilot-task.sh "$scratch/codex-tools")
-export CODEX_TOOLS_CLI
 bun run build:plugin "$scratch/plugin"
 npm pack "$scratch/plugin" --ignore-scripts --pack-destination "$scratch"
 version="$(bun -p '(await Bun.file("package.json").json()).version')"
@@ -34,9 +33,9 @@ bun run check:package "$scratch/extracted"
 
 For a Codex Cloud pilot, use the plugin files from the checked `$scratch/tanaab-canon-$version.tgz` tarball. It includes the bundled commands, runtime inventories, and execution instructions.
 
-The pilot builds Codex Tools from the pinned Git revision. Before releasing Canon, pin the npm version of `@tanaab/codex-tools` that contains the verified builder, then rerun the same checks using the installed dependency.
+During the pilot, `bun run codex-tools` runs the CLI source from Codex Tools `main` at the commit in `bun.lock`. `setup:codex-tools` installs the source CLI's locked dependencies. Before releasing Canon, switch to the tested npm release of `@tanaab/codex-tools` and rerun the same checks.
 
-The build uses tracked working-tree files, including unstaged edits. Use the same source inputs when checking the extracted tarball. Run `bun test/package-cutover.js` to exercise the new-skill fixture with the same package check as Release Tests.
+The build uses tracked working-tree files, including unstaged edits. Use the same source inputs when checking the extracted tarball. Run `bun test/package-policy.js` to exercise the new-skill fixture with the same package check as Release Tests.
 
 ## Codex cache
 

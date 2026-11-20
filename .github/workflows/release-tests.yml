@@ -26,7 +26,9 @@ jobs:
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile --ignore-scripts
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun run setup:codex-tools
       - name: Prepare release-shaped build
         uses: tanaabased/actions/prepare-release@v1
         with:
@@ -40,10 +42,6 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
-      - name: Build pinned Cloud packager
-        run: |
-          cli=$(bash scripts/build-cloud-pilot-task.sh "$RUNNER_TEMP/codex-tools-pilot")
-          echo "CODEX_TOOLS_CLI=$cli" >> "$GITHUB_ENV"
       - name: Stage plugin
         run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
@@ -62,7 +60,7 @@ jobs:
           bun run check:package "$package_root"
           grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" "$package_root/CHANGELOG.md"
       - name: Exercise new-skill package checks
-        run: bun test/package-cutover.js
+        run: bun test/package-policy.js
       - name: Validate extracted plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
         with:
@@ -87,7 +85,9 @@ jobs:
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile --ignore-scripts
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun run setup:codex-tools
       - name: Prepare release-shaped build
         uses: tanaabased/actions/prepare-release@v1
         with:
@@ -101,10 +101,6 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
-      - name: Build pinned Cloud packager
-        run: |
-          cli=$(bash scripts/build-cloud-pilot-task.sh "$RUNNER_TEMP/codex-tools-pilot")
-          echo "CODEX_TOOLS_CLI=$cli" >> "$GITHUB_ENV"
       - name: Stage plugin
         run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin

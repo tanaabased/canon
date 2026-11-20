@@ -3,7 +3,7 @@
 import { mkdir, realpath, rm } from 'node:fs/promises';
 import path from 'node:path';
 
-import { cloudConfig, runCloud, snapshotCheckout, sourceRoot } from '../lib/package-source.js';
+import { runCloud, snapshotCheckout, sourceRoot } from '../lib/package-checkout.js';
 
 async function stagePlugin(destination) {
   const requested = path.resolve(destination);
@@ -16,7 +16,7 @@ async function stagePlugin(destination) {
   await mkdir(staging);
   try {
     await snapshotCheckout(sourceRoot, staging);
-    runCloud(staging, 'package', cloudConfig);
+    runCloud('package', staging);
     await rm(path.join(staging, '.git'), { recursive: true });
     return staging;
   } catch (error) {

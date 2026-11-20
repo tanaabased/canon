@@ -13,9 +13,9 @@ import {
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { cloudCli, snapshotCheckout, sourceRoot } from '../lib/package-source.js';
+import { snapshotCheckout, sourceRoot } from '../lib/package-checkout.js';
 
-const scratch = await mkdtemp(path.join(tmpdir(), 'canon-package-cutover-'));
+const scratch = await mkdtemp(path.join(tmpdir(), 'canon-package-policy-'));
 const checkout = path.join(scratch, 'checkout');
 const skill = 'skills/package-fixture';
 const config = `${skill}/build.config.js`;
@@ -37,7 +37,6 @@ function track(...files) {
 function canon(command, argument) {
   return spawnSync('bun', ['run', '--cwd', checkout, command, argument], {
     cwd: scratch,
-    env: { ...process.env, CODEX_TOOLS_CLI: cloudCli },
     encoding: 'utf8',
   });
 }
@@ -75,6 +74,7 @@ async function pack(label) {
 try {
   await mkdir(checkout);
   await snapshotCheckout(sourceRoot, checkout);
+  await symlink(path.join(sourceRoot, 'node_modules'), path.join(checkout, 'node_modules'), 'dir');
   execFileSync(
     'bun',
     [

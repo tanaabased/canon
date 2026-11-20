@@ -23,7 +23,9 @@ jobs:
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile --ignore-scripts
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun run setup:codex-tools
       - name: Validate source
         run: |
           bun run lint
@@ -84,7 +86,9 @@ jobs:
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile --ignore-scripts
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun run setup:codex-tools
       - name: Validate source
         run: |
           bun run lint

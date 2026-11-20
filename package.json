@@ -7,7 +7,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@lando/leia": "^2.0.0",
-    "@tanaab/codex-tools": "^1.0.3",
+    "@tanaab/codex-tools": "github:tanaabased/codex-tools#main",
     "clawhub": "^0.26.0",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
@@ -19,8 +19,10 @@
   },
   "scripts": {
     "build:plugin": "bun bin/build-plugin.js",
-    "codex:check": "codex-tools cache check",
-    "codex:sync": "codex-tools cache sync",
+    "codex-tools": "bun --no-install node_modules/@tanaab/codex-tools/bin/codex-tools.ts",
+    "setup:codex-tools": "bun install --cwd node_modules/@tanaab/codex-tools --frozen-lockfile --ignore-scripts",
+    "codex:check": "bun run codex-tools cache check",
+    "codex:sync": "bun run codex-tools cache sync",
     "format:check": "bun run --bun prettier . --check --ignore-unknown",
     "format:write": "bun run --bun prettier . --write --ignore-unknown",
     "lint:eslint": "bun run --bun eslint .",

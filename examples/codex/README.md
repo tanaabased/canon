@@ -13,7 +13,7 @@ tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 curl --fail --silent --show-error --location https://raw.githubusercontent.com/tanaabased/codex-tools/227b8682216599c382803d82c6bfb7e143e8d866/examples/native/fresh-skills.ts --output "$TMPDIR/fresh-skills.ts"
 
 # should install the candidate into an isolated native marketplace
-env HOME="$TMPDIR/home" CODEX_HOME="$TMPDIR/codex" XDG_CACHE_HOME="$TMPDIR/cache" ../../node_modules/.bin/codex-tools install "$TMPDIR/package" --marketplace canon-test --marketplace-path "$TMPDIR/marketplace/.agents/plugins/marketplace.json" | grep -F 'status: installed'
+env HOME="$TMPDIR/home" CODEX_HOME="$TMPDIR/codex" XDG_CACHE_HOME="$TMPDIR/cache" bun run --cwd ../.. codex-tools install "$TMPDIR/package" --marketplace canon-test --marketplace-path "$TMPDIR/marketplace/.agents/plugins/marketplace.json" | grep -F 'status: installed'
 ```
 
 ## Testing
@@ -26,7 +26,7 @@ mkdir -p "$cached/skills/project-optimizer" "$cached/node_modules/local-sentinel
 cp "$cached/skills/project-review/SKILL.md" "$cached/skills/project-optimizer/SKILL.md"
 printf '%s\n' 'consumer-owned' > "$cached/node_modules/local-sentinel/marker"
 rm "$cached/references/plugin-runtime-contracts.md"
-../../node_modules/.bin/codex-tools cache sync --repo-root "$TMPDIR/package" --codex-home "$TMPDIR/codex" --cache-path "$cached" --missing-target create
+bun run --cwd ../.. codex-tools cache sync --repo-root "$TMPDIR/package" --codex-home "$TMPDIR/codex" --cache-path "$cached" --missing-target create
 cmp "$TMPDIR/package/references/plugin-runtime-contracts.md" "$cached/references/plugin-runtime-contracts.md"
 test ! -e "$cached/skills/project-optimizer"
 test "$(cat "$cached/node_modules/local-sentinel/marker")" = 'consumer-owned'
