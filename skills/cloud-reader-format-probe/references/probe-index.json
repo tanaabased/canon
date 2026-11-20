@@ -1,0 +1,10 @@
+[
+  "references/samples/sample.md",
+  "references/samples/sample.js",
+  "references/samples/sample.json",
+  "references/samples/sample.txt",
+  "references/samples/sample.yml",
+  "references/samples/sample.ps1",
+  "references/samples/vue-sample.vue",
+  "references/samples/.prettierignore"
+]

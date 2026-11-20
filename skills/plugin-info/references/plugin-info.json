@@ -19,6 +19,10 @@
       "description": "Tanaab-based CHANGELOG authoring and maintenance. Use when a user wants to draft or update `CHANGELOG.md`, preserve its structure, or keep the unreleased heading aligned with the shared changelog contract."
     },
     {
+      "name": "tanaab-cloud-reader-format-probe",
+      "description": "Tanaab-based canary for testing which installed skill file formats the Codex Cloud reader can open. Use when explicitly asked to audit Cloud reader formats."
+    },
+    {
       "name": "tanaab-codex-plugin-author",
       "description": "Tanaab-based authoring, packaging, validation, and npm distribution of Codex plugins. Use when creating or modifying a Codex plugin, migrating archive releases to npm, or checking its installable package."
     },
