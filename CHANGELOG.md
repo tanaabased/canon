@@ -1,10 +1,14 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
-- Fixed the Bash CLI starter failing on macOS Bash 3.2 when invoked without arguments.
-- Moved workflow, PowerShell, Vue, and Prettier starters into annotated Markdown references for the Cloud skill reader.
-- Bundled scaffold artwork directly into Skill Author so a copied command can generate both icons on its own.
 - Added dark-mode variants of the Canon plugin logo and composer icon.
+- Bundled both scaffold icons into `init-skill.js` so the copied command can generate them on its own.
 - Changed the plugin display name to Canon and the developer credit to Tanaab Maneuvering Systems LLC.
+- Fixed the Bash CLI starter failing without arguments on macOS Bash 3.2 and dropping environment items when `--item` follows `--`.
+- Included shared references and templates in all 25 packaged skills so nested resource paths resolve locally.
+- Isolated skill builds from untracked checkout files while preserving working-tree edits to tracked release inputs.
+- Moved workflow, PowerShell, Vue, and Prettier starters into annotated Markdown references for the Cloud skill reader.
+- Preserved existing skills when `tanaab-skill-author` rejects a replacement requested with `--force`.
+- Updated `check:package` to verify reference-style Markdown links and catch links to known unreadable starter formats throughout each skill.
 - Updated the small icons for all 25 skills and newly scaffolded skills to use Tanaab green (`#00996A`) on light and dark backgrounds.
 
 ## v0.15.3 - [November 20, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.3)
