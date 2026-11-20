@@ -28,15 +28,15 @@ Tanaab-based JavaScript, TypeScript, and Bun implementation and npm package depl
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [JavaScript Function Data Flow](../../references/javascript-function-data-flow.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing API documentation or comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
-- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md) and [Function Tests](./references/javascript-function-tests.md).
-- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Coding Stack Preferences](./references/coding-stack-preferences.md), [JavaScript Repo Structure](./references/javascript-repo-structure.md), and [JavaScript Function Data Flow](./references/javascript-function-data-flow.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before changing API documentation or comments:** [Inline Code and API Docs](./references/inline-code-and-api-docs.md).
+- **Before choosing or changing tests:** [Verification Boundaries](./references/verification-boundaries.md) and [Function Tests](./references/javascript-function-tests.md).
+- **Before adding or changing consumer scenarios:** [Leia Markdown Scenarios](./references/leia-markdown-scenarios.md).
+- **Before selecting package privacy or publication:** [Release Destinations](./references/release-destinations.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -61,29 +61,29 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Constraints
 
-- Follow the shared [layout and extraction guidance](../../references/javascript-repo-structure.md#standard-layout-inside-a-scope); do not force role folders or one-function-per-file splits.
+- Follow the shared [layout and extraction guidance](./references/javascript-repo-structure.md#standard-layout-inside-a-scope); do not force role folders or one-function-per-file splits.
 
 ## Change Strategy
 
-- Identify the nearest owning scope and apply [JavaScript Repo Structure](../../references/javascript-repo-structure.md) to placement, extraction, and consequential dependency rules. Preserve cohesive local modules when a split offers no concrete benefit.
+- Identify the nearest owning scope and apply [JavaScript Repo Structure](./references/javascript-repo-structure.md) to placement, extraction, and consequential dependency rules. Preserve cohesive local modules when a split offers no concrete benefit.
 - In a workspace repo, treat each package as an owning scope, consume sibling packages through declared dependencies and public exports, and avoid relative imports into another package's private implementation.
 - Keep aggregate packages thin: depend on leaf workspaces and re-export their public APIs instead of copying their utility implementations.
 - Treat broader package, module, and Bun-runtime edits as support work for the owned JS or TS surface instead of the default authored pattern.
-- Apply [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
+- Apply [./references/javascript-function-data-flow.md](./references/javascript-function-data-flow.md) when function shape, mutation discipline, or import grouping changes.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before deciding whether prose needs to change.
+- Use [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md) for Bun-first, incremental TypeScript, npm package identity, and publishing defaults instead of re-deciding them locally.
 
 ## Preferred Tools
 
 - **[@tanaab/merge 1.x](https://github.com/tanaabased/merge/blob/main/README.md):** Prefer for deep object merging that needs explicit array strategies, on supported Bun or Node runtimes. It mutates its target, and `replace` merges arrays by index rather than replacing the whole array; preserve existing semantics and avoid adding a dependency for shallow composition.
-- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/main/setup-node/README.md):** Select runtimes through [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes). Keep dependency installation and test commands in the caller.
+- **Tanaab Actions 1.x — [setup-bun](https://github.com/tanaabased/actions/blob/main/setup-bun/README.md) and [setup-node](https://github.com/tanaabased/actions/blob/main/setup-node/README.md):** Select runtimes through [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes). Keep dependency installation and test commands in the caller.
 - **Tanaab Actions 1.x — [prepare-release](https://github.com/tanaabased/actions/blob/main/prepare-release/README.md), [npm-pack](https://github.com/tanaabased/actions/blob/main/npm-pack/README.md), [publish-npm](https://github.com/tanaabased/actions/blob/main/publish-npm/README.md), and [publish-repo](https://github.com/tanaabased/actions/blob/main/publish-repo/README.md):** Prefer for the single-package npm lifecycle below. Retain explicit workspace orchestration or unsupported-runner exceptions; independent workflow topology belongs to GitHub Workflow Author.
 
 ## Workflow
 
 - After explicit authorization, perform the smallest coherent operations, update imports and callers, add or update focused flat tests that pass the shared value gate, preserve the repository's chosen language and behavior, and avoid unrelated refactors.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request is primarily JS- or TS-runtime-led or uses the canonical npm package deployment lifecycle rather than being CLI-, workflow-graph-, or broader release-system-led.
 2. Load only the relevant JavaScript or TypeScript files, or the package manifest and release workflow for npm deployment, plus the shared references that directly shape the change.
@@ -93,16 +93,16 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
-- Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
+- Use [./references/inline-code-and-api-docs.md](./references/inline-code-and-api-docs.md) when public contracts, API docs, or inline comments change.
 - Prefer JSDoc in JavaScript and contract-focused documentation in TypeScript for exported helpers, public wrappers, side effects, failure behavior, and non-obvious invariants when the code alone does not make the contract clear.
 - Keep inline comments sparse and focused on surprising runtime behavior, mutation boundaries, integration assumptions, or failure modes.
 - Do not add comments that merely restate names, obvious control flow, or local implementation details.
 
 ## Testing
 
-- Apply [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
-- Apply the shared [admission and retention gate](../../references/verification-boundaries.md#assertion-strength) and the [function-test criteria](./references/javascript-function-tests.md) to new and existing units and components. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
+- Apply [Testing Defaults](./references/coding-stack-preferences.md#testing-defaults) for tools, placement, naming, and coverage, and [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes) for Bun development checks and focused consumer-runtime checks.
+- Apply the shared [admission and retention gate](./references/verification-boundaries.md#assertion-strength) and the [function-test criteria](./references/javascript-function-tests.md) to new and existing units and components. Test coherent subsystem wiring through its boundary as a component; Mocha may run both layers. Keep units and components separately selectable when useful, without requiring a new suite for ordinary function composition.
 - In a workspace repo, keep ordinary tests with their package and reserve root tests for intentional cross-package behavior.
 - Keep GitHub Action input-helper testing with the narrower GitHub Action surface.
 - For package-contract tests, protect declared exports, required payload files, runtime dependencies, and supported consumer entrypoints using the prepared artifact. A source import or whole-file snapshot does not prove those contracts. Retain static payload checks and representative isolated consumer execution for their distinct risks; route CLI or native-host behavior to its owner, and justify additional installs by a consumer failure cheaper checks cannot detect.
@@ -123,14 +123,14 @@ describe('feature/utils/normalize-tags', () => {
 
 ## Deployment
 
-- Use [release destinations](../../references/release-destinations.md) to confirm that npm is intended for this package scope. For a single package, use `.github/workflows/release.yml` on `release.published` with the [preferred release actions](#preferred-tools).
+- Use [release destinations](./references/release-destinations.md) to confirm that npm is intended for this package scope. For a single package, use `.github/workflows/release.yml` on `release.published` with the [preferred release actions](#preferred-tools).
 - Run lint and tests before preparation. Use `prepare-release` without Git synchronization, build after stamping only when the package ships generated output, format generated changes, and validate the final prepared files. A docs-site build alone does not justify a package build.
-- Use `npm-pack` with lifecycle scripts disabled. Inspect and exercise its exact tarball with the package's relevant checks, then pass that same path to `publish-npm` for a native dry run and live publication; do not repack between validation and publishing. Apply [verification boundaries](../../references/verification-boundaries.md) to distinguish artifact checks from redundant publisher checks.
-- Configure npm trusted publishing for the exact repository and workflow filename and grant the npm job `id-token: write`. `publish-npm@v1.0.5` and later support tokenless publication and dist-tag syncing and install a compatible Node/npm toolchain. Enable npm's `npm publish` and `npm dist-tag` permissions as described in [trusted publishing](https://docs.npmjs.com/trusted-publishers/); workflows that do not use `publish-npm` must install an npm CLI version that supports OIDC dist-tags (see [npm publishing](../../references/coding-stack-preferences.md#npm-package-publishing)). Retain token auth where the registry, runner, or client does not support trusted publishing.
-- Follow [npm publishing signals](../../references/coding-stack-preferences.md#npm-package-publishing): the published GitHub status, not the SemVer suffix, selects npm `latest` or `edge` on release events; without release context, `publish-npm` falls back to SemVer syntax. Omit `channel-token` and `registry-token` when the compatible released action and trusted-publisher permissions support tokenless publication and syncing; do not turn off `sync-edge-tag` to avoid configuring `npm dist-tag`. Keep token-auth exceptions for unsupported registries, runners, or clients.
+- Use `npm-pack` with lifecycle scripts disabled. Inspect and exercise its exact tarball with the package's relevant checks, then pass that same path to `publish-npm` for a native dry run and live publication; do not repack between validation and publishing. Apply [verification boundaries](./references/verification-boundaries.md) to distinguish artifact checks from redundant publisher checks.
+- Configure npm trusted publishing for the exact repository and workflow filename and grant the npm job `id-token: write`. `publish-npm@v1.0.5` and later support tokenless publication and dist-tag syncing and install a compatible Node/npm toolchain. Enable npm's `npm publish` and `npm dist-tag` permissions as described in [trusted publishing](https://docs.npmjs.com/trusted-publishers/); workflows that do not use `publish-npm` must install an npm CLI version that supports OIDC dist-tags (see [npm publishing](./references/coding-stack-preferences.md#npm-package-publishing)). Retain token auth where the registry, runner, or client does not support trusted publishing.
+- Follow [npm publishing signals](./references/coding-stack-preferences.md#npm-package-publishing): the published GitHub status, not the SemVer suffix, selects npm `latest` or `edge` on release events; without release context, `publish-npm` falls back to SemVer syntax. Omit `channel-token` and `registry-token` when the compatible released action and trusted-publisher permissions support tokenless publication and syncing; do not turn off `sync-edge-tag` to avoid configuring `npm dist-tag`. Keep token-auth exceptions for unsupported registries, runners, or clients.
 - When repository files or tags must be synchronized, use a peer `publish-repo` job with its own preparation from the original release commit. Follow [Workflow Author's release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for immutable checkout inputs, independent jobs, and retry boundaries.
 - Format and validate command-owned changes within `publish-repo`'s preparation commands. Its upstream action stamps package/changelog files afterward and syncs internally; it has no post-stamping, pre-sync validation hook. Validate that path with a native dry run in PRs and report this limitation rather than claiming an after-sync check gates publication.
-- Minimal example: [npm release workflow](../../templates/bun-npm-package-release-workflow.yml). Adapt package-specific build and tarball checks without widening this into workspace release orchestration.
+- Minimal example: [npm release workflow](./templates/bun-npm-package-release-workflow.yml). Adapt package-specific build and tarball checks without widening this into workspace release orchestration.
 
 ## GitHub Actions
 
@@ -139,8 +139,8 @@ Use this section as a reference map from the owned testing and deployment lifecy
 ### Pull Request Validation
 
 - Use the [preferred runtime setup actions](#preferred-tools) for CI, retaining caller-owned dependency installation and test commands.
-- For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow template](../../templates/bun-unit-tests-workflow.yml).
-- Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow template](../../templates/bun-pr-linter-workflow.yml).
+- For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow template](./templates/bun-unit-tests-workflow.yml).
+- Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow template](./templates/bun-pr-linter-workflow.yml).
 - For developer-machine code, CLIs, and plugin tooling, prefer the template's Ubuntu plus current macOS runner matrix.
 - Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; when required, use a supported versioned runner label and never `windows-latest`.
 
@@ -151,7 +151,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory owning scopes, entrypoints, orchestration libraries, utilities, type boundaries, imports, documentation, tests, CI, and npm package deployment wiring; identify independently testable function logic embedded in entrypoints or larger libraries. For npm releases, note token inputs, the released `publish-npm` version, npm CLI version, and trusted-publisher permissions.
 - **Compare:** Assess [Preferred Tools](#preferred-tools) against merge mutation/array semantics and current runtime, packing, and publication paths before proposing replacements. Reconcile behavior, types, documentation, tests, CI, and package publication; evaluate entrypoint thinness, `lib/` and `utils/` boundaries, duplicated logic, overloaded modules, misplaced code, dead paths, direct-test coverage, flat source-to-test locality, publish artifacts, authentication, and release channels against the full canon. Flag publication/channel tokens as migration candidates when workflows use `publish-npm@v1.0.5` or later, or otherwise use a compatible npm CLI; unknown npm permissions or settings remain unverified prerequisites.
@@ -159,16 +159,16 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Bundled Resources
 
-- [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination routing
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): Bun-first JavaScript and TypeScript runtime defaults
-- [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
-- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): owning scopes plus `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
-- [../../references/javascript-function-data-flow.md](../../references/javascript-function-data-flow.md): function shape, mutation discipline, and import grouping
+- [./references/release-destinations.md](./references/release-destinations.md): shared product-surface-to-release-destination routing
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): Bun-first JavaScript and TypeScript runtime defaults
+- [./references/inline-code-and-api-docs.md](./references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
+- [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md): owning scopes plus `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
+- [./references/javascript-function-data-flow.md](./references/javascript-function-data-flow.md): function shape, mutation discipline, and import grouping
 - [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JavaScript and TypeScript code
 - [./templates/transform-unit.js](./templates/transform-unit.js): starter shape for pure or mostly pure transformation helpers
 - [./templates/async-boundary-unit.js](./templates/async-boundary-unit.js): starter shape for narrow boundary-reading helpers
-- [../../templates/bun-unit-tests-workflow.yml](../../templates/bun-unit-tests-workflow.yml): starter `.github/workflows/pr-unit-tests.yml` for the canonical direct-test path
-- [../../templates/bun-npm-package-release-workflow.yml](../../templates/bun-npm-package-release-workflow.yml): starter `release.yml` for trusted npm publication from a Bun-managed package
+- [./templates/bun-unit-tests-workflow.yml](./templates/bun-unit-tests-workflow.yml): starter `.github/workflows/pr-unit-tests.yml` for the canonical direct-test path
+- [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml): starter `release.yml` for trusted npm publication from a Bun-managed package
 
 ## Validation
 
@@ -177,7 +177,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm tests remain flat within their owning scope and are hoisted only with their implementation or for intentional cross-scope coverage.
 - Confirm workspace packages use declared package boundaries, aggregate packages stay thin, and no package reaches into a sibling's private source paths.
 - Confirm ESM and Bun defaults were preserved unless the repo or task explicitly requires another path.
-- Confirm public contracts, API docs, and inline comments follow [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) when documentation changed.
+- Confirm public contracts, API docs, and inline comments follow [./references/inline-code-and-api-docs.md](./references/inline-code-and-api-docs.md) when documentation changed.
 - Confirm direct tests prioritize independently testable utility logic and do not absorb GitHub Action input-helper patterns.
 - Confirm `GitHub Actions` maps pull-request validation to `Testing`, linting to Repo Standardizer, and release publication to `Deployment` without duplicating their doctrine or absorbing independent workflow-topology ownership.
 - Confirm any npm deployment uses the canonical release-published lifecycle, `@tanaab` package identity, npm trusted publishing, conditional package builds, post-stamping format validation, an npm dry run, and the `latest` or `edge` channel contract.

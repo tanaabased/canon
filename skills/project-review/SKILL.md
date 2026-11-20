@@ -27,11 +27,11 @@ Own breadth and prioritization across a project or requested surfaces. Review ch
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Optimization Operations](../../references/optimization-operations.md), [Project Management Model](../../references/project-management-model.md), and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Always:** [Review Standard](../../references/review-standard.md), including criteria loading, completeness, and the shared report format. Apply it to the requested scope and every selected owner.
+- **Always:** [Optimization Operations](./references/optimization-operations.md), [Project Management Model](./references/project-management-model.md), and [Verification Boundaries](./references/verification-boundaries.md).
+- **Always:** [Review Standard](./references/review-standard.md), including criteria loading, completeness, and the shared report format. Apply it to the requested scope and every selected owner.
 - **Before assessing repository surfaces:** Discover and read applicable guidance under [Repository Optimization Guidance](#repository-optimization-guidance).
-- **Before assessing tool adoption or freshness:** [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment) and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before writing a requested report or auditing documentation:** [Documentation Standards](../../references/documentation-standards.md), including style selection for the target repository.
+- **Before assessing tool adoption or freshness:** [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment) and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before writing a requested report or auditing documentation:** [Documentation Standards](./references/documentation-standards.md), including style selection for the target repository.
 
 ## When to Use
 
@@ -63,11 +63,11 @@ Read each applicable document in full, or the explicitly named section, before d
 4. When the selected scope includes multiple live `SKILL.md` files, select Skill Author and review that collection individually and collectively even when no single skill has obvious drift. A whole-project review includes every live skill; a targeted review does not pull in unrelated skills.
 5. Apply the shared loading rule before assessing each surface: read the owner’s general Review Criteria, any specialist entry point needed for the selected depth, and their applicable required sections and references. Use a specialist’s review workflow only for selected depth; retain its coverage gaps in the combined result.
 6. Resolve overlap through the skills' existing ownership boundaries. Assign each finding one primary owner and one primary operation, adding a companion only when the work genuinely crosses surfaces. Consolidate findings about the same source of truth and reuse existing validation evidence for an unchanged snapshot instead of repeating each owner's checks.
-7. Report every inventoried surface as aligned, drifted, or not applicable, distinguishing inspected evidence from sampling and unexamined areas under [Review Completeness](../../references/review-standard.md#review-completeness). Resolve consequential leads across the inventory before prioritizing; the first inspected surface must not determine the whole plan. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
-8. Review in-scope documentation through [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review) and its existing surface owner. Keep that procedure authoritative; name concrete sources and destinations for justified moves.
+7. Report every inventoried surface as aligned, drifted, or not applicable, distinguishing inspected evidence from sampling and unexamined areas under [Review Completeness](./references/review-standard.md#review-completeness). Resolve consequential leads across the inventory before prioritizing; the first inspected surface must not determine the whole plan. Treat unavailable evidence as uncertainty rather than drift or alignment, and do not manufacture findings to exercise every operation.
+8. Review in-scope documentation through [Documentation Placement Review](./references/documentation-standards.md#documentation-placement-review) and its existing surface owner. Keep that procedure authoritative; name concrete sources and destinations for justified moves.
 9. Apply Finding Disposition across the complete finding set; do not suppress a concrete correction because its impact or effort is small.
 10. Plan every actionable finding in dependency order with proportional, repo-native validation and reviewable commit boundaries. A small-cleanup-only pass still gets a plan; omit implementation stages only when there are no actionable findings.
-11. Deliver in chat using the shared [report format](../../references/review-standard.md#report-format), including its four-bucket coverage summary before findings. Write only explicitly requested Markdown reports at the specified or agreed destination; otherwise create no files. Stop before implementation. A later explicit implementation request may invoke the owning skills against an approved plan.
+11. Deliver in chat using the shared [report format](./references/review-standard.md#report-format), including its four-bucket coverage summary before findings. Write only explicitly requested Markdown reports at the specified or agreed destination; otherwise create no files. Stop before implementation. A later explicit implementation request may invoke the owning skills against an approved plan.
 
 ### Scope Selection
 
@@ -94,7 +94,7 @@ Common scope examples, not an exhaustive menu:
 
 ### Preferred Tool Adoption
 
-- During step 5, apply the [shared adoption and freshness assessment](../../references/review-standard.md#preferred-tool-assessment) to each relevant Preferred Tools entry. Check both missing preferred tools and newer compatible releases; meeting a minimum does not establish freshness.
+- During step 5, apply the [shared adoption and freshness assessment](./references/review-standard.md#preferred-tool-assessment) to each relevant Preferred Tools entry. Check both missing preferred tools and newer compatible releases; meeting a minimum does not establish freshness.
 - Collect upstream release evidence once per tool project and release line, then share it across selected owners. Record current, update recommended, adoption recommended, retain with reason, or unverified; apply Finding Disposition using concrete benefit, compatibility, and migration cost.
 - Read-only public upstream checks are part of this assessment; they do not authorize GitHub-hosted target-repository settings inspection or changes. Honor local-only requests and mark freshness unverified when upstream evidence is unavailable. Requests to refresh Canon's tool recommendations belong to [Skill Author — Review Preferred Tools](https://github.com/tanaabased/canon/blob/main/skills/skill-author/SKILL.md#review-preferred-tools), rather than expanding a consuming-project audit into a catalog review.
 
@@ -115,7 +115,7 @@ Common scope examples, not an exhaustive menu:
 - For each actionable finding, identify the affected location, evidence, correction, primary owner and operation, and validation. Recommend corrections whose benefit justifies their implementation and review cost; do not require a large payoff for a small fix.
 - For deliberately retained observations, give a specific reason and a condition for reconsideration. Small size alone is not a reason to defer concrete drift. Preference-only rewrites and speculative abstractions do not become work merely because they are easy.
 - Identify missing evidence and what would resolve it under unverified areas. Do not treat uncertainty as alignment or invent a correction before establishing the problem.
-- Apply [verification boundaries](../../references/verification-boundaries.md) when recommending validation changes. Remove duplicate post-success checks; propose new checks only for concrete uncovered risks, not to make an aligned surface appear more thoroughly verified.
+- Apply [verification boundaries](./references/verification-boundaries.md) when recommending validation changes. Remove duplicate post-success checks; propose new checks only for concrete uncovered risks, not to make an aligned surface appear more thoroughly verified.
 - Report `improvements recommended` whenever either actionable group is nonempty. Report `converged — no actionable findings` only when the requested audit is complete and neither group has findings; otherwise report `assessment incomplete` with the unresolved evidence gaps. Retained decisions remain visible in every disposition.
 - Reuse prior evidence and retained decisions when their inputs are unchanged. Cite each applicable retained decision's source, reason, and reconsideration conditions. Reopen it when a stated condition is met, requirements change, or current evidence contradicts it, naming that evidence in the finding. Report missing reasons, unclear conditions, or unavailable evidence as uncertainty rather than inventing support or treating the decision as immunity from review. Do not repeatedly rediscover or silently drop known small corrections.
 
@@ -130,7 +130,7 @@ Common scope examples, not an exhaustive menu:
 
 - The repository and scope are explicit; every in-scope tracked or contract-required surface is accounted for as live, cold-path, generated, missing, or not applicable.
 - Every in-scope live or contract-required surface is reported as aligned, drifted, missing, not applicable, or unverified with concrete repository evidence and its owning skill where resolved. Missing applicable criteria and unresolved ownership remain explicit coverage gaps.
-- Relevant owner criteria and any selected specialist findings are accounted for within the agreed depth; bounded follow-ups and unavailable evidence remain explicit. Documentation additions or extraction must pass the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
+- Relevant owner criteria and any selected specialist findings are accounted for within the agreed depth; bounded follow-ups and unavailable evidence remain explicit. Documentation additions or extraction must pass the [documentation change gate](./references/documentation-standards.md#documentation-change-gate); completeness does not require edits to every inspected surface.
 - Documentation placement was reviewed explicitly; proposed moves identify an existing relevant example and its discovery link, while essential user requirements and useful general references retain their appropriate homes.
 - Scopes containing multiple skills receive an individual and portfolio-wide Skill Author review covering contradictions, duplication, consolidation, splitting, extraction, placement, tightening, and obsolete identities.
 - Every drift finding names one primary owner and applicable operation; aligned and not-applicable surfaces do not acquire synthetic work.
@@ -143,8 +143,8 @@ Common scope examples, not an exhaustive menu:
 
 ## Bundled Resources
 
-- [../../references/optimization-operations.md](../../references/optimization-operations.md): shared evidence-led operation lenses; domain skills remain the source of truth for each surface
-- [../../references/project-management-model.md](../../references/project-management-model.md): GitHub-backed project mapping, lifecycle ownership, and required repository task-management projections
+- [./references/optimization-operations.md](./references/optimization-operations.md): shared evidence-led operation lenses; domain skills remain the source of truth for each surface
+- [./references/project-management-model.md](./references/project-management-model.md): GitHub-backed project mapping, lifecycle ownership, and required repository task-management projections
 
 ## Validation
 

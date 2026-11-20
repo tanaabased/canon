@@ -1,0 +1,1 @@
+../../../references/mock-ai-fixtures.md

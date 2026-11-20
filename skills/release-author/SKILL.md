@@ -30,10 +30,10 @@ Use this skill to assess release readiness without changes, or to prepare a rele
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [GitHub CLI Routing](../../references/github-cli-routing.md) and [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before assessing or preparing release text:** [Documentation Standards](../../references/documentation-standards.md) and [Changelog Format and Examples](../../references/changelog-format-and-examples.md).
-- **Before selecting npm channels:** [Coding Stack — npm Package Publishing](../../references/coding-stack-preferences.md#npm-package-publishing).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [GitHub CLI Routing](./references/github-cli-routing.md) and [Verification Boundaries](./references/verification-boundaries.md).
+- **Before assessing or preparing release text:** [Documentation Standards](./references/documentation-standards.md) and [Changelog Format and Examples](./references/changelog-format-and-examples.md).
+- **Before selecting npm channels:** [Coding Stack — npm Package Publishing](./references/coding-stack-preferences.md#npm-package-publishing).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -56,7 +56,7 @@ Read each applicable document in full, or the explicitly named section, before d
 - Confirm the target repo has `package.json`, `CHANGELOG.md`, and a GitHub remote.
 - For release preparation, confirm the local worktree is clean before checking out the release target branch; pause if unrelated local changes exist.
 - Confirm `gh` is installed and authenticated for the target repository.
-- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and current working directory without an absolute executable or subprocess override.
 - Confirm `.github/workflows/release.yml` is triggered by `release.published` before relying on draft publication as the release gate.
 - Inspect root workspaces and their manifests. When more than one publishable workspace exists, identify the repo's fixed-version or independent-version and tag strategy before deriving a release.
 - Resolve the GitHub default branch and use it as the release target unless the user explicitly specifies another branch.
@@ -110,7 +110,7 @@ Resolve intent before acting: readiness questions and next-tag verification foll
 2. Check `git status --short`, check out and pull the latest target branch, fetch tags, and verify `gh auth status`.
 3. Inspect the root package, any workspace manifests, relevant package versions, matching tags, `CHANGELOG.md`, and `.github/workflows/release.yml`.
 4. Use `$tanaab-changelog-author` to update the unreleased changelog entries when they are incomplete for the upcoming release.
-5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release, applying the shared [commit-subject convention](../../references/commit-subjects.md) for issue-backed commits.
+5. If the changelog changed, commit and push that changelog update to the target branch before creating the draft release, applying the shared [commit-subject convention](./references/commit-subjects.md) for issue-backed commits.
 6. Choose the release tag: explicit user version wins; otherwise default to patch, use minor for meaningful user or developer additions, and reserve major for explicit or unusually large incompatible changes.
 7. Confirm the proposed tag does not already exist on the remote before creating the release.
 8. Select GitHub status independently of the tag. Honor an explicit status choice; otherwise default a SemVer prerelease tag such as `v1.0.0-beta.2` to GitHub prerelease and any other tag to regular Latest. Never invent a prerelease suffix automatically, and reject a request to make a GitHub prerelease Latest.
@@ -122,7 +122,7 @@ Resolve intent before acting: readiness questions and next-tag verification foll
 
 - For release preparation, draft is the default because publication is the review gate that triggers repos using `release.published`.
 - Use tag and title equality exactly: `v0.2.1` tag means `v0.2.1` title.
-- SemVer tags supply only the default GitHub status: ordinary tags default to regular Latest, and prerelease-suffixed tags default to GitHub prerelease and non-Latest. An explicit GitHub status choice overrides that default; no first-release exception applies. See [npm publishing signals](../../references/coding-stack-preferences.md#npm-package-publishing) for how published GitHub status selects npm tags.
+- SemVer tags supply only the default GitHub status: ordinary tags default to regular Latest, and prerelease-suffixed tags default to GitHub prerelease and non-Latest. An explicit GitHub status choice overrides that default; no first-release exception applies. See [npm publishing signals](./references/coding-stack-preferences.md#npm-package-publishing) for how published GitHub status selects npm tags.
 - [`prepare-release`](https://github.com/tanaabased/actions/blob/main/prepare-release/README.md) owns release-time package stamping; its project-specific commands stamp additional manifests after the draft is published.
 - For `prepare-release`-backed repos, the release tag should be the semver-valid value consumed by `github.event.release.tag_name`.
 - Do not assume that the single-package `prepare-release` contract covers multiple publishable workspaces; require explicit repo-local release wiring before using it for that shape.
@@ -134,7 +134,7 @@ Resolve intent before acting: readiness questions and next-tag verification foll
 ## Validation
 
 - For readiness review, confirm the assessment identifies its target revision, distinguishes stale or missing evidence, and leaves local and remote state unchanged. The remaining checks apply to release preparation.
-- Apply [verification boundaries](../../references/verification-boundaries.md). Retain the draft readback to confirm the publication gate and release target; successful downstream publishers do not need additional registry or installation probes by default.
+- Apply [verification boundaries](./references/verification-boundaries.md). Retain the draft readback to confirm the publication gate and release target; successful downstream publishers do not need additional registry or installation probes by default.
 - Confirm the selected target branch was current before deriving the release tag and notes.
 - Confirm the release workflow uses `release.published` when draft publication is expected to trigger automation.
 - Confirm explicit versions override auto bump selection and are normalized to `v<semver>`.

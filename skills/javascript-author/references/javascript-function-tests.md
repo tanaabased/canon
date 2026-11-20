@@ -4,12 +4,12 @@ Use these criteria for JavaScript or TypeScript unit and component tests, includ
 
 ## Direct-Test Pattern
 
-Apply the shared [Testing Defaults](../../../references/coding-stack-preferences.md#testing-defaults) for tools, test placement, naming, and coverage.
+Apply the shared [Testing Defaults](./coding-stack-preferences.md#testing-defaults) for tools, test placement, naming, and coverage.
 
 - Keep each spec scoped to one helper surface and assert observable return values or narrow boundary behavior.
 - Hoist tests only when their implementation is also hoisted or the coverage is intentionally cross-scope.
 - When TypeScript is present, make sure the repo's test command discovers `.spec.ts` and run `typecheck` separately from the test runner.
-- Apply the shared [admission and retention gate](../../../references/verification-boundaries.md#assertion-strength). Identify the consequential wrong decision, transformation, or effect and how the assertion rejects it; a helper's existence does not require its own test. Remove low-value cases without replacement when their maintenance cost exceeds the protection, even if they are unique and fast.
+- Apply the shared [admission and retention gate](./verification-boundaries.md#assertion-strength). Identify the consequential wrong decision, transformation, or effect and how the assertion rejects it; a helper's existence does not require its own test. Remove low-value cases without replacement when their maintenance cost exceeds the protection, even if they are unique and fast.
 - Keep isolated edge cases in units and retain component coverage where real internal wiring can fail despite correct individual helpers. Packaging, installed CLI behavior, and native-host integration use their respective owners' criteria even when the test is written in JavaScript or TypeScript.
 - Compare meaningful failures before retaining permutations. Keep distinct consequential failures, not a case for every combination; testing a third-party dependency's own guarantees belongs upstream.
 - Audit fixture size and coupling independently of runtime. Exercise pure validation directly instead of preparing a whole dispatch or installation fixture. A component must exercise real internal cooperation, but needs no filesystem, OS, or process setup unless that boundary is the subject. Shrink setup to the behavior it proves.
@@ -19,7 +19,7 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 ### Assert According to Contract Strength
 
-- Apply [Assertion Strength](../../../references/verification-boundaries.md#assertion-strength): test observable decisions and effects against an independently defined contract, and reserve exact implementation details for cases where those details are contractual.
+- Apply [Assertion Strength](./verification-boundaries.md#assertion-strength): test observable decisions and effects against an independently defined contract, and reserve exact implementation details for cases where those details are contractual.
 - When order is not part of the contract, compare membership rather than array position.
 
 ### Keep Prose Assertions With Their Owner
@@ -40,7 +40,7 @@ Apply the shared [Testing Defaults](../../../references/coding-stack-preferences
 
 - Inject clocks, delays, schedulers, subprocesses, network clients, and similar boundaries when unit-testing orchestration.
 - Avoid fixed sleeps and assertions that nothing happened after an arbitrary number of milliseconds.
-- Use the [shared testing layers](../../../references/coding-stack-preferences.md#testing-defaults) to place native-boundary coverage: a component may use a small isolated filesystem, socket, or process fixture when that contract is the subject; installed functional flows belong in the owning [Leia scenario](../../../references/leia-markdown-scenarios.md).
+- Use the [shared testing layers](./coding-stack-preferences.md#testing-defaults) to place native-boundary coverage: a component may use a small isolated filesystem, socket, or process fixture when that contract is the subject; installed functional flows belong in the owning [Leia scenario](./leia-markdown-scenarios.md).
 
 ### Test Adapters Without Re-Testing Dependencies
 

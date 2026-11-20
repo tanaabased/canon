@@ -24,10 +24,10 @@ Tanaab-based authoring and standardization of repository READMEs and companion g
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Documentation Standards](../../references/documentation-standards.md) and [README Standards](../../references/readme-standards.md).
-- **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Always:** [Documentation Standards](./references/documentation-standards.md) and [README Standards](./references/readme-standards.md).
+- **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](./references/coding-stack-preferences.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -47,10 +47,10 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After explicit authorization, make the approved changes around the primary user journey and preserve one linked source of truth for advanced or topical material instead of duplicating the common path.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request concerns a README or companion guide; leave source-owned API contracts and generated-reference tooling to their code owner, and VitePress pages to VitePress Author.
-2. Select the applicable [documentation style](../../references/documentation-standards.md#documentation-style) and apply Documentation Standards to every in-scope guide. Load [README Standards](../../references/readme-standards.md) for entrypoint structure or guide placement; choose a README mode only when restructuring is needed.
+2. Select the applicable [documentation style](./references/documentation-standards.md#documentation-style) and apply Documentation Standards to every in-scope guide. Load [README Standards](./references/readme-standards.md) for entrypoint structure or guide placement; choose a README mode only when restructuring is needed.
 3. Inventory the repository's existing README, root-level guides, docs site, real entrypoints, visual assets, and meaningful status signals before choosing a structure.
 4. Keep the common path and roughly 80 percent of reader needs in the README. Treat 250 and 400 source lines as review signals, not validation limits.
 5. Preserve complete CLI and configuration references when they provide a useful standalone lookup surface. Reconcile them with current help, schemas, and defaults, while keeping prose focused on selection, precedence, consequences, and non-obvious behavior rather than narrating the inventory line by line.
@@ -62,14 +62,14 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## Review Criteria
 
 - **Inspect:** Inventory the README, companion guides, docs site, visual assets, badges, current product behavior, primary entrypoints, supported commands, configuration, and other repository evidence that can confirm or contradict documentation claims.
-- **Compare:** Apply the documentation change gate and [Documentation Placement Review](../../references/documentation-standards.md#documentation-placement-review), then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful scenario explanations better placed in existing Leia examples with discovery links. Treat extraction signals as placement guidance for content that remains necessary.
+- **Compare:** Apply the documentation change gate and [Documentation Placement Review](./references/documentation-standards.md#documentation-placement-review), then reconcile README and companion-guide claims with the repository and with one another; identify duplicated content, fragmented journeys, overloaded sections, stale material, misplaced long-tail detail, reference inventories that drift from their executable sources, and useful scenario explanations better placed in existing Leia examples with discovery links. Treat extraction signals as placement guidance for content that remains necessary.
 - **Recommend:** Keep the truthful common path; correct contradictions; deduplicate or consolidate repeated guidance; remove prose that fails the documentation change gate without requiring replacement; split overloaded sections; move short line-specific explanation into language-appropriate comments above the relevant code; extract and move justified long-tail material; tighten prose and ordering; and remove stale claims without fabricating behavior.
 
 ## Bundled Resources
 
-- [../../references/documentation-standards.md](../../references/documentation-standards.md): shared scope and change gate for all documentation
-- [../../references/readme-standards.md](../../references/readme-standards.md): README mode selection, companion-guide boundaries, section expectations, and docs-wrapper escalation rules
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): default VitePress escalation rule when a fuller docs surface is justified
+- [./references/documentation-standards.md](./references/documentation-standards.md): shared scope and change gate for all documentation
+- [./references/readme-standards.md](./references/readme-standards.md): README mode selection, companion-guide boundaries, section expectations, and docs-wrapper escalation rules
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): default VitePress escalation rule when a fuller docs surface is justified
 - [./templates/README.md](./templates/README.md): local index for the README starter templates owned by this skill
 - [./templates/readme-full/README.md](./templates/readme-full/README.md): starter for repositories that keep durable user-facing docs in one README
 - [./templates/readme-companion-guides/README.md](./templates/readme-companion-guides/README.md): primary entrypoint starter for repositories with root-level companion guides

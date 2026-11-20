@@ -1,0 +1,1 @@
+../../../references/skill-standard.md

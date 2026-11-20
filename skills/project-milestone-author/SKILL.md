@@ -30,9 +30,9 @@ This skill can inspect, create, revise, close, reopen, schedule, and synchronize
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Project Management Model](../../references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [GitHub CLI Routing](../../references/github-cli-routing.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
+- **Always:** [Project Management Model](./references/project-management-model.md), [Project Milestone Contract](./references/project-milestone-contract.md), and [GitHub CLI Routing](./references/github-cli-routing.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
 
 ## When to Use
 
@@ -56,10 +56,10 @@ Read each applicable document in full, or the explicitly named section, before d
 ## Prerequisites
 
 - Require `bun` and GitHub CLI `gh`.
-- Apply [the shared GitHub CLI routing contract](../../references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and working directory.
+- Apply [the shared GitHub CLI routing contract](./references/github-cli-routing.md): invoke bare `gh` through the inherited `PATH`, environment, and working directory.
 - Require one explicit `OWNER/REPO`, numbered milestone target, milestone URL, or repository plus exact title selector. Never infer the repository from a directory name.
 - Confirm the intended GitHub identity and repository access before writes.
-- Apply [the project-management model](../../references/project-management-model.md) and [the milestone contract](./references/project-milestone-contract.md).
+- Apply [the project-management model](./references/project-management-model.md) and [the milestone contract](./references/project-milestone-contract.md).
 
 ## Inputs
 
@@ -91,6 +91,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Treat successful responses as provisional. Re-read the milestone and every selected task, report silently dropped values, and never compensate or roll back remote state to hide partial success.
 - Keep the desired-state logic behind the injected GitHub client so an Agent System transport can replace that boundary without changing authorization semantics.
 
+<!-- packaged-execution -->
+
 ## Workflow
 
 - After separate exact target, safety, and digest authorization, mutate only the planned milestone fields or explicitly selected task membership.
@@ -110,8 +112,8 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Bundled Resources
 
-- [../../references/project-management-model.md](../../references/project-management-model.md): domain terminology and lifecycle boundaries
-- [../../references/github-cli-routing.md](../../references/github-cli-routing.md): runtime-neutral bare-`gh` transport contract
+- [./references/project-management-model.md](./references/project-management-model.md): domain terminology and lifecycle boundaries
+- [./references/github-cli-routing.md](./references/github-cli-routing.md): runtime-neutral bare-`gh` transport contract
 - [./references/project-milestone-contract.md](./references/project-milestone-contract.md): desired-state, membership, authorization, and verification contract
 - [./scripts/project-milestone.js](./scripts/project-milestone.js): single JSON-in inspect, draft, and apply command
 - [./lib/milestone-author.js](./lib/milestone-author.js): transport-neutral desired-state planning and verification

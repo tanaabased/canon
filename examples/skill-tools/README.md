@@ -15,23 +15,38 @@ tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 ## Testing
 
 ```bash
-# should load every packaged command without development dependencies
-cd "$TMPDIR/package"
-for command in skills/*/scripts/*.js; do
-  bun --no-install "$command" --help
- done
+# should load every inventoried command from a verified copy
+scenario="$PWD"
+cd "$TMPDIR"
+for inventory in "$TMPDIR"/package/skills/*/runtime-files.json; do
+  skill="$(dirname "$inventory")"
+  jq -er '.commands[].path' "$inventory" > "$TMPDIR/commands.txt"
+  while IFS= read -r command; do
+    copy="$TMPDIR/help/$(basename "$skill")/$(basename "$command" .js)"
+    sh "$scenario/copy-verified-command.sh" "$skill" "$command" "$copy"
+    bun --no-install "$copy/$command" --help
+  done < "$TMPDIR/commands.txt"
+done
 
-# should scaffold from a verified temporary command copy
+# should scaffold and validate using only readable runtime files
 scenario="$PWD"
 cd "$TMPDIR"
 skill="$TMPDIR/package/skills/skill-author"
 copy="$TMPDIR/copied-skill"
 command="scripts/init-skill.js"
+jq -e --arg command "$command" '.commands[] | select(.path == $command) | (.resources | map(.path | split(".") | last) | sort) == ["svg", "txt"]' "$skill/runtime-files.json"
 sh "$scenario/copy-verified-command.sh" "$skill" "$command" "$copy"
 bun --no-install "$copy/$command" --type generic --slug example-skill --display-name 'Example Skill' --description 'Scaffold a focused example skill.' --openclaw-emoji '🧩' --openclaw-homepage https://example.com/skills/example-skill --container standalone --output-dir "$TMPDIR/standalone"
-cmp "$skill/assets/icon-large.png" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-large.png"
-cmp "$skill/assets/icon-small.svg" "$TMPDIR/standalone/tanaab-example-skill/assets/icon-small.svg"
-bun --no-install "$TMPDIR/package/skills/skill-author/scripts/validate-skill.js" --skill-dir "$TMPDIR/standalone/tanaab-example-skill" --container standalone
+generated="$TMPDIR/standalone/tanaab-example-skill"
+cd "$generated/assets"
+shasum -a 256 --check <<'SHA256'
+991a99c4e07f2d6c44966965b4ea2518f2beaccb6e3ea60a1386d8d62077b771  icon-large.png
+8b660dbca6b512c3e0177b1aba3ac57f606dc5d29040a5291aea74bfd5c08ed8  icon-small.svg
+SHA256
+validator="$TMPDIR/copied-validator"
+sh "$scenario/copy-verified-command.sh" "$skill" scripts/validate-skill.js "$validator"
+cd "$TMPDIR"
+bun --no-install "$validator/scripts/validate-skill.js" --skill-dir "$generated" --container standalone
 bun -e 'import assert from "node:assert/strict"; const s=await Bun.file(process.argv[1]).text(); const f=Bun.YAML.parse(s.split("---")[1]); assert.equal(f.name,"tanaab-example-skill"); assert.equal(f.metadata.openclaw.emoji,"🧩"); assert.equal(f.metadata.openclaw.homepage,"https://example.com/skills/example-skill");' "$TMPDIR/standalone/tanaab-example-skill/SKILL.md"
 
 # should inspect a fixture issue from a verified Task Decomposer command copy
@@ -83,7 +98,10 @@ cat "$TMPDIR/metadata.log"
 test "$status" -eq 1
 grep -F "metadata must contain 'openclaw'" "$TMPDIR/metadata.log"
 
-# should render every issue form from the package
+# should render every issue form from a verified command copy
+copy="$TMPDIR/copied-issue-forms"
+command="scripts/render-issue-forms.js"
+sh ./copy-verified-command.sh "$TMPDIR/package/skills/github-issue-form-author" "$command" "$copy"
 cd "$TMPDIR"
-bun --no-install "$TMPDIR/package/skills/github-issue-form-author/scripts/render-issue-forms.js" render --repository-mode organization --json | bun -e 'import assert from "node:assert/strict"; const r=await Bun.stdin.json(); assert.equal(r.mutatesGitHub,false); assert.deepEqual(r.files.map(f=>f.path).sort(),[".github/ISSUE_TEMPLATE/bug.yml",".github/ISSUE_TEMPLATE/config.yml",".github/ISSUE_TEMPLATE/feature.yml",".github/ISSUE_TEMPLATE/task.yml"]); for(const f of r.files) assert.ok(Bun.YAML.parse(f.content));'
+bun --no-install "$copy/$command" render --repository-mode organization --json | bun -e 'import assert from "node:assert/strict"; const r=await Bun.stdin.json(); assert.equal(r.mutatesGitHub,false); assert.deepEqual(r.files.map(f=>f.path).sort(),[".github/ISSUE_TEMPLATE/bug.yml",".github/ISSUE_TEMPLATE/config.yml",".github/ISSUE_TEMPLATE/feature.yml",".github/ISSUE_TEMPLATE/task.yml"]); for(const f of r.files) assert.ok(Bun.YAML.parse(f.content));'
 ```

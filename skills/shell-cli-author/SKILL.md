@@ -27,15 +27,15 @@ Tanaab-based authoring and standardization of shell CLI surfaces. Use when a use
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [CLI Style Rules](../../references/cli-style-rules.md).
-- **Before choosing shell versus JavaScript or a test runtime:** [Coding Stack Preferences](../../references/coding-stack-preferences.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before changing comments:** [Inline Code and API Docs](../../references/inline-code-and-api-docs.md).
-- **Before choosing or changing tests:** [Testing Defaults](../../references/coding-stack-preferences.md#testing-defaults), [Verification Boundaries](../../references/verification-boundaries.md) and [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
+- **Always:** [CLI Style Rules](./references/cli-style-rules.md).
+- **Before choosing shell versus JavaScript or a test runtime:** [Coding Stack Preferences](./references/coding-stack-preferences.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before changing comments:** [Inline Code and API Docs](./references/inline-code-and-api-docs.md).
+- **Before choosing or changing tests:** [Testing Defaults](./references/coding-stack-preferences.md#testing-defaults), [Verification Boundaries](./references/verification-boundaries.md) and [Leia Markdown Scenarios](./references/leia-markdown-scenarios.md).
 - **Before adapting a shell starter:** [Shell CLI Templates](./references/shell-cli-templates.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -57,20 +57,20 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Change Strategy
 
-- Use [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when the task touches help output, dimmed usage placeholders, dimmed displayed defaults, logging, color, stream behavior, or version-reporting shape.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) only for shell-vs-JS boundary decisions, not as a substitute for CLI contract rules.
+- Use [./references/cli-style-rules.md](./references/cli-style-rules.md) when the task touches help output, dimmed usage placeholders, dimmed displayed defaults, logging, color, stream behavior, or version-reporting shape.
+- Use [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md) only for shell-vs-JS boundary decisions, not as a substitute for CLI contract rules.
 - Use [./references/shell-cli-templates.md](./references/shell-cli-templates.md) and the bundled starters when the repo needs a reusable Bash or PowerShell CLI baseline.
 
 ## Preferred Tools
 
-- **[Leia 2.x](https://github.com/lando/leia/blob/main/README.md):** Prefer for observable CLI scenarios; see [Tanaab's usage policy and optional agent-plugin guidance](../../references/leia-markdown-scenarios.md).
+- **[Leia 2.x](https://github.com/lando/leia/blob/main/README.md):** Prefer for observable CLI scenarios; see [Tanaab's usage policy and optional agent-plugin guidance](./references/leia-markdown-scenarios.md).
 - **Tanaab Actions 1.x — [run-leia](https://github.com/tanaabased/actions/blob/main/run-leia/README.md):** Prefer in scenario CI after runtime, dependency, and artifact preparation. It owns temporary state and cleanup, not scenario setup or sandboxing; retain caller behavior that its inputs cannot express.
 
 ## Workflow
 
 - After explicit authorization, make the smallest coherent shell-owned operations while preserving quoting, platform support, wrappers, and public behavior.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the task is shell-CLI-led rather than workflow-, hosted-distribution-, or release-led.
 2. Load only the entrypoint, wrapper, and CLI canon needed for the change.
@@ -79,10 +79,10 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Treat help output, version output, logging text, and error text as the maintained shell CLI's user-facing documentation.
-- Keep help output aligned with [../../references/cli-style-rules.md](../../references/cli-style-rules.md), including usage order, stream behavior, color, and displayed defaults.
-- Use [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md) only for sparse inline comments around shell safety, quoting, platform differences, destructive operations, environment assumptions, and other non-obvious shell edge cases.
+- Keep help output aligned with [./references/cli-style-rules.md](./references/cli-style-rules.md), including usage order, stream behavior, color, and displayed defaults.
+- Use [./references/inline-code-and-api-docs.md](./references/inline-code-and-api-docs.md) only for sparse inline comments around shell safety, quoting, platform differences, destructive operations, environment assumptions, and other non-obvious shell edge cases.
 - Keep README-backed Leia scenarios in `## Testing` unless a repo explicitly treats them as durable user-facing examples.
 - Keep comments sparse; do not narrate ordinary shell syntax or duplicate help output in the source.
 
@@ -90,9 +90,9 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 - Prefer Leia-backed example scenarios when the main risk is observable shell CLI behavior such as output, file mutation, permissions, exit status, or wrapper behavior.
 - Keep one README scenario per observable shell flow and assert the user-facing contract instead of internal implementation details.
-- Apply [Tanaab's Leia usage policy](../../references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
+- Apply [Tanaab's Leia usage policy](./references/leia-markdown-scenarios.md); use the optional `leia-scenarios` skill when available or the upstream documentation linked there.
 - Consider adding `examples/AGENTS.md` separately when the suite needs durable examples-local editing rules.
-- Use the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. Retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
+- Use the [shared testing layers](./references/coding-stack-preferences.md#testing-defaults) to keep isolated decisions and bounded subsystems below installed shell CLI flows in Leia. Retain `shellcheck` and PowerShell parse checks for their named static invariants; they do not establish runtime behavior.
 - Preserve distinct quoting, argument forwarding, exit propagation, permissions, cleanup, and supported-shell behavior when consolidating scenarios. Test pure decisions cheaply; justify installed or platform runs by shell/OS behavior fakes cannot establish. Replaying the same wrapper path without a different contract or snapshotting incidental help formatting is low value; parser correctness and host-shell guarantees are not substitutes for the wrapper's own effects.
 
 Minimal generic example:
@@ -108,14 +108,14 @@ test -n "$(./dist/my-script.sh --version)"
 ## GitHub Actions
 
 - Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
-- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](../../templates/leia-pr-examples-tests.yml) when the shell CLI needs CI-backed scenario coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](./templates/leia-pr-examples-tests.yml) when the shell CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
 - Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
 - Keep this as an automation projection of the shell CLI test contract, not as general workflow-topology ownership.
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory Bash or PowerShell entrypoints, wrappers, help, version, logging, streams, precedence rules, safety guards, Leia scenarios, and their packaging.
 - **Compare:** Compare scenario CI with [Preferred Tools](#preferred-tools), preserving artifact targets, shell, retry, stdin, setup, and cleanup behavior. Reconcile implementation, wrappers, help, version, stream behavior, safety claims, and Leia scenarios; identify duplicated branches, overloaded entrypoints, misplaced internals, stale paths, and scenario packaging drift.
@@ -123,17 +123,17 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 ## Bundled Resources
 
-- [../../references/cli-style-rules.md](../../references/cli-style-rules.md): shared CLI help, color, logging, and `SCRIPT_VERSION` rules
-- [../../references/inline-code-and-api-docs.md](../../references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shell-as-exception boundary and Bun-wrapper defaults
+- [./references/cli-style-rules.md](./references/cli-style-rules.md): shared CLI help, color, logging, and `SCRIPT_VERSION` rules
+- [./references/inline-code-and-api-docs.md](./references/inline-code-and-api-docs.md): sparse inline-comment and public-contract doc guidance for code-bearing surfaces
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shell-as-exception boundary and Bun-wrapper defaults
 - [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable shell CLI policy
 - [./references/shell-cli-templates.md](./references/shell-cli-templates.md): local notes for the bundled Bash and PowerShell CLI starters
 - [./templates/bash-cli.sh](./templates/bash-cli.sh): starter for Bash CLI entrypoints
 - [./templates/powershell-cli.ps1](./templates/powershell-cli.ps1): starter for PowerShell CLI entrypoints
-- [../../references/leia-markdown-scenarios.md](../../references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
-- [../../templates/leia-pr-examples-tests.yml](../../templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
-- [../../templates/leia-markdown-example-readme.md](../../templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
-- [../../templates/leia-examples-agents.md](../../templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
+- [./references/leia-markdown-scenarios.md](./references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
+- [./templates/leia-pr-examples-tests.yml](./templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
+- [./templates/leia-markdown-example-readme.md](./templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
+- [./templates/leia-examples-agents.md](./templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
 ## Validation
 
@@ -141,7 +141,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 - Confirm the task stayed on Bash or PowerShell CLI surfaces rather than drifting into workflow YAML or hosted repo-template standardization.
 - Confirm help output, version output, logging text, and error text remain the primary documentation surface for user-facing shell behavior.
-- Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus stream usage and version-reporting shape follow [../../references/cli-style-rules.md](../../references/cli-style-rules.md) when those surfaces changed.
+- Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus stream usage and version-reporting shape follow [./references/cli-style-rules.md](./references/cli-style-rules.md) when those surfaces changed.
 - Run targeted `shellcheck` or the closest equivalent when the repo maintains shell as a real surface.
 - Confirm failures are actionable and destructive or nonsensical targets are rejected early.
 - Confirm Leia-backed examples stay focused on observable shell contract behavior and keep one scenario per README.

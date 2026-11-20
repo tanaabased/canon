@@ -29,14 +29,14 @@ Tanaab-based standardization of JavaScript, TypeScript, and Bun repo baselines. 
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Coding Stack Preferences](../../references/coding-stack-preferences.md), [JavaScript Repo Structure](../../references/javascript-repo-structure.md), and [Lint and Format Baseline](./references/lint-format-baseline.md).
+- **Always:** [Coding Stack Preferences](./references/coding-stack-preferences.md), [JavaScript Repo Structure](./references/javascript-repo-structure.md), and [Lint and Format Baseline](./references/lint-format-baseline.md).
 - **Before standardizing workspace packages:** [Bun Workspace Baseline](./references/bun-workspace-baseline.md).
-- **Before selecting package privacy or publication:** [Release Destinations](../../references/release-destinations.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before choosing validation checks:** [Verification Boundaries](../../references/verification-boundaries.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Before selecting package privacy or publication:** [Release Destinations](./references/release-destinations.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before choosing validation checks:** [Verification Boundaries](./references/verification-boundaries.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -71,9 +71,9 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - Use [./references/lint-format-baseline.md](./references/lint-format-baseline.md) as the local source of truth for the lint and format baseline.
 - Use [./references/bun-workspace-baseline.md](./references/bun-workspace-baseline.md) when a repo contains multiple workspace packages or aggregate and leaf package surfaces.
-- Use [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for Bun development, declared distribution runtimes, and npm package identity defaults rather than re-deciding them locally.
-- Use [../../references/release-destinations.md](../../references/release-destinations.md) to derive package privacy from each scope's intended release destination instead of treating every package manifest as npm-publishable.
+- Use [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md) when normalizing owning scopes, role folders, test placement, or hoisting decisions.
+- Use [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md) for Bun development, declared distribution runtimes, and npm package identity defaults rather than re-deciding them locally.
+- Use [./references/release-destinations.md](./references/release-destinations.md) to derive package privacy from each scope's intended release destination instead of treating every package manifest as npm-publishable.
 - Apply the bundled base files together when standardizing a repo, then add the complete TypeScript or Vue layer only when that layer is needed.
 
 ## Preferred Tools
@@ -84,7 +84,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After explicit authorization, make the smallest complete structural and baseline operations, move tests with their source, preserve imports and established exceptions, update package manifests before refreshing and validating lockfiles, and keep behavioral refactoring with JavaScript Author.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request is specifically about JS/TS/Bun repo baseline standardization rather than implementation authorship.
 2. Load the local lint baseline reference, the workspace baseline when applicable, and the shared repo-structure and coding-stack canon needed for the target repo surface.
@@ -94,7 +94,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Document durable repo baseline choices only when they affect future maintainers or future agents, such as repo-local `AGENTS.md`, README notes, package scripts, config comments, or template comments.
 - Prefer short repo-local policy notes over broad documentation rewrites when standardizing lint, format, script, or folder baselines.
 - Keep config comments sparse and limited to non-obvious extension points, generated-file exclusions, or project-specific deviations from the shared baseline.
@@ -126,8 +126,8 @@ Use this section as a reference map from repo-baseline validation and npm-public
 
 ### Pull Request Baseline Validation
 
-- Use the [preferred runtime setup actions](#preferred-tools) according to [Test Runtimes](../../references/coding-stack-preferences.md#test-runtimes), with version selection owned by project declarations rather than repeated workflow literals.
-- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow template](../../templates/bun-pr-linter-workflow.yml).
+- Use the [preferred runtime setup actions](#preferred-tools) according to [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes), with version selection owned by project declarations rather than repeated workflow literals.
+- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow template](./templates/bun-pr-linter-workflow.yml).
 - Keep the linter workflow separate from `.github/workflows/pr-unit-tests.yml` when the repo owns both independent surfaces.
 - Add a separate `bun run typecheck` step when the repo owns TypeScript source.
 - Flag automation that rewrites tracked files without applying the repository formatter afterward.
@@ -139,10 +139,10 @@ Use this section as a reference map from repo-baseline validation and npm-public
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory every owned JavaScript and TypeScript scope, loose modules, public and internal entrypoints, `lib/`, `utils/`, flat tests, manifests, config, dependencies, scripts, Bun metadata, lockfiles, workspaces, conditional TypeScript or Vue surfaces, and npm deployment wiring. For npm identity and publication, inspect root and workspace `package.json` names, internal dependency keys and `npm:` aliases, workspace references, overrides, `.npmrc`, Bun/npm/pnpm/Yarn lockfiles, release workflows, trusted-publisher assumptions, package build inputs, format gates, dry runs, channels, docs, templates, fixtures, and npm-distributed plugin package roots.
-- **Compare:** Check [Preferred Tools](#preferred-tools) against [development and consumer runtime roles](../../references/coding-stack-preferences.md#test-runtimes), runtime declarations, workspace scope, and required setup inputs. Reconcile conflicting configs, scripts, dependencies, lock metadata, and publication paths; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, source-to-test locality drift, long-lived publish tokens, unconditional non-package builds, missing post-stamping format validation, and channel drift against conditional canon. Flag Tanaab-owned npm identities outside `@tanaab`, including legacy `@tanaabased/*` names and generic scope placeholders used as Tanaab examples, while preserving third-party scopes, GitHub URLs, and platform-native plugin identifiers.
+- **Compare:** Check [Preferred Tools](#preferred-tools) against [development and consumer runtime roles](./references/coding-stack-preferences.md#test-runtimes), runtime declarations, workspace scope, and required setup inputs. Reconcile conflicting configs, scripts, dependencies, lock metadata, and publication paths; classify each source and test file by nearest owner and runtime role; and identify duplicate baseline wiring, obsolete files, entrypoint weight, source-to-test locality drift, long-lived publish tokens, unconditional non-package builds, missing post-stamping format validation, and channel drift against conditional canon. Flag Tanaab-owned npm identities outside `@tanaab`, including legacy `@tanaabased/*` names and generic scope placeholders used as Tanaab examples, while preserving third-party scopes, GitHub URLs, and platform-native plugin identifiers.
 - **Recommend:** Keep justified framework conventions; consolidate duplicate config or scripts; preserve established owning scopes and justified flat layouts; correct placement drift within those boundaries; tighten baseline dependencies; remove obsolete wiring; normalize Tanaab-owned npm identities at their manifest sources before generated projections and consumers; route canonical package publication to JavaScript Author; route independent workflow-graph exceptions to GitHub Workflow Author; and hand embedded runtime extraction to JavaScript Author.
 
 ## Bundled Resources
@@ -154,12 +154,12 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
 - [./templates/.prettierignore](./templates/.prettierignore): shared Prettier ignore baseline
 - [./templates/tsconfig.json](./templates/tsconfig.json): conditional Bun-compatible TypeScript baseline
-- [../../templates/bun-pr-linter-workflow.yml](../../templates/bun-pr-linter-workflow.yml): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
+- [./templates/bun-pr-linter-workflow.yml](./templates/bun-pr-linter-workflow.yml): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
-- [../../references/javascript-repo-structure.md](../../references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
-- [../../references/release-destinations.md](../../references/release-destinations.md): shared product-surface-to-release-destination and package-privacy routing
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared linting and formatting defaults
+- [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules
+- [./references/release-destinations.md](./references/release-destinations.md): shared product-surface-to-release-destination and package-privacy routing
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared linting and formatting defaults
 
 ## Validation
 

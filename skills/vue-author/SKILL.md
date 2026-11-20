@@ -27,16 +27,16 @@ Tanaab-based authoring, component testing, documentation, and npm packaging of V
 
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
-- **Always:** [Front End Preferences](../../references/front-end-preferences.md) and [Coding Stack Preferences](../../references/coding-stack-preferences.md).
-- **Before deciding whether documentation needs to change:** [Documentation Standards](../../references/documentation-standards.md).
-- **Before choosing or changing tests:** [Verification Boundaries](../../references/verification-boundaries.md).
+- **Always:** [Front End Preferences](./references/front-end-preferences.md) and [Coding Stack Preferences](./references/coding-stack-preferences.md).
+- **Before deciding whether documentation needs to change:** [Documentation Standards](./references/documentation-standards.md).
+- **Before choosing or changing tests:** [Verification Boundaries](./references/verification-boundaries.md).
 - **Before adapting component documentation fallbacks:** [Component Documentation Examples](./references/component-documentation-examples.md).
-- **Before documenting components in VitePress:** [Vitepress Markdown Pages](../../references/vitepress-markdown-pages.md).
-- **Before packaging a component library:** [Release Destinations](../../references/release-destinations.md) and [Component Package Example](./references/component-package-example.md).
-- **Before adding or changing packaged consumer scenarios:** [Leia Markdown Scenarios](../../references/leia-markdown-scenarios.md).
-- **Before reviewing or optimizing this surface:** [Optimization Operations](../../references/optimization-operations.md).
-- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](../../references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](../../references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](../../references/documentation-standards.md#compatibility-and-links).
-- **Before authoring issue-backed commits:** [Commit Subjects](../../references/commit-subjects.md).
+- **Before documenting components in VitePress:** [Vitepress Markdown Pages](./references/vitepress-markdown-pages.md).
+- **Before packaging a component library:** [Release Destinations](./references/release-destinations.md) and [Component Package Example](./references/component-package-example.md).
+- **Before adding or changing packaged consumer scenarios:** [Leia Markdown Scenarios](./references/leia-markdown-scenarios.md).
+- **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
+- **Before selecting or assessing preferred tools:** [Skill Standard — Preferred Tools](./references/skill-standard.md#preferred-tools), [Review Standard — Preferred Tool Assessment](./references/review-standard.md#preferred-tool-assessment), and [Documentation Standards — Compatibility and Links](./references/documentation-standards.md#compatibility-and-links).
+- **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
 
 ## When to Use
 
@@ -61,9 +61,9 @@ Read each applicable document in full, or the explicitly named section, before d
 
 ## Change Strategy
 
-- Use [../../references/front-end-preferences.md](../../references/front-end-preferences.md) for Vue 3, SCSS, and subtheme defaults.
-- Use [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) when the component is embedded in or exists primarily to support a VitePress or docs-site Markdown page.
-- Use [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md) for the broader frontend stack defaults.
+- Use [./references/front-end-preferences.md](./references/front-end-preferences.md) for Vue 3, SCSS, and subtheme defaults.
+- Use [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md) when the component is embedded in or exists primarily to support a VitePress or docs-site Markdown page.
+- Use [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md) for the broader frontend stack defaults.
 - Keep component implementation, layout, and styling changes near the owning Vue surface rather than widening into docs policy or generic runtime standardization.
 - Start from a small SFC shell rather than inventing the block structure case by case.
 - When the component is part of a VitePress site, inspect the local site components and existing theme styles before adding new markup or SCSS.
@@ -80,7 +80,7 @@ Read each applicable document in full, or the explicitly named section, before d
 
 - After explicit authorization, make the smallest coherent component-owned operations while preserving the repository's language and design system.
 
-When authoring issue-backed commits, apply the shared [commit-subject convention](../../references/commit-subjects.md).
+When authoring issue-backed commits, apply the shared [commit-subject convention](./references/commit-subjects.md).
 
 1. Confirm the request is Vue-component-led rather than VitePress-, docs-policy-, or generic-JS-led.
 2. Load only the relevant Vue files plus the shared frontend canon needed for this component surface.
@@ -119,18 +119,18 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Documentation
 
-- Apply the [documentation change gate](../../references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
+- Apply the [documentation change gate](./references/documentation-standards.md#documentation-change-gate) before selecting documentation work.
 - Prefer existing target-project components, component docs pages, playgrounds, global registration patterns, and theme styles over bundled examples.
 - Document component APIs through props, meaningful public slots, boolean and enum states, a top Usage playground, generated code examples, and source links when the project has stable source paths or URLs.
 - Prefer component docs pages shaped as H1 and intro copy, `<script setup>` schema, `## Usage` playground, then API sections such as Props, Slots, Variables, and focused notes.
 - Use `html` fences or highlighting for component usage snippets and generated template code; reserve `vue` for full Vue single-file component examples.
 - Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) and its linked fallback templates only when the project does not already have usable local examples.
-- When documenting a Vue component in a VitePress surface, follow [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
+- When documenting a Vue component in a VitePress surface, follow [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
 - Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, playground, docs-page, and registration patterns without copying their visual doctrine into canon.
 
 ## Testing
 
-- Apply the [shared testing layers](../../references/coding-stack-preferences.md#testing-defaults); this skill owns Vue component behavior within the broader subsystem component layer. Preserve the tooling below and use the smallest layer that detects the regression.
+- Apply the [shared testing layers](./references/coding-stack-preferences.md#testing-defaults); this skill owns Vue component behavior within the broader subsystem component layer. Preserve the tooling below and use the smallest layer that detects the regression.
 - Use Vitest, Vue Test Utils, and jsdom for observable DOM behavior, props, slots, emitted events, and user actions. Assert the public contract rather than private methods or broad snapshots.
 - Await Vue updates and interactions. Unmount wrappers, remove test-owned DOM/teleports, and restore mocks and timers when used. Add browser API shims only for APIs the component actually calls; jsdom cannot establish layout, focus rendering, or real-browser behavior.
 - For asynchronous state updates, use controlled promises to exercise out-of-order completion and disposal while work is pending. Where an optional enhancement can fail, assert that essential interaction still works. Keep these cases in the existing component suite and omit them for synchronous components.
@@ -153,7 +153,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 ## Review Criteria
 
-For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](../../references/review-standard.md#preferred-tool-assessment).
+For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-freshness assessment](./references/review-standard.md#preferred-tool-assessment).
 
 - **Inspect:** Inventory SFC structure, public API, local conventions, docs or playgrounds, accessibility, style reuse, tests, lint, and build health.
 - **Compare:** Review [Preferred Tools](#preferred-tools) and package exports where applicable. Reconcile props, emits, behavior, docs, playgrounds, accessibility claims, styles, and tests; check asynchronous update and disposal behavior where present, and identify duplicated logic or styling, overloaded SFCs, misplaced shared code, and stale public API against frontend canon and local Vue patterns.
@@ -164,9 +164,9 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
 - [./templates/example-component.vue](./templates/example-component.vue): fallback generic Vue component SFC for projects without local component precedents
 - [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
-- [../../references/front-end-preferences.md](../../references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
-- [../../references/vitepress-markdown-pages.md](../../references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
-- [../../references/coding-stack-preferences.md](../../references/coding-stack-preferences.md): shared frontend stack defaults
+- [./references/front-end-preferences.md](./references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
+- [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
+- [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared frontend stack defaults
 - [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): lint and production-build workflow
 - [./templates/vitest.config.js](./templates/vitest.config.js): isolated component-test discovery
 - [./templates/example-component.test.js](./templates/example-component.test.js): public props and slots test
