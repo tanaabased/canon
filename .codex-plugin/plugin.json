@@ -36,7 +36,9 @@
     ],
     "brandColor": "#00c88a",
     "composerIcon": "./assets/composer-icon.svg",
+    "composerIconDark": "./assets/composer-icon-dark.svg",
     "logo": "./assets/icon-large.png",
+    "logoDark": "./assets/icon-large-dark.png",
     "websiteURL": "https://github.com/tanaabased/canon"
   }
 }
