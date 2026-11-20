@@ -7,7 +7,7 @@ import { YAML } from 'bun';
 import { initializeSkill } from '../lib/skill-scaffolder.js';
 import { validateSkillDir } from '../lib/skill-validator.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
-import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
+import parseSkillFrontmatter from '../../../utils/parse-skill-frontmatter.js';
 
 describe('skills/skill-author/lib/skill-ownership', () => {
   let rootDir;

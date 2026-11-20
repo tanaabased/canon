@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Canon Plugin Info'
+  short_description: 'Tanaab-based lookup for the installed Canon release'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-plugin-info to report the installed Canon version and shipped skills.'

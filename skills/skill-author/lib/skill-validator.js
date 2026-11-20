@@ -21,7 +21,7 @@ import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
 import isKebabCaseId from '../utils/is-kebab-case-id.js';
 import normalizeSkillNamespace from '../utils/normalize-skill-namespace.js';
 import parseOpenAiSkillMetadata from '../utils/parse-openai-skill-metadata.js';
-import parseSkillFrontmatter from '../utils/parse-skill-frontmatter.js';
+import parseSkillFrontmatter from '../../../utils/parse-skill-frontmatter.js';
 import resolveSkillContainer from '../utils/resolve-skill-container.js';
 import resolveSkillOwner from '../utils/resolve-skill-owner.js';
 import validateOpenClawMetadata from '../utils/validate-openclaw-metadata.js';

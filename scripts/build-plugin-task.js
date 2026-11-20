@@ -1,3 +1,4 @@
+import { writePluginInfo } from '../lib/plugin-info.js';
 import { cloudProject } from '../node_modules/@tanaab/codex-tools/lib/cloud-config.ts';
 import { packageCloudSkills } from '../node_modules/@tanaab/codex-tools/lib/package-cloud-skills.ts';
 
@@ -6,5 +7,6 @@ if (process.env.CI !== 'true' || process.argv.length !== 2) {
 }
 
 const project = await cloudProject('cloud.config.js');
+await writePluginInfo(project.root);
 const skills = await packageCloudSkills(project, process.env);
 process.stdout.write(`Packaged ${skills.length} skills.\n`);

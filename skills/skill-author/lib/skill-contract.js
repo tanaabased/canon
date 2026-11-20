@@ -7,7 +7,7 @@ import genericTemplateText from '../templates/generic.md' with { type: 'text' };
 import integrationTemplateText from '../templates/integration.md' with { type: 'text' };
 import metaTemplateText from '../templates/meta.md' with { type: 'text' };
 import workflowTemplateText from '../templates/workflow.md' with { type: 'text' };
-import { splitLeadingSkillFrontmatter } from '../utils/parse-skill-frontmatter.js';
+import { splitLeadingSkillFrontmatter } from '../../../utils/parse-skill-frontmatter.js';
 import {
   DEFAULT_SKILL_NAMESPACE,
   DEFAULT_SKILL_OWNER,

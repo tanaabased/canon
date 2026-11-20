@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 import extractTopLevelSkillHeadings from '../utils/extract-top-level-skill-headings.js';
 import hasOrderedSkillSections from '../utils/has-ordered-skill-sections.js';
-import { splitLeadingSkillFrontmatter } from '../utils/parse-skill-frontmatter.js';
+import { splitLeadingSkillFrontmatter } from '../../../utils/parse-skill-frontmatter.js';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.resolve(TEST_DIR, '..', 'templates');
