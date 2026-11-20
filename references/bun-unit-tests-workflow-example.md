@@ -1,3 +1,10 @@
+# Bun unit test workflow
+
+Use this for repositories with unit tests. Keep the pull request trigger and run the repository test script. Set the runner matrix to the platforms the package supports.
+
+Destination: `.github/workflows/pr-unit-tests.yml`.
+
+```yaml
 name: Unit Tests
 
 on:
@@ -25,3 +32,4 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Run unit tests
         run: bun run test
+```

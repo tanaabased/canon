@@ -1,3 +1,10 @@
+# Bun npm release workflow
+
+Use this for a single Bun package published to npm. Preserve the release event, version preparation and validation of the artifact being published. Adapt build commands, package paths and release checks to the package.
+
+Destination: `.github/workflows/release.yml`.
+
+```yaml
 name: Release
 
 on:
@@ -69,3 +76,4 @@ jobs:
             bun run format:write
             bun run format:check
           sync-token: ${{ secrets.RELEASE_SYNC_TOKEN }}
+```

@@ -100,10 +100,10 @@ metadata:
 ## GitHub Actions
 
 - Treat this as the automation projection of the skill's owned lifecycle sections, not as a separate owner of testing, linting, deployment, or release doctrine.
-- Reference the applicable lifecycle section and its canonical workflow template instead of repeating their rules or embedding complete workflow YAML.
+- Reference the applicable lifecycle section and its annotated workflow example instead of repeating their rules or embedding complete workflow YAML.
 - Name each canonical target path under `.github/workflows/` so workflow boundaries and resulting check identities remain stable across repositories.
 - Use descriptive H3 headings only when the skill maps two or more materially different workflow paths; omit them for one-path sections.
-- Keep complete copyable workflow artifacts in `templates/`, surface-specific mechanics with their lifecycle owner, and independent workflow topology with the workflow owner.
+- Keep annotated workflow starters in `references/*-example.md`, surface-specific mechanics with their lifecycle owner, and independent workflow topology with the workflow owner.
 
 ## Review Criteria
 

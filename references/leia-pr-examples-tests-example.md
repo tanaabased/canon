@@ -1,3 +1,10 @@
+# Leia examples workflow
+
+Use this when a repository exercises installed behavior with Leia. Build the release-shaped artifact before running scenarios. Replace the sample matrix, build command and entrypoint with the ones the scenarios exercise.
+
+Destination: `.github/workflows/pr-examples-tests.yml`.
+
+```yaml
 name: Example Tests
 
 on:
@@ -40,3 +47,4 @@ jobs:
           shell: bash
           retry: 0
           stdin: true
+```

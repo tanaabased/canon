@@ -119,7 +119,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./lib/milestone-author.js](./lib/milestone-author.js): transport-neutral desired-state planning and verification
 - [./lib/github-milestone-client.js](./lib/github-milestone-client.js): narrow injected GitHub REST boundary
 - [./utils/normalize-milestone-target.js](./utils/normalize-milestone-target.js): exact target normalization
-- [./test/](./test/): flat deterministic client, command, target, orchestration, and partial-failure coverage
 
 ## Validation
 

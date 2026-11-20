@@ -1,3 +1,10 @@
+# Vue component test workflow
+
+Use this for Vue packages with component tests. Keep dependency installation and the component test command together. Select the Bun and Node versions used by the package.
+
+Destination: `.github/workflows/pr-component-tests.yml`.
+
+```yaml
 name: Component Tests
 
 on:
@@ -20,3 +27,4 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Test components
         run: bun run test:components
+```

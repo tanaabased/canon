@@ -5,7 +5,7 @@ Use these notes when applying the local shell CLI starters bundled with `tanaab-
 ## Included Starters
 
 - `bash-cli.sh` is the starter for Bash CLI entrypoints that need consistent `--help`, `--version`, `--debug`, and `--force` handling plus shared stdout, stderr, and debug logging helpers.
-- `powershell-cli.ps1` is the starter for PowerShell CLI entrypoints that need the same Tanaab color palette, `SCRIPT_VERSION` stamping contract, env-backed defaults, logging helpers, and help output shape while using conventional PowerShell parameters such as `-Force`, `-Item`, `-Debug`, `-Version`, and `-Help`.
+- [The PowerShell example](./powershell-cli-example.md) contains the starter for PowerShell CLI entrypoints that need the same Tanaab color palette, `SCRIPT_VERSION` stamping contract, env-backed defaults, logging helpers, and help output shape while using conventional PowerShell parameters such as `-Force`, `-Item`, `-Debug`, `-Version`, and `-Help`.
 
 ## Shared Rules
 
@@ -17,7 +17,7 @@ Use these notes when applying the local shell CLI starters bundled with `tanaab-
 
 ## Adaptation Notes
 
-- Copy the relevant starter into the repo entrypoint location and rename it to match the command it provides.
+- Copy the Bash starter or the fenced PowerShell source into the repo entrypoint location and rename it to match the command it provides.
 - Keep shebang-bearing copied entrypoints executable.
 - Replace the top-of-file description, version fallback policy, help rendering, argument handling, and main runner function with project-specific behavior, but keep the stampable `SCRIPT_VERSION` assignment unique.
 - Treat `SCRIPT_VERSION` as internal release metadata rather than a documented environment contract unless a specific repo intentionally opts into that behavior.

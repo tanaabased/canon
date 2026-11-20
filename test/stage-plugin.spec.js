@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import stagePlugin from '../lib/stage-plugin.js';
-import checkSkillDistribution from '../lib/check-skill-distribution.js';
+import checkSkillDistribution, { checkSkillResources } from '../lib/check-skill-distribution.js';
 import checkPackage from '../lib/package-checker.js';
 
 const repository = fileURLToPath(new URL('../', import.meta.url));
@@ -140,6 +140,25 @@ describe('plugin staging', function () {
       ),
       /Incorrect hash/,
     );
+  });
+
+  it('checks reader links inside packed references and permits unlinked machine inputs', async () => {
+    const skill = path.join(scratch, 'pilot');
+    const reference = path.join(skill, 'references/guide.md');
+    await mkdir(path.join(skill, 'references'), { recursive: true });
+    await mkdir(path.join(skill, 'templates'));
+    await writeFile(path.join(skill, 'SKILL.md'), '[guide](./references/guide.md)');
+    await writeFile(path.join(skill, 'templates/workflow.yml'), 'name: Test');
+    await writeFile(reference, '[starter](../templates/workflow.yml)');
+    await assert.rejects(checkSkillResources(skill), /guide\.md → \.\.\/templates\/workflow\.yml/);
+    await writeFile(reference, '[starters](../templates/)');
+    await assert.rejects(
+      checkSkillResources(skill),
+      /Link a concrete file: pilot\/references\/guide/,
+    );
+    await writeFile(path.join(skill, 'references/workflow-example.md'), '# Example');
+    await writeFile(reference, '[starter](./workflow-example.md)');
+    await checkSkillResources(skill);
   });
 
   it('selects nested commands and fills only missing skill paths from tracked resources', async () => {

@@ -1,3 +1,10 @@
+# Vue component starter
+
+Use this fallback when the project has no established component example. Keep the public props and slots aligned with the companion documentation and tests. Adapt their names, defaults, markup and styles to the component.
+
+Destination: `example-component.vue`.
+
+```vue
 <template>
   <section class="example-component" :data-framed="props.framed" :data-variant="props.variant">
     <header class="example-component__header">
@@ -53,3 +60,4 @@ const resolvedTitle = computed(() => {
   display: block;
 }
 </style>
+```

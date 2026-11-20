@@ -1,3 +1,10 @@
+# JavaScript action smoke workflow
+
+Use this to exercise the action from its own checkout. Keep the local `uses: ./` step. Replace the sample inputs, permissions and assertions with those required by the action under test.
+
+Destination: `.github/workflows/pr-smoke-tests.yml`.
+
+```yaml
 name: Action Smoke Tests
 
 on:
@@ -50,3 +57,4 @@ jobs:
             exit 1
           fi
         shell: bash
+```

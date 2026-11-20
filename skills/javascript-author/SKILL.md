@@ -130,7 +130,7 @@ describe('feature/utils/normalize-tags', () => {
 - Follow [npm publishing signals](./references/coding-stack-preferences.md#npm-package-publishing): the published GitHub status, not the SemVer suffix, selects npm `latest` or `edge` on release events; without release context, `publish-npm` falls back to SemVer syntax. Omit `channel-token` and `registry-token` when the compatible released action and trusted-publisher permissions support tokenless publication and syncing; do not turn off `sync-edge-tag` to avoid configuring `npm dist-tag`. Keep token-auth exceptions for unsupported registries, runners, or clients.
 - When repository files or tags must be synchronized, use a peer `publish-repo` job with its own preparation from the original release commit. Follow [Workflow Author's release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for immutable checkout inputs, independent jobs, and retry boundaries.
 - Format and validate command-owned changes within `publish-repo`'s preparation commands. Its upstream action stamps package/changelog files afterward and syncs internally; it has no post-stamping, pre-sync validation hook. Validate that path with a native dry run in PRs and report this limitation rather than claiming an after-sync check gates publication.
-- Minimal example: [npm release workflow](./templates/bun-npm-package-release-workflow.yml). Adapt package-specific build and tarball checks without widening this into workspace release orchestration.
+- Minimal example: [npm release workflow](./references/bun-npm-package-release-workflow-example.md). Adapt package-specific build and tarball checks without widening this into workspace release orchestration.
 
 ## GitHub Actions
 
@@ -139,14 +139,14 @@ Use this section as a reference map from the owned testing and deployment lifecy
 ### Pull Request Validation
 
 - Use the [preferred runtime setup actions](#preferred-tools) for CI, retaining caller-owned dependency installation and test commands.
-- For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow template](./templates/bun-unit-tests-workflow.yml).
-- Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow template](./templates/bun-pr-linter-workflow.yml).
+- For unit tests, apply `## Testing` through the canonical `.github/workflows/pr-unit-tests.yml` path using [the Bun unit-test workflow example](./references/bun-unit-tests-workflow-example.md).
+- Keep lint, format, and applicable type-checking in the canonical `.github/workflows/pr-linter.yml` path owned by Repo Standardizer; use [its GitHub Actions guidance](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#github-actions) and [linter workflow example](./references/bun-pr-linter-workflow-example.md).
 - For developer-machine code, CLIs, and plugin tooling, prefer the template's Ubuntu plus current macOS runner matrix.
 - Omit Windows runners unless the user or repository policy explicitly identifies Windows CI as a maintained surface; when required, use a supported versioned runner label and never `windows-latest`.
 
 ### Release Publication
 
-- When `## Deployment` applies, use that lifecycle and its linked npm release workflow template at the canonical `.github/workflows/release.yml` path rather than repeating authentication, build, formatting, or channel rules here.
+- When `## Deployment` applies, use that lifecycle and its linked npm release workflow example at the canonical `.github/workflows/release.yml` path rather than repeating authentication, build, formatting, or channel rules here.
 - Hand independent trigger, permission, job, matrix, reusable-workflow, or gate-placement changes to GitHub Workflow Author.
 
 ## Review Criteria
@@ -167,8 +167,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/javascript-function-tests.md](./references/javascript-function-tests.md): local direct-test defaults for helper-shaped JavaScript and TypeScript code
 - [./templates/transform-unit.js](./templates/transform-unit.js): starter shape for pure or mostly pure transformation helpers
 - [./templates/async-boundary-unit.js](./templates/async-boundary-unit.js): starter shape for narrow boundary-reading helpers
-- [./templates/bun-unit-tests-workflow.yml](./templates/bun-unit-tests-workflow.yml): starter `.github/workflows/pr-unit-tests.yml` for the canonical direct-test path
-- [./templates/bun-npm-package-release-workflow.yml](./templates/bun-npm-package-release-workflow.yml): starter `release.yml` for trusted npm publication from a Bun-managed package
+- [./references/bun-unit-tests-workflow-example.md](./references/bun-unit-tests-workflow-example.md): starter `.github/workflows/pr-unit-tests.yml` for the canonical direct-test path
+- [./references/bun-npm-package-release-workflow-example.md](./references/bun-npm-package-release-workflow-example.md): starter `release.yml` for trusted npm publication from a Bun-managed package
 
 ## Validation
 

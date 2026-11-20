@@ -124,7 +124,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Document component APIs through props, meaningful public slots, boolean and enum states, a top Usage playground, generated code examples, and source links when the project has stable source paths or URLs.
 - Prefer component docs pages shaped as H1 and intro copy, `<script setup>` schema, `## Usage` playground, then API sections such as Props, Slots, Variables, and focused notes.
 - Use `html` fences or highlighting for component usage snippets and generated template code; reserve `vue` for full Vue single-file component examples.
-- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) and its linked fallback templates only when the project does not already have usable local examples.
+- Use [./references/component-documentation-examples.md](./references/component-documentation-examples.md) and its linked fallback examples only when the project does not already have usable local examples.
 - When documenting a Vue component in a VitePress surface, follow [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md) for global-component reuse, page-local glue limits, and page reachability.
 - Treat bundled examples as generic fallbacks. In target projects, follow stronger local component, playground, docs-page, and registration patterns without copying their visual doctrine into canon.
 
@@ -148,7 +148,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## GitHub Actions
 
 - Use [Repo Standardizer's preferred runtime setup](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#preferred-tools), adding Node for component tests where required.
-- Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./templates/bun-pr-component-tests.yml). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./templates/bun-pr-build-checks.yml).
+- Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./references/bun-pr-component-tests-example.md). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./references/bun-pr-build-checks-example.md).
 - For published libraries, add a prepared-tarball consumer build to `.github/workflows/pr-examples-tests.yml`. Test each supported host only where its import or rendering contract differs; avoid a second equivalent release smoke suite.
 
 ## Review Criteria
@@ -162,15 +162,15 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 ## Bundled Resources
 
 - [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
-- [./templates/example-component.vue](./templates/example-component.vue): fallback generic Vue component SFC for projects without local component precedents
+- [./references/vue-component-example.md](./references/vue-component-example.md): fallback generic Vue component SFC for projects without local component precedents
 - [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
 - [./references/front-end-preferences.md](./references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared frontend stack defaults
-- [./templates/bun-pr-build-checks.yml](./templates/bun-pr-build-checks.yml): lint and production-build workflow
+- [./references/bun-pr-build-checks-example.md](./references/bun-pr-build-checks-example.md): lint and production-build workflow
 - [./templates/vitest.config.js](./templates/vitest.config.js): isolated component-test discovery
 - [./templates/example-component.test.js](./templates/example-component.test.js): public props and slots test
-- [./templates/bun-pr-component-tests.yml](./templates/bun-pr-component-tests.yml): component-test workflow
+- [./references/bun-pr-component-tests-example.md](./references/bun-pr-component-tests-example.md): component-test workflow
 - [./references/component-package-example.md](./references/component-package-example.md): library exports and prepared-package consumer example
 
 ## Validation

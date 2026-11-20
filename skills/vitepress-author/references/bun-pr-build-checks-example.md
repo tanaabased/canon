@@ -1,3 +1,10 @@
+# VitePress build checks workflow
+
+Use this to validate a VitePress documentation build. Keep lint and the VitePress build check. Adjust the documentation root and build command to the site.
+
+Destination: `.github/workflows/pr-build-checks.yml`.
+
+```yaml
 name: Build Checks
 
 on:
@@ -18,5 +25,8 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Run lint checks
         run: bun run lint
-      - name: Build
-        run: bun run build
+      - name: Build documentation
+        uses: tanaabased/actions/vitepress-build-check@v1
+        with:
+          build-command: bun run build
+```

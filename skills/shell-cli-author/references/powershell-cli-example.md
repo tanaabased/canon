@@ -1,3 +1,10 @@
+# PowerShell CLI starter
+
+Use this for a PowerShell entrypoint. Keep the stampable `SCRIPT_VERSION`, stream handling and option precedence. Rename the command and replace the sample options and command body.
+
+Destination: `bin/powershell-cli.ps1`.
+
+```powershell
 <#
 .SYNOPSIS
 Describe what this CLI does.
@@ -496,3 +503,4 @@ if ($Version) {
 }
 
 Invoke-RunCli -Invocation $script:Resolved
+```

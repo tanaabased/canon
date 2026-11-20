@@ -49,6 +49,9 @@ skill-folder/
 - `[error]` `SKILL.md` must exist.
 - `[error]` `agents/openai.yaml` must exist.
 - `[warn]` Create optional resource directories only when the skill actually needs them.
+- `[manual]` Write reader-facing documentation in `references/*.md`. For a starter the model adapts, use `references/*-example.md` with fenced source, its intended output path, when to use it, what to preserve, and what to adapt. Link to a concrete file. Reserve repository `examples/<scenario>/README.md` for runnable Leia scenarios.
+- `[manual]` Keep exact-copy and machine-consumed inputs in `templates/` in their original format. Import runtime inputs into the consuming Bun command where practical. Keep catalog icons in `assets/`.
+- `[manual]` Choose formats by consumer. In the Canon v0.15.3 Cloud pilot, Markdown opened through the skill reader. Bundled JavaScript, JSON inventories and text sidecars worked for command execution. Linked YAML workflows (`.yml`), PowerShell (`.ps1`), Vue (`.vue`) and `.prettierignore` did not open. Other extensions need a reader probe before relying on them for instructions.
 - `[warn]` Do not add auxiliary repo-style docs inside a skill such as `README.md`, `CHANGELOG.md`, or installation guides unless a runtime requires them.
 
 ## Required SKILL.md Shape
@@ -181,7 +184,7 @@ skill-folder/
 - `[manual]` When a coding skill retains `Deployment`, keep one canonical mechanism and one minimal example. Keep surface-local build, package, artifact, and delivery decisions with the coding owner, and route independent trigger, permission, job, matrix, or reusable-workflow design to the workflow owner.
 - `[manual]` Keep `GitHub Actions` as a reference map from the owned lifecycle sections to their automation paths. Use descriptive H3 headings only when two or more materially different workflow paths are present, and do not repeat the lifecycle doctrine under those headings.
 - `[manual]` Name each canonical `.github/workflows/<file>.yml` target in `GitHub Actions`; treat workflow-file boundaries and their resulting check identities as part of the contract rather than incidental placement.
-- `[manual]` Put complete copyable GitHub Actions YAML in an owning `templates/` resource and link it from `SKILL.md`; keep only a genuinely minimal schematic inline when it is necessary to explain a decision that the template cannot communicate clearly.
+- `[manual]` Link workflow starters from `SKILL.md` to an annotated example with the intended `.github/workflows/` destination.
 - `[manual]` Check whether the skill mostly restates one repo template's structure, scripts, examples, and docs; if so, prefer the template as source of truth and keep only a thin discovery or adaptation skill if needed.
 - `[manual]` Check shebang and executable-bit alignment for `bin/`, `scripts/`, starter templates, and other directly executable surfaces.
 - `[manual]` Check that tests pass the same ownership and hoisting test as the code they validate.

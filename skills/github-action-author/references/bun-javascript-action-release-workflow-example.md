@@ -1,3 +1,10 @@
+# JavaScript action release workflow
+
+Use this when releasing a GitHub Action with committed artifacts. Preserve the release event and full-history checkout. Adapt the validation and artifact preparation commands to the action.
+
+Destination: `.github/workflows/release.yml`.
+
+```yaml
 name: Release
 
 on:
@@ -37,3 +44,4 @@ jobs:
           # Match the intended moving major alias to the release tag.
           sync-tags: v1
           sync-token: ${{ secrets.RELEASE_SYNC_TOKEN }}
+```

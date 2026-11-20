@@ -121,7 +121,7 @@ Omit `workflow_dispatch` by default. Add it only for a named operator operation 
 - In PRs, validate real prepared artifacts with native dry runs; leave publication credentials and external writes to real release workflows. Apply [verification boundaries](./references/verification-boundaries.md) to keep completion checks inside the owning actions and avoid duplicate post-publication probes. Do not recreate a disposable registry publication harness; dry runs do not prove live publication.
 - After partial publication, inspect the failed destination before retrying it. npm versions are immutable, plugin uploads can replace an asset, and repository preparation can repeat changelog edits; independent jobs do not make retries universally idempotent.
 - For Codex plugins, apply `$tanaab-codex-plugin-author` for npm payload checks and archive migration. The archive publisher is no longer Canon's default; upstream deprecation is tracked in [Actions #43](https://github.com/tanaabased/actions/issues/43).
-- Use [JavaScript Author's release template](./templates/bun-npm-package-release-workflow.yml) for the npm lifecycle and add only the destinations the product actually ships.
+- Use [JavaScript Author's release example](./references/bun-npm-package-release-workflow-example.md) for the npm lifecycle and add only the destinations the product actually ships.
 
 ## Review Criteria
 

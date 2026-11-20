@@ -85,7 +85,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./scripts/check-task-completion.js](./scripts/check-task-completion.js): thin Bun command for deterministic read-only assessment
 - [./lib/github-task-client.js](./lib/github-task-client.js): injected `gh` command boundary for task, pull request, check, and log reads
 - [./lib/task-completion-inspector.js](./lib/task-completion-inspector.js): task evidence orchestration and failure-log enrichment
-- [./utils/](./utils/): focused target, acceptance, pull request, status, identifier, snippet, argument, and rendering units
 - [./references/task-completion-check-license.txt](./references/task-completion-check-license.txt): Apache-2.0 provenance retained for the adapted GitHub checks inspection logic
 - [./references/project-management-model.md](./references/project-management-model.md): task ownership and GitHub-backed project lifecycle contract
 
