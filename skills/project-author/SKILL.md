@@ -116,8 +116,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./references/canonical-repository-settings.json](./references/canonical-repository-settings.json): versioned desired state originally captured from `tanaabased/canon`
 - [./scripts/repository-policy.js](./scripts/repository-policy.js): non-interactive Bun entrypoint for inspect, create, and apply operations
 - [./lib/repository-policy-client.js](./lib/repository-policy-client.js): GitHub API orchestration over an injected command boundary
-- [./utils/](./utils/): focused slug, diff, protection-normalization, argument, rendering, and `gh` process units
-- [./test/](./test/): scope-local direct unit, library-boundary, command-wrapper, and fake-GitHub coverage
 
 ## Validation
 

@@ -1,3 +1,5 @@
+import { markdown as parser } from 'bun';
+
 /**
  * Extracts repo-relative Markdown targets while skipping anchors and external links.
  *
@@ -6,24 +8,14 @@
  */
 export default function extractRelativeMarkdownLinks(markdown) {
   const links = [];
-  const pattern = /\[[^\]]*\]\(([^)]+)\)/g;
-
-  for (const match of String(markdown ?? '').matchAll(pattern)) {
-    const rawTarget = match[1].trim();
-    const target = rawTarget.split(/\s+/)[0];
-
-    if (
-      !target ||
-      target.startsWith('#') ||
-      target.startsWith('mailto:') ||
-      target.startsWith('data:') ||
-      /^[a-z]+:\/\//i.test(target)
-    ) {
-      continue;
-    }
-
-    links.push(target);
+  function collect(target) {
+    if (target && !/^(?:#|\/\/|[a-z][a-z0-9+.-]*:)/i.test(target)) links.push(target);
+    return '';
   }
 
+  parser.render(String(markdown ?? ''), {
+    link: (_, { href }) => collect(href),
+    image: (_, { src }) => collect(src),
+  });
   return links;
 }

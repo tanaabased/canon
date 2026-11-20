@@ -34,7 +34,9 @@ For a Codex Cloud pilot, use the plugin files from the checked `$scratch/tanaab-
 
 The package check validates identities, metadata, entrypoints, and skill/resource links in the extracted payload. Leia owns executable consumer behavior. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
 
-Use skill-relative `entrypoints` globs in the [build config](./skills/task-author/build.config.js) to select commands. Optional repo-relative `copy` globs fill missing paths in the staged skill from tracked files. Both selectors support `*`, `**`, and `!` exclusions that win in any order. Use the `<!-- packaged-execution -->` marker in `SKILL.md` only when at least one command matches `entrypoints`. The build inserts the execution instructions there. For shared resources, track a relative symlink at the path the skill uses. The build materializes linked files and directories in staging. Add new links, targets, and commands to Git before building. Prose-only skills need no build config.
+Every Canon skill declares `copy: ['references/**', 'templates/**']` in its own [build config](./skills/task-author/build.config.js). These repo-relative globs fill missing paths in the packaged skill so a reference can use another shared file at any depth. Skill-local files take precedence. The build consumes the packaged execution fragment separately.
+
+For source use, track relative symlinks at the paths the skill uses and link to concrete files from the document that needs them. For executable skills, add skill-relative `entrypoints` globs and the `<!-- packaged-execution -->` marker in `SKILL.md` where the build should insert execution instructions. Prose-only skills use just the `copy` key. Both selectors support `*`, `**`, and `!` exclusions that win in any order. Add new configs, resources, symlinks, and commands to Git before building.
 
 ## Codex cache
 

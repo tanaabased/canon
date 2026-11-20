@@ -1,8 +1,7 @@
-import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import bundledLargeIconImport from '../assets/icon-large.base64.txt' with { type: 'file' };
-import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
+import smallIcon from '../assets/icon-small.svg' with { type: 'text' };
 
 import pathExists from '../../../utils/path-exists.js';
 import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
@@ -59,6 +58,38 @@ function makeOpenAiYaml({ brandColor, displayName, shortDescription, defaultProm
   brand_color: ${quoteYaml(brandColor)}
   default_prompt: ${quoteYaml(defaultPrompt)}
 `;
+}
+
+async function publishSkill(staged, destination, force) {
+  // Concurrent scaffolders must leave an in-progress replacement and its backup alone.
+  const lock = path.join(path.dirname(destination), `.${path.basename(destination)}.publish`);
+  const backup = path.join(lock, 'previous');
+  await mkdir(lock);
+  let preserveBackup = false;
+  try {
+    if (await pathExists(destination)) {
+      if (!force) throw new Error(`Skill directory already exists: ${destination}`);
+      await rename(destination, backup);
+      preserveBackup = true;
+    }
+    await rename(staged, destination);
+    preserveBackup = false;
+  } catch (error) {
+    if (preserveBackup) {
+      try {
+        await rename(backup, destination);
+        preserveBackup = false;
+      } catch (restoreError) {
+        throw new Error(
+          `Original skill preserved at ${backup} after replacement failed: ${error.message}`,
+          { cause: restoreError },
+        );
+      }
+    }
+    throw error;
+  } finally {
+    if (!preserveBackup) await rm(lock, { recursive: true });
+  }
 }
 
 /**
@@ -147,17 +178,8 @@ export async function initializeSkill(options) {
   if ((await pathExists(skillDir)) && !options.force) {
     throw new Error(`Skill directory already exists: ${skillDir}`);
   }
-  const largeIcon = Buffer.from(
-    await readFile(path.resolve(import.meta.dir, bundledLargeIconImport), 'utf8'),
-    'base64',
-  );
-  if (options.force) await rm(skillDir, { force: true, recursive: true });
-
-  const agentsDir = path.join(skillDir, 'agents');
-  const assetsDir = path.join(skillDir, 'assets');
-  await mkdir(agentsDir, { recursive: true });
-  await mkdir(assetsDir, { recursive: true });
-
+  // Load the artwork asynchronously so synchronous Bun consumers can import the scaffolder.
+  const { default: largeIcon } = await import('../utils/large-icon.js');
   const skillContent = renderSkillTemplate(typeDefinition.templateBody, {
     description: normalizedDescription,
     description_yaml: quoteYaml(normalizedDescription),
@@ -180,25 +202,30 @@ export async function initializeSkill(options) {
     shortDescription: makeShortSkillDescription(normalizedDescription, { descriptionPrefix }),
   });
 
-  await Promise.all([
-    writeFile(path.join(skillDir, 'SKILL.md'), skillContent, 'utf8'),
-    writeFile(path.join(agentsDir, 'openai.yaml'), openAiContent, 'utf8'),
-    copyFile(
-      path.resolve(import.meta.dir, bundledSmallIconImport),
-      path.join(assetsDir, 'icon-small.svg'),
-    ),
-    writeFile(path.join(assetsDir, 'icon-large.png'), largeIcon),
-  ]);
+  await mkdir(outputDir, { recursive: true });
+  const temporary = await mkdtemp(path.join(outputDir, '.skill-author-'));
+  const staged = path.join(temporary, 'staged', folderName);
+  try {
+    await mkdir(path.join(staged, 'agents'), { recursive: true });
+    await mkdir(path.join(staged, 'assets'));
+    await writeFile(path.join(staged, 'SKILL.md'), skillContent, 'utf8');
+    await writeFile(path.join(staged, 'agents/openai.yaml'), openAiContent, 'utf8');
+    await writeFile(path.join(staged, 'assets/icon-small.svg'), smallIcon);
+    await writeFile(path.join(staged, 'assets/icon-large.png'), largeIcon);
 
-  const result = await validateSkillDir(skillDir, {
-    container,
-    expectedType: type,
-    namespace,
-    owner,
-  });
-  if (result.errors.length > 0) {
-    throw new Error(`Generated skill failed validation.\n${formatSkillValidationReport(result)}`);
+    const result = await validateSkillDir(staged, {
+      container,
+      expectedType: type,
+      namespace,
+      owner,
+    });
+    if (result.errors.length) {
+      throw new Error(`Generated skill failed validation.\n${formatSkillValidationReport(result)}`);
+    }
+
+    await publishSkill(staged, skillDir, options.force);
+    return { result: { ...result, skillDir }, skillDir };
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
   }
-
-  return { result, skillDir };
 }

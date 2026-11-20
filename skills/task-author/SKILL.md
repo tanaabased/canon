@@ -143,8 +143,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - [task-state-reader.js](./lib/task-state-reader.js): shared issue, field, and comment read-back normalization
 - [github-capability-client.js](./lib/github-capability-client.js): read-only `gh` discovery boundary
 - [github-task-client.js](./lib/github-task-client.js): narrow `gh api` create, comment, and read-back boundary
-- [utilities](./utils): focused assessment, normalization, rendering, metadata, and labeling units
-- [tests](./test): flat utility, client-boundary, shared-fixture, and revision coverage
 - [task-management-fixtures.js](./test/task-management-fixtures.js): shared executable fixture inputs used across task-management skills
 
 ## Validation

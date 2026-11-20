@@ -115,7 +115,7 @@ test -n "$(my-cli --version)"
 ## GitHub Actions
 
 - Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
-- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow template](./templates/leia-pr-examples-tests.yml) when the CLI needs CI-backed scenario coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the Leia workflow example](./references/leia-pr-examples-tests-example.yml.md) when the CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the built CLI artifact, placing it on `PATH`, and running one Leia README per matrix entry. Use `setup-bun` for the harness and build; add `setup-node` when the CLI targets Node, per [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes).
 - Keep this as an automation projection of the package-level CLI test contract, not as general workflow-topology ownership.
 
@@ -137,7 +137,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md): public `bin/`, internal `scripts/`, `lib/`, `utils/`, scoped `test/`, and hoisting rules
 - [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): Bun development and consumer runtime contracts
 - [./references/leia-markdown-scenarios.md](./references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
-- [./templates/leia-pr-examples-tests.yml](./templates/leia-pr-examples-tests.yml): shared Bootbox-style workflow starter for Leia-backed PR examples
+- [./references/leia-pr-examples-tests-example.yml.md](./references/leia-pr-examples-tests-example.yml.md): shared workflow example for running packaged CLI scenarios
 - [./templates/leia-markdown-example-readme.md](./templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
 - [./templates/leia-examples-agents.md](./templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
@@ -153,4 +153,4 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm help output, including dimmed optional usage placeholders and dimmed displayed default annotations, plus env precedence, repeatable-option behavior, and `SCRIPT_VERSION` shape follow [./references/cli-style-rules.md](./references/cli-style-rules.md) when those surfaces changed.
 - Confirm Leia-backed examples stay focused on observable CLI contract behavior and keep one scenario per README.
 - Confirm scenario execution follows Tanaab's Leia usage policy and the installed Leia version's documentation.
-- Confirm `GitHub Actions` maps the CLI test lifecycle to the shared Leia workflow template without duplicating the template or drifting into general workflow authoring.
+- Confirm `GitHub Actions` maps the CLI test lifecycle to the shared Leia workflow example without duplicating its YAML or drifting into general workflow authoring.

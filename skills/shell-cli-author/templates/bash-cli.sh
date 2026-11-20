@@ -68,7 +68,6 @@ DEBUG="${TANAAB_DEBUG:-${DEBUG:-${RUNNER_DEBUG:-}}}"
 FORCE="${TANAAB_FORCE:-}"
 ITEMS_CSV="${TANAAB_ITEM:-}"
 ORIGOPTS="$*"
-declare -a ORIGINAL_ARGS=("$@")
 
 # shellcheck disable=SC2034
 declare -a POSITIONALS=()
@@ -154,22 +153,6 @@ array_join() {
   done
 }
 
-cli_overrides_option() {
-  local option_name="$1"
-  shift
-  local arg
-
-  for arg in "$@"; do
-    case "${arg}" in
-      "${option_name}" | "${option_name}"=*)
-        return 0
-        ;;
-    esac
-  done
-
-  return 1
-}
-
 shell_join() {
   local arg
 
@@ -189,12 +172,6 @@ shell_join() {
 # shellcheck disable=SC2034
 declare -a ITEMS=()
 append_csv_to_array ITEMS "${ITEMS_CSV}"
-
-if cli_overrides_option '--item' "${ORIGINAL_ARGS[@]}"; then
-  # Any CLI-provided repeatable flag replaces the env-seeded list for that option.
-  # shellcheck disable=SC2034
-  ITEMS=()
-fi
 
 show_version() {
   printf "%s\n" "${SCRIPT_VERSION}"
@@ -269,6 +246,7 @@ EOS
 }
 
 parse_args() {
+  local has_cli_items=0
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --force)
@@ -279,12 +257,18 @@ parse_args() {
         FORCE="${1#*=}"
         shift
         ;;
-      --item)
-        append_array_value ITEMS "$2"
-        shift 2
-        ;;
-      --item=*)
-        append_array_value ITEMS "${1#*=}"
+      --item | --item=*)
+        if [[ "${has_cli_items}" == 0 ]]; then
+          ITEMS=()
+          has_cli_items=1
+        fi
+        if [[ "$1" == --item ]]; then
+          [[ $# -ge 2 ]] || fail "--item requires a value"
+          shift
+          append_array_value ITEMS "$1"
+        else
+          append_array_value ITEMS "${1#*=}"
+        fi
         shift
         ;;
       --debug)

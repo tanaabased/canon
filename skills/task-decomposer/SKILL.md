@@ -134,8 +134,6 @@ Read each applicable document in full, or the explicitly named section, before d
 - [./lib/task-decomposition-inspector.js](./lib/task-decomposition-inspector.js): partial-evidence orchestration.
 - [./lib/task-decomposition-planner.js](./lib/task-decomposition-planner.js): canonical child planning, exact reuse, graph, parent diff, and digest orchestration.
 - [./lib/task-decomposition-publisher.js](./lib/task-decomposition-publisher.js): ordered writes, resumable failure reporting, and exact verification.
-- [./utils/](./utils/): focused threshold, evidence, milestone handoff, constraint, graph, rollup, reuse, rendering, and argument units.
-- [./test/](./test/): flat deterministic recommendation, validation, client, planning, publication, partial-failure, resume, and verification coverage.
 - [./references/task-management-contract.md](./references/task-management-contract.md): canonical child task and metadata contract.
 - [./references/project-management-model.md](./references/project-management-model.md): task and milestone lifecycle boundaries.
 - [./references/github-cli-routing.md](./references/github-cli-routing.md): inherited host routing for bare `gh`.

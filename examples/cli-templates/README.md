@@ -13,7 +13,8 @@ tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 cp consumer-package.json "$TMPDIR/consumer/package.json"
 cp "$TMPDIR/package/skills/javascript-cli-author/templates/bun-cli.js" "$TMPDIR/consumer/bin/"
 cp "$TMPDIR/package/skills/shell-cli-author/templates/bash-cli.sh" "$TMPDIR/standalone/"
-cp "$TMPDIR/package/skills/shell-cli-author/templates/powershell-cli.ps1" "$TMPDIR/standalone/"
+awk '/^`{3}powershell$/ { body = 1; next } body && /^`{3}$/ { exit } body { print }' "$TMPDIR/package/skills/shell-cli-author/references/powershell-cli-example.ps1.md" > "$TMPDIR/standalone/powershell-cli.ps1"
+test -s "$TMPDIR/standalone/powershell-cli.ps1"
 
 # should build a standalone bun bundle from the copied starter
 cd "$TMPDIR/consumer"
@@ -69,8 +70,13 @@ TANAAB_ITEM='env one,env-two' NO_COLOR=1 pwsh -NoProfile -File powershell-cli.ps
 # should replace environment items with explicit items through all three starters
 cd "$TMPDIR/standalone"
 TANAAB_ITEM='env-only' NO_COLOR=1 ./bun-cli.js --item 'cli one' --item cli-two | grep -F 'received repeatable items: cli one,cli-two'
-TANAAB_ITEM='env-only' NO_COLOR=1 ./bash-cli.sh --item 'cli one' --item cli-two | grep -F 'received repeatable items: cli one,cli-two'
+TANAAB_ITEM='env-only' NO_COLOR=1 ./bash-cli.sh --item 'cli one' --item=cli-two | grep -F 'received repeatable items: cli one,cli-two'
 TANAAB_ITEM='env-only' NO_COLOR=1 pwsh -NoProfile -Command './powershell-cli.ps1 -Item "cli one","cli-two"' | grep -F 'received repeatable items: cli one,cli-two'
+
+# should preserve environment items when bash receives --item as a positional
+cd "$TMPDIR/standalone"
+output="$(TANAAB_ITEM=env-only NO_COLOR=1 ./bash-cli.sh -- --item)"
+grep -F 'received repeatable items: env-only' <<< "$output"
 
 # should let bun explicit false override an enabled force environment default
 cd "$TMPDIR/standalone"

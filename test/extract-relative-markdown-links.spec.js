@@ -14,4 +14,39 @@ describe('utils/extract-relative-markdown-links', () => {
 
     assert.deepEqual(extractRelativeMarkdownLinks(markdown), ['./references/contract.md#shape']);
   });
+  it('resolves reference links and images while ignoring code and unused definitions', () => {
+    const markdown = [
+      '[read the guide][guide] and ![logo][]',
+      '`[literal](./missing)`',
+      '',
+      '[guide]: <./the guide.md> "Title"',
+      '[logo]: ./assets/logo.svg',
+      '[unused]: ./missing',
+    ].join('\n');
+    assert.deepEqual(extractRelativeMarkdownLinks(markdown), [
+      './the guide.md',
+      './assets/logo.svg',
+    ]);
+  });
+
+  it('should check prose links around a Markdown starter containing its own fences', () => {
+    const markdown = [
+      '[starter](./references/readme-example.md)',
+      '````markdown',
+      '```sh',
+      'bun run test',
+      '```',
+      '[consumer docs](./docs/setup.md)',
+      '`````',
+      '   ~~~yaml',
+      '[sample](./sample)',
+      '   ~~~',
+      '[contract](./references/contract.md)',
+    ].join('\n');
+
+    assert.deepEqual(extractRelativeMarkdownLinks(markdown), [
+      './references/readme-example.md',
+      './references/contract.md',
+    ]);
+  });
 });

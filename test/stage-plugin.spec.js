@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { lstat, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import stagePlugin from '../lib/stage-plugin.js';
-import checkSkillDistribution from '../lib/check-skill-distribution.js';
+import checkSkillDistribution, { checkSkillResources } from '../lib/check-skill-distribution.js';
 import checkPackage from '../lib/package-checker.js';
 
 const repository = fileURLToPath(new URL('../', import.meta.url));
@@ -24,6 +24,18 @@ describe('plugin staging', function () {
 
   afterEach(async () => {
     await rm(scratch, { recursive: true, force: true });
+  });
+
+  it('declares the shared resource copy globs in every Canon skill', async () => {
+    const skills = path.join(repository, 'skills');
+    for (const entry of await readdir(skills, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const config = path.join(skills, entry.name, 'build.config.js');
+      const { default: build } = await import(pathToFileURL(config));
+      for (const glob of ['references/**', 'templates/**']) {
+        assert.ok(build.copy?.includes(glob), `${config} must copy ${glob}`);
+      }
+    }
   });
 
   it('materializes skill symlinks and bundles the source entrypoints at their original paths', async () => {
@@ -142,6 +154,41 @@ describe('plugin staging', function () {
     );
   });
 
+  it('checks reader links inside packed references and permits unlinked machine inputs', async () => {
+    const skill = path.join(scratch, 'pilot');
+    const reference = path.join(skill, 'references/guide.md');
+    await mkdir(path.join(skill, 'references'), { recursive: true });
+    await mkdir(path.join(skill, 'templates'));
+    await writeFile(path.join(skill, 'SKILL.md'), '[guide](./references/guide.md)');
+    await writeFile(path.join(skill, 'templates/workflow.yml'), 'name: Test');
+    await writeFile(reference, '[starter](../templates/workflow.yml)');
+    await assert.rejects(checkSkillResources(skill), /guide\.md → \.\.\/templates\/workflow\.yml/);
+    await writeFile(path.join(skill, 'config.yaml'), 'version: 1');
+    await writeFile(reference, '[config][raw]\n\n[raw]: ../config.yaml');
+    await assert.rejects(checkSkillResources(skill), /guide\.md → \.\.\/config.yaml/);
+    await writeFile(reference, '[starters](../templates/)');
+    await assert.rejects(
+      checkSkillResources(skill),
+      /Link a concrete file: pilot\/references\/guide/,
+    );
+    await writeFile(path.join(skill, 'references/workflow-example.yml.md'), '# Example');
+    await writeFile(reference, '[starter](./workflow-example.yml.md)');
+    await checkSkillResources(skill);
+  });
+
+  it('checks downstream Markdown links past ten hops and handles cycles', async () => {
+    const skill = path.join(scratch, 'chain');
+    await mkdir(skill);
+    await writeFile(path.join(skill, 'SKILL.md'), '[first](./1.md)');
+    for (let hop = 1; hop < 12; hop++) {
+      await writeFile(path.join(skill, `${hop}.md`), `[next](./${hop + 1}.md)`);
+    }
+    await writeFile(path.join(skill, '12.md'), '[start](./SKILL.md) and [leaf](./leaf.md)');
+    await assert.rejects(checkSkillResources(skill), /leaf\.md/);
+    await writeFile(path.join(skill, 'leaf.md'), '# Leaf');
+    await checkSkillResources(skill);
+  });
+
   it('selects nested commands and fills only missing skill paths from tracked resources', async () => {
     const checkout = path.join(scratch, 'checkout');
     const prefix = 'skills/pilot/';
@@ -176,7 +223,19 @@ describe('plugin staging', function () {
     execFileSync('git', ['add', '.'], { cwd: checkout });
     await writeFile(path.join(checkout, 'references/untracked.txt'), 'untracked');
 
+    const helper = path.join(checkout, prefix, 'scripts/nested/helper.js');
+    const message = path.join(checkout, 'message.js');
+    await writeFile(helper, "export { message } from '../../../../message.js';");
+    await writeFile(message, "export const message = 'untracked';");
+    await assert.rejects(stagePlugin(checkout, path.join(scratch, 'plugin')), /message\.js/);
+    execFileSync('git', ['add', 'message.js'], { cwd: checkout });
+    await writeFile(message, "export const message = 'tracked working-tree edit';");
     const stage = await stagePlugin(checkout, path.join(scratch, 'plugin'));
+    const run = path.join(stage, prefix, 'scripts/nested/run.js');
+    assert.equal(
+      execFileSync(process.execPath, [run], { encoding: 'utf8' }).trim(),
+      'tracked working-tree edit',
+    );
     const skill = path.join(stage, prefix);
     await assert.rejects(lstat(path.join(skill, 'templates/packaged-command-execution.md')), {
       code: 'ENOENT',

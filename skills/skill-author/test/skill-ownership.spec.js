@@ -66,6 +66,21 @@ describe('skills/skill-author/lib/skill-ownership', () => {
     assert.deepEqual((await validateSkillDir(skillDir)).errors, []);
   });
 
+  it('preserves the original skill when a forced replacement fails validation', async () => {
+    const { skillDir } = await scaffold();
+    const marker = path.join(skillDir, 'existing.txt');
+    await writeFile(marker, 'original');
+    await assert.rejects(
+      scaffold({ force: true, prompt: 'missing public skill id' }),
+      /failed validation/,
+    );
+    assert.equal(await readFile(marker, 'utf8'), 'original');
+    const { result } = await scaffold({ force: true, displayName: 'Replacement' });
+    assert.equal(result.skillDir, skillDir);
+    await assert.rejects(readFile(marker), { code: 'ENOENT' });
+    assert.match(await readFile(path.join(skillDir, 'agents/openai.yaml'), 'utf8'), /Replacement/);
+  });
+
   it('should serialize punctuation in discovery text and reject malformed authored metadata', async () => {
     const description = 'Compare fields: show "quoted" changes and # references.';
     const { skillDir, result } = await scaffold({ description });

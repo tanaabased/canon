@@ -1,0 +1,49 @@
+# JavaScript action release workflow
+
+Use this workflow for a GitHub Action whose consumers resolve a release tag to a committed runtime entrypoint. Check out the release event commit with its history, then run validation before publishing repository changes.
+
+If the entrypoint in `action.yml` points to a built bundle, stamp any version embedded in that bundle before building it. If the action points directly to committed source, omit the example's bundle preparation. Set `sync-tags` to the moving major the repository actually maintains, or omit it when releases use immutable tags only. Use the repository's authorized sync token for the publication step.
+
+Destination: `.github/workflows/release.yml`.
+
+```yaml
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish-repo:
+    name: Publish repo
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Install Bun
+        uses: tanaabased/actions/setup-bun@v1
+      - name: Install dependencies
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Validate source
+        run: |
+          bun run lint
+          bun run test
+      - name: Publish repo
+        uses: tanaabased/actions/publish-repo@v1
+        with:
+          commands: |
+            # Stamp build inputs first when the artifact embeds the package version.
+            version-injector package.json --style json --version "$PREPARE_RELEASE_VERSION"
+            bun run build
+            bun run format:write
+            bun run format:check
+          # Match the intended moving major alias to the release tag.
+          sync-tags: v1
+          sync-token: ${{ secrets.RELEASE_SYNC_TOKEN }}
+```
