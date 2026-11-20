@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Bundled 12 more commands for standalone execution, including issue schema inspection, issue form rendering, and task completion checks. [#132](https://github.com/tanaabased/canon/issues/132) [#133](https://github.com/tanaabased/canon/pull/133)
+- Packaged the remaining 21 skills with skill-local resources, bringing all 25 Canon skills into the Cloud packaging check. [#132](https://github.com/tanaabased/canon/issues/132) [#133](https://github.com/tanaabased/canon/pull/133)
+- Shipped the default icon for `tanaab-skill-author` as readable text so the scaffolder can recreate the PNG through a text-only skill reader. [#132](https://github.com/tanaabased/canon/issues/132) [#133](https://github.com/tanaabased/canon/pull/133)
+
 ## v0.15.2 - [November 19, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.2)
 
 - Added per-skill globs to `bun run build:plugin` for selecting commands and copying shared files into unoccupied paths. [#127](https://github.com/tanaabased/canon/issues/127) [#129](https://github.com/tanaabased/canon/pull/129)
