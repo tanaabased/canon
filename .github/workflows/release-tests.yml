@@ -40,6 +40,10 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
+      - name: Build pinned Cloud packager
+        run: |
+          cli=$(bash scripts/build-cloud-pilot-task.sh "$RUNNER_TEMP/codex-tools-pilot")
+          echo "CODEX_TOOLS_CLI=$cli" >> "$GITHUB_ENV"
       - name: Stage plugin
         run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin
@@ -57,6 +61,8 @@ jobs:
           echo "path=$package_root" >> "$GITHUB_OUTPUT"
           bun run check:package "$package_root"
           grep -F "## ${STAMPED_VERSION} - [September 17, 2026](${STAMPED_RELEASE_URL})" "$package_root/CHANGELOG.md"
+      - name: Exercise new-skill package checks
+        run: bun test/package-cutover.js
       - name: Validate extracted plugin
         uses: tanaabased/actions/validate-codex-plugin@v1
         with:
@@ -95,6 +101,10 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
+      - name: Build pinned Cloud packager
+        run: |
+          cli=$(bash scripts/build-cloud-pilot-task.sh "$RUNNER_TEMP/codex-tools-pilot")
+          echo "CODEX_TOOLS_CLI=$cli" >> "$GITHUB_ENV"
       - name: Stage plugin
         run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack plugin

@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+      - name: Install Node.js
+        uses: tanaabased/actions/setup-node@v1
       - name: Install Bun
         uses: tanaabased/actions/setup-bun@v1
       - name: Install dependencies
@@ -35,6 +37,10 @@ jobs:
         uses: tanaabased/actions/setup-openclaw@v1
         with:
           package-field: openclaw.build.openclawVersion
+      - name: Build pinned Cloud packager
+        run: |
+          cli=$(bash scripts/build-cloud-pilot-task.sh "$RUNNER_TEMP/codex-tools-pilot")
+          echo "CODEX_TOOLS_CLI=$cli" >> "$GITHUB_ENV"
       - name: Stage candidate plugin
         run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
       - name: Pack candidate

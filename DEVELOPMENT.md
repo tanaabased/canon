@@ -18,10 +18,12 @@ bun run lint
 
 `bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), [Codex discovery and cache recovery](https://github.com/tanaabased/canon/blob/main/examples/codex/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
-Build from a Git checkout and check the actual npm payload without installing dependencies into it:
+Follow the [Canon skill contribution guide](./skills/AGENTS.md) when creating or editing skills. Build from a Git checkout and check the actual npm payload without installing dependencies into it:
 
 ```sh
 scratch="$(mktemp -d)"
+CODEX_TOOLS_CLI=$(bash scripts/build-cloud-pilot-task.sh "$scratch/codex-tools")
+export CODEX_TOOLS_CLI
 bun run build:plugin "$scratch/plugin"
 npm pack "$scratch/plugin" --ignore-scripts --pack-destination "$scratch"
 version="$(bun -p '(await Bun.file("package.json").json()).version')"
@@ -32,11 +34,9 @@ bun run check:package "$scratch/extracted"
 
 For a Codex Cloud pilot, use the plugin files from the checked `$scratch/tanaab-canon-$version.tgz` tarball. It includes the bundled commands, runtime inventories, and execution instructions.
 
-The package check validates identities, metadata, entrypoints, and skill/resource links in the extracted payload. Leia owns executable consumer behavior. Release Tests separately stamp a synthetic version, validate the extracted artifact, and dry-run npm, ClawHub, and repository publication.
+The pilot builds Codex Tools from the pinned Git revision. Before releasing Canon, pin the npm version of `@tanaab/codex-tools` that contains the verified builder, then rerun the same checks using the installed dependency.
 
-Every Canon skill declares `copy: ['references/**', 'templates/**']` in its own [build config](./skills/task-author/build.config.js). These repo-relative globs fill missing paths in the packaged skill so a reference can use another shared file at any depth. Skill-local files take precedence. The build consumes the packaged execution fragment separately.
-
-For source use, track relative symlinks at the paths the skill uses and link to concrete files from the document that needs them. For executable skills, add skill-relative `entrypoints` globs and the `<!-- packaged-execution -->` marker in `SKILL.md` where the build should insert execution instructions. Prose-only skills use just the `copy` key. Both selectors support `*`, `**`, and `!` exclusions that win in any order. Add new configs, resources, symlinks, and commands to Git before building.
+The build uses tracked working-tree files, including unstaged edits. Use the same source inputs when checking the extracted tarball. Run `bun test/package-cutover.js` to exercise the new-skill fixture with the same package check as Release Tests.
 
 ## Codex cache
 

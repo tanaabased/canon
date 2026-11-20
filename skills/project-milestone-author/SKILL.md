@@ -91,6 +91,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Treat successful responses as provisional. Re-read the milestone and every selected task, report silently dropped values, and never compensate or roll back remote state to hide partial success.
 - Keep the desired-state logic behind the injected GitHub client so an Agent System transport can replace that boundary without changing authorization semantics.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow

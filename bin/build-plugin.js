@@ -1,8 +1,29 @@
 #!/usr/bin/env bun
 
-import { fileURLToPath } from 'node:url';
+import { mkdir, realpath, rm } from 'node:fs/promises';
+import path from 'node:path';
 
-import stagePlugin from '../lib/stage-plugin.js';
+import { cloudConfig, runCloud, snapshotCheckout, sourceRoot } from '../lib/package-source.js';
+
+async function stagePlugin(destination) {
+  const requested = path.resolve(destination);
+  const staging = path.join(await realpath(path.dirname(requested)), path.basename(requested));
+  const relative = path.relative(await realpath(sourceRoot), staging);
+  if (!relative.startsWith(`..${path.sep}`) && !relative.startsWith(`dist${path.sep}`)) {
+    throw new Error('Choose a new staging directory outside the checkout or under dist/.');
+  }
+
+  await mkdir(staging);
+  try {
+    await snapshotCheckout(sourceRoot, staging);
+    runCloud(staging, 'package', cloudConfig);
+    await rm(path.join(staging, '.git'), { recursive: true });
+    return staging;
+  } catch (error) {
+    await rm(staging, { recursive: true, force: true });
+    throw error;
+  }
+}
 
 const args = process.argv.slice(2);
 if (args.length !== 1 || args[0].startsWith('-')) {
@@ -10,7 +31,7 @@ if (args.length !== 1 || args[0].startsWith('-')) {
   process.exitCode = 1;
 } else {
   try {
-    const staging = await stagePlugin(fileURLToPath(new URL('../', import.meta.url)), args[0]);
+    const staging = await stagePlugin(args[0]);
     process.stdout.write(`Staged Canon plugin at ${staging}\n`);
   } catch (error) {
     process.stderr.write(`${error.message}\n`);

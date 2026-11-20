@@ -128,6 +128,8 @@ Read and apply every applicable document before the dependent work. A summary or
 
 Use the local skill directory as `<skill-path>` when the host exposes it.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow
