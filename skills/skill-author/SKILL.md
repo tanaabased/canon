@@ -161,6 +161,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 5. Validate before finishing authorized authoring.
 
+- When creating a skill in the Canon source checkout, read the repository's `skills/AGENTS.md` and add the skill's `build.config.js` before running validation.
 - Run [`bun <skill-path>/scripts/validate-skill.js`](./scripts/validate-skill.js) against the generated or updated skill.
 - Fix every `[error]` before finishing.
 - Pass the same explicit owner, namespace, and container used for scaffolding; validation defaults to `tanaab` ownership.
