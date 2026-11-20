@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.15.4 - [November 20, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.4)
+
 ### New Features
 
 - Added dark-mode variants of the Canon plugin logo and composer icon.
