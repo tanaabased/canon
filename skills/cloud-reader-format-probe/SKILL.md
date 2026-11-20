@@ -32,6 +32,8 @@ Use the installed Codex Cloud skill reader to test direct reads of files shipped
 3. For each path, record the observed sentinel or exact read error. Compare byte counts and hashes when the reader supplies that evidence. Compare `bun.lock` with `sample.lock`, and `sample.plist.in` with `sample.in` and `sample.plist`. Compare the template cohort with the original samples and suffix controls.
 4. Mark a failing sample as unreadable only when the inventory for the tested artifact confirms it shipped. Report confirmed missing files separately, including files omitted by distribution. If presence is unknown, report the path as unavailable and keep the error. Request `references/absent.md` once as a deliberately missing control, outside the indexed totals.
 5. Start with a Markdown blockquote headed `## 🔎 CLOUD READER FORMAT PROBE`. Quote every line, including blank lines, and use sentence case for field labels. Show the tested version and date, indexed and attempted counts, readable and unreadable counts, confirmed missing and unavailable counts, and the missing control result. Follow the card with per-path results grouped by cohort. Mark unfinished reads as pending and keep them out of the outcome counts.
+6. End the human-readable report with **Readable extensions**. List each distinct extension from a successful read on its own line, preserving casing and compound suffixes like `.plist.in`. Keep dotfiles and extensionless names in the per-path results.
+7. On request, append the report as one fenced `json` object with `installedVersion` (or `null` if unavailable), `probeDate` (ISO date), `readableExtensions` (array), `results` (array), and `missingControl` (a separate result). Include `path`, `cohort` (for indexed samples), and an `outcome` of `readable`, `unreadable`, `absent`, `unavailable`, or `pending` in each result. Include `sentinel` and `error` only when observed.
 
 ## Bundled Resources
 
@@ -39,4 +41,5 @@ Use the installed Codex Cloud skill reader to test direct reads of files shipped
 
 ## Validation
 
-- Verify that every indexed path has a result from an actual reader request.
+- Verify that every reported outcome except `pending` comes from an actual reader request. Mark each unattempted path as `pending`.
+- Check that the extension list and any JSON report agree with the per-path outcomes.
