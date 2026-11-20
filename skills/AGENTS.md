@@ -7,4 +7,4 @@ Follow the [Skill Standard](../references/skill-standard.md) when creating or ed
 - In `build.config.js`, declare `copy: ['references/**', 'templates/**']` for every skill. Add skill-relative `entrypoints` globs for commands under `scripts/`. For packaged command instructions, put `<!-- packaged-execution -->` in `SKILL.md`.
 - Keep every resource the skill needs inside its directory in the extracted package. Check links inside bundled references and include assets required by commands.
 
-Track new inputs with Git, then follow [Development](../DEVELOPMENT.md#validation) to build, pack, and check before pushing.
+Track new inputs with Git before pushing and check the [PR release rehearsal](../DEVELOPMENT.md#validation) for packaging errors.

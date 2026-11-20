@@ -10,7 +10,6 @@ Use the Node and Bun versions in [`.node-version`](./.node-version) and [`.bun-v
 git clone git@github.com:tanaabased/canon.git
 cd canon
 bun install --frozen-lockfile --ignore-scripts
-bun run setup:codex-tools
 bun run test
 bun run lint
 ```
@@ -19,23 +18,11 @@ bun run lint
 
 `bun run test` runs the local Mocha suite, including isolated units and components with filesystem fixtures; `bun run lint` checks code and formatting. The [Examples workflow](https://github.com/tanaabased/canon/blob/main/.github/workflows/pr-examples-tests.yml) runs Leia against the candidate tarball: [skill tools](https://github.com/tanaabased/canon/blob/main/examples/skill-tools/README.md), [CLI starters](https://github.com/tanaabased/canon/blob/main/examples/cli-templates/README.md), [Codex discovery and cache recovery](https://github.com/tanaabased/canon/blob/main/examples/codex/README.md), and [OpenClaw installation](https://github.com/tanaabased/canon/blob/main/examples/openclaw/README.md). Keep platform-dependent and host-mutating scenarios on isolated CI runners; do not run the OpenClaw scenario against your normal profile.
 
-Follow the [Canon skill contribution guide](./skills/AGENTS.md) when creating or editing skills. Build from a Git checkout and check the actual npm payload without installing dependencies into it:
+Follow the [Canon skill contribution guide](./skills/AGENTS.md) when creating or editing skills. The [PR release rehearsal](./.github/workflows/release-tests.yml) builds the skills in a disposable Git checkout, packs the plugin, and verifies the extracted tarball. Use the rehearsal results to check your changes before merging.
 
-```sh
-scratch="$(mktemp -d)"
-bun run build:plugin "$scratch/plugin"
-npm pack "$scratch/plugin" --ignore-scripts --pack-destination "$scratch"
-version="$(bun -p '(await Bun.file("package.json").json()).version')"
-mkdir "$scratch/extracted"
-tar -xzf "$scratch/tanaab-canon-$version.tgz" -C "$scratch/extracted" --strip-components=1
-bun run check:package "$scratch/extracted"
-```
+Run `bun run build:plugin` only in CI. The build modifies tracked skills in place and leaves the Git index available to `bun run check:package` for verification. The [release workflow](./.github/workflows/release.yml) uses the same build and verification commands.
 
-For a Codex Cloud pilot, use the plugin files from the checked `$scratch/tanaab-canon-$version.tgz` tarball. It includes the bundled commands, runtime inventories, and execution instructions.
-
-During the pilot, `bun run codex-tools` runs the CLI source from Codex Tools `main` at the commit in `bun.lock`. `setup:codex-tools` installs the source CLI's locked dependencies. Before releasing Canon, switch to the tested npm release of `@tanaab/codex-tools` and rerun the same checks.
-
-The build uses tracked working-tree files, including unstaged edits. Use the same source inputs when checking the extracted tarball. Run `bun test/package-policy.js` to exercise the new-skill fixture with the same package check as Release Tests.
+During the pilot, those commands import the Cloud libraries from Codex Tools `main` at the commit in `bun.lock`. Canon temporarily declares the source imports' dependencies so one `bun install` supplies them. Before releasing Canon, switch to a published Codex Tools version with those Cloud entry points and rerun the release rehearsal.
 
 ## Codex cache
 
