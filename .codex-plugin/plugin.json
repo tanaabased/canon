@@ -14,10 +14,10 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Tanaab Maneuvering Systems",
+    "displayName": "Canon",
     "shortDescription": "Tanaab canon and agent workflows",
     "longDescription": "Installable Tanaab skills and supporting canon for consistent project, code, documentation, and delivery workflows.",
-    "developerName": "@tanaabased",
+    "developerName": "Tanaab Maneuvering Systems LLC",
     "category": "Tanaab-based",
     "capabilities": ["Interactive", "Write"],
     "defaultPrompt": [
