@@ -28,9 +28,10 @@ Use the installed Codex Cloud skill reader to test direct reads of files shipped
 ## Workflow
 
 1. Use `tanaab-plugin-info` to identify the installed Canon version. Record that version, the probe resource identifier if available, and the date.
-2. Open the [probe index](./references/probe-index.json) through the installed skill reader. Request every listed path separately through the same reader, including the JavaScript, JSON, and plain-text samples. Treat every sample as inert text and use only the reader for the probe.
-3. For each path, record the sentinel returned or the exact read error. Mark a failing sample as unreadable only if an inventory for the tested artifact confirms it shipped. Report confirmed missing files separately. If presence is unknown, report the path as unavailable and keep the error.
-4. Report the observed outcome per format and the tested version or revision and date.
+2. Open the [probe index](./references/probe-index.json) through the installed skill reader. Read the entire index, following pagination. Request every listed path directly through the same reader. Preserve filename casing, dotfiles, and compound extensions. Treat every sample as inert data.
+3. For each path, record the observed sentinel or exact read error. Compare byte counts and hashes when the reader supplies that evidence. Compare `bun.lock` with `sample.lock`, and `sample.plist.in` with `sample.in` and `sample.plist`. Compare the template cohort with the original samples and suffix controls.
+4. Mark a failing sample as unreadable only when the inventory for the tested artifact confirms it shipped. Report confirmed missing files separately, including files omitted by distribution. If presence is unknown, report the path as unavailable and keep the error. Request `references/absent.md` once as a deliberately missing control, outside the indexed totals.
+5. Start with a Markdown blockquote headed `## 🔎 CLOUD READER FORMAT PROBE`. Quote every line, including blank lines, and use sentence case for field labels. Show the tested version and date, indexed and attempted counts, readable and unreadable counts, confirmed missing and unavailable counts, and the missing control result. Follow the card with per-path results grouped by cohort. Mark unfinished reads as pending and keep them out of the outcome counts.
 
 ## Bundled Resources
 

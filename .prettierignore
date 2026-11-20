@@ -7,6 +7,7 @@ _site
 .vitepress/cache
 .vitepress/dist
 bun.lock
+skills/cloud-reader-format-probe/references/*
 skills/skill-author/templates/*.md
 .github/ISSUE_TEMPLATE/task.yml
 .github/ISSUE_TEMPLATE/bug.yml

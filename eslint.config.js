@@ -30,6 +30,7 @@ export default defineConfig([
     '**/_site/**',
     '**/.vitepress/cache/**',
     '**/.vitepress/dist/**',
+    'skills/cloud-reader-format-probe/references/*',
   ]),
   js.configs.recommended,
   {
