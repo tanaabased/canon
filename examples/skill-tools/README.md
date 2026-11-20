@@ -41,7 +41,7 @@ generated="$TMPDIR/standalone/tanaab-example-skill"
 cd "$generated/assets"
 shasum -a 256 --check <<'SHA256'
 991a99c4e07f2d6c44966965b4ea2518f2beaccb6e3ea60a1386d8d62077b771  icon-large.png
-8b660dbca6b512c3e0177b1aba3ac57f606dc5d29040a5291aea74bfd5c08ed8  icon-small.svg
+6be13090673ec8f21e504d68f2799b900efda96ebab590b88b64327273a01c3c  icon-small.svg
 SHA256
 validator="$TMPDIR/copied-validator"
 sh "$scenario/copy-verified-command.sh" "$skill" scripts/validate-skill.js "$validator"
