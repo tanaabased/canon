@@ -90,7 +90,7 @@ Read and apply every applicable document before the dependent work. A summary or
 - Keep material local by default and hoist only on proven reuse, repo-wide contract status, or standalone human value.
 - For `coding` skills, allow broad discovery language only when it still funnels into one dominant implementation pattern.
 - For `coding` skills that retain `Deployment`, keep package, build, artifact, and delivery decisions surface-local and route independent workflow-graph work to the workflow owner.
-- Place annotated starters in `references/*-example.md` and exact-copy inputs in `templates/` as described in the [Skill Standard](./references/skill-standard.md).
+- Place annotated starters in `references/` and exact-copy inputs in `templates/` as described in the [Skill Standard](./references/skill-standard.md).
 - For `coding` skills, keep `GitHub Actions` as a thin reference map to owned lifecycle sections and annotated workflow examples rather than another doctrine owner.
 - Name canonical `.github/workflows/*.yml` targets in that reference map so workflow boundaries and check identities remain stable.
 - Prefer a repo template when the reusable contract is a committed starter repository with structure, scripts, examples, and docs that users adopt as a whole; keep a live skill only for cross-repo decision-making that remains after the template choice.

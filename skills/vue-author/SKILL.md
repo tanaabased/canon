@@ -148,7 +148,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 ## GitHub Actions
 
 - Use [Repo Standardizer's preferred runtime setup](https://github.com/tanaabased/canon/blob/main/skills/javascript-repo-standardizer/SKILL.md#preferred-tools), adding Node for component tests where required.
-- Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./references/bun-pr-component-tests.yml-example.md). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./references/bun-pr-build-checks.yml-example.md).
+- Project component behavior tests into `.github/workflows/pr-component-tests.yml` using the [component-test workflow](./references/bun-pr-component-tests-example.yml.md). Keep lint and production builds in `.github/workflows/pr-build-checks.yml` using the [build-checks workflow](./references/bun-pr-build-checks-example.yml.md).
 - For published libraries, add a prepared-tarball consumer build to `.github/workflows/pr-examples-tests.yml`. Test each supported host only where its import or rendering contract differs; avoid a second equivalent release smoke suite.
 
 ## Review Criteria
@@ -162,15 +162,15 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 ## Bundled Resources
 
 - [./references/component-documentation-examples.md](./references/component-documentation-examples.md): short guide for fallback component documentation artifacts and canonization filtering
-- [./references/example-component.vue-example.md](./references/example-component.vue-example.md): fallback generic Vue component SFC for projects without local component precedents
+- [./references/component-example.vue.md](./references/component-example.vue.md): fallback generic Vue component SFC for projects without local component precedents
 - [./templates/example-component.md](./templates/example-component.md): fallback VitePress component docs page for projects without local docs page precedents
 - [./references/front-end-preferences.md](./references/front-end-preferences.md): shared Vue 3, SCSS, and subtheme defaults
 - [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md): shared rules for VitePress Markdown page UI and embedded component boundaries
 - [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared frontend stack defaults
-- [./references/bun-pr-build-checks.yml-example.md](./references/bun-pr-build-checks.yml-example.md): lint and production-build workflow
+- [./references/bun-pr-build-checks-example.yml.md](./references/bun-pr-build-checks-example.yml.md): lint and production-build workflow
 - [./templates/vitest.config.js](./templates/vitest.config.js): isolated component-test discovery
 - [./templates/example-component.test.js](./templates/example-component.test.js): public props and slots test
-- [./references/bun-pr-component-tests.yml-example.md](./references/bun-pr-component-tests.yml-example.md): component-test workflow
+- [./references/bun-pr-component-tests-example.yml.md](./references/bun-pr-component-tests-example.yml.md): component-test workflow
 - [./references/component-package-example.md](./references/component-package-example.md): library exports and prepared-package consumer example
 
 ## Validation

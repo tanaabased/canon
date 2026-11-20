@@ -163,9 +163,9 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Pull Request Validation
 
-- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow example](./references/bun-unit-tests-workflow.yml-example.md).
-- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow example](./references/bun-pr-linter-workflow.yml-example.md).
-- Use `.github/workflows/pr-examples-tests.yml` with the [shared Leia workflow example](./references/leia-pr-examples-tests.yml-example.md) only when the plugin owns justified installed or runtime scenarios.
+- Apply `## Testing` through `.github/workflows/pr-unit-tests.yml` using [JavaScript Author's unit-test workflow example](./references/bun-unit-tests-workflow-example.yml.md).
+- Apply the repo baseline through `.github/workflows/pr-linter.yml` using [Repo Standardizer's linter workflow example](./references/bun-pr-linter-workflow-example.yml.md).
+- Use `.github/workflows/pr-examples-tests.yml` with the [shared Leia workflow example](./references/leia-pr-examples-tests-example.yml.md) only when the plugin owns justified installed or runtime scenarios.
 
 ### Release Package Validation
 
@@ -175,7 +175,7 @@ Use this section as a reference map from the owned testing and deployment lifecy
 
 ### Release Publication
 
-- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release example](./references/bun-npm-package-release-workflow.yml-example.md) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
+- Apply `## Deployment` through `.github/workflows/release.yml`, starting from [JavaScript Author's npm release example](./references/bun-npm-package-release-workflow-example.yml.md) and adding a separate ClawHub pipeline that preserves the shared release and package contract.
 - Use the shared publishers as independent destination jobs under [Workflow Author's release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition), preserving original commit checkouts and destination-specific recovery.
 
 ## Review Criteria

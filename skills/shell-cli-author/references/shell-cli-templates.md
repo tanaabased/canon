@@ -5,7 +5,7 @@ Use these notes when applying the local shell CLI starters bundled with `tanaab-
 ## Included Starters
 
 - `bash-cli.sh` is the starter for Bash CLI entrypoints that need consistent `--help`, `--version`, `--debug`, and `--force` handling plus shared stdout, stderr, and debug logging helpers.
-- [The PowerShell example](./powershell-cli.ps1-example.md) contains the starter for PowerShell CLI entrypoints that need the same Tanaab color palette, `SCRIPT_VERSION` stamping contract, env-backed defaults, logging helpers, and help output shape while using conventional PowerShell parameters such as `-Force`, `-Item`, `-Debug`, `-Version`, and `-Help`.
+- [The PowerShell example](./powershell-cli-example.ps1.md) contains the starter for PowerShell CLI entrypoints that need the same Tanaab color palette, `SCRIPT_VERSION` stamping contract, env-backed defaults, logging helpers, and help output shape while using conventional PowerShell parameters such as `-Force`, `-Item`, `-Debug`, `-Version`, and `-Help`.
 
 ## Shared Rules
 

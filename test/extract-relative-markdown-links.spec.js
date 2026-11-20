@@ -16,7 +16,7 @@ describe('utils/extract-relative-markdown-links', () => {
   });
   it('should check prose links around a Markdown starter containing its own fences', () => {
     const markdown = [
-      '[starter](./references/readme.md-example.md)',
+      '[starter](./references/readme-example.md)',
       '````markdown',
       '```sh',
       'bun run test',
@@ -30,7 +30,7 @@ describe('utils/extract-relative-markdown-links', () => {
     ].join('\n');
 
     assert.deepEqual(extractRelativeMarkdownLinks(markdown), [
-      './references/readme.md-example.md',
+      './references/readme-example.md',
       './references/contract.md',
     ]);
   });

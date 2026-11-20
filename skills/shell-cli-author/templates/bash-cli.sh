@@ -68,7 +68,6 @@ DEBUG="${TANAAB_DEBUG:-${DEBUG:-${RUNNER_DEBUG:-}}}"
 FORCE="${TANAAB_FORCE:-}"
 ITEMS_CSV="${TANAAB_ITEM:-}"
 ORIGOPTS="$*"
-declare -a ORIGINAL_ARGS=("$@")
 
 # shellcheck disable=SC2034
 declare -a POSITIONALS=()
@@ -190,7 +189,7 @@ shell_join() {
 declare -a ITEMS=()
 append_csv_to_array ITEMS "${ITEMS_CSV}"
 
-if cli_overrides_option '--item' "${ORIGINAL_ARGS[@]}"; then
+if cli_overrides_option '--item' "$@"; then
   # Any CLI-provided repeatable flag replaces the env-seeded list for that option.
   # shellcheck disable=SC2034
   ITEMS=()

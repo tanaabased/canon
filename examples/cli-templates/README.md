@@ -13,7 +13,7 @@ tar -xzf "$CANON_TARBALL" -C "$TMPDIR/package" --strip-components=1
 cp consumer-package.json "$TMPDIR/consumer/package.json"
 cp "$TMPDIR/package/skills/javascript-cli-author/templates/bun-cli.js" "$TMPDIR/consumer/bin/"
 cp "$TMPDIR/package/skills/shell-cli-author/templates/bash-cli.sh" "$TMPDIR/standalone/"
-awk '/^`{3}powershell$/ { body = 1; next } body && /^`{3}$/ { exit } body { print }' "$TMPDIR/package/skills/shell-cli-author/references/powershell-cli.ps1-example.md" > "$TMPDIR/standalone/powershell-cli.ps1"
+awk '/^`{3}powershell$/ { body = 1; next } body && /^`{3}$/ { exit } body { print }' "$TMPDIR/package/skills/shell-cli-author/references/powershell-cli-example.ps1.md" > "$TMPDIR/standalone/powershell-cli.ps1"
 test -s "$TMPDIR/standalone/powershell-cli.ps1"
 
 # should build a standalone bun bundle from the copied starter

@@ -11,7 +11,7 @@ Use this baseline when standardizing a repository around one Bun-first lint and 
 - `tsconfig.json`: conditional Bun-compatible TypeScript baseline
 - `snippets/vue-eslint-layer.js`: optional Vue ESLint layer
 
-Apply the ESLint and Prettier configs and merge the [ignore example](./baseline.prettierignore-example.md) into the root ignore file. Add the TypeScript or Vue files only when that layer applies. If a repo already has lint or format config, align it to these files rather than inventing a separate local formatting baseline.
+Apply the ESLint and Prettier configs and merge the [ignore example](./prettierignore-example.md) into the root ignore file. Add the TypeScript or Vue files only when that layer applies. If a repo already has lint or format config, align it to these files rather than inventing a separate local formatting baseline.
 
 ## Baseline Drift Checklist
 

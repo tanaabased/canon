@@ -1,5 +1,6 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Fixed the Bash CLI starter failing on macOS Bash 3.2 when invoked without arguments.
 - Moved workflow, PowerShell, Vue, and Prettier starters into annotated Markdown references for the Cloud skill reader.
 - Bundled scaffold artwork directly into Skill Author so a copied command can generate both icons on its own.
 - Added dark-mode variants of the Canon plugin logo and composer icon.

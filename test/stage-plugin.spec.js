@@ -156,8 +156,8 @@ describe('plugin staging', function () {
       checkSkillResources(skill),
       /Link a concrete file: pilot\/references\/guide/,
     );
-    await writeFile(path.join(skill, 'references/workflow.yml-example.md'), '# Example');
-    await writeFile(reference, '[starter](./workflow.yml-example.md)');
+    await writeFile(path.join(skill, 'references/workflow-example.yml.md'), '# Example');
+    await writeFile(reference, '[starter](./workflow-example.yml.md)');
     await checkSkillResources(skill);
   });
 

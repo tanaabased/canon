@@ -115,7 +115,7 @@ test -n "$(my-cli --version)"
 ## GitHub Actions
 
 - Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
-- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the Leia workflow example](./references/leia-pr-examples-tests.yml-example.md) when the CLI needs CI-backed scenario coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the Leia workflow example](./references/leia-pr-examples-tests-example.yml.md) when the CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the built CLI artifact, placing it on `PATH`, and running one Leia README per matrix entry. Use `setup-bun` for the harness and build; add `setup-node` when the CLI targets Node, per [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes).
 - Keep this as an automation projection of the package-level CLI test contract, not as general workflow-topology ownership.
 
@@ -137,7 +137,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md): public `bin/`, internal `scripts/`, `lib/`, `utils/`, scoped `test/`, and hoisting rules
 - [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): Bun development and consumer runtime contracts
 - [./references/leia-markdown-scenarios.md](./references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end CLI validation
-- [./references/leia-pr-examples-tests.yml-example.md](./references/leia-pr-examples-tests.yml-example.md): shared workflow example for running packaged CLI scenarios
+- [./references/leia-pr-examples-tests-example.yml.md](./references/leia-pr-examples-tests-example.yml.md): shared workflow example for running packaged CLI scenarios
 - [./templates/leia-markdown-example-readme.md](./templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
 - [./templates/leia-examples-agents.md](./templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 
