@@ -18,12 +18,10 @@ bun --no-install - "$TMPDIR/package/skills/cloud-reader-format-probe" <<'JS'
 import assert from 'node:assert/strict';
 import { readdir } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
-
 const skill = process.argv[2];
 const index = await Bun.file(join(skill, 'references/probe-index.json')).json();
 const samples = await readdir(join(skill, 'references/samples'));
 assert.deepEqual([...index].sort(), samples.map((name) => `references/samples/${name}`).sort());
-
 const formats = new Set();
 for (const file of index) {
   const name = basename(file);
