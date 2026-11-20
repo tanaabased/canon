@@ -1,5 +1,9 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Added dark-mode variants of the Canon plugin logo and composer icon.
+- Changed the plugin display name to Canon and the developer credit to Tanaab Maneuvering Systems LLC.
+- Updated the small icons for all 25 skills and newly scaffolded skills to use Tanaab green (`#00996A`) on light and dark backgrounds.
+
 ## v0.15.3 - [November 20, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.3)
 
 - Bundled 12 more commands for standalone execution, including issue schema inspection, issue form rendering, and task completion checks. [#132](https://github.com/tanaabased/canon/issues/132) [#133](https://github.com/tanaabased/canon/pull/133)
