@@ -30,6 +30,7 @@ Report the identity and skill inventory shipped with the Canon artifact that sup
 1. Open the [plugin information](./references/plugin-info.json) through the installed skill reader. Use that file as the sole source.
 2. For identity questions, report the requested package name and version or plugin name, ID, author, and repository. For inventory questions, report the requested names and descriptions from the shipped skill list.
 3. Cite the resource path or identifier returned by the reader. If the file is unreadable or missing, report the installed version and inventory as unavailable.
+4. Put the result in a Markdown blockquote headed `## 📦 CANON PLUGIN INFO`. Quote every line, including blank lines, and use sentence case for field labels. For a version lookup, show the package, version, author, shipped skill count, and source. Expand the inventory when asked. Use `## ⚠️ CANON PLUGIN INFO UNAVAILABLE` when the resource cannot be read.
 
 ## Bundled Resources
 
