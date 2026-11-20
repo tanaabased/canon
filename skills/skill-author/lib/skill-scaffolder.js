@@ -1,8 +1,7 @@
-import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import bundledLargeIconImport from '../assets/icon-large.base64.txt' with { type: 'file' };
-import bundledSmallIconImport from '../assets/icon-small.svg' with { type: 'file' };
+import smallIcon from '../assets/icon-small.svg' with { type: 'text' };
 
 import pathExists from '../../../utils/path-exists.js';
 import formatSkillValidationReport from '../utils/format-skill-validation-report.js';
@@ -147,10 +146,8 @@ export async function initializeSkill(options) {
   if ((await pathExists(skillDir)) && !options.force) {
     throw new Error(`Skill directory already exists: ${skillDir}`);
   }
-  const largeIcon = Buffer.from(
-    await readFile(path.resolve(import.meta.dir, bundledLargeIconImport), 'utf8'),
-    'base64',
-  );
+  // Load the artwork asynchronously so synchronous Bun consumers can import the scaffolder.
+  const { default: largeIcon } = await import('../utils/large-icon.js');
   if (options.force) await rm(skillDir, { force: true, recursive: true });
 
   const agentsDir = path.join(skillDir, 'agents');
@@ -183,10 +180,7 @@ export async function initializeSkill(options) {
   await Promise.all([
     writeFile(path.join(skillDir, 'SKILL.md'), skillContent, 'utf8'),
     writeFile(path.join(agentsDir, 'openai.yaml'), openAiContent, 'utf8'),
-    copyFile(
-      path.resolve(import.meta.dir, bundledSmallIconImport),
-      path.join(assetsDir, 'icon-small.svg'),
-    ),
+    writeFile(path.join(assetsDir, 'icon-small.svg'), smallIcon),
     writeFile(path.join(assetsDir, 'icon-large.png'), largeIcon),
   ]);
 
