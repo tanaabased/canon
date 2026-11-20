@@ -1,6 +1,8 @@
 # Bun pull request lint workflow
 
-Use this for the repository lint check. Keep the frozen install and run the same lint command locally and in CI. Adjust the runner and lint script for the repository.
+Use this workflow to run the repository's lint script on a pull request. Keep the read-only checkout, frozen dependency install, and the same command contributors run locally.
+
+For a JavaScript repository, the lint script can combine ESLint and Prettier. When the repository owns TypeScript source, run its existing `typecheck` script as a separate step so a compiler error is recognizable in CI. For an OpenClaw plugin, this job checks the source without starting a Gateway. Keep installed-plugin checks in the workflow that prepares and runs the plugin.
 
 Destination: `.github/workflows/pr-linter.yml`.
 

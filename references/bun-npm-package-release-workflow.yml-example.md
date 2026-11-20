@@ -1,6 +1,10 @@
 # Bun npm release workflow
 
-Use this for a single Bun package published to npm. Preserve the release event, version preparation and validation of the artifact being published. Adapt build commands, package paths and release checks to the package.
+Use this workflow when a published GitHub Release ships one Bun-managed package to npm. The npm job checks out the event commit, stamps the release version, packs once, and passes the same tarball to the dry run and publication. The repository job synchronizes changes that belong in Git.
+
+- For a source-only package, validate the prepared files and omit the build. For generated packages, stamp before building and pack the directory containing the finished manifest and artifacts. Inspect the extracted tarball before handing its path to both publish steps.
+- For a Codex plugin, stamp the npm and plugin manifests together and validate the extracted skills. For an OpenClaw plugin that also ships to ClawHub, give that destination its own validation and publication job. Keep npm credentials and permissions scoped to the npm job.
+- Set `sync-edge-tag` to match the package's channel policy. In the repository job, rebuild only artifacts checked into Git. Rehearse preparation and the publication dry run in PRs; reserve live publication for the release event.
 
 Destination: `.github/workflows/release.yml`.
 

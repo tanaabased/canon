@@ -1,6 +1,8 @@
 # JavaScript action smoke workflow
 
-Use this to exercise the action from its own checkout. Keep the local `uses: ./` step. Replace the sample inputs, permissions and assertions with those required by the action under test.
+Use this workflow to exercise the action a pull request would ship. Invoke `uses: ./` from the candidate checkout. For a JavaScript action, prepare the entrypoint named in `action.yml`; a composite action can run directly when its referenced steps already exist in the checkout.
+
+Replace `example-input` and the sample file and tag assertions with observable behavior from the action's contract. For an output-producing action, give the action step an ID and assert the declared output. For a file-producing action, inspect the resulting file. Keep the tag assertion only for an action that creates tags, and run assertions after failure only when that state is meaningful.
 
 Destination: `.github/workflows/pr-smoke-tests.yml`.
 

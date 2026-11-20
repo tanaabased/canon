@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+- Moved workflow, PowerShell, Vue, and Prettier starters into annotated Markdown references for the Cloud skill reader.
+- Bundled scaffold artwork directly into Skill Author so a copied command can generate both icons on its own.
 - Added dark-mode variants of the Canon plugin logo and composer icon.
 - Changed the plugin display name to Canon and the developer credit to Tanaab Maneuvering Systems LLC.
 - Updated the small icons for all 25 skills and newly scaffolded skills to use Tanaab green (`#00996A`) on light and dark backgrounds.

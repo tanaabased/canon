@@ -1,6 +1,8 @@
 # Vue component test workflow
 
-Use this for Vue packages with component tests. Keep dependency installation and the component test command together. Select the Bun and Node versions used by the package.
+Use this workflow to run Vue component behavior tests with the repository's configured Vitest suite. Bun installs dependencies from the lockfile. The example also sets up Node because the component test script launches Vitest with Node.
+
+For an established suite, keep its working test configuration and select the script that runs it once in CI. For a new suite, use Vue Test Utils and a DOM environment to exercise public props, slots, events and interactions. Add a browser scenario only for a behavior the mounted component cannot exercise, such as a real browser layout dependency.
 
 Destination: `.github/workflows/pr-component-tests.yml`.
 

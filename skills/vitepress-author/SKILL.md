@@ -120,7 +120,7 @@ bun run build
 ## GitHub Actions
 
 - Use the [preferred build action](#preferred-tools), preserving caller-owned lint, preparation commands, dependencies, and check identity.
-- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the VitePress build-checks workflow example](./references/bun-pr-build-checks-example.md).
+- Apply `## Testing` through the canonical `.github/workflows/pr-build-checks.yml` path using [the VitePress build-checks workflow example](./references/bun-pr-build-checks.yml-example.md).
 - Keep this as an automation projection of the VitePress build- and lint-first validation path rather than expanding into broader CI topology.
 
 ## Review Criteria
@@ -137,7 +137,7 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/vitepress-markdown-pages.md](./references/vitepress-markdown-pages.md): shared VitePress Markdown page UI, global component reuse, and page-local glue rules
 - [./references/readme-standards.md](./references/readme-standards.md): boundary between README-only docs and a VitePress docs site
 - [./references/coding-stack-preferences.md](./references/coding-stack-preferences.md): shared frontend and docs-stack defaults
-- [./references/bun-pr-build-checks-example.md](./references/bun-pr-build-checks-example.md): surface-owned workflow starter for lint- and build-first pull-request validation
+- [./references/bun-pr-build-checks.yml-example.md](./references/bun-pr-build-checks.yml-example.md): surface-owned workflow starter for lint- and build-first pull-request validation
 
 ## Validation
 
@@ -150,5 +150,5 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - Confirm Markdown page work inspected globally available theme and subtheme components before adding markup, styles, or new Vue.
 - Confirm repeated or brand-significant Markdown page patterns were promoted or explicitly called out rather than silently embedded in one page.
 - Confirm site builds and lint remain covered, with embedded component behavior delegated to Vue Author.
-- Confirm `GitHub Actions` maps VitePress validation to the shared build-checks workflow template without duplicating the template or drifting into general workflow topology.
+- Confirm `GitHub Actions` maps VitePress validation to the VitePress build-checks example without duplicating its YAML or drifting into general workflow topology.
 - Run the relevant lint, build, or smoke checks, then confirm links, navigation, page reachability, and theme behavior across the touched VitePress surface.

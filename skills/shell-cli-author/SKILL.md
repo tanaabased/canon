@@ -108,7 +108,7 @@ test -n "$(./dist/my-script.sh --version)"
 ## GitHub Actions
 
 - Use the [preferred `run-leia` action](#preferred-tools) after caller-owned preparation, with explicit scenarios, shell, retry, and stdin inputs.
-- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the shared Leia PR examples workflow example](./references/leia-pr-examples-tests-example.md) when the shell CLI needs CI-backed scenario coverage.
+- Apply `## Testing` through the canonical `.github/workflows/pr-examples-tests.yml` path using [the Leia workflow example](./references/leia-pr-examples-tests.yml-example.md) when the shell CLI needs CI-backed scenario coverage.
 - Keep the workflow centered on preparing the shipped entrypoint, exposing it on `PATH`, and running one Leia README per matrix entry.
 - Do not infer Windows CI support from a PowerShell entrypoint, wrapper, or template. Add a Windows runner only when the user or repository policy explicitly requests it, and then use a supported versioned label rather than `windows-latest`.
 - Keep this as an automation projection of the shell CLI test contract, not as general workflow-topology ownership.
@@ -129,9 +129,9 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable shell CLI policy
 - [./references/shell-cli-templates.md](./references/shell-cli-templates.md): local notes for the bundled Bash and PowerShell CLI starters
 - [./templates/bash-cli.sh](./templates/bash-cli.sh): starter for Bash CLI entrypoints
-- [./references/powershell-cli-example.md](./references/powershell-cli-example.md): starter for PowerShell CLI entrypoints
+- [./references/powershell-cli.ps1-example.md](./references/powershell-cli.ps1-example.md): starter for PowerShell CLI entrypoints
 - [./references/leia-markdown-scenarios.md](./references/leia-markdown-scenarios.md): shared Leia scenario rules for end-to-end shell CLI validation
-- [./references/leia-pr-examples-tests-example.md](./references/leia-pr-examples-tests-example.md): shared Bootbox-style workflow starter for Leia-backed PR examples
+- [./references/leia-pr-examples-tests.yml-example.md](./references/leia-pr-examples-tests.yml-example.md): shared workflow example for running packaged CLI scenarios
 - [./templates/leia-markdown-example-readme.md](./templates/leia-markdown-example-readme.md): shared starter README for one executable Leia scenario
 - [./templates/leia-examples-agents.md](./templates/leia-examples-agents.md): shared starter for examples-level Leia editing policy
 

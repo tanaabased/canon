@@ -1,6 +1,8 @@
 # PowerShell CLI starter
 
-Use this for a PowerShell entrypoint. Keep the stampable `SCRIPT_VERSION`, stream handling and option precedence. Rename the command and replace the sample options and command body.
+Use the fenced source as a PowerShell entrypoint when the project needs native switch parameters, repeatable items and environment-backed defaults. Rename the destination, replace the sample command body and update the help text and environment variable names together.
+
+Keep one stampable `SCRIPT_VERSION` assignment if the release build injects the version. Preserve the distinction between an omitted switch and an explicit `-Force:$false` when applying environment defaults. Likewise, an explicit `-Item` list replaces the environment list. Check help, version, and those precedence cases with `pwsh -NoProfile` after adapting the command. The skill's Bash starter is available for commands distributed as shell scripts.
 
 Destination: `bin/powershell-cli.ps1`.
 

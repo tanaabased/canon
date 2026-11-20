@@ -14,4 +14,24 @@ describe('utils/extract-relative-markdown-links', () => {
 
     assert.deepEqual(extractRelativeMarkdownLinks(markdown), ['./references/contract.md#shape']);
   });
+  it('should check prose links around a Markdown starter containing its own fences', () => {
+    const markdown = [
+      '[starter](./references/readme.md-example.md)',
+      '````markdown',
+      '```sh',
+      'bun run test',
+      '```',
+      '[consumer docs](./docs/setup.md)',
+      '`````',
+      '   ~~~yaml',
+      '[sample](./sample)',
+      '   ~~~',
+      '[contract](./references/contract.md)',
+    ].join('\n');
+
+    assert.deepEqual(extractRelativeMarkdownLinks(markdown), [
+      './references/readme.md-example.md',
+      './references/contract.md',
+    ]);
+  });
 });

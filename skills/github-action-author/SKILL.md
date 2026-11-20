@@ -96,7 +96,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Keep final lint, test, build, or smoke commands only where they validate the shipped action. Prepare committed artifacts in `commands`, stamp any version-bearing build inputs before building, then format and validate command-owned output before synchronization.
 - Keep `sync-tags` on the release's intended moving major alias, such as `v1` for `v1.2.3`. Use the established bot credential required by repository rules; the shared action owns the synchronization identity.
 - Follow [release composition](https://github.com/tanaabased/canon/blob/main/skills/github-workflow-author/SKILL.md#release-composition) for checkout inputs, destination names, and independent jobs. The preparation hook precedes upstream package/changelog stamping; validate that path with a native dry run and preserve the stated pre-sync validation limitation.
-- Minimal example: [action release workflow](./references/bun-javascript-action-release-workflow-example.md).
+- Minimal example: [action release workflow](./references/bun-javascript-action-release-workflow.yml-example.md).
 
 ## Review Criteria
 
@@ -110,8 +110,8 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 
 - [./references/javascript-action-conventions.md](./references/javascript-action-conventions.md): local product-surface rules for Bun-backed actions authored in JavaScript or TypeScript
 - [./references/action-input-helper-tests.md](./references/action-input-helper-tests.md): local pattern for focused GitHub Action input-helper tests
-- [./references/bun-javascript-action-smoke-workflow-example.md](./references/bun-javascript-action-smoke-workflow-example.md): starter workflow for `uses: ./` smoke coverage
-- [./references/bun-javascript-action-release-workflow-example.md](./references/bun-javascript-action-release-workflow-example.md): starter `release.yml` for action artifact and repository publication
+- [./references/bun-javascript-action-smoke-workflow.yml-example.md](./references/bun-javascript-action-smoke-workflow.yml-example.md): starter workflow for `uses: ./` smoke coverage
+- [./references/bun-javascript-action-release-workflow.yml-example.md](./references/bun-javascript-action-release-workflow.yml-example.md): starter `release.yml` for action artifact and repository publication
 - [./templates/get-inputs.spec.js](./templates/get-inputs.spec.js): starter Mocha spec for a focused action input helper
 - [./references/release-destinations.md](./references/release-destinations.md): shared product-surface-to-release-destination routing
 - [./references/readme-standards.md](./references/readme-standards.md): GitHub Action README mode rules

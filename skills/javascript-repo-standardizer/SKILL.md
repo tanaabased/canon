@@ -127,7 +127,7 @@ Use this section as a reference map from repo-baseline validation and npm-public
 ### Pull Request Baseline Validation
 
 - Use the [preferred runtime setup actions](#preferred-tools) according to [Test Runtimes](./references/coding-stack-preferences.md#test-runtimes), with version selection owned by project declarations rather than repeated workflow literals.
-- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow example](./references/bun-pr-linter-workflow-example.md).
+- Apply `## Testing` through the canonical Bun-first `.github/workflows/pr-linter.yml` path using [the linter workflow example](./references/bun-pr-linter-workflow.yml-example.md).
 - Keep the linter workflow separate from `.github/workflows/pr-unit-tests.yml` when the repo owns both independent surfaces.
 - Add a separate `bun run typecheck` step when the repo owns TypeScript source.
 - Flag automation that rewrites tracked files without applying the repository formatter afterward.
@@ -152,9 +152,9 @@ For [Preferred Tools](#preferred-tools), apply the [shared adoption and version-
 - [./references/repo-agents-lines.md](./references/repo-agents-lines.md): optional copyable repo `AGENTS.md` lines for durable JS/TS/Bun baseline policy
 - [./templates/eslint.config.js](./templates/eslint.config.js): shared JS/TS/Bun ESLint base
 - [./templates/prettier.config.js](./templates/prettier.config.js): shared standalone Prettier config
-- [./references/prettier-ignore-example.md](./references/prettier-ignore-example.md): shared Prettier ignore baseline
+- [./references/baseline.prettierignore-example.md](./references/baseline.prettierignore-example.md): shared Prettier ignore baseline
 - [./templates/tsconfig.json](./templates/tsconfig.json): conditional Bun-compatible TypeScript baseline
-- [./references/bun-pr-linter-workflow-example.md](./references/bun-pr-linter-workflow-example.md): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
+- [./references/bun-pr-linter-workflow.yml-example.md](./references/bun-pr-linter-workflow.yml-example.md): starter `.github/workflows/pr-linter.yml` for the canonical repo-baseline validation path
 - [./templates/snippets/typescript-eslint-layer.js](./templates/snippets/typescript-eslint-layer.js): optional TypeScript layer
 - [./templates/snippets/vue-eslint-layer.js](./templates/snippets/vue-eslint-layer.js): optional Vue layer
 - [./references/javascript-repo-structure.md](./references/javascript-repo-structure.md): shared owning-scope, `bin/`, `lib/`, `scripts/`, `utils/`, `test/`, and hoisting rules

@@ -1,1 +1,0 @@
-../../../references/bun-pr-linter-workflow-example.md

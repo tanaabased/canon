@@ -1,6 +1,8 @@
 # Vue component starter
 
-Use this fallback when the project has no established component example. Keep the public props and slots aligned with the companion documentation and tests. Adapt their names, defaults, markup and styles to the component.
+Use this fallback when a Vue project has no established component pattern. Put the component in the project's component source directory, choose its public name, and update imports in the component test and documentation page together.
+
+The example exposes title and default slots with prop-based fallback content, an optional actions slot, and a validated variant. Keep the inputs and slots the real component needs. If you change the available variants or slot props, update the playground controls and tests that exercise them. Reuse project styles and conventions for labels, spacing and color.
 
 Destination: `example-component.vue`.
 

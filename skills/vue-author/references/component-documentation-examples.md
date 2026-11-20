@@ -22,7 +22,7 @@ Use these fallback artifacts only when the target project does not already have 
 
 ## Fallback Artifacts
 
-- [./vue-component-example.md](./vue-component-example.md): generic fallback Vue SFC with props, boolean and enum states, default content, and public slots.
+- [./example-component.vue-example.md](./example-component.vue-example.md): generic fallback Vue SFC with props, boolean and enum states, default content, and public slots.
 - [../templates/example-component.md](../templates/example-component.md): generic fallback VitePress component docs page with frontmatter, top Usage playground, props and slots tables, and behavior notes.
 
 Use the component example and docs-page template only for missing local patterns. Install `@tanaab/component-playground` as a docs development dependency and import its public component and stylesheet as shown in the page template. Prefer global registration and a single theme stylesheet import when the site already uses them.
