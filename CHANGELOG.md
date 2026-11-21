@@ -1,8 +1,13 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### New Features
+
 - Added `tanaab-cloud-reader-format-probe` to check which installed file formats the Codex Cloud skill reader can open. [#136](https://github.com/tanaabased/canon/issues/136) [#137](https://github.com/tanaabased/canon/pull/137)
 - Added `tanaab-plugin-info` to report the loaded Canon version, author, and shipped skills. [#124](https://github.com/tanaabased/canon/issues/124) [#137](https://github.com/tanaabased/canon/pull/137)
-- Updated the Canon release build to package and verify skills with Codex Tools. [#131](https://github.com/tanaabased/canon/issues/131) [#137](https://github.com/tanaabased/canon/pull/137)
+
+### Improvements
+
+- Switched `bun run build:plugin` to package skills in place in disposable CI checkouts and `bun run check:package` to verify extracted packages with Codex Tools. [#131](https://github.com/tanaabased/canon/issues/131) [#137](https://github.com/tanaabased/canon/pull/137)
 
 ## v0.15.4 - [November 20, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.4)
 
