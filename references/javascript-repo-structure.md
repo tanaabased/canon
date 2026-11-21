@@ -10,7 +10,7 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 
 ## Owning Scope
 
-- Organize code by owned purpose first; use runtime-role folders inside that scope when they improve navigation.
+- A capability is a cohesive product or maintainer job with identifiable callers and an owner. It can be public or internal. Group a one-file job with its nearest coherent owner, such as an API generation task in `build/`. Give it a separate directory when its interface or tooling contract calls for one.
 - Choose the nearest directory that completely owns the surface. Climb only far enough to reach a coherent shared owner, then stop.
 - A thin single-surface repository may use the repository root as its owning scope.
 - A skill, package, app, plugin, or independent product surface should normally own its code beneath its own directory.
@@ -27,7 +27,9 @@ Use this reference for Bun- or Node-based JavaScript and TypeScript repositories
 
 ## Standard Layout Inside a Scope
 
-Small cohesive owner scopes may keep implementation modules flat. When role folders improve clarity, use the applicable folders directly beneath the owning scope:
+Keep small capabilities flat by default. Put modules, commands, and focused specs beside each other. For example, `codex/operations.spec.ts` belongs beside `codex/operations.ts`, and `utils/parse-toml.spec.ts` beside `utils/parse-toml.ts`. Use the same layout at the repository root when it owns one capability.
+
+Around 10–15 siblings, reassess how callers and maintainers navigate the directory. Split when a group of related work is easier to find together or substantial fixtures crowd the implementation. File count alone does not require a split. When a role folder helps, use it directly beneath the owning scope:
 
 ```text
 scope/
@@ -55,17 +57,16 @@ scope/
 
 ## `bin/` Boundary
 
-- Use `bin/` for commands intended as a public or directly human-facing interface.
+- When grouping public or directly human-facing commands by role, use `bin/`.
 - Treat command names, help, arguments, options, output, and exit behavior as a public contract governed by the project's [maturity and compatibility commitments](./coding-stack-preferences.md#project-maturity-and-compatibility).
 - Declare package-level CLIs in `package.json` when package metadata is in scope.
 - Keep public entrypoints friendly to `bun build` when built artifacts are part of the product surface.
 - Prefer static imports for repo-authored and package dependencies when the built CLI artifact is the product.
 - Commit directly executable JavaScript or TypeScript entrypoints with a shebang and executable mode.
-- If a command is intended only for a skill, agent, machine workflow, or repository maintainer, place it in `scripts/` instead.
 
 ## `scripts/` Boundary
 
-- Use `scripts/` for internal command entrypoints used by skills, agents, automation, builds, validation, or maintainers.
+- When grouping internal commands by role, use `scripts/` for skill, agent, automation, build, validation, or maintainer entrypoints.
 - Internal scripts may expose CLI-like arguments, help, output, and exit codes, but they are not a supported public interface.
 - Keep scripts thin over their owning modules; do not use `scripts/` as a blanket container for libraries or testable units.
 - Use role-encoded suffixes for repo-root scripts: `-cli.js` or `-cli.ts` for human-invoked internal commands and `-task.js` or `-task.ts` for automation entrypoints. Keep import-only modules with their implementation owner outside `scripts/`.
@@ -90,9 +91,9 @@ scope/
 
 ## `test/` Boundary
 
-- Keep tests inside the same owning scope as the code they validate by default.
+- Put a focused spec beside the module or command it exercises. Use a scoped `test/` directory when grouping suites or fixtures improves navigation.
 - Keep the scope's `test/` directory flat by default; do not mirror `bin/`, `lib/`, `scripts/`, `utils/`, `support/`, or `unit/` beneath it.
-- Put specs, fixtures, fakes, and test-support code directly beneath the scoped `test/` directory and use descriptive filenames to communicate ownership.
+- Within `test/`, give specs, fakes, and support files descriptive names. Group substantial fixtures when their layout or use warrants it.
 - Hoist tests only when the tested implementation is itself owned at that higher scope or the test intentionally spans multiple sibling scopes.
 - Do not treat a repository-root `test/` directory as a special collection point for tests owned by nested skills, packages, apps, or plugins.
 - Move tests with their source whenever ownership changes.
@@ -113,7 +114,7 @@ scope/
 
 ## Exceptions
 
-- Framework, generated-output, published-artifact, and external-tool contracts may require fixed filenames or directories that take precedence over this reference.
+- Preserve paths required by frameworks, generators, package exports and binaries, external tooling, and established consumers. Their contracts take precedence over layout defaults.
 - A repo may keep an established `src/` boundary when it is part of one of those contracts; do not add or remove that boundary solely to distinguish TypeScript from JavaScript.
 - A package manager's workspace directory is an ownership boundary, not another role folder; its child packages still follow the nearest-owner rules above.
 - Code embedded in `templates/` remains owned by the template artifact and should model the target layout rather than being moved into the live scope's role folders.

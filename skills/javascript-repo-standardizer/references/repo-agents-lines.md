@@ -2,8 +2,8 @@
 
 Use these lines only when the target repo wants the JS/TS/Bun baseline as durable ambient policy in its own `AGENTS.md`.
 
-- Keep JavaScript, TypeScript, and Bun code in the nearest owning scope, with cohesive flat implementation or useful role folders under the shared repo-structure guidance; keep public and internal entrypoints distinct.
-- Keep each scope's `test/` directory flat by default, with specs, fixtures, fakes, and support code directly beneath it.
+- Keep small JavaScript and TypeScript capabilities flat. Place modules, commands, and focused specs side by side in the nearest owning scope, including the repository root when it owns the job.
+- Introduce role folders when they improve navigation or contain substantial fixtures. Preserve public entrypoints and paths required by frameworks, packages, tooling, or established consumers.
 - Apply the same hoisting test to tests as to source; keep nested-scope tests with their owner instead of collecting them at repo root.
 - Keep linting and formatting ownership separate: ESLint for lint rules and standalone Prettier for formatting.
 - Prefer the shared baseline script shape such as `lint:eslint`, `format:check`, `format:write`, and composed `lint` when the repo adopts the standard baseline.
