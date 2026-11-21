@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.15.5 - [November 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.5)
+
 ### New Features
 
 - Added `tanaab-cloud-reader-format-probe` to check which installed file formats the Codex Cloud skill reader can open. [#136](https://github.com/tanaabased/canon/issues/136) [#137](https://github.com/tanaabased/canon/pull/137)
