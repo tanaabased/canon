@@ -1,14 +1,14 @@
-# ACTION_NAME
+# {{ action_name }}
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
 <p align="center">
-  <img src="./assets/ACTION_IMAGE" alt="ACTION_NAME" width="180" />
+  <img src="{{ action_image_path }}" alt="{{ action_name }}" width="180" />
 </p>
 
 <p align="center">
-  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
-  <a href="WORKFLOW_URL"><img src="WORKFLOW_BADGE_URL" alt="Build status" /></a>
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
+  <a href="{{ workflow_url }}"><img src="{{ workflow_badge_url }}" alt="Build status" /></a>
 </p>
 
 One or two sentences that explain what the action does, who it is for, and the workflow problem it solves.
@@ -19,17 +19,17 @@ One or two sentences that explain what the action does, who it is for, and the w
 
 Document every supported action input in one table.
 
-| Name         | Description                           | Default         | Example   |
-| ------------ | ------------------------------------- | --------------- | --------- |
-| `input-name` | What it controls and when it matters. | `default-value` | `example` |
+| Name               | Description                           | Default               | Example               |
+| ------------------ | ------------------------------------- | --------------------- | --------------------- |
+| `{{ input_name }}` | What it controls and when it matters. | `{{ input_default }}` | `{{ input_example }}` |
 
 ## Outputs
 
 Use this section only when the action actually sets outputs.
 
-| Name          | Description                     | Example |
-| ------------- | ------------------------------- | ------- |
-| `output-name` | What it returns to later steps. | `value` |
+| Name                | Description                     | Example                |
+| ------------------- | ------------------------------- | ---------------------- |
+| `{{ output_name }}` | What it returns to later steps. | `{{ output_example }}` |
 
 Delete this section if the action has no outputs.
 
@@ -47,17 +47,17 @@ Use this section for action-specific contract details users need before relying 
 ### Basic Usage
 
 ```yaml
-- name: Run ACTION_NAME
-  uses: ORG/REPO@v1
+- name: Run {{ action_name }}
+  uses: '{{ repo_slug }}@v1'
 ```
 
 ### Advanced Usage
 
 ```yaml
-- name: Run ACTION_NAME
-  uses: ORG/REPO@v1
+- name: Run {{ action_name }}
+  uses: '{{ repo_slug }}@v1'
   with:
-    input-name: value
+    '{{ input_name }}': '{{ input_example }}'
 ```
 
 If the action also has a VitePress docs site, add a short `Documentation` section after `Usage` that links deeper guides. Keep the input, output, caveat, and usage contract in this README even when deeper docs exist elsewhere.
@@ -68,14 +68,14 @@ Keep this section contributor-focused and repo-specific.
 
 ```sh
 # install dependencies
-INSTALL_COMMAND
+{{ install_command }}
 
 # validate the action
-LINT_COMMAND
-TEST_COMMAND
+{{ lint_command }}
+{{ test_command }}
 
 # build the committed runtime artifact when the action owns one
-BUILD_COMMAND
+{{ build_command }}
 ```
 
 ## Changelog
@@ -88,12 +88,12 @@ Describe the release trigger only when maintainers need a short repo-local remin
 
 ## Maintainers
 
-- `@MAINTAINER`
+- `@{{ maintainer }}`
 
 ## Contributors
 
-<a href="https://github.com/REPO_SLUG/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=REPO_SLUG" />
+<a href="https://github.com/{{ repo_slug }}/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo={{ repo_slug }}" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).

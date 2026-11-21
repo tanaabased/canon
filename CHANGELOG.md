@@ -1,5 +1,14 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Bug Fixes
+
+- Removed the explicit-invocation restriction from `tanaab-cloud-reader-format-probe` so the skill is eligible for automatic discovery. [#136](https://github.com/tanaabased/canon/issues/136)
+
+### Improvements
+
+- Standardized Canon starter fill-ins on `{{ lower_snake_case }}`. Skill Author accepts both padded and compact tokens and preserves GitHub Actions expressions.
+- Updated package verification to recognize whole template link placeholders while continuing to flag missing local files. [codex-tools#48](https://github.com/tanaabased/codex-tools/pull/48)
+
 ## v0.15.5 - [November 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.5)
 
 ### New Features

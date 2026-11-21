@@ -1,6 +1,6 @@
-# TOPIC_NAME
+# {{ topic_name }}
 
-This guide covers TOPIC_SCOPE for readers who TOPIC_AUDIENCE. Start with the [README](./README.md) for the project's primary path, and use [Advanced](./ADVANCED.md) for the broader long-tail reference.
+This guide covers {{ topic_scope }} for readers who {{ topic_audience }}. Start with the [README](./README.md) for the project's primary path, and use [Advanced](./ADVANCED.md) for the broader long-tail reference.
 
 Rename this file to the stable subject it owns, such as `CONFIGURATION.md`, `CODEX.md`, `OPENCLAW.md`, `OPERATIONS.md`, `TROUBLESHOOTING.md`, `UPGRADING.md`, or `CONTRIBUTING.md`.
 

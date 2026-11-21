@@ -1,14 +1,14 @@
-# PROJECT_NAME
+# {{ project_name }}
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
 <p align="center">
-  <img src="./assets/PROJECT_IMAGE" alt="PROJECT_NAME" width="180" />
+  <img src="{{ project_image_path }}" alt="{{ project_name }}" width="180" />
 </p>
 
 <p align="center">
-  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
-  <img src="PLATFORM_OR_RUNTIME_BADGE_URL" alt="SUPPORTED_PLATFORM_OR_RUNTIME" />
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
+  <img src="{{ platform_or_runtime_badge_url }}" alt="{{ supported_platform_or_runtime }}" />
 </p>
 
 One or two sentences that explain what the project is, who it is for, and why it exists.
@@ -27,10 +27,10 @@ Show the fastest path to a successful first run. Delete this section when the re
 
 ```sh
 # install or clone
-INSTALL_COMMAND
+{{ install_command }}
 
 # run the main command
-RUN_COMMAND
+{{ run_command }}
 ```
 
 ## Usage
@@ -39,13 +39,13 @@ Explain the workflows most readers need first.
 
 ```sh
 # run the primary workflow
-PRIMARY_COMMAND
+{{ primary_command }}
 ```
 
 Document only common inputs and configuration here. Link the complete reference from the paragraph where readers first need it:
 
-- `COMMON_OPTION`: what it does and when most readers should use it
-- `COMMON_ENV_VAR`: the common environment override
+- `{{ common_option }}`: what it does and when most readers should use it
+- `{{ common_env_var }}`: the common environment override
 
 See [Advanced](./ADVANCED.md#configuration-reference) for the complete configuration contract.
 
@@ -61,11 +61,11 @@ Keep this section contributor-focused and repo-specific.
 
 ```sh
 # install dependencies
-INSTALL_COMMAND
+{{ install_command }}
 
 # validate the project
-LINT_COMMAND
-TEST_COMMAND
+{{ lint_command }}
+{{ test_command }}
 ```
 
 Call out build, generated-output, privileged, or machine-mutating workflows instead of presenting them as routine local commands.
@@ -80,12 +80,12 @@ Link to `CHANGELOG.md` and releases when the repo maintains them.
 
 ## Maintainers
 
-- `@MAINTAINER`
+- `@{{ maintainer }}`
 
 ## Contributors
 
-<a href="https://github.com/REPO_SLUG/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=REPO_SLUG" />
+<a href="https://github.com/{{ repo_slug }}/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo={{ repo_slug }}" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).

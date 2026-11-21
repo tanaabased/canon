@@ -9,24 +9,24 @@ optional_top_level_headings:
 
 ---
 
-name: {{skill_id}}
-description: {{description_yaml}}
-license: {{license}}
+name: {{ skill_id }}
+description: {{ description_yaml }}
+license: {{ license }}
 metadata:
-  type: {{type}}
-  owner: {{owner}}
+  type: {{ type }}
+  owner: {{ owner }}
   tags:
-{{metadata_tags_yaml}}
+{{ metadata_tags_yaml }}
   openclaw:
-    emoji: {{openclaw_emoji}}
-    homepage: {{openclaw_homepage}}
+    emoji: {{ openclaw_emoji }}
+    homepage: {{ openclaw_homepage }}
 ---
 
-# {{display_name}}
+# {{ display_name }}
 
 ## Overview
 
-{{description}}
+{{ description }}
 
 ## Required Reading
 

@@ -1,6 +1,6 @@
 ## Task
 
-Closes #ISSUE
+Closes #{{ issue_number }}
 
 ## Outcome
 
