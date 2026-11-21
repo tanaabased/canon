@@ -16,11 +16,10 @@ Use these rules when deciding how much user-facing documentation should live in 
 
 ## Universal README Rules
 
-- Strongly prefer a polished first screen with the project name, a centered project visual, a short centered row of meaningful badges, and a one- or two-sentence description.
+- Open a root project README with a centered H1 naming the project, followed in order by the centered project image, a centered one-sentence description of what the project does, and the [badge rows](#readme-badges). Omit an unavailable image or inapplicable badges. Left-align the body that follows. Companion guides and example READMEs use ordinary Markdown headings.
 - Use a roughly 180-pixel-wide image as the default starting point. Prefer `<picture>` when real dark and light assets exist.
-- Keep badges limited to truthful, useful signals such as the latest release, build or deploy state, supported platform or runtime, and product classification.
 - Treat missing visual assets as an improvement opportunity, not a blocker. Do not fabricate decorative images, statuses, or compatibility claims.
-- Put critical compatibility, support, or safety notes immediately after the description when readers need them before starting.
+- Put critical compatibility, support, or safety notes immediately after the header when readers need them before starting.
 - Use the README for the common path and the needs of roughly 80 percent of readers. Move less-common, higher-context material into a companion guide only when it still passes the documentation change gate.
 - Put the primary install or usage path above deeper reference material.
 - If the repo has one truthful primary install or execution path, put that quickstart above local development or build steps. Do not invent a quickstart for a repository without a supported first-run path.
@@ -43,6 +42,30 @@ Use these rules when deciding how much user-facing documentation should live in 
 - Do not comment obvious syntax or narrate every line. Comments should make runnable examples easier to scan and copy, not turn the block into another prose section.
 - Treat comments in starter templates as scaffolding. Tailor or remove them after replacing placeholders when the real commands make the grouping or behavior obvious.
 - Use the fenced language's real comment syntax and place comments above the command or code they qualify rather than inventing placeholder annotation syntax.
+
+## README Badges
+
+Use up to two centered rows below the project description. The first shows current status, in the order release channels, behavioral tests, deployment. The second shows how or where readers can use the product. Omit empty rows. Use uppercase labels, the default Shields label background, and descriptive alt text.
+
+### Status row
+
+- **Versions.** Use blue for release values. Default to `STABLE`, showing GitHub’s Latest release and linking to `releases/latest`. Exclude GitHub prereleases from this badge. Add `EDGE` when readers can use that channel. It shows the most recently published release including prereleases and links to the release list. Use publication order for this definition. Add `DEV` only for a documented development build or installable branch. Show its actual build or revision and link to how readers obtain it.
+- **Tests.** Pick the workflow that best demonstrates the product doing its job through a public entrypoint, usually a Leia scenario. Use `LEIA` for a single general suite. If several suites cover distinct user journeys, choose at most three test badges with the broadest useful coverage and name the behaviors, such as `NOTIFICATIONS` and `ASSIGNMENTS`. Link each to its own workflow runs and match the badge’s branch or event filter to those runs. Keep lint, unit, component, and release-rehearsal results in CI. Use the provider’s live status colors so green means passing and failures remain visible.
+- **Deployment.** Add a deployment badge when readers use a separately deployed site or hosted executable and its production rollout matters. Use `DEPLOY` when the label is configurable, or use the native Netlify badge. Link to the corresponding production deploy history and retain the provider’s status colors. A published version alone does not establish the state of a hosted deployment.
+
+### Interface and compatibility row
+
+Use a static, two-part badge with a purple value (`#6f42c1`). The label names the ecosystem or platform category. The value names the interface or supported system in its usual casing. Link to the most direct place to install, use, or check support for that specific interface. Two interfaces shipped in one package can have different destinations.
+
+| Label               | Example values              | Link destination                                                                                                                                                      |
+| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NPM`               | `CLI`, `library`            | CLI quickstart or import/API example, respectively. Use the npm package page when it provides the relevant instructions or the badge specifically offers the package. |
+| `CODEX`, `OPENCLAW` | `plugin`                    | Installation and use in the named host.                                                                                                                               |
+| `CLAWHUB`           | `plugin`, `skill`           | The published listing for that artifact, or its documented ClawHub install command.                                                                                   |
+| `OS`                | `macOS`, `Linux`, `Windows` | Supported versions, architectures, and any operation-specific limits. Combine or omit badges when the install section explains the distinction better.                |
+| `GITHUB`            | `Action`, `template`        | The workflow usage example or repository template entrypoint.                                                                                                         |
+
+For example, [Codex Tools](https://github.com/tanaabased/codex-tools#usage) offers a CLI, a library, and plugin installation. Choose the interfaces that help readers pick an entrypoint. Extend the examples above when a repository ships a distinct interface with its own useful destination. Build tools and incidental dependencies belong in development instructions.
 
 ## README Modes
 

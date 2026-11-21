@@ -1,4 +1,4 @@
-# {{ project_name }}
+<h1 align="center">{{ project_name }}</h1>
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
@@ -7,11 +7,16 @@
 </p>
 
 <p align="center">
-  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
-  <img src="{{ platform_or_runtime_badge_url }}" alt="{{ supported_platform_or_runtime }}" />
+  {{ project_description }}
 </p>
 
-One or two sentences that explain what the project is, who it is for, and why it exists.
+<p align="center">
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest stable release" /></a>
+</p>
+
+<p align="center">
+  <a href="{{ interface_guide_url }}"><img src="{{ interface_badge_url }}" alt="{{ interface_name }}" /></a>
+</p>
 
 > Optional: add a short status, compatibility, or support note when readers need it before starting.
 

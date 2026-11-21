@@ -1,18 +1,22 @@
+<h1 align="center">Tanaab Canon</h1>
+
 <p align="center">
   <img src="./assets/canon-book.png" alt="Tanaab Canon" width="360" />
 </p>
-
-<h1 align="center">Tanaab Canon</h1>
 
 <p align="center">
   Shared Tanaab operating guidance, with Codex and OpenClaw plugins for planning work, authoring code, and preparing releases.
 </p>
 
 <p align="center">
-  <a href="https://github.com/tanaabased/canon/releases/latest"><img src="https://img.shields.io/github/v/release/tanaabased/canon" alt="Latest release" /></a>
-  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-linter.yml"><img src="https://github.com/tanaabased/canon/actions/workflows/pr-linter.yml/badge.svg" alt="Lint" /></a>
-  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-unit-tests.yml"><img src="https://github.com/tanaabased/canon/actions/workflows/pr-unit-tests.yml/badge.svg" alt="Unit tests" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/github/license/tanaabased/canon" alt="MIT license" /></a>
+  <a href="https://github.com/tanaabased/canon/releases/latest"><img src="https://img.shields.io/github/v/release/tanaabased/canon?label=STABLE&amp;color=blue" alt="Latest stable release" /></a>
+  <a href="https://github.com/tanaabased/canon/releases"><img src="https://img.shields.io/github/v/release/tanaabased/canon?include_prereleases&amp;sort=date&amp;label=EDGE&amp;color=blue" alt="Latest release including prereleases" /></a>
+  <a href="https://github.com/tanaabased/canon/actions/workflows/pr-examples-tests.yml?query=event%3Apull_request"><img src="https://img.shields.io/github/actions/workflow/status/tanaabased/canon/pr-examples-tests.yml?event=pull_request&amp;label=LEIA" alt="Leia scenario test status" /></a>
+</p>
+
+<p align="center">
+  <a href="./INSTALLATION.md#codex"><img src="https://img.shields.io/badge/CODEX-plugin-6f42c1" alt="Install the Codex plugin" /></a>
+  <a href="./INSTALLATION.md#openclaw"><img src="https://img.shields.io/badge/OPENCLAW-plugin-6f42c1" alt="Install the OpenClaw plugin" /></a>
 </p>
 
 ## Overview

@@ -57,7 +57,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 5. Preserve complete CLI and configuration references when they provide a useful standalone lookup surface. Reconcile them with current help, schemas, and defaults, while keeping prose focused on selection, precedence, consequences, and non-obvious behavior rather than narrating the inventory line by line.
 6. For code and command examples, prefer concise language-appropriate comments immediately above the lines they explain; reserve surrounding prose for prerequisites, concepts, safety, tradeoffs, or multi-step behavior that a short comment cannot carry, and tailor or remove starter-template comments when the final commands are self-explanatory.
 7. When drafting from scratch or standardizing a weak README, use the local template that matches the chosen mode instead of inventing section shape ad hoc.
-8. Strongly prefer a centered real visual, a concise row of truthful badges, and a one- or two-sentence description, but do not fabricate missing assets or status claims.
+8. Apply the [root README header layout](./references/readme-standards.md#universal-readme-rules) when writing the project entrypoint. Choose [badge rows](./references/readme-standards.md#readme-badges) based on the project’s release, workflow, and installation evidence.
 9. Validate that the final README matches one coherent mode and review VitePress when `README.md`, `ADVANCED.md`, and three or more topical guides are present.
 
 ## Review Criteria

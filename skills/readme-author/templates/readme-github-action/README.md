@@ -1,4 +1,4 @@
-# {{ action_name }}
+<h1 align="center">{{ action_name }}</h1>
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
@@ -7,11 +7,13 @@
 </p>
 
 <p align="center">
-  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
-  <a href="{{ workflow_url }}"><img src="{{ workflow_badge_url }}" alt="Build status" /></a>
+  {{ action_description }}
 </p>
 
-One or two sentences that explain what the action does, who it is for, and the workflow problem it solves.
+<p align="center">
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest stable release" /></a>
+  <a href="{{ behavioral_test_workflow_url }}"><img src="{{ behavioral_test_badge_url }}" alt="{{ behavioral_test_name }} test status" /></a>
+</p>
 
 > Optional: add a short status, compatibility, or support note when readers need it before copying the action into a workflow.
 
