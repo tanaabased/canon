@@ -118,6 +118,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Stop label sync when labels cannot be fully inspected. Never rename or delete a label, and verify association counts after definition updates.
 - For label batches, inspect every target before any write. Block the entire batch on an incomplete inventory or unresolved label read. Reject a stale digest, recheck each changing repository before writing, and stop on the first failed or uncertain result. Preserve successful writes, report the remainder, and obtain a fresh plan before continuing; never automatically retry or roll back.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow

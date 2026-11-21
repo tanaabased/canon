@@ -128,6 +128,8 @@ Read and apply every applicable document before the dependent work. A summary or
 
 Use the local skill directory as `<skill-path>` when the host exposes it.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow
@@ -138,7 +140,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 
 1. For a preferred-tool recommendation review, follow [Review Preferred Tools](#review-preferred-tools) and stop at its proposal. Otherwise determine whether the task is create, standardize, validate, or optimize, and whether the target is one skill or a repository-local skill collection. Choose `type` whenever the task changes or asserts skill identity, read any durable project `owner`, `namespace`, or `container` override from the applicable `AGENTS.md`, and challenge whether the surface is really a live skill or would be better owned by a repo template. For project-management surfaces, apply [`./references/project-management-model.md`](./references/project-management-model.md) before choosing a domain- or provider-led name.
 
-2. Complete the applicable Required Reading before making dependent decisions.
+2. Complete the applicable Required Reading before making dependent decisions. When authoring in the Canon source checkout, read `skills/AGENTS.md` before scaffolding or editing a skill.
 
 3. For validation-only requests, run the validator, review its manual checks, and stop at the findings. For optimization requests, follow the read-only Inspect, Compare, and Recommend phases of [Review Criteria](#review-criteria), then stop at the proposal. Neither request authorizes repairs; implement only after explicit implementation authorization.
 
@@ -148,6 +150,7 @@ When authoring issue-backed commits, apply the shared [commit-subject convention
 - Pass project-declared identity context explicitly with `--owner <tanaab|pirog>`, `--namespace <id>` and `--container <standalone|codex-plugin|openclaw-plugin>`; do not expect deterministic scripts to parse `AGENTS.md` prose.
 - Supply a skill-specific OpenClaw emoji. Let the scaffolder derive the canonical homepage, or provide an explicit homepage for a custom output directory.
 - Patch manually when the task is a partial migration or standardization pass.
+- In Canon, add or update the skill's `build.config.js` according to `skills/AGENTS.md`.
 - Tailor `Required Reading` to the actual governing policies with explicit Always or Before triggers. Keep essential constraints at the decision point, detailed policy in its authoritative reference, and optional background in the resource inventory.
 - Review the scaffolded `Review Criteria` section under the [shared contract](./references/skill-standard.md#review-criteria). Retain and tailor general criteria for persistent surfaces; add Architecture or Testing entry points only when applicable, linking existing authoritative sections before writing new criteria. Remove unused scaffolding and report applicable content gaps without inventing policy.
 - Retain `Preferred Tools` only for concrete recommendations under the [shared contract](./references/skill-standard.md#preferred-tools), connect them to the relevant workflow and Review Criteria checks, and remove unused scaffold guidance. For an upstream recommendation review, follow [Review Preferred Tools](#review-preferred-tools).

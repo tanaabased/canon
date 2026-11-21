@@ -40,13 +40,11 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
-      - name: Stage plugin
-        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
+      - name: Build plugin skills
+        run: bun run build:plugin
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
-        with:
-          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:
@@ -95,13 +93,11 @@ jobs:
           version: ${{ env.STAMPED_VERSION }}
       - name: Verify generated formatting
         run: bun run format:check
-      - name: Stage plugin
-        run: bun run build:plugin "$RUNNER_TEMP/canon-plugin"
+      - name: Build plugin skills
+        run: bun run build:plugin
       - name: Pack plugin
         id: pack
         uses: tanaabased/actions/npm-pack@v1
-        with:
-          package-directory: ${{ runner.temp }}/canon-plugin
       - name: Check extracted package
         id: package
         env:

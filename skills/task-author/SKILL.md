@@ -69,6 +69,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Create mode requires GitHub Issues write access. Native type, label, and issue-field values require repository push access and may otherwise be silently dropped, so a successful create response is never sufficient verification.
 - Apply [the task management contract](./references/task-management-contract.md) and the applicable cases from its [fixture corpus](./references/task-management-fixtures.md), selected under Required Reading. Do not independently redefine task shapes, metadata, or labels.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Inputs

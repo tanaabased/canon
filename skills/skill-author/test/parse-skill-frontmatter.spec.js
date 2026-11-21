@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import parseSkillFrontmatter, {
   splitLeadingSkillFrontmatter,
-} from '../utils/parse-skill-frontmatter.js';
+} from '../../../utils/parse-skill-frontmatter.js';
 
 describe('skills/skill-author/utils/parse-skill-frontmatter', () => {
   it('should reject invalid YAML rather than accepting a second mapping colon', () => {

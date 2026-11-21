@@ -1,0 +1,9 @@
+interface:
+  display_name: 'Cloud Reader Format Probe'
+  short_description: 'Tanaab-based probe for Cloud skill reader formats'
+  icon_small: './assets/icon-small.svg'
+  icon_large: './assets/icon-large.png'
+  brand_color: '#00c88a'
+  default_prompt: 'Use $tanaab-cloud-reader-format-probe to check which installed sample files the Cloud reader can open.'
+policy:
+  allow_implicit_invocation: false

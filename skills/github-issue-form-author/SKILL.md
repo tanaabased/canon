@@ -90,6 +90,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Warn that repository-local templates suppress organization-default issue templates and require an explicit alignment review before publication.
 - Treat required-field validation as public-repository behavior because GitHub does not enforce it identically for private repositories.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow

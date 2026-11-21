@@ -67,6 +67,8 @@ Read each applicable document in full, or the explicitly named section, before d
 - Keep inspect, recommendation, and preview requests read-only. Require an explicit materialization imperative for the exact parent before relationship writes.
 - Send JSON requests through standard input with `--input -`. Use a repository-local ignored scratch file only when standard input is unavailable and its path has been verified with `git check-ignore`.
 
+When running a command copied from the skill reader, use the temporary directory as `<skill-path>`.
+
 <!-- packaged-execution -->
 
 ## Workflow
