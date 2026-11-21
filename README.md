@@ -88,11 +88,13 @@ The [Codex](./.codex-plugin/plugin.json) and [OpenClaw](./openclaw.plugin.json) 
 
 ### Documentation and meta
 
-| Skill                                                   | Owns                                                 |
-| ------------------------------------------------------- | ---------------------------------------------------- |
-| [`tanaab-changelog-author`](./skills/changelog-author/) | `CHANGELOG.md` authoring and maintenance.            |
-| [`tanaab-readme-author`](./skills/readme-author/)       | Repository READMEs and companion guides.             |
-| [`tanaab-skill-author`](./skills/skill-author/)         | Skill scaffolding, validation, and portfolio review. |
+| Skill                                                                     | Owns                                                          |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [`tanaab-changelog-author`](./skills/changelog-author/)                   | `CHANGELOG.md` authoring and maintenance.                     |
+| [`tanaab-cloud-reader-format-probe`](./skills/cloud-reader-format-probe/) | Direct file-format checks in the Codex Cloud skill reader.    |
+| [`tanaab-plugin-info`](./skills/plugin-info/)                             | Installed Canon version, author, and shipped skill inventory. |
+| [`tanaab-readme-author`](./skills/readme-author/)                         | Repository READMEs and companion guides.                      |
+| [`tanaab-skill-author`](./skills/skill-author/)                           | Skill scaffolding, validation, and portfolio review.          |
 
 ## Development
 
