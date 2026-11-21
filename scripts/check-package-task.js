@@ -3,9 +3,9 @@ import { execFileSync } from 'node:child_process';
 import { readFile, realpath } from 'node:fs/promises';
 import path from 'node:path';
 
+import { runCLI } from '@tanaab/codex-tools';
+
 import { collectPluginInfo } from '../lib/plugin-info.js';
-import { checkCloudSkill } from '../node_modules/@tanaab/codex-tools/lib/cloud-check.ts';
-import { cloudProject } from '../node_modules/@tanaab/codex-tools/lib/cloud-config.ts';
 
 const [directory, ...extra] = process.argv.slice(2);
 if (!directory || directory.startsWith('-') || extra.length) {
@@ -13,10 +13,11 @@ if (!directory || directory.startsWith('-') || extra.length) {
 }
 
 const root = await realpath(directory);
-const project = await cloudProject('cloud.config.js', 'cloud verify');
-for (const skill of project.skills) await checkCloudSkill(project, skill, root);
+const status = await runCLI(['cloud', 'verify', 'cloud.config.js', '--package', root]);
+if (status !== 0) process.exit(status);
+
 const [sourceInfo, packedInfo, openClaw] = await Promise.all([
-  collectPluginInfo(project.root),
+  collectPluginInfo(await realpath('.')),
   collectPluginInfo(root),
   readFile(path.join(root, 'openclaw.plugin.json'), 'utf8').then(JSON.parse),
 ]);
@@ -38,4 +39,3 @@ assert.deepEqual(
   packedInfo,
   'The plugin info command must report the packed manifests and shipped skills.',
 );
-process.stdout.write(`Verified ${project.skills.length} skills in the extracted package.\n`);
