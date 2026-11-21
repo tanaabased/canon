@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.15.6 - [November 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.6)
+
 ### Bug Fixes
 
 - Removed the explicit-invocation restriction from `tanaab-cloud-reader-format-probe` so the skill is eligible for automatic discovery. [#136](https://github.com/tanaabased/canon/issues/136) [#139](https://github.com/tanaabased/canon/pull/139)
