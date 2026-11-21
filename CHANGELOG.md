@@ -1,5 +1,7 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+## v0.16.0 - [November 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.16.0)
+
 - Standardized README headers and badge rows across `$tanaab-readme-author` starters.
 - Switched `bun run build:plugin` and `bun run check:package` to published `@tanaab/codex-tools` `1.1.0` for Cloud skill packaging and verification. [#138](https://github.com/tanaabased/canon/issues/138) [#141](https://github.com/tanaabased/canon/pull/141)
 - Updated `$tanaab-changelog-author` to name affected components by their machine IDs, including the `$` prefix for skills.
