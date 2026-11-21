@@ -1,5 +1,11 @@
 ## {{ UNRELEASED_VERSION }} - [{{ UNRELEASED_DATE }}]({{ UNRELEASED_LINK }})
 
+### Improvements
+
+- Standardized README headers and badge rows across `tanaab-readme-author` starters.
+- Switched Cloud skill packaging and verification to the published `@tanaab/codex-tools` `1.1.0` release. [#138](https://github.com/tanaabased/canon/issues/138) [#141](https://github.com/tanaabased/canon/pull/141)
+- Updated JavaScript layout guidance to keep small capabilities flat by default.
+
 ## v0.15.6 - [November 21, 2026](https://github.com/tanaabased/canon/releases/tag/v0.15.6)
 
 ### Bug Fixes

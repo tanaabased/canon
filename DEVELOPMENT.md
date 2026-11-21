@@ -22,8 +22,6 @@ Follow the [Canon skill contribution guide](./skills/AGENTS.md) when creating or
 
 Run `bun run build:plugin` only in CI. The build modifies tracked skills in place and leaves the Git index available to `bun run check:package` for verification. The [release workflow](./.github/workflows/release.yml) uses the same build and verification commands.
 
-During the pilot, those commands import the Cloud libraries from Codex Tools `main` at the commit in `bun.lock`. Canon temporarily declares the source imports' dependencies so one `bun install` supplies them. Before releasing Canon, switch to a published Codex Tools version with those Cloud entry points and rerun the release rehearsal.
-
 ## Codex cache
 
 `bun run codex:check` inspects cache drift; `bun run codex:sync` synchronizes the selected cache. Keep development verification isolated: pass an isolated `--codex-home`, `--cache-path`, and `--missing-target create` to both commands. This checks synchronization, not installation, and neither command publishes or upgrades an npm release. Drift against a task worktree does not require updating the live installation. See [Codex Tools](https://github.com/tanaabased/codex-tools/blob/main/CLI.md) for options.
