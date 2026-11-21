@@ -1,4 +1,4 @@
-# EXAMPLE NAME Example
+# {{ example_name }} Example
 
 <!-- replace this starter prose with the real flow and its evidence limits. link adjacent exclusions to existing examples, tests, or upstream owners; state missing owners instead of inventing destinations. equivalent headings are fine; omit empty sections. distinguish executed checks from manual, future, or still-unrelocated coverage. keep fixture files or named input directories beside the README without a generic local fixtures wrapper. -->
 

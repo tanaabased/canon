@@ -73,6 +73,7 @@
 - Put reusable agent-facing workflows in `skills/`, and keep those skills focused on triggered behavior rather than general canon explanation.
 - Use skills as workflow entrypoints. Keep skill-specific procedures in the owning `SKILL.md` or its explicitly required resources; root `prompts/` is for reusable request starters with value beyond one skill, not otherwise undiscoverable workflow policy.
 - Put reusable scaffolds and fragments in `templates/` when reuse is proven, when they are a repo-wide tooling surface, or when consumers copy or populate the file itself. Put annotated starters in the owning `references/` directory using the Skill Standard naming convention. Repository `examples/` holds runnable Leia scenarios.
+- Follow [Template Placeholders](./references/template-placeholders.md) when authoring fill-in templates in Canon.
 - If the reusable artifact is a whole starter repository with committed structure, scripts, examples, and docs, prefer a template repository over a repo-root template file.
 - Keep `bin/` and `scripts/` code-only. Put import-only modules in `lib/` or `utils/` and machine-readable data with its smallest appropriate owner.
 - Keep repo-level scripts support-focused. Do not turn them into accidental product surfaces without intent.

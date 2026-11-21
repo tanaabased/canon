@@ -7,7 +7,7 @@
  */
 export default function renderSkillTemplate(template, replacements) {
   return String(template ?? '').replaceAll(
-    /\{\{([a-z_]+)\}\}/g,
-    (match, key) => replacements[key] ?? match,
+    /(?<!\$)\{\{[ \t]*([a-z_][a-z0-9_]*)[ \t]*\}\}/g,
+    (match, key) => (Object.hasOwn(replacements, key) ? (replacements[key] ?? match) : match),
   );
 }

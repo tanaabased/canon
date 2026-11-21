@@ -1,14 +1,14 @@
-# PROJECT_NAME
+# {{ project_name }}
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
 <p align="center">
-  <img src="./assets/PROJECT_IMAGE" alt="PROJECT_NAME" width="180" />
+  <img src="{{ project_image_path }}" alt="{{ project_name }}" width="180" />
 </p>
 
 <p align="center">
-  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
-  <img src="PLATFORM_OR_RUNTIME_BADGE_URL" alt="SUPPORTED_PLATFORM_OR_RUNTIME" />
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
+  <img src="{{ platform_or_runtime_badge_url }}" alt="{{ supported_platform_or_runtime }}" />
 </p>
 
 One or two sentences that explain what the project is, who it is for, and why it exists.
@@ -25,10 +25,10 @@ Show the fastest path to a successful first run. Delete this section when the re
 
 ```sh
 # install or clone
-INSTALL_COMMAND
+{{ install_command }}
 
 # run the main command
-RUN_COMMAND
+{{ run_command }}
 ```
 
 ## Installation
@@ -45,7 +45,7 @@ Explain the most important user flows first.
 
 ```sh
 # run the primary workflow
-PRIMARY_COMMAND
+{{ primary_command }}
 ```
 
 Add one or two follow-up examples only if they materially expand understanding.
@@ -54,8 +54,8 @@ Add one or two follow-up examples only if they materially expand understanding.
 
 Document the main configuration surface only when the repo actually exposes one.
 
-- `ENV_VAR_ONE`: what it does and when to set it
-- `ENV_VAR_TWO`: what it does and when to set it
+- `{{ env_var_one }}`: what it does and when to set it
+- `{{ env_var_two }}`: what it does and when to set it
 
 If configuration grows beyond a concise section, review whether the full reference belongs in a companion guide or a VitePress docs site.
 
@@ -69,14 +69,14 @@ Keep this section contributor-focused and repo-specific.
 
 ```sh
 # install dependencies
-INSTALL_COMMAND
+{{ install_command }}
 
 # validate the project
-LINT_COMMAND
-TEST_COMMAND
+{{ lint_command }}
+{{ test_command }}
 
 # build the distributable artifact when the repository owns one
-BUILD_COMMAND
+{{ build_command }}
 ```
 
 ## Issues, Questions and Support
@@ -89,12 +89,12 @@ Link to `CHANGELOG.md` and releases when the repo maintains them.
 
 ## Maintainers
 
-- `@MAINTAINER`
+- `@{{ maintainer }}`
 
 ## Contributors
 
-<a href="https://github.com/REPO_SLUG/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=REPO_SLUG" />
+<a href="https://github.com/{{ repo_slug }}/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo={{ repo_slug }}" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).

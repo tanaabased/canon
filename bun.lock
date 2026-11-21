@@ -83,7 +83,7 @@
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
-    "@tanaab/codex-tools": ["@tanaab/codex-tools@github:tanaabased/codex-tools#da334a8", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "tanaabased-codex-tools-da334a8", "sha512-jSMMeRN8druG/nzK+Sk2YTVoEQTm1rerK37ytgypEmIC7tf7dXlOVEt2bhNYlE7yRYskPOgIV9wySMS0HEfYwA=="],
+    "@tanaab/codex-tools": ["@tanaab/codex-tools@github:tanaabased/codex-tools#e3b1986", { "dependencies": { "@types/node": "^24.0.0" }, "bin": { "codex-tools": "dist/codex-tools" } }, "tanaabased-codex-tools-e3b1986", "sha512-NFuxoERUbs+iIh30IFHx0Pam1X1sUfJBUlspLDn8NiFbA3PA9CNRaGeXCct+A9ysZN8B6Wk+T0kNZ+8wTGg1hA=="],
 
     "@types/esrecurse": ["@types/esrecurse@4.3.1", "", {}, "sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw=="],
 

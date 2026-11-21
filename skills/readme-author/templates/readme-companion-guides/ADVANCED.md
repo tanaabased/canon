@@ -1,6 +1,6 @@
 # Advanced
 
-This guide covers the less-common, higher-context, and complete reference material for `PROJECT_NAME`. Start with the [README](./README.md) for the primary path.
+This guide covers the less-common, higher-context, and complete reference material for `{{ project_name }}`. Start with the [README](./README.md) for the primary path.
 
 ## Preflight And Requirements
 

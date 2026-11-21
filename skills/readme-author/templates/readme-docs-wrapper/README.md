@@ -1,14 +1,14 @@
-# PROJECT_NAME
+# {{ project_name }}
 
 <!-- Strongly preferred when real assets and status signals exist. Use <picture> when separate dark and light images are available. -->
 
 <p align="center">
-  <img src="./assets/PROJECT_IMAGE" alt="PROJECT_NAME" width="180" />
+  <img src="{{ project_image_path }}" alt="{{ project_name }}" width="180" />
 </p>
 
 <p align="center">
-  <a href="RELEASE_URL"><img src="RELEASE_BADGE_URL" alt="Latest release" /></a>
-  <img src="PLATFORM_OR_RUNTIME_BADGE_URL" alt="SUPPORTED_PLATFORM_OR_RUNTIME" />
+  <a href="{{ release_url }}"><img src="{{ release_badge_url }}" alt="Latest release" /></a>
+  <img src="{{ platform_or_runtime_badge_url }}" alt="{{ supported_platform_or_runtime }}" />
 </p>
 
 One or two sentences that explain what the project is, who it is for, and why it exists.
@@ -25,24 +25,24 @@ Show the shortest path to a successful first run. Delete this section when the r
 
 ```sh
 # install or clone
-INSTALL_COMMAND
+{{ install_command }}
 
 # run the main command
-RUN_COMMAND
+{{ run_command }}
 ```
 
 Keep this section short. The README should prove the first step works, not reproduce the full docs site.
 
 ## Documentation
 
-The full documentation for `PROJECT_NAME` lives at [DOCS_URL](DOCS_URL).
+The full documentation for `{{ project_name }}` lives at [Documentation]({{ docs_url }}).
 
 Start here:
 
-- [Getting Started](DOCS_GETTING_STARTED_URL)
-- [Install or Setup](DOCS_INSTALL_URL)
-- [Usage or Core Workflow](DOCS_USAGE_URL)
-- [Configuration or Reference](DOCS_REFERENCE_URL)
+- [Getting Started]({{ docs_getting_started_url }})
+- [Install or Setup]({{ docs_install_url }})
+- [Usage or Core Workflow]({{ docs_usage_url }})
+- [Configuration or Reference]({{ docs_reference_url }})
 
 Add only the key routes readers actually need. Do not mirror the entire VitePress sidebar here.
 
@@ -52,14 +52,14 @@ Keep this section for repo contributors and maintainers.
 
 ```sh
 # install dependencies
-INSTALL_COMMAND
+{{ install_command }}
 
 # validate the project
-LINT_COMMAND
-TEST_COMMAND
+{{ lint_command }}
+{{ test_command }}
 
 # build the distributable artifact when the repository owns one
-BUILD_COMMAND
+{{ build_command }}
 ```
 
 If contributor docs become extensive, move them into the VitePress docs site and keep only the short local-dev entrypoint here.
@@ -74,16 +74,16 @@ Link to `CHANGELOG.md` and releases when the repo maintains them.
 
 ## Maintainers
 
-- `@MAINTAINER`
+- `@{{ maintainer }}`
 
 ## Contributors
 
-<a href="https://github.com/REPO_SLUG/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=REPO_SLUG" />
+<a href="https://github.com/{{ repo_slug }}/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo={{ repo_slug }}" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
 
 ## Other Selected Resources
 
-- [License](LICENSE_URL)
+- [License]({{ license_url }})

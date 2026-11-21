@@ -25,6 +25,7 @@ Tanaab-based authoring and standardization of repository READMEs and companion g
 Read each applicable document in full, or the explicitly named section, before dependent work. Reuse complete reads already in context. If required material is unavailable, report the gap and pause only the dependent work.
 
 - **Always:** [Documentation Standards](./references/documentation-standards.md) and [README Standards](./references/readme-standards.md).
+- **Before adapting a Canon README starter:** [Template Placeholders](./references/template-placeholders.md).
 - **Before recommending a docs site or changing runtime claims:** [Coding Stack Preferences](./references/coding-stack-preferences.md).
 - **Before reviewing or optimizing this surface:** [Optimization Operations](./references/optimization-operations.md).
 - **Before authoring issue-backed commits:** [Commit Subjects](./references/commit-subjects.md).
