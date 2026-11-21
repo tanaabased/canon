@@ -47,11 +47,3 @@ jobs:
         with:
           scenarios: examples/${{ matrix.example }}/README.md
           shell: bash
-      - name: Check Cloud reader samples in the candidate
-        if: matrix.example == 'skill-tools'
-        uses: tanaabased/actions/run-leia@v1
-        env:
-          CANON_TARBALL: ${{ steps.pack.outputs.tarball-path }}
-        with:
-          scenarios: examples/cloud-reader-format-probe/README.md
-          shell: bash

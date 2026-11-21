@@ -5,13 +5,12 @@ import path from 'node:path';
 import { collectPluginInfo } from '../../../lib/plugin-info.js' with { type: 'macro' };
 
 const args = process.argv.slice(2);
+const usage = 'Usage: bun plugin-info.js';
 if (args.length === 1 && args[0] === '--help') {
-  process.stdout.write(
-    'Usage: bun plugin-info.js\nPrint the Canon package identity and shipped skills as JSON.\n',
-  );
+  process.stdout.write(`${usage}\nPrint the Canon package identity and shipped skills as JSON.\n`);
   process.exit(0);
 }
-if (args.length) throw new Error('Usage: bun plugin-info.js');
+if (args.length) throw new Error(usage);
 
 const info = collectPluginInfo();
 const root = path.resolve(import.meta.dir, '../../..');

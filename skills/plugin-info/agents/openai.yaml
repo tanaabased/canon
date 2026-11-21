@@ -1,5 +1,5 @@
 interface:
-  display_name: 'Canon Plugin Info'
+  display_name: 'Plugin Info'
   short_description: 'Tanaab-based lookup for the installed Canon release'
   icon_small: './assets/icon-small.svg'
   icon_large: './assets/icon-large.png'
