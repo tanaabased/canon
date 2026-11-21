@@ -143,7 +143,6 @@ jobs:
             version-injector package.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector .codex-plugin/plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
             version-injector openclaw.plugin.json --style json --version "$PREPARE_RELEASE_VERSION"
-            bun run generate:plugin-info
             bun run format:write
           release-date: ${{ env.STAMPED_RELEASE_DATE }}
           release-url: ${{ env.STAMPED_RELEASE_URL }}
@@ -152,7 +151,6 @@ jobs:
       - name: Verify prepared repository
         run: |
           bun run format:check
-          bun run generate:plugin-info --check
           test "v$(bun --eval 'const pkg = JSON.parse(await Bun.file("package.json").text()); console.log(pkg.version)')" = "$STAMPED_VERSION"
           test "v$(bun --eval 'const plugin = JSON.parse(await Bun.file(".codex-plugin/plugin.json").text()); console.log(plugin.version)')" = "$STAMPED_VERSION"
           test "v$(bun --eval 'const plugin = JSON.parse(await Bun.file("openclaw.plugin.json").text()); console.log(plugin.version)')" = "$STAMPED_VERSION"

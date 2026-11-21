@@ -9,6 +9,8 @@ metadata:
   openclaw:
     emoji: '📦'
     homepage: https://github.com/tanaabased/canon/tree/main/skills/plugin-info
+    requires:
+      bins: [bun]
 ---
 
 # Canon Plugin Info
@@ -27,16 +29,17 @@ Report the identity and skill inventory shipped with the Canon artifact that sup
 
 ## Workflow
 
-1. Open the [plugin information](./references/plugin-info.json) through the installed skill reader. Use that file as the sole source.
-2. For identity questions, report the requested package name and version or plugin name, ID, author, and repository. For inventory questions, report the requested names and descriptions from the shipped skill list.
-3. Cite the resource path or identifier returned by the reader. If the file is unreadable or missing, report the installed version and inventory as unavailable.
-4. Put the result in a Markdown blockquote headed `## 📦 CANON PLUGIN INFO`. Quote every line, including blank lines, and use sentence case for field labels. For a version lookup, show the package, version, author, shipped skill count, and source. Expand the inventory when asked. Use `## ⚠️ CANON PLUGIN INFO UNAVAILABLE` when the resource cannot be read.
-5. Use the bundled JSON directly when another workflow needs the metadata. When asked for JSON output, return the contents of the same resource in a fenced `json` block.
+1. Run `bun --no-install <skill-directory>/scripts/plugin-info.js` and use its JSON as the source. Follow the packaged execution instructions when the reader supplies the command instead of a filesystem path.
+2. Show the declared package version. When the command also returns `developmentVersion`, display it as **Development version**. For inventory questions, report the requested names and descriptions. Cite the command that supplied the data.
+3. For a human-readable response, use a Markdown blockquote headed `## 📦 CANON PLUGIN INFO` with sentence-case field labels and quoted blank lines. For a version lookup, include the package, version, author, skill count, and source. Expand the inventory when asked. Use `## ⚠️ CANON PLUGIN INFO UNAVAILABLE` when the artifact's metadata cannot be obtained.
+4. When asked for JSON, return the command result directly as JSON.
+
+<!-- packaged-execution -->
 
 ## Bundled Resources
 
-- The plugin information file contains the package identity, plugin metadata, and shipped skill inventory.
+- The [plugin info command](./scripts/plugin-info.js) returns the package identity, plugin metadata, and shipped skill inventory.
 
 ## Validation
 
-- Verify that each reported field comes from the resource read in this chat.
+- Verify that each reported field comes from the artifact that supplied the skill.

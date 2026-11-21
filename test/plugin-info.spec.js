@@ -1,14 +1,13 @@
 import assert from 'node:assert/strict';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
-import { checkPluginInfo, writePluginInfo } from '../lib/plugin-info.js';
+import { collectPluginInfo } from '../lib/plugin-info.js';
 
 describe('lib/plugin-info', () => {
-  it('refreshes release metadata and detects stale inventory in the package', async () => {
+  it('reads the current manifest version and sorts the shipped skill inventory by name', async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'canon-plugin-info-'));
-    const infoFile = path.join(root, 'skills/plugin-info/references/plugin-info.json');
     const skill = path.join(root, 'skills/alpha/SKILL.md');
     const pkg = { name: '@tanaab/canon', version: '0.15.4' };
     const plugin = {
@@ -20,7 +19,7 @@ describe('lib/plugin-info', () => {
     };
 
     try {
-      await mkdir(path.dirname(infoFile), { recursive: true });
+      await mkdir(path.join(root, 'skills/plugin-info'), { recursive: true });
       await mkdir(path.dirname(skill), { recursive: true });
       await mkdir(path.join(root, '.codex-plugin'));
       const pkgPath = path.join(root, 'package.json');
@@ -32,20 +31,16 @@ describe('lib/plugin-info', () => {
         path.join(root, 'skills/plugin-info/SKILL.md'),
         '---\nname: tanaab-plugin-info\ndescription: Report plugin info.\n---\n',
       );
-      await writePluginInfo(root);
-      await checkPluginInfo(root);
+      const initial = await collectPluginInfo(root);
+      assert.equal(initial.package.version, '0.15.4');
+      assert.equal(initial.skills[1].description, 'First description.');
 
       await writeFile(pkgPath, JSON.stringify({ ...pkg, version: '0.15.5' }));
+      await assert.rejects(collectPluginInfo(root), /versions must match/);
       await writeFile(pluginPath, JSON.stringify({ ...plugin, version: '0.15.5' }));
-      await assert.rejects(checkPluginInfo(root), /does not match/);
-      await writePluginInfo(root);
-      await checkPluginInfo(root);
 
       await writeFile(skill, '---\nname: tanaab-zulu\ndescription: New description.\n---\n');
-      await assert.rejects(checkPluginInfo(root), /does not match/);
-      await writePluginInfo(root);
-      await checkPluginInfo(root);
-      const info = JSON.parse(await readFile(infoFile, 'utf8'));
+      const info = await collectPluginInfo(root);
       assert.deepEqual(info.package, { name: '@tanaab/canon', version: '0.15.5' });
       assert.deepEqual(info.plugin, {
         id: 'tanaab',

@@ -28,6 +28,17 @@ for inventory in "$TMPDIR"/package/skills/*/runtime-files.json; do
   done < "$TMPDIR/commands.txt"
 done
 
+# should report package metadata from only the copied command
+package_root="$TMPDIR/package"
+skill="$package_root/skills/plugin-info"
+copy="$TMPDIR/copied-plugin-info"
+command="scripts/plugin-info.js"
+sh ./copy-verified-command.sh "$skill" "$command" "$copy"
+version="$(jq -er .version "$package_root/package.json")"
+skill_count="$(find "$package_root/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d '[:space:]')"
+cd "$TMPDIR"
+bun --no-install "$copy/$command" | jq -e --arg version "$version" --argjson count "$skill_count" '.package.version == $version and (.skills | length) == $count and (has("developmentVersion") | not)'
+
 # should scaffold and validate using only readable runtime files
 scenario="$PWD"
 cd "$TMPDIR"
