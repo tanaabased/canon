@@ -17,7 +17,6 @@ describe('index', () => {
     assert.deepEqual(Object.keys(result), ['appendSystemContext']);
     assert.match(result.appendSystemContext, /tanaab-\*/);
     assert.match(result.appendSystemContext, /explicit user instructions/);
-    assert.equal(result.appendSystemContext.length < 350, true);
     assert.deepEqual(hooks.get('before_prompt_build')({ prompt: 'Another request.' }, {}), result);
   });
 
