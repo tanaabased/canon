@@ -8,7 +8,7 @@
         "@eslint/js": "^10.0.1",
         "@lando/leia": "^2.0.0",
         "@tanaab/codex-tools": "1.1.0",
-        "clawhub": "^0.26.0",
+        "clawhub": "^0.27.0",
         "eslint": "^10.10.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-vue": "^10.11.0",
@@ -126,7 +126,7 @@
 
     "chownr": ["chownr@3.0.0", "", {}, "sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g=="],
 
-    "clawhub": ["clawhub@0.26.0", "", { "dependencies": { "@clack/prompts": "1.8.1", "@openclaw/plugin-inspector": "0.4.6", "arktype": "2.2.9", "commander": "15.1.0", "croner": "11.0.0", "fflate": "0.8.3", "ignore": "7.0.14", "json5": "2.2.3", "mime": "4.1.2", "ora": "10.0.0", "p-retry": "9.0.0", "semver": "7.8.6", "undici": "7.30.2", "unicode-case-folding": "1.1.2", "yaml": "2.9.1" }, "bin": { "clawhub": "bin/clawdhub.js", "clawdhub": "bin/clawdhub.js" } }, "sha512-KMfkxT79Eb6dauDtZDUXCazpMz7kBYZC3nB5Bnkj8yvoAAQlGuRy6G1y0aPAsQ5Y9uYP+xjXcGB/HfzSAsuYpg=="],
+    "clawhub": ["clawhub@0.27.0", "", { "dependencies": { "@clack/prompts": "1.8.1", "@openclaw/plugin-inspector": "0.4.6", "arktype": "2.2.9", "commander": "15.1.0", "croner": "11.0.0", "fflate": "0.8.3", "ignore": "7.0.14", "json5": "2.2.3", "mime": "4.1.2", "ora": "10.0.0", "p-retry": "9.0.0", "semver": "7.8.6", "undici": "7.30.2", "unicode-case-folding": "1.1.2", "yaml": "2.9.1" }, "bin": { "clawhub": "bin/clawdhub.js", "clawdhub": "bin/clawdhub.js" } }, "sha512-C8iIFtKZ2s2b8lS8LL70aDkYAzZ0Q1W4P816shyFz80gm4FJe2J3Df+Y7NqooryR7N6nuL5V7uPf+3QXorKsbQ=="],
 
     "cli-cursor": ["cli-cursor@5.0.0", "", { "dependencies": { "restore-cursor": "^5.0.0" } }, "sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw=="],
 

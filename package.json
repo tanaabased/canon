@@ -8,7 +8,7 @@
     "@eslint/js": "^10.0.1",
     "@lando/leia": "^2.0.0",
     "@tanaab/codex-tools": "1.1.0",
-    "clawhub": "^0.26.0",
+    "clawhub": "^0.27.0",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.11.0",
