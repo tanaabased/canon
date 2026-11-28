@@ -64,7 +64,24 @@ async function publishSkill(staged, destination, force) {
   // Concurrent scaffolders must leave an in-progress replacement and its backup alone.
   const lock = path.join(path.dirname(destination), `.${path.basename(destination)}.publish`);
   const backup = path.join(lock, 'previous');
-  await mkdir(lock);
+  try {
+    await mkdir(lock);
+  } catch (error) {
+    if (error.code !== 'EEXIST') throw error;
+    throw new Error(
+      [
+        'Skill publication is locked.',
+        `Destination: ${destination}`,
+        `Publication lock: ${lock}`,
+        `Possible backup: ${backup}`,
+        'Check running init-skill.js processes and their output directories (for example, with ps -ef on Unix). If this directory is shared, check other hosts too.',
+        'If a publisher may still be active, leave the lock and both copies untouched. Lock age is not proof that publication stopped.',
+        'Once you confirm no publisher is active, prevent new runs during recovery. Inspect the destination and backup. If the destination is missing, the backup may be your only copy. If both exist, keep both until you verify which skill to use.',
+        'Before clearing the lock, save any backup outside it and preserve any destination you want to keep. Restore the saved skill if needed. Retry only if you still intend to scaffold; --force can replace the destination.',
+      ].join('\n'),
+      { cause: error },
+    );
+  }
   let preserveBackup = false;
   try {
     if (await pathExists(destination)) {
@@ -175,9 +192,6 @@ export async function initializeSkill(options) {
     outputDir,
   });
 
-  if ((await pathExists(skillDir)) && !options.force) {
-    throw new Error(`Skill directory already exists: ${skillDir}`);
-  }
   // Load the artwork asynchronously so synchronous Bun consumers can import the scaffolder.
   const { default: largeIcon } = await import('../utils/large-icon.js');
   const skillContent = renderSkillTemplate(typeDefinition.templateBody, {
